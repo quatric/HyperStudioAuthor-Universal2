@@ -20,7 +20,7 @@
 - (id)valuesForMDAttribute:(id)aAttribute
 {
     id title;
-    if ([aAttribute isEqualToString:(NSString *)kMDItemTextContent] && (title = [self title]))
+    if ([aAttribute isEqualToString:(NSString *)kMDItemTextContent] && (title = [self objectString]))
         return [[super valuesForMDAttribute:aAttribute] arrayByAddingObject:title];
     return [super valuesForMDAttribute:aAttribute];
 }

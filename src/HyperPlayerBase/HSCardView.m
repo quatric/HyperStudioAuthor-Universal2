@@ -364,10 +364,12 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 
 - (void)setZoomFactor:(CGFloat)aFactor
 {
-    float factor = aFactor;
+    float factor = fmaxf(0.01f, (float)aFactor);
     float magnitude = fmaxf(factor != 0 ? fabsf(factor) : 1, _zoomFactor != 0 ? fabsf(_zoomFactor) : 1);
-    if (magnitude * 0.0005f < fabsf(factor - _zoomFactor))
+    if (magnitude * 0.0005f < fabsf(factor - _zoomFactor)) {
         _zoomFactor = factor;
+        [[NSNotificationCenter defaultCenter] postNotificationName:HSCardViewDidChangeZoomFactorNotification object:self];
+    }
 }
 
 - (void)setHasEdgeShadowView:(BOOL)aView

@@ -272,6 +272,12 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 
 - (void)windowWillClose:(id)aClose
 {
+    if ([self window] != nil) {
+        id state = [self documentWindowStateDictionary];
+        [[self document] storeDocumentWindowState:state];
+        [self commitToDocumentWindowStatesDictionary:state];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
     [self notifyWillClose:aClose];
 }
 

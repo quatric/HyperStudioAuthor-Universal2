@@ -1327,8 +1327,10 @@ static NSString *sPlatformInformation;
 
 - (id)navigationController
 {
-    if (_navigationController == nil)
+    if (_navigationController == nil || ([self navigationControllerClass] != nil && ![_navigationController isKindOfClass:[self navigationControllerClass]])) {
+        [_navigationController release];
         _navigationController = [(HSNavigationController *)[[self navigationControllerClass] alloc] initWithDocument:self];
+    }
     return _navigationController;
 }
 

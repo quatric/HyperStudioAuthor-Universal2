@@ -710,7 +710,9 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
     NSURL *url = [aOpened destinationStackURL];
     if ([[[self document] fileURL] isEqual:url])
         return NO;
-    return [[NSDocumentController sharedDocumentController] documentForURL:url] != nil;
+    if ([[NSDocumentController sharedDocumentController] documentForURL:url] != nil)
+        return YES;
+    return [self HSNavigationController_openedTutorialDocumentWithURL:url] != nil;
 }
 
 - (void)document:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo

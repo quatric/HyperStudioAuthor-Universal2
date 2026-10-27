@@ -19,7 +19,7 @@
 }
 - (void)startInContext:(id)aContext
 {
-    if ([[HSHistoryStack sharedHistoryStack] lastMarkedCard] == nil)
+    if ([[[aContext document] historyStack] lastMarkedCard] == nil)
         [aContext displayAlert:[self noMarkedCardsAlert] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
     else
         [super startInContext:aContext];
