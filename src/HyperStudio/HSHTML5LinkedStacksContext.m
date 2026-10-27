@@ -58,4 +58,26 @@
     [super dealloc];
 }
 
+// Whether any object of the document's stack has an action that opens another
+// stack (or a location) different from the document itself.
++ (BOOL)areLinkedStacksInDocument:(id)aDocument
+{
+    for (id object in [[[aDocument stack] hyperDeepEnumerator] allObjects]) {
+        if ([object implementsHyperInterface:@protocol(HSStackAttributes)])
+            continue;
+        for (id action in [[object queryHyperInterface:@protocol(HSActor)] hyperActions]) {
+            id URL;
+            if ([action isKindOfClass:[HSGoToHomeStackAction class]])
+                URL = [[HSHomeStackController sharedHomeStackController] homeStackURL];
+            else if ([action implementsHyperInterface:@protocol(HSOtherCardActionAttributes)] || [action implementsHyperInterface:@protocol(HSOpenStackActionAttributes)] || ([action implementsHyperInterface:@protocol(HSOpenLocationActionAttributes)] && [action canBeExportedToHTML5DocumentType:@"HSHTML5DocumentType"]))
+                URL = [[action queryHyperInterface:@protocol(HSURLAttribute)] URL];
+            else
+                continue;
+            if (URL != nil && ![URL isEqual:[aDocument fileURL]])
+                return YES;
+        }
+    }
+    return NO;
+}
+
 @end

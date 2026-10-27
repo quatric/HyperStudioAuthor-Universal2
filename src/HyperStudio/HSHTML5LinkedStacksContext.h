@@ -15,5 +15,6 @@
 - (void)setStackLevel:(NSUInteger)aLevel;
 - (void)dealloc;
 - (id)initWithLinkedStacksLevel:(NSUInteger)aLevel andDocument:(id)aDocument;
++ (BOOL)areLinkedStacksInDocument:(id)aDocument;
 @end
 

@@ -2683,7 +2683,7 @@ id FUN_0028e001(HSHTML5Exporter *self,SEL _cmd)
 {
     NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithDictionary:[super defaultExportSettings]];
     id document = [[NSDocumentController sharedDocumentController] currentDocument];
-    [settings setValue:[NSNumber numberWithBool:[self areLinkedStacksInDocument:document]] forKey:HSHTML5ExportDocumentContainsLinkedStacksKey];
+    [settings setValue:[NSNumber numberWithBool:[HSHTML5LinkedStacksContext areLinkedStacksInDocument:document]] forKey:HSHTML5ExportDocumentContainsLinkedStacksKey];
     [settings setValue:[NSNumber numberWithInt:1] forKey:HSHTML5ExportLinkedStacksLevelKey];
     return settings;
 }
@@ -2704,6 +2704,11 @@ id FUN_0028e001(HSHTML5Exporter *self,SEL _cmd)
     NSFileWrapper *wrapper = [[[NSFileWrapper alloc] initRegularFileWithContents:[image hyperPNGRepresentation]] autorelease];
     [wrapper setPreferredFilename:@"icon.png"];
     return wrapper;
+}
+
+- (BOOL)areLinkedStacksInDocument:(id)aDocument
+{
+    return [HSHTML5LinkedStacksContext areLinkedStacksInDocument:aDocument];
 }
 
 @end
