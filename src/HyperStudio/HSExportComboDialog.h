@@ -6,6 +6,7 @@
     NSView *_mountedView;
     NSView *_containerView;
     NSButton *_backButton;
+    NSImageView *_exportOptionImage;
     NSView *_exportChoicesView;
     NSButton *_iTunesAudioButton;
     NSButton *_audioBookButton;
@@ -15,8 +16,14 @@
     NSButton *_iPodButton;
     NSButton *_quickTimeMovieButton;
     NSButton *_stackToGoButton;
-    NSButton *_webPageButton;
+    NSButton *_iBooksAuthorButton;
+    NSButton *_ftpServerButton;
     NSButton *_imageSequenceButton;
+    NSButton *_webPageButton;
+    NSButton *_webAppButton;
+    NSView *_exportChannelView;
+    NSMatrix *_exportChannelMatrix;
+    NSTextField *_publishToDotMacTextField;
     int _exportFormat;
     int _publishType;
 }

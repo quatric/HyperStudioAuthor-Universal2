@@ -800,5 +800,25 @@ id FUN_0011d3ad(HSStackAssistantPane *self,SEL _cmd)
     return [[self modalViewController] assistantPaneUndoManager];
 }
 
+- (void)toggleOpenHomeStackInSeparateWindow:(id)aWindow
+{
+    [[self stackAttributes] setShouldHomeStackOpenInSeparateWindow:[aWindow state] == NSControlStateValueOn];
+}
+
+- (void)validateOpenHomeStackInSeparateWindowSwitch
+{
+    [_openHomeStackInSeparateWindowSwitch setState:[[self stackAttributes] shouldHomeStackOpenInSeparateWindow]];
+}
+
+- (void)validateSaveChanges
+{
+    [_saveChangesCheckBox setState:[[self stackAttributes] shouldSaveChangesMadeInBrowseMode]];
+}
+
+- (void)saveChangesCheckBoxDidChangeState:(id)aState
+{
+    [[self stackAttributes] setShouldSaveChangesMadeInBrowseMode:[_saveChangesCheckBox state] == NSControlStateValueOn];
+}
+
 @end
 

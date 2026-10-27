@@ -2583,5 +2583,16 @@ id FUN_0008af1d(HSObjectListController *self,SEL _cmd,id cellPreviewForObject)
     [super dealloc];
 }
 
+- (BOOL)hasSheetAttached
+{
+    id parent = [[self topLevelParent] queryHyperInterface:@protocol(HSUserObjectSupport)];
+    return parent != nil && [[parent document] isModalSessionPresent];
+}
+
+- (id)findTargetForAction:(SEL)aAction target:(id)aTarget from:(id)aFrom
+{
+    return [self hasSheetAttached] ? nil : [NSApp targetForAction:aAction to:aTarget from:aFrom];
+}
+
 @end
 

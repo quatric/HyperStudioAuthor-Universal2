@@ -11,5 +11,6 @@
 - (void)sendEvent:(id)aEvent;
 - (NSUInteger)styleMask;
 - (BOOL)canBecomeKeyWindow;
+- (void)setLevel:(NSInteger)aLevel;
 @end
 

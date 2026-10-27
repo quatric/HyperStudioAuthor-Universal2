@@ -113,5 +113,7 @@
 - (id)nibName;
 - (id)view;
 - (void)dealloc;
+- (BOOL)hasSheetAttached;
+- (id)findTargetForAction:(SEL)aAction target:(id)aTarget from:(id)aFrom;
 @end
 

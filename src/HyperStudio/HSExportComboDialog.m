@@ -147,4 +147,15 @@
     [super ok:aOk];
 }
 
+- (IBAction)changeExportChannel:(id)aChannel
+{
+    NSInteger tag = [[_exportChannelMatrix selectedCell] tag];
+    if (tag == 2)
+        _publishType = 3;
+    else if (tag == 1)
+        _publishType = 1;
+    else
+        _publishType = 0;
+}
+
 @end

@@ -18,6 +18,8 @@
     NSButton *_arriveThisStackButton;
     NSButton *_leaveThisStackButton;
     NSButton *_clickThisStackButton;
+    NSButton *_saveChangesCheckBox;
+    NSButton *_openHomeStackInSeparateWindowSwitch;
 }
 + (BOOL)canEditObject:(id)aObject;
 - (void)openActionsPaneForClickEvent:(id)aEvent;
@@ -60,5 +62,9 @@
 - (id)stackAttributes;
 - (id)init;
 - (id)assistantPaneUndoManager;
+- (void)toggleOpenHomeStackInSeparateWindow:(id)aWindow;
+- (void)validateOpenHomeStackInSeparateWindowSwitch;
+- (void)validateSaveChanges;
+- (void)saveChangesCheckBoxDidChangeState:(id)aState;
 @end
 

@@ -40,4 +40,11 @@
     return YES;
 }
 
+- (void)setLevel:(NSInteger)aLevel
+{
+    if (aLevel == CGWindowLevelForKey(kCGFloatingWindowLevelKey))
+        aLevel = CGWindowLevelForKey(kCGUtilityWindowLevelKey);
+    [super setLevel:aLevel];
+}
+
 @end
