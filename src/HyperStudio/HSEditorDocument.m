@@ -301,6 +301,7 @@ static id sDAT_00342a50;
         [stack addHyperChild:card];
     }
     [card fillBackgroundWithEraserColorIfNeeded];
+    [card hyperRefreshTitle];
     if (![self isInPlayerMode]) {
         [[self editorWindowController] didAddNewCard];
     }

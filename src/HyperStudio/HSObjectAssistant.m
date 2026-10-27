@@ -1278,6 +1278,21 @@ void FUN_000fa3ed(HSObjectAssistant *self,SEL _cmd,BOOL showAssistant)
 */
 - (void)showAssistant:(BOOL)aAssistant
 {
+    id assistantController = [HSObjectAssistantController sharedAssistantController];
+    if (![assistantController isRecordingMovie] && ![assistantController isRecordingSound]) {
+        if ([[HSEditorController sharedDocumentController] isInViewingMode])
+            return;
+        if (![[self object] isKindOfClass:[HSHypertextLinksProxyForInspector class]]) {
+            id document = [[[[self object] queryHyperInterface:@protocol(HSNodeAttributes)] rootNode] document];
+            id current = [[HSEditorController sharedDocumentController] currentDocument];
+            if (current == nil) {
+                if (![[[HSEditorController sharedDocumentController] documents] containsObject:document] && document != nil)
+                    return;
+            } else if (document != nil && document != current) {
+                return;
+            }
+        }
+    }
     if (![self isActive]) {
         [self activateMainPaneShowWindow];
         return;

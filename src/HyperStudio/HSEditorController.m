@@ -1824,6 +1824,7 @@ static BOOL sLastTextFieldTamerThisCard;
         [[HSObjectListPaletteController sharedInstance] showPaletteIfNeededByDefault:YES];
         [[HSCommentsAndAttributionsPaletteController sharedInstance] showPaletteIfNeededByDefault:YES];
         [[HSShortcutsPaletteController sharedInstance] showPaletteIfNeededByDefault:YES];
+        [[document mainWindowController] fitWindowToCardSizeAnimated:NO];
     }
     [HSStack setNewStackCardSize:NSZeroSize];
     return document;
@@ -1847,6 +1848,8 @@ static BOOL sLastTextFieldTamerThisCard;
 
 - (void)addDocument:(id)aDocument
 {
+    if ([[HSPathsProvider sharedPathsProvider] isTutorialURL:[aDocument fileURL]])
+        return;
     [super addDocument:aDocument];
     [[HSCoachingHelpManager sharedCoachingHelpManager] addStack:[aDocument stack]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentProtectionDidChange:) name:HSDocumentDidChangeProtectionNotification object:aDocument];
