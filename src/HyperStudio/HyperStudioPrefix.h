@@ -206,6 +206,9 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSATemplateImageBrowserCell;
+@class HSATemplatesBrowserView;
+@class HSATemplateBrowseItem;
 @class HSANewSoundDropHelpPane;
 @class HSATutorialWindow;
 @class HSWebAppIconPreviewView;
