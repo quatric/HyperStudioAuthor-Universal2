@@ -62,3 +62,13 @@ The HyperStudio 5 only classes still have to be removed, and shared methods whos
 Translated Author-only PlayerBase classes (10 of 10): HSPauseView, HSToolbarPopUpButton, HSFluidSwipe, HSFluidSwipeTracker, HSDocumentLoadingIndicatorController, HSAExternalFilesData, HSAHTML5ExportCompatibilityChecker, HSEditorZoomController, HSRecorder, HSThreadContext.
 
 HS5-only classes removed from the Author targets (13 HyperStudio, 11 PlayerBase). HS5-only methods pruned from shared classes (about 340). HSTextToSpeechAction and HSAutoRecordAction reduced to the Author shape. Remaining: Author-only selectors of shared classes (about 900, see tools/delta.py), the three license/registration classes.
+
+## Open work (state at the last commit)
+
+- SS* helpers (src/HyperStudio/SSLicense.c): done, round trips checked.
+- SL* license library (analysis/decomp/HyperStudio-i386/_SLLicensor*, _SLLicense*, _SLLicenseStorage*, _SLEnvironment*, _SLAllocator*, ~100 functions, ~160 KB of decompile): not translated. The license descriptor is a 0xac byte structure with pointers into a serialized blob (see _SLLicenseCreateWithBytesNoCopy, _SLLicenseGetBytes); the i386 offsets have to become named fields of pointer-sized types. SLLicense.c/SLLicense.h in src/HyperStudio are HS5's different library and are not used by the Author classes.
+- Classes waiting for it: HSApplicationLicenseDialogsContext, HSApplicationLicensorUtilities, HSRegistrationForm, and the Author-only methods of HSApplicationLicensor, HSRegistrationFormController.
+- Author-only methods of shared classes: tools/delta.py lists them (about 900, 110 classes). Biggest: HSAnimationSetupMainAssistantPane (135), HSEditorDocument (58), HSEditorWindowController (31), HSEditorController (26), HSCardView (26), HSMainWindowController (23).
+- Code that still calls HS5-only methods pruned from shared classes: HSAnimationSetupPickImageAssistantPane and the other animation-mode users.
+- The app bundle is not assembled or run; only the frameworks were loaded with dlopen.
+
