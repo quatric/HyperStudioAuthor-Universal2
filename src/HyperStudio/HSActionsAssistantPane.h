@@ -17,6 +17,7 @@
     BOOL _hasNavigationSwitcher;
     Class _navigationSwitcherClass;
     HSObjectAssistantNavigationPaneSwitcher *_navigationPaneSwitcher;
+    HSAnimationSetupMainAssistantPane *_animationMainPane;
 }
 + (BOOL)canEditObject:(id)aObject;
 - (void)hideAnimationObjectForAssistantPane:(id)aPane;
@@ -54,6 +55,7 @@
 - (id)initWithNibName:(id)aName;
 - (id)init;
 - (id)enabledActionsWithoutHomeStackAllowedActionsForActionType:(id)aType;
+- (void)HSActionsAssistantPane_prepareAnimationMainPaneForEvents:(id)aEvents;
 @end
 
 @interface HSActionsTableView : NSTableView

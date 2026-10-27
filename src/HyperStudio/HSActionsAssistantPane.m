@@ -704,6 +704,15 @@ LAB_000e0ed6:
 }
 
 */
+- (void)HSActionsAssistantPane_prepareAnimationMainPaneForEvents:(id)aEvents
+{
+    [_animationMainPane release];
+    _animationMainPane = [HSAnimationSetupMainAssistantPane new];
+    [_animationMainPane setCardView:[[[[self stack] document] editorWindowController] cardView]];
+    [_animationMainPane setActionEvents:aEvents];
+    [_animationMainPane setObject:[[self assistant] object]];
+}
+
 - (void)tableView:(id)aView setObjectValue:(id)aValue forTableColumn:(id)aColumn row:(NSInteger)aRow
 {
     id type = [self actionTypeForTableView:aView row:aRow];
@@ -766,29 +775,35 @@ LAB_000e0ed6:
         }
         events = [self actionEventsForObject:[[self assistant] object]];
         if (isAnimation && [events count] != 0) {
-            // The created action is not released here in the original.
-            createdAction = [[self actor] createActionOfType:type forEvent:[events lastObject]];
-            animationModeController = [[[self stack] document] animationModeController];
-            if ([[self actor] hyperActionOfType:type forEvent:[events lastObject]] == nil
+            id lastEvent = [events lastObject];
+            createdAction = [[self actor] createActionOfType:type forEvent:lastEvent];
+            [self HSActionsAssistantPane_prepareAnimationMainPaneForEvents:events];
+            id presented;
+            if ([[self actor] hyperActionOfType:type forEvent:lastEvent] == nil
                 && [(id<HSPlayAnimationActionAttributes>)[createdAction queryHyperInterface:@protocol(HSPlayAnimationActionAttributes)] animation] != nil) {
-                if ([[self actor] hyperActionOfType:type forEvent:[events lastObject]] == nil) {
-                    [[self actor] addHyperActionOfType:type forEvent:[events lastObject]];
+                if ([[self actor] hyperActionOfType:type forEvent:lastEvent] == nil) {
+                    [[self actor] addHyperActionOfType:type forEvent:lastEvent];
                 }
-                [animationModeController editAnimationForActingObject:[[self assistant] object] actionEvents:events assistant:[self assistant] assistantNavigationController:[self objectAssistantNavigationController]];
-                return;
+                presented = _animationMainPane;
             }
-            pane = [[HSAnimationSetupPickImageAssistantPane new] autorelease];
-            [pane setDelegate:self];
-            [animationModeController setActionEvents:events];
-            [pane setAnimationModeController:animationModeController];
-            if ([self modalViewController] == nil) {
-                navigationController = [[HSObjectAssistantNavigationController alloc] initWithRootViewController:pane];
+            else {
+                presented = [[HSAnimationSetupPickImageAssistantPane new] autorelease];
+                [presented setWindowTitle:[_animationMainPane windowTitle]];
+                [_animationMainPane setPickImageAssistantPane:presented];
+            }
+            identifier = presented == _animationMainPane ? HSAnimationPaneIdentifier : HSAnimationTemporaryPaneIdentifier;
+            if ([self modalViewController] != nil) {
+                if ([self objectAssistantNavigationController] == nil) {
+                    return;
+                }
+                [_animationMainPane setNavigationController:[self objectAssistantNavigationController]];
+                [[self objectAssistantNavigationController] pushViewController:presented withIdentifier:identifier animate:YES replacePrevious:NO];
+            }
+            else {
+                navigationController = [[HSObjectAssistantNavigationController alloc] initWithRootViewController:presented identifier:identifier];
                 [self presentModalViewController:navigationController animated:YES];
+                [_animationMainPane setNavigationController:navigationController];
                 [navigationController release];
-                [pane notePaneOpenedAsModalViewController];
-            }
-            else if ([self objectAssistantNavigationController] != nil) {
-                [[self objectAssistantNavigationController] pushViewController:pane withIdentifier:HSAnimationModePane animate:YES replacePrevious:NO];
             }
         }
         else if (isMovie) {
@@ -845,11 +860,24 @@ LAB_000e0ed6:
         return;
     }
     events = [self actionEventsForObject:[[self assistant] object]];
-    if (isAnimation) {
-        [[[[self stack] document] animationModeController] editAnimationForActingObject:[[self assistant] object] actionEvents:events assistant:[self assistant] assistantNavigationController:[self objectAssistantNavigationController]];
+    if (!isAnimation) {
+        events = [NSArray arrayWithObject:[events lastObject]];
+        [self openAssistantPaneForActionType:type forEvents:events];
+        return;
+    }
+    [self HSActionsAssistantPane_prepareAnimationMainPaneForEvents:events];
+    if ([self modalViewController] != nil) {
+        if ([self objectAssistantNavigationController] == nil) {
+            return;
+        }
+        [_animationMainPane setNavigationController:[self objectAssistantNavigationController]];
+        [[self objectAssistantNavigationController] pushViewController:_animationMainPane withIdentifier:HSAnimationPaneIdentifier animate:YES replacePrevious:NO];
     }
     else {
-        [self openAssistantPaneForActionType:type forEvents:[NSArray arrayWithObject:[events lastObject]]];
+        navigationController = [[HSObjectAssistantNavigationController alloc] initWithRootViewController:_animationMainPane identifier:HSAnimationPaneIdentifier];
+        [_animationMainPane setNavigationController:navigationController];
+        [self presentModalViewController:navigationController animated:YES];
+        [navigationController release];
     }
 }
 
@@ -1474,6 +1502,8 @@ void FUN_000e2acb(HSActionsAssistantPane *self,SEL _cmd,BOOL viewWillDisappear)
         ;
         [pvVar2 addObserver:self selector:@selector(HSActionsAssistantPane_automaticTimerDidChange:) ofChanges:uVar1 ofAttributesOfHyperInterface:@protocol(HSAutomaticTimerAttributes) withPriority:-0.25];
     }
+    [_animationMainPane release];
+    _animationMainPane = nil;
 }
 
 - (void)HSActionsAssistantPane_automaticTimerDidChange:(id)aChange
@@ -1546,6 +1576,7 @@ void FUN_000e2d78(HSActionsAssistantPane *self,SEL _cmd)
     [_availablePlacesToGoActionTypes release];
     [_navigationPaneSwitcher setDelegate:0];
     [_navigationPaneSwitcher release];
+    [_animationMainPane release];
     [super dealloc];
 }
 
