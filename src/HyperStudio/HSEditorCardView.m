@@ -1408,8 +1408,8 @@ LAB_00005e5e:
     }
     NSMenu *menu = [[[super menuForEvent:aEvent] copy] autorelease];
     [self cutDisabledItemsFromMenu:menu];
-    if ([[self window] attachedSheet] != nil) {
-        [menu setAllowsContextMenuPlugIns:NO];
+    if ([[self window] attachedSheet] != nil && [menu respondsToSelector:@selector(setAllowsContextMenuPlugIns:)]) {
+        [(id)menu setAllowsContextMenuPlugIns:NO];
     }
     return menu;
 }
