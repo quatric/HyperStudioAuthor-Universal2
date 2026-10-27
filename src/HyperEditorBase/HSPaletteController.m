@@ -285,4 +285,22 @@
     return self;
 }
 
+- (void)hidePaletteWithSaveToDefaults:(BOOL)aSave
+{
+    if (_window != nil && [self isPaletteVisible]) {
+        [_window close];
+        if (aSave)
+            [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[[self class] visibilityKeyForDefaults]];
+    }
+}
+
+- (void)documentWindowDidBecomeMain:(id)aNotification
+{
+    BOOL protected = [[[[NSDocumentController sharedDocumentController] currentDocument] stack] isStackProtected];
+    if (protected)
+        [self hidePaletteWithSaveToDefaults:NO];
+    else
+        [self showPaletteIfNeededByDefault:YES];
+}
+
 @end

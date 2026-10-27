@@ -40,6 +40,8 @@
 - (BOOL)isWindowLoaded;
 - (void)windowWillClose:(id)aClose;
 - (void)hidePalette;
+- (void)hidePaletteWithSaveToDefaults:(BOOL)aSave;
+- (void)documentWindowDidBecomeMain:(id)aNotification;
 - (void)showPaletteIfNeededByDefault:(BOOL)aDefault;
 - (void)showPalette;
 - (void)adjustWindowPositionIfNeeded;

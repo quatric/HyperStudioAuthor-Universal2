@@ -42,4 +42,9 @@
     return [self iAppsRecentDatabasesForKeys:[NSArray arrayWithObjects:iPhotoRecentDatabasesKey, iPhotoRecentDatabases1Key, nil]];
 }
 
++ (BOOL)iPhotoRecentDatabasesWasNotFound
+{
+    return [[self iPhotoRecentDatabases] count] == 0 && [self iPhotoApplicationVersionSupported];
+}
+
 @end

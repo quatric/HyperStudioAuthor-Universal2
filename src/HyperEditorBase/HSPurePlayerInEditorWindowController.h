@@ -30,5 +30,6 @@
 - (void)detachFromStack;
 - (id)windowScreen;
 - (void)dealloc;
+- (void)windowDidLoad;
 @end
 

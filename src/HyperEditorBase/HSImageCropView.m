@@ -106,6 +106,10 @@
 - (void)drawContentRect:(NSRect)aRect
 {
     id image = [self image];
+    if ([self backgroundColor] != nil) {
+        [[self backgroundColor] set];
+        NSRectFill(aRect);
+    }
     if (image == nil)
         return;
     NSRect bounds = [self bounds];
@@ -118,6 +122,48 @@
         [image drawInCurrentNSGraphicsContextInRect:rect];
     else if ([image conformsToProtocol:@protocol(BTCGImage)])
         [image drawInCGContext:[[NSGraphicsContext currentContext] CGContext] inRect:NSRectToCGRect(rect)];
+}
+
+- (void)dealloc
+{
+    [_backgroundColor release];
+    [super dealloc];
+}
+
+- (void)mouseEntered:(id)aEvent
+{
+    [super mouseEntered:aEvent];
+    [[self delegate] mouseEntered:aEvent inView:self];
+}
+
+- (void)tool:(id)aTool didUpdateOutputForKey:(id)aKey
+{
+    [super tool:aTool didUpdateOutputForKey:aKey];
+    if ([aKey isEqualToString:@"selectionPath"] || [aKey isEqualToString:@"selectionStartPoint"] || [aKey isEqualToString:@"selectionAffineTransform"])
+        [[self delegate] selectionDidUpdateInView:self];
+}
+
+- (id)delegate
+{
+    return _delegate;
+}
+
+- (void)setDelegate:(id)aDelegate
+{
+    _delegate = aDelegate;
+}
+
+- (id)backgroundColor
+{
+    return _backgroundColor;
+}
+
+- (void)setBackgroundColor:(id)aColor
+{
+    if (_backgroundColor != aColor) {
+        [_backgroundColor release];
+        _backgroundColor = [aColor copy];
+    }
 }
 
 @end

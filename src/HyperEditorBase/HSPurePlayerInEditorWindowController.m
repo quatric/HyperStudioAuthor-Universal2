@@ -196,4 +196,10 @@
     [super dealloc];
 }
 
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
+    [[self window] setCollectionBehavior:0];
+}
+
 @end

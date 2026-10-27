@@ -11,5 +11,6 @@
 + (BOOL)iPhotoApplicationVersionSupported;
 + (CGFloat)iPhotoApplicationVersion;
 + (id)iPhotoRecentDatabases;
++ (BOOL)iPhotoRecentDatabasesWasNotFound;
 @end
 

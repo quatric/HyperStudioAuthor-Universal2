@@ -4,6 +4,8 @@
 @interface HSImageCropView : BTToolView
 {
     double _scaleFactor;
+    NSColor *_backgroundColor;
+    id _delegate;
 }
 - (NSRect)convertImageRectToViewRect:(NSRect)aRect;
 - (NSPoint)convertImagePointToViewPoint:(NSPoint)aPoint;
@@ -20,5 +22,12 @@
 - (void)setImage:(id)aImage;
 - (id)initWithFrame:(NSRect)aFrame;
 - (void)drawContentRect:(NSRect)aRect;
+- (void)dealloc;
+- (void)mouseEntered:(id)aEvent;
+- (void)tool:(id)aTool didUpdateOutputForKey:(id)aKey;
+- (id)delegate;
+- (void)setDelegate:(id)aDelegate;
+- (id)backgroundColor;
+- (void)setBackgroundColor:(id)aColor;
 @end
 
