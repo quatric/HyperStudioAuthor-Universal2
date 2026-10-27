@@ -7297,5 +7297,26 @@ id FUN_000106af(HSEditorCardView *self,SEL _cmd,NSRect initWithFrame)
     return self;
 }
 
+- (void)draggableAttributeDidChange:(id)aChange
+{
+    id object = [aChange object];
+    id snapping = [object queryHyperInterface:@protocol(HSMutableSnappingTargetUIDIdentification)];
+    id uid = [snapping dropOffTargetUID];
+    id uidAccess = [[self card] queryHyperInterface:@protocol(HSUserObjectUIDBasedAccess)];
+    id temporaryTarget = [snapping temporaryDropOffTarget];
+    id target = [[uidAccess childInTreeWithUID:uid] queryHyperInterface:@protocol(HSMutableCardObjectAttributes)];
+
+    [[[self card] undoManager] disableUndoRegistration];
+    if ([object isDraggable] && temporaryTarget != nil) {
+        [[self card] addHyperChild:temporaryTarget];
+        [snapping setTemporaryDropOffTarget:nil];
+        [self selectObject:object];
+    } else if (![object isDraggable] && target != nil) {
+        [snapping setTemporaryDropOffTarget:target];
+        [[target queryHyperInterface:@protocol(HSNodeChild)] removeFromHyperParent];
+    }
+    [[[self card] undoManager] enableUndoRegistration];
+}
+
 @end
 

@@ -244,5 +244,6 @@
 - (void)awakeFromNib;
 - (id)dragHelper;
 - (id)initWithFrame:(NSRect)aFrame;
+- (void)draggableAttributeDidChange:(id)aChange;
 @end
 

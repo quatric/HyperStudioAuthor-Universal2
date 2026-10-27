@@ -80,4 +80,26 @@
     [super dealloc];
 }
 
+- (void)validateUserInterface
+{
+    [super validateUserInterface];
+    id navigator = [self cardNavigatorView];
+    id toolView = [self toolView];
+    id card = [toolView card];
+    if (card == [navigator card])
+        return;
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self];
+    [[[[navigator card] stack] attributeObservingController] removeObserver:self selector:@selector(cardSizeDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSStackCardSizeAttribute)];
+    [navigator setCard:card];
+    [navigator setDelegate:self];
+    id contentView = [[toolView enclosingScrollView] contentView];
+    [center addObserver:self selector:@selector(visibleRectDidChange:) name:NSViewBoundsDidChangeNotification object:contentView];
+    [center addObserver:self selector:@selector(visibleRectDidChange:) name:NSViewFrameDidChangeNotification object:contentView];
+    [center addObserver:self selector:@selector(visibleRectDidChange:) name:HSCardViewDidChangeZoomFactorNotification object:toolView];
+    [center addObserver:self selector:@selector(cardDidChange:) name:HSCurrentCardInCardViewDidChange object:toolView];
+    [[[card stack] attributeObservingController] addObserver:self selector:@selector(cardSizeDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSStackCardSizeAttribute) withPriority:-0.25];
+    [navigator setNeedsDisplay:YES];
+}
+
 @end

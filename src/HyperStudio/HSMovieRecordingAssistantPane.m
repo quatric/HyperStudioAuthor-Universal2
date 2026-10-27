@@ -2331,5 +2331,15 @@ void FUN_0021ad5d(HSMovieRecordingAssistantPane *self,SEL _cmd)
     return self;
 }
 
+- (void)adjustLiveObjectAspectRatio
+{
+    NSSize size = NSZeroSize;
+    id format = [[[_captureVideoDevice formatDescriptions] lastObject] attributeForKey:@"videoEncodedPixelsSize"];
+    [format getValue:&size];
+    id applier = [[[self liveVideoForPreview] queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier];
+    if (applier != nil && !NSEqualSizes(size, NSZeroSize))
+        [applier resizeToHeight:(size.height * 320.0) / size.width maintainAspectRatio:2 withLayoutGuidingContext:nil];
+}
+
 @end
 

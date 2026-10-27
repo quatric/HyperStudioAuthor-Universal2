@@ -3784,5 +3784,30 @@ BOOL FUN_0005c6b7(HSMediaStripView *self,SEL _cmd,id calculateGeometry,NSSize fo
     return YES;
 }
 
+- (void)reloadDataAndScrollToTop:(BOOL)aTop
+{
+    _msFlags.geometryValid = 0;
+    NSUInteger numberOfItems = [self numberOfItems];
+    NSUInteger validated = [[self itemsCacheValidator] length];
+    if (validated < numberOfItems) {
+        do {
+            NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(10.0, 10.0)];
+            [image setFlipped:YES];
+            [[self itemsCache] addObject:image];
+            [image release];
+            validated++;
+        } while (numberOfItems != validated);
+        [[self itemsCacheValidator] setLength:numberOfItems];
+        validated = numberOfItems;
+    }
+    [[self itemsCacheValidator] resetBytesInRange:NSMakeRange(0, validated)];
+    [self sizeToFit];
+    [[self enclosingScrollView] tile];
+    BOOL switching = [[[[HSEditorController sharedDocumentController] currentDocument] modeSwitcher] switching];
+    if (aTop && !switching)
+        [self scrollItemAtIndexToTop:0];
+    [[self enclosingScrollView] setNeedsDisplay:YES];
+}
+
 @end
 

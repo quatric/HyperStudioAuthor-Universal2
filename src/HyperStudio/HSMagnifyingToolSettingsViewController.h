@@ -16,5 +16,6 @@
 - (id)cardNavigatorView;
 - (id)nibName;
 - (void)dealloc;
+- (void)validateUserInterface;
 @end
 

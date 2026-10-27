@@ -1772,5 +1772,14 @@ void FUN_00224bea(HSSoundRecordingAssistantPane *self,SEL _cmd,BOOL viewWillAppe
     return self;
 }
 
+- (void)startRecording
+{
+    [self setSoundDuration:0 forTextField:_audioTimeTextField];
+    [[self countDownViewController] runInView:_soundRecordBackgroundView];
+    [[HSObjectAssistantController sharedAssistantController] setIsRecordingSound:YES];
+    [[HSObjectAssistantController sharedAssistantController] setLocked:YES delegate:self];
+    [NSApp performSelector:@selector(runModalForWindow:) withObject:[self window] afterDelay:0];
+}
+
 @end
 

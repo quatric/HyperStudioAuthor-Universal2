@@ -15,5 +15,6 @@
 - (void)decrementCounter;
 - (void)incrementCounter;
 - (void)dealloc;
+- (void)drawCustomDisabledColorWeelInside:(NSRect)aRect;
 @end
 

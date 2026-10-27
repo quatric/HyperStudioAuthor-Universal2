@@ -2903,6 +2903,8 @@
 @protocol HSMutableSnappingTargetUIDIdentification <HSAttribute>
 - (id)dropOffTargetUID;
 - (void)setDropOffTargetUID:(id)aUID;
+- (id)temporaryDropOffTarget;
+- (void)setTemporaryDropOffTarget:(id)aTarget;
 @end
 
 @protocol HSStackCardSizeAttribute <HSAttribute>

@@ -142,4 +142,20 @@ static id HSColorWellInitWithCoder(id self, SEL _cmd, NSCoder *aCoder)
     [super dealloc];
 }
 
+- (void)drawCustomDisabledColorWeelInside:(NSRect)aRect
+{
+    NSBezierPath *path = [NSBezierPath bezierPath];
+    [path moveToPoint:aRect.origin];
+    [path lineToPoint:NSMakePoint(aRect.origin.x, aRect.origin.y + aRect.size.height)];
+    [path lineToPoint:NSMakePoint(aRect.origin.x + aRect.size.width, aRect.origin.y + aRect.size.height)];
+    [path closePath];
+    [[NSGraphicsContext currentContext] saveGraphicsState];
+    [path setClip];
+    [[NSColor blackColor] set];
+    NSRectFill(aRect);
+    [[NSGraphicsContext currentContext] restoreGraphicsState];
+    [[NSColor colorWithCalibratedRed:1.0 green:1.0 blue:1.0 alpha:0.57] set];
+    NSRectFillUsingOperation(aRect, NSCompositingOperationSourceAtop);
+}
+
 @end

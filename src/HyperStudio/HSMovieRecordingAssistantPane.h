@@ -130,5 +130,6 @@
 - (void)storeSelectedDevicesInUserDefaults;
 - (void)dealloc;
 - (id)init;
+- (void)adjustLiveObjectAspectRatio;
 @end
 

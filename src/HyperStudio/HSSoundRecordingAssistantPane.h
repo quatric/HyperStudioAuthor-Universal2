@@ -99,5 +99,6 @@
 - (BOOL)requiresDarkBottomArea;
 - (void)dealloc;
 - (id)init;
+- (void)startRecording;
 @end
 

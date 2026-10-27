@@ -115,5 +115,6 @@
 - (BOOL)acceptsFirstResponder;
 - (BOOL)isOpaque;
 - (BOOL)isFlipped;
+- (void)reloadDataAndScrollToTop:(BOOL)aTop;
 @end
 
