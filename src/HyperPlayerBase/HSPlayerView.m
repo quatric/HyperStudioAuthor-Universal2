@@ -293,6 +293,15 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
         [[self cardView] setCard:aCard];
         [[self cardView] activate];
         [self finishNavigationOperationIfNeeded];
+        id cardView = [self cardView];
+        if (![[aCard document] isInPresentationMode]) {
+            [cardView setZoomFactor:[self destinationCardZoomFactorForCard:aCard]];
+            [[self cardView] autolayoutPreservingVisibleArea];
+        } else {
+            [cardView setZoomFactor:[[cardView class] zoomFactorForFullScreen:[cardView cardSize]]];
+            [cardView autolayoutPreservingVisibleArea];
+            [_transitionView setTransitionPlaybackController:nil];
+        }
         return;
     }
     if ([[self presentationView] superview] == nil)
@@ -1174,6 +1183,7 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
     [_originalCard release];
     [_liveSlideShowAttributes release];
     [_slideshow release];
+    [_transitionView setTransitionPlaybackController:nil];
     if ([_cardView delegate] == self)
         [_cardView setDelegate:nil];
     if ([_transitionView delegate] == self)
