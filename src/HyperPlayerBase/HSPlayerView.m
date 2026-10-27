@@ -404,7 +404,7 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
     else {
         NSWindow *window = [_cardView window];
         [window disableScreenUpdatesUntilFlush];
-        BOOL cancelled = [_navigationOperation stage] == HSPlayerViewNavigationStageCancelled;
+        BOOL cancelled = [_navigationOperation stage] == HSPlayerViewNavigationStageCancelled || [self canceledWithSwipe];
         [_cardView setCard:cancelled ? [self transitionSourceCard] : [self transitionDestinationCard]];
         if (![self isFullScreen]) {
             if ([_cardView enclosingScrollView] != nil && ![[[self document] fileType] isEqualToString:@"HSWebDocumentType"])
@@ -440,6 +440,7 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
     _transitionSourceCardDrawable = nil;
     [self setTransitionDestinationCard:nil];
     [self setTransitionSourceCard:nil];
+    [_transitionView setTransitionPlaybackController:nil];
     if (_activeConsumers != NULL && CFDictionaryGetCount(_activeConsumers) > 0) {
         [_transitionView stopCapturingForConsumer:self];
         [_cardView startCapturingForConsumer:self];
