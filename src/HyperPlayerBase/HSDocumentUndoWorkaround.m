@@ -6,23 +6,24 @@
 - (void)undoManagerDidRemoveAllActionsForTarget:(id)aTarget
 {
     id target = [[aTarget userInfo] valueForKey:HSUndoManagerTargetForActionKey];
-    if (![target isKindOfClass:[HSEditModeUndoHelper class]])
+    if (![[self supportedClasses] containsObject:NSStringFromClass([target class])])
         return;
-    NSInteger count = [_targets countForObject:target];
+    NSString *key = [NSString stringWithFormat:@"%p", target];
+    NSInteger count = [_targets countForObject:key];
     for (NSInteger i = 0; i < count; i++) {
         [self updateChangeCount:NSChangeUndone];
-        [_targets removeObject:target];
+        [_targets removeObject:key];
     }
 }
 - (void)undoManagerDidRegisterUndo:(id)aUndo
 {
     id target = [[aUndo userInfo] valueForKey:HSUndoManagerTargetForActionKey];
-    if (![target isKindOfClass:[HSEditModeUndoHelper class]])
+    if (![[self supportedClasses] containsObject:NSStringFromClass([target class])])
         return;
     if ([[self undoManager] isUndoing])
-        [_targets removeObject:target];
+        [_targets removeObject:[NSString stringWithFormat:@"%p", target]];
     else
-        [[self targets] addObject:target];
+        [[self targets] addObject:[NSString stringWithFormat:@"%p", target]];
 }
 - (id)targets
 {
