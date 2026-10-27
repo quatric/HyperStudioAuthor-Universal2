@@ -233,6 +233,7 @@ void FUN_000e39cf(HSAnotherCardActionAssistantPane *self,SEL _cmd,id validateUIW
     [[self anotherCardActionAsssistantApplier] setURL:0];
     _ignoreActionAttributesChanging = NO;
     [self setPreviewDocument:nil];
+    [[self anotherCardActionAsssistantApplier] setShouldOpenInSeparateWindow:NO];
     [self validateUserInterface];
 }
 
@@ -759,7 +760,7 @@ LAB_000e4d8a:
     if ((_initialURL == nil && _URL == nil) || (pvVar1 = [_initialURL isEqual:_URL], pvVar1)) {
         pvVar1 = [super areSettingsEqual];
         if ((pvVar1) && (pvVar1 = [_initialCardUID isEqual:_cardUID], pvVar1)) {
-            return _initialCardIDOldFileFormat == _cardIDOldFileFormat;
+            return _initialCardIDOldFileFormat == _cardIDOldFileFormat && _initialShouldOpenInSeparateWindow == _shouldOpenInSeparateWindow;
         }
     }
     return NO;
@@ -773,6 +774,7 @@ LAB_000e4d8a:
     [_cardUID release];
     _cardUID = [_initialCardUID retain];
     _cardIDOldFileFormat = _initialCardIDOldFileFormat;
+    _shouldOpenInSeparateWindow = _initialShouldOpenInSeparateWindow;
 }
 
 - (void)makeInitialEqualToCurrent
@@ -783,6 +785,7 @@ LAB_000e4d8a:
     [_initialCardUID release];
     _initialCardUID = [_cardUID retain];
     _initialCardIDOldFileFormat = _cardIDOldFileFormat;
+    _initialShouldOpenInSeparateWindow = _shouldOpenInSeparateWindow;
 }
 
 - (void)setInitialSettingsToObject
@@ -790,6 +793,7 @@ LAB_000e4d8a:
     [[self otherCardActionAttributes] setURL:_initialURL];
     [[self otherCardActionAttributes] setDestinationCardUID:_initialCardUID];
     [[self otherCardActionAttributes] setCardIdOldFileFormat:_initialCardIDOldFileFormat];
+    [[self otherCardActionAttributes] setShouldOpenInSeparateWindow:_initialShouldOpenInSeparateWindow];
     [super setInitialSettingsToObject];
 }
 
@@ -799,6 +803,7 @@ LAB_000e4d8a:
     [[self otherCardActionAttributes] setURL:_URL];
     [[self otherCardActionAttributes] setDestinationCardUID:_cardUID];
     [[self otherCardActionAttributes] setCardIdOldFileFormat:_cardIDOldFileFormat];
+    [[self otherCardActionAttributes] setShouldOpenInSeparateWindow:_shouldOpenInSeparateWindow];
 }
 
 - (void)setUpInitialSettings
@@ -816,6 +821,7 @@ LAB_000e4d8a:
     pvVar1_10 = [[self otherCardActionAttributes] cardIdOldFileFormat];
     _initialCardIDOldFileFormat = (int)pvVar1_10;
     _cardIDOldFileFormat = (int)pvVar1_10;
+    _initialShouldOpenInSeparateWindow = _shouldOpenInSeparateWindow = [[self otherCardActionAttributes] shouldOpenInSeparateWindow];
 }
 
 - (id)otherCardActionAttributes

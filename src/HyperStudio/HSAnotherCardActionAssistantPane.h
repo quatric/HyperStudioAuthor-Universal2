@@ -53,6 +53,7 @@
 @interface HSAnotherCardActionAssistantApplier : HSActionAssistantSettingsApplier
 {
     BOOL _shouldOpenInSeparateWindow;
+    BOOL _initialShouldOpenInSeparateWindow;
     NSURL *_initialURL;
     HSUID *_initialCardUID;
     int _initialCardIDOldFileFormat;
