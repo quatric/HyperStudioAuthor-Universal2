@@ -477,6 +477,28 @@
     return copy;
 }
 
+- (void)pause
+{
+}
+
+- (void)resume
+{
+}
+
+- (void)removeUnsupportedFeatures
+{
+}
+
+- (BOOL)shouldBeRemoved
+{
+    return _shouldBeRemoved;
+}
+
+- (void)setShouldBeRemoved:(BOOL)aRemoved
+{
+    _shouldBeRemoved = aRemoved;
+}
+
 @end
 
 @implementation HSToDoAction

@@ -41,6 +41,8 @@
 - (double)fadeOutTimeForStopAllSounds;
 - (void)setSoundFadeOutTime:(double)aTime forStopSoundUID:(id)aUID;
 - (double)fadeOutTimeForStopSoundUID:(id)aUID;
+- (BOOL)hasSoundToStopWithValidFadeOut;
+- (void)removeUnsupportedFeatures;
 - (void)removeSoundUIDToStop:(id)aStop;
 - (void)addSoundUIDToStop:(id)aStop withFadeOutTime:(double)aTime;
 - (void)setSoundsToStop:(id)aStop;

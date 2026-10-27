@@ -7,6 +7,7 @@
     id<HSActionOwner> _owner;
     BOOL _synchronous;
     NSArray *_events;
+    unsigned int _shouldBeRemoved:1;
 }
 + (id)tooltip;
 + (id)localizedNameInInspector;
@@ -79,6 +80,11 @@
 - (BOOL)isKindOfType:(id)aType;
 - (id)card;
 - (id)stack;
+- (void)pause;
+- (void)resume;
+- (void)removeUnsupportedFeatures;
+- (BOOL)shouldBeRemoved;
+- (void)setShouldBeRemoved:(BOOL)aRemoved;
 - (id)localizedNameInInspector;
 - (id)localizedName;
 - (id)document;

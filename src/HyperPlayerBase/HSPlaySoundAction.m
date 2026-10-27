@@ -664,8 +664,9 @@ static void HSPlaySoundLoadSoundToStop(const void *aKey, const void *aValue, voi
 {
     [self convertOldVersionAttributesIfNeeded];
     HSActionMediaPlayer *player = [HSActionMediaPlayer sharedActionMediaPlayer];
+    id stackUID = [[[self stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID];
     if ([self stopsAllSounds]) {
-        [player stopAllSoundsForSoundAttributes:self];
+        [player stopAllSoundsForStackUID:stackUID andSoundAttributes:self];
         [self notifyDidFinish];
         return;
     }
@@ -677,9 +678,9 @@ static void HSPlaySoundLoadSoundToStop(const void *aKey, const void *aValue, voi
             [[self undoManager] enableUndoRegistration];
         }
         if ([attributes isSynchronousSound])
-            [player startForegroundSoundForSoundAttributes:self];
+            [player startForegroundSoundForSoundAttributes:self forStackUID:stackUID];
         else
-            [player startBackgroundSoundForSoundAttributes:self];
+            [player startBackgroundSoundForSoundAttributes:self forStackUID:stackUID];
     }
     [player stopSoundsForSoundAttributes:self];
 }
@@ -760,6 +761,28 @@ static void HSPlaySoundLoadSoundToStop(const void *aKey, const void *aValue, voi
     if (self != nil)
         [self setSynchronous:NO];
     return self;
+}
+
+- (BOOL)hasSoundToStopWithValidFadeOut
+{
+    for (id uid in [self soundsUIDsToStop]) {
+        if ([self fadeOutTimeForStopSoundUID:uid] != 0.0)
+            return YES;
+    }
+    return NO;
+}
+
+- (void)removeUnsupportedFeatures
+{
+    [super removeUnsupportedFeatures];
+    for (id sound in [self sounds]) {
+        [sound setSynchronousSound:YES];
+        [sound setSoundFadeOutTime:0.0];
+        [sound setVolume:1.0];
+    }
+    for (id uid in [self soundsUIDsToStop])
+        [self setSoundFadeOutTime:0.0 forStopSoundUID:uid];
+    [self setFadeOutTimeForStopAllSounds:0.0];
 }
 
 @end
