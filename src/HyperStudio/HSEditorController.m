@@ -85,20 +85,15 @@ static BOOL sLastTextFieldTamerThisCard;
 
 - (void)provideHyperStudioFeedback:(id)aFeedback
 {
-    HSApplicationLicensor *self_00;
-    NSString *pvVar1_3;
-
-    self_00 = _applicationLicensor;
-    pvVar1_3 = [[NSBundle bundleForClass:[HSDocument class]] localizedStringForKey:@"HSProvideHyperStudioFeedbackURL" value:@"" table:@"HyperPlayerBase"]
-    ;
-    [self_00 createRequestWithURLString:pvVar1_3];
+    NSString *url = [[NSBundle bundleForClass:[HSDocument class]] localizedStringForKey:@"HSProvideHyperStudioFeedbackURL" value:@"" table:@"HyperPlayerBase"];
+    [HSDocument openURL:url versionString:[[NSBundle bundleForClass:[self class]] HS_buildVersion] addPlatformInfo:YES addProductName:YES];
 }
 
 - (void)registerHyperStudio:(id)aStudio
 {
     id self_00;
 
-    self_00 = [_applicationLicensor showRegistrationDialogForceUI:YES isGoBack:nil];
+    self_00 = [_applicationLicensor showRegistrationDialog];
     if ([self_00 count] != 0) {
         [[HSSubmitRequest sharedInstance] submitInformationDictionary:self_00];
     }

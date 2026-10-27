@@ -1306,6 +1306,13 @@ static NSString *sPlatformInformation;
     return NO;
 }
 
+// The Author has no animation mode; callers written against the older
+// sources take their plain paths.
+- (BOOL)isInAnimationMode
+{
+    return NO;
+}
+
 - (BOOL)isInPresentationMode
 {
     return NO;

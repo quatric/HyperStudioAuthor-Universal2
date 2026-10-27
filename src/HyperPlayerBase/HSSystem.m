@@ -19,8 +19,18 @@ static BOOL HSSystemInitialized = NO;
     return HSSystemSharedSystem;
 }
 
-// The OpenGL back end is off on Lion and later, or when the
-// HSOpenGLBackEndDisabled default is set.
+// The Author has no OpenGL back end and isn't sandboxed; callers written
+// against the older sources take their plain paths.
+- (BOOL)isOpenGLEnabled
+{
+    return NO;
+}
+
+- (BOOL)isSandboxed
+{
+    return NO;
+}
+
 // Runs the bundled CoreImageAccelerated composition once and reads its
 // output.
 - (BOOL)isCoreImageAccelerated
