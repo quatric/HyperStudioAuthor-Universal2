@@ -286,21 +286,23 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 // and casting modes for the editor.
 - (void)windowDidBecomeMain:(id)aMain
 {
-    if ([[HSApplicationController sharedDocumentController] isMultiDocument]) {
-        for (id document in [[NSDocumentController sharedDocumentController] documents]) {
-            if ([self document] == document || [document isStackProtected])
-                continue;
+    id controller = [HSApplicationController sharedDocumentController];
+    if ([controller isMultiDocument]) {
+        id current = [self document];
+        for (id document in [controller documents]) {
             if ([document isInPlayerMode]) {
-                if ([document isInPurePlayerMode] || [document isInPresentationMode])
-                    [document exitPurePlayerModeWithAnimation:NO];
-            } else if ([document isInHyperCastingMode]) {
-                [document stopExport];
-            } else {
-                continue;
+                if (document == current)
+                    [document resume];
+                else
+                    [document pause];
             }
-            [document switchToEditor];
+            if (document != current && [document isInHyperCastingMode] && ![document isModalSessionPresent]) {
+                [document stopExport];
+                [document switchToEditor];
+            }
         }
     }
+    [[HSBackgroundWindowController backgroundWindowController] validateAndDisplay:YES];
     [self notifyDidBecomeMain:aMain];
 }
 
