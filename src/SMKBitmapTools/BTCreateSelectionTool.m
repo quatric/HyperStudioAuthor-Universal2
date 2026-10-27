@@ -523,4 +523,19 @@
     return self;
 }
 
+- (void)setProportionalMode:(BOOL)aMode
+{
+    [_createShapeSelectionTool setProportionalMode:YES];
+}
+
+- (BOOL)isProportionalMode
+{
+    return [_createShapeSelectionTool isProportionalMode];
+}
+
+- (BOOL)defaultProportionalMode
+{
+    return [_createShapeSelectionTool defaultProportionalMode];
+}
+
 @end

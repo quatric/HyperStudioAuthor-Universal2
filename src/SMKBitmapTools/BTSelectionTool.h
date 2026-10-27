@@ -222,5 +222,12 @@
 - (void)BTSelectionTool_resetCreateSelectionInfo;
 - (void)dealloc;
 - (id)init;
+- (void)setProportionalMode:(BOOL)aMode;
+- (BOOL)isProportionalMode;
+- (BOOL)defaultProportionalMode;
+- (void)setIgnoreClickOutsidePath:(BOOL)aIgnore;
+- (BOOL)isIgnoreClickOutsidePath;
+- (BOOL)defaultIgnoreClickOutsidePath;
+
 @end
 

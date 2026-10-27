@@ -1502,4 +1502,35 @@ static BOOL BTSelectionToolResendEvent(BTSelectionTool *self, NSEvent *aEvent)
     return self;
 }
 
+- (void)setProportionalMode:(BOOL)aMode
+{
+    [_modifySelectionTool setProportionalMode:aMode];
+    [_createSelectionTool setProportionalMode:aMode];
+}
+
+- (BOOL)isProportionalMode
+{
+    return [_modifySelectionTool isProportionalMode] && [_createSelectionTool isProportionalMode];
+}
+
+- (BOOL)defaultProportionalMode
+{
+    return [_modifySelectionTool defaultProportionalMode] && [_createSelectionTool defaultProportionalMode];
+}
+
+- (void)setIgnoreClickOutsidePath:(BOOL)aIgnore
+{
+    [_modifySelectionTool setIgnoreClickOutsidePath:aIgnore];
+}
+
+- (BOOL)isIgnoreClickOutsidePath
+{
+    return [_modifySelectionTool isIgnoreClickOutsidePath];
+}
+
+- (BOOL)defaultIgnoreClickOutsidePath
+{
+    return [_modifySelectionTool defaultIgnoreClickOutsidePath];
+}
+
 @end

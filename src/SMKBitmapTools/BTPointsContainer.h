@@ -42,6 +42,7 @@ extern NSString * const BTCollectingPickPointsMode;
     unsigned int _isLastPointDynamic:1;
     unsigned int _isWaitingForClick:1;
     unsigned int _isPointCollectingStarted:1;
+    unsigned int _isProportionalMode:1;
 }
 - (void)selectAllArea:(id)aArea;
 - (BOOL)validateAction_selectAllArea;
@@ -105,6 +106,10 @@ extern NSString * const BTCollectingPickPointsMode;
 - (NSPoint)BTPointsCreationTool_guidePoint:(NSPoint)aPoint withEvent:(id)aEvent previousPoint:(NSPoint)aPoint2;
 - (void)dealloc;
 - (id)init;
+- (void)setProportionalMode:(BOOL)aMode;
+- (BOOL)isProportionalMode;
+- (BOOL)defaultProportionalMode;
+
 @end
 
 @interface BTPointsCreationTool (Private)

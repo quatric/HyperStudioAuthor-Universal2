@@ -55,6 +55,8 @@
     unsigned int _isTracking:1;
     unsigned int _isProportionalModePrimaryForCorners:1;
     unsigned int _isProportionalModePrimaryForSides:1;
+    unsigned int _isProportionalMode:1;
+    unsigned int _isIgnoreClickOutsidePath:1;
     unsigned int _isBaseSelectionFlippedHorizontally:1;
     unsigned int _isSelectionFlippedHorizontally:1;
     unsigned int _isWillMoveSelectionCursorInitialized:1;
@@ -297,5 +299,12 @@
 - (void)BTModifySelectionTool_setNeedsDisplaySelectionPath;
 - (void)BTModifySelectionTool_setNeedsDisplaySelectionPathWithSelectionToViewTransform:(CGAffineTransform)aTransform;
 - (void)BTModifySelectionTool_setNeedsDisplayRotateSelectionHandleWithSelectionToViewTransform:(CGAffineTransform)aTransform viewToDeviceScaleFactor:(NSSize)aFactor knobAlignment:(CGSize)aAlignment;
+- (void)setProportionalMode:(BOOL)aMode;
+- (BOOL)isProportionalMode;
+- (BOOL)defaultProportionalMode;
+- (void)setIgnoreClickOutsidePath:(BOOL)aIgnore;
+- (BOOL)isIgnoreClickOutsidePath;
+- (BOOL)defaultIgnoreClickOutsidePath;
+
 @end
 

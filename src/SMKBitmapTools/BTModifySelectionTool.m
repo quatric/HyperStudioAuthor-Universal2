@@ -2342,4 +2342,34 @@ static CGRect BTModifySelectionToolKnobRect(CGPoint aPoint)
     [_view setNeedsDisplayInRect:BTModifySelectionToolKnobRect(handle)];
 }
 
+- (void)setProportionalMode:(BOOL)aMode
+{
+    _isProportionalMode = aMode;
+}
+
+- (BOOL)isProportionalMode
+{
+    return _isProportionalMode;
+}
+
+- (BOOL)defaultProportionalMode
+{
+    return NO;
+}
+
+- (void)setIgnoreClickOutsidePath:(BOOL)aIgnore
+{
+    _isIgnoreClickOutsidePath = aIgnore;
+}
+
+- (BOOL)isIgnoreClickOutsidePath
+{
+    return _isIgnoreClickOutsidePath;
+}
+
+- (BOOL)defaultIgnoreClickOutsidePath
+{
+    return NO;
+}
+
 @end

@@ -560,4 +560,19 @@ static BOOL BTShapeSelectionIsCollecting(BTCreateShapeSelectionTool *self)
     return self;
 }
 
+- (void)setProportionalMode:(BOOL)aMode
+{
+    [_pointsCreationTool setProportionalMode:aMode];
+}
+
+- (BOOL)isProportionalMode
+{
+    return [_pointsCreationTool isProportionalMode];
+}
+
+- (BOOL)defaultProportionalMode
+{
+    return [_pointsCreationTool defaultProportionalMode];
+}
+
 @end

@@ -87,5 +87,9 @@
 - (id)defaultWillCreateFreeHandSelectionCursor;
 - (void)dealloc;
 - (id)init;
+- (void)setProportionalMode:(BOOL)aMode;
+- (BOOL)isProportionalMode;
+- (BOOL)defaultProportionalMode;
+
 @end
 

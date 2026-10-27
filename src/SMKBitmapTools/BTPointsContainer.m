@@ -656,6 +656,21 @@ NSString * const BTCollectingPickPointsMode = @"BTMoveToolTrackingMode";
     return self;
 }
 
+- (void)setProportionalMode:(BOOL)aMode
+{
+    _isProportionalMode = aMode;
+}
+
+- (BOOL)isProportionalMode
+{
+    return _isProportionalMode;
+}
+
+- (BOOL)defaultProportionalMode
+{
+    return NO;
+}
+
 @end
 
 @implementation BTPointsCreationTool (Private)
