@@ -85,4 +85,19 @@
         return [super queryNewHyperInterface:aInterface];
     return [[[visualizationClass alloc] initWithHyperObject:self visualizationProtocol:aInterface] autorelease];
 }
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType
+{
+    return NO;
+}
+
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext
+{
+    id representation = [super HTML5DictionaryRepresentationInContext:aContext];
+    id attributes = [self queryHyperInterface:@protocol(HSWebElementAttributes)];
+    [representation setObject:@"webObject" forKey:@"type"];
+    [representation setObject:[attributes HTMLCode] forKey:@"htmlCode"];
+    [representation setObject:[NSString stringWithFormat:@"%.2f", [attributes refreshRate]] forKey:@"refreshRate"];
+    return representation;
+}
+
 @end

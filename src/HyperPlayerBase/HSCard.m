@@ -1307,6 +1307,19 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
     [self insertTemporaryHyperChild:aChild atIndex:[self hyperCount]];
 }
 
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
+{
+    return [[[self queryHyperInterface:@protocol(HSCursorAttributes)] cursor] imageMedia] != nil;
+}
+
+- (void)verifyUnsupportedFeatures
+{
+    id attributes = [self queryHyperInterface:@protocol(HSCursorAttributes)];
+    if ([[attributes hyperCursor] imageMedia] != nil)
+        [attributes setHyperCursor:nil];
+    [super verifyUnsupportedFeatures];
+}
+
 @end
 
 // White placeholder background of a given size.

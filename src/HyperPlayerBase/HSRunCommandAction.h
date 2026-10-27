@@ -18,5 +18,9 @@
 - (BOOL)canRunInContext:(id)aContext;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (id)init;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
 @end
 

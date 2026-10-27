@@ -87,5 +87,6 @@
 - (void)setText:(id)aText;
 - (id)queryNewHyperInterface:(id)aInterface;
 - (id)init;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
 @end
 

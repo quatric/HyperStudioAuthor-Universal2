@@ -24,5 +24,7 @@
 - (NSSize)defaultSize;
 - (id)queryInteractivePlayerItem;
 - (id)queryNewHyperInterface:(id)aInterface;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
 @end
 

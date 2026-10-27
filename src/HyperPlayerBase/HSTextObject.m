@@ -663,4 +663,9 @@ static BOOL HSTextObjectFloatsAreEqual(float aValue, float aValue2)
     return self;
 }
 
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType
+{
+    return YES;
+}
+
 @end

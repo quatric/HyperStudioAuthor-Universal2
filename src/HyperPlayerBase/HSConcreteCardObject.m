@@ -933,6 +933,16 @@ static NSString *HSConcreteCardObjectUnsupportedFeature(NSString *aKey)
     [_autoPlayActionEvent release];
     [super dealloc];
 }
+- (void)verifyUnsupportedFeatures
+{
+    id attributes = [self queryHyperInterface:@protocol(HSCursorAttributes)];
+    [self setRotatable:NO];
+    [self setResizable:NO];
+    [self setNoClick:NO];
+    if ([[attributes hyperCursor] imageMedia] != nil)
+        [attributes setHyperCursor:nil];
+}
+
 @end
 
 @implementation HSConcreteCardObject (HSPlayableObjectAttributesPrivate)

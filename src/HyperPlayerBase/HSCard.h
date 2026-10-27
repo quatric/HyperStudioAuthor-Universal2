@@ -130,6 +130,8 @@
 - (void)removeHyperChild:(id)aChild;
 - (void)insertTemporaryHyperChild:(id)aChild atIndex:(NSUInteger)aIndex;
 - (void)addTemporaryHyperChild:(id)aChild;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
+- (void)verifyUnsupportedFeatures;
 @end
 
 @interface HSCard_HSDefaultBackgroundImage : NSObject <BTCGImage, BTImage, NSObject, BTCocoaImage, HSPlaceholderImage>

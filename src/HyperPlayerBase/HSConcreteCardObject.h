@@ -121,6 +121,7 @@
 - (BOOL)isHyperEqual:(id)aEqual;
 - (id)initUserObject;
 - (void)dealloc;
+- (void)verifyUnsupportedFeatures;
 @end
 
 @interface HSConcreteCardObject (HSPlayableObjectAttributesPrivate)

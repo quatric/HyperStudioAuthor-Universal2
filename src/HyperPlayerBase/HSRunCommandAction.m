@@ -120,4 +120,26 @@
         _runCommandActionType = 1;
     return self;
 }
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType
+{
+    return [[self document] isDefaultHomeStack];
+}
+
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext
+{
+    return nil;
+}
+
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
+{
+    NSMutableSet *features = [NSMutableSet set];
+    [features addObject:[NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureAction" value:@"" table:@"Export"], [self localizedName]]];
+    return features;
+}
+
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
+{
+    return ![[self document] isDefaultHomeStack];
+}
+
 @end
