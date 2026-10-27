@@ -187,6 +187,35 @@
         interval = 1.0 / fps;
     return interval;
 }
+- (void)pause
+{
+    if (_timer != nil) {
+        _pauseTime = [NSDate timeIntervalSinceReferenceDate];
+        [self stop];
+    }
+}
+
+- (void)resume
+{
+    if (_pauseTime != 0.0) {
+        _timer = [self HSTransitionPlayer_createAndScheduleTimerWithTimeInterval:[self HSTransitionPlayer_timeInterval]];
+        if (_timer != nil) {
+            _startTime = ([NSDate timeIntervalSinceReferenceDate] - _pauseTime) + _startTime;
+            _pauseTime = 0.0;
+        }
+    }
+}
+
+- (void)setTransitionPlaybackController:(id)aController
+{
+    _transitionPlaybackController = aController;
+}
+
+- (id)transitionPlaybackController
+{
+    return _transitionPlaybackController;
+}
+
 @end
 
 @implementation NSObject (HSTransitionPlayerDelegate)

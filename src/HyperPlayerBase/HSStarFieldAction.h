@@ -6,7 +6,11 @@
 {
     int _starFieldDurationMode;
     double _starFieldDuration;
+    HSGraphicComposition *_graphicComposition;
     HSActionExecutionContext *_context;
+    double _remainingDuration;
+    BOOL _stopOnMouseClick;
+    NSDate *_startDate;
 }
 + (NSInteger)starFieldDurationModeFromStringForXMLStoring:(id)aStoring;
 + (id)stringForXMLStoringFromStarFieldDurationType:(NSInteger)aType;
@@ -29,5 +33,7 @@
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (void)pause;
+- (void)resume;
 @end
 

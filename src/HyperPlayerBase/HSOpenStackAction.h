@@ -5,6 +5,7 @@
 @interface HSOpenStackAction : HSChangeCardAction <HSOpenStackActionAttributes, HSChangeCardActionAttributes, HSActionAttributes, HSAttributes, HyperInterface, NSObject, HSAction, HSActionSynchronousAttribute, HSAttribute, HSActionEventsAttribute, HSActionLocalizedNameAttribute, HSTransitionOwner, HSTransitionAttribute, HSURLAttribute>
 {
     NSURL *_URL;
+    BOOL _shouldOpenInSeparateWindow;
     NSURL *_temporaryURL;
     HSAlert *_stackNotFoundAlert;
     NSString *_downloadFilePath;
@@ -48,5 +49,7 @@
 - (id)createNavigationOperation;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
+- (BOOL)shouldOpenInSeparateWindow;
 @end
 

@@ -128,4 +128,13 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [super dealloc];
 }
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen
+{
+}
+
+- (BOOL)shouldOpenInSeparateWindow
+{
+    return [[self stack] shouldHomeStackOpenInSeparateWindow];
+}
+
 @end

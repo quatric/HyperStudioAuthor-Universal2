@@ -7,6 +7,7 @@
     int _cardIndex;
     int _cardIdOldFileFormat;
     HSUID *_destinationCardUID;
+    BOOL _shouldOpenInSeparateWindow;
     HSDocument *_previewDocument;
     NSURL *_URL;
     NSURL *_temporaryURL;
@@ -53,5 +54,7 @@
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
+- (BOOL)shouldOpenInSeparateWindow;
 @end
 

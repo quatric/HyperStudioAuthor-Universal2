@@ -302,4 +302,15 @@ static HSGhostWriterActionPerformer *sSharedGhostWriterActionPerformer = nil;
     return self;
 }
 
+- (void)pause
+{
+    [self invalidateTimer];
+}
+
+- (void)resume
+{
+    [self createTimerWithFireSelector:@selector(fireTimer:)];
+    [self fireTimer:nil];
+}
+
 @end

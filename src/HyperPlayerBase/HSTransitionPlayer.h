@@ -9,9 +9,11 @@
     double _transitionPlayRangeDuration;
     double _maxFPS;
     id _delegate;
+    id _transitionPlaybackController;
     double _startTime;
     double _transitionTime;
     NSTimer *_timer;
+    double _pauseTime;
 }
 - (void)playNewFrame;
 - (void)setTransitionTime:(double)aTime;
@@ -36,6 +38,10 @@
 - (void)HSTransitionPlayer_finish;
 - (id)HSTransitionPlayer_createAndScheduleTimerWithTimeInterval:(double)aInterval;
 - (double)HSTransitionPlayer_timeInterval;
+- (void)pause;
+- (void)resume;
+- (void)setTransitionPlaybackController:(id)aController;
+- (id)transitionPlaybackController;
 @end
 
 @interface NSObject (HSTransitionPlayerDelegate)

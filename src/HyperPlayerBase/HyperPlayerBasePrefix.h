@@ -22,6 +22,7 @@
 @protocol HSStoredMenuItemTitleValidationSupport;
 @protocol HSCardViewOffset;
 @protocol HSHomeStackOpenInSeparateWindowAttribute;
+@protocol HSOtherStackOpenInSeparateWindowAttribute;
 @protocol HSSystemTextFieldVisualPlaceholderAttribute;
 @protocol HSUndoableSubobjectsAttribute;
 @protocol HSUserObjectHitTesterAttribute;

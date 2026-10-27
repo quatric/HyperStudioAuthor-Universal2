@@ -239,4 +239,22 @@
     return self;
 }
 
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen
+{
+    _shouldOpenInSeparateWindow = aOpen;
+}
+
+- (BOOL)shouldOpenInSeparateWindow
+{
+    return _shouldOpenInSeparateWindow;
+}
+
+- (void)setTransition:(id)aTransition
+{
+    if (_transition != aTransition) {
+        [(id)_transition release];
+        _transition = [aTransition retain];
+    }
+}
+
 @end

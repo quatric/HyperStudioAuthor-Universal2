@@ -48,5 +48,7 @@
 - (NSUInteger)retainCount;
 - (id)retain;
 - (id)copyWithZone:(NSZone *)aZone;
+- (void)pause;
+- (void)resume;
 @end
 

@@ -12,6 +12,7 @@
     HSCard *_destinationCard;
     HSStack *_destinationStack;
     BOOL _shouldOpenUntitledDocument;
+    BOOL _shouldOpenInSeparateWindow;
     id<HSTransitionAttributes> _transition;
     int _stage;
     BOOL _ignoresSlideshow;
@@ -57,5 +58,8 @@
 - (id)initWithDestinationStackURL:(id)aURL destinationCardIdOldFileFormat:(NSUInteger)aFormat transition:(id)aTransition;
 - (id)initWithDestinationStackURL:(id)aURL destinationCardIndex:(NSUInteger)aIndex transition:(id)aTransition;
 - (id)initWithDestinationStackURL:(id)aURL destinationCardUID:(id)aUID transition:(id)aTransition;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
+- (BOOL)shouldOpenInSeparateWindow;
+- (void)setTransition:(id)aTransition;
 @end
 

@@ -18,5 +18,7 @@
 - (void)alertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 - (void)showCantGoHomeStackAlertWithActionExecutionContext:(id)aContext;
 - (void)dealloc;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
+- (BOOL)shouldOpenInSeparateWindow;
 @end
 

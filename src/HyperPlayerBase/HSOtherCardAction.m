@@ -424,4 +424,23 @@
     return self;
 }
 
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen
+{
+    if (aOpen != _shouldOpenInSeparateWindow) {
+        [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Open in Separate Window" value:@"" table:@"UndoManager"]];
+        [[[self undoManager] prepareWithInvocationTarget:self] setShouldOpenInSeparateWindow:_shouldOpenInSeparateWindow];
+        id center = [self attributeNotificationCenter];
+        [center notifyChange:1 ofAttribute:@protocol(HSActionValidationStatusAttribute) ofObject:self withUserInfo:nil];
+        [center notifyChange:1 ofAttribute:@protocol(HSOtherStackOpenInSeparateWindowAttribute) ofObject:self withUserInfo:nil];
+        _shouldOpenInSeparateWindow = aOpen != NO;
+        [center notifyChange:2 ofAttribute:@protocol(HSOtherStackOpenInSeparateWindowAttribute) ofObject:self withUserInfo:nil];
+        [center notifyChange:2 ofAttribute:@protocol(HSActionValidationStatusAttribute) ofObject:self withUserInfo:nil];
+    }
+}
+
+- (BOOL)shouldOpenInSeparateWindow
+{
+    return _shouldOpenInSeparateWindow;
+}
+
 @end

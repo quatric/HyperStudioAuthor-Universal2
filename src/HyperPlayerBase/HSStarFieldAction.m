@@ -101,25 +101,44 @@
     id composition = [HSQCGraphicComposition compositionWithCompositionFilePath:path];
     if (!composition)
         return;
-    BOOL stopOnMouseClick;
-    double interval;
-    if (_starFieldDurationMode == 0) {
-        stopOnMouseClick = YES;
-        interval = DBL_MAX;
-    } else if (_starFieldDurationMode == 1) {
-        interval = _starFieldDuration;
-        stopOnMouseClick = NO;
-    } else {
-        stopOnMouseClick = NO;
-        interval = 0.0;
+    [_graphicComposition release];
+    _graphicComposition = [composition retain];
+    if (_starFieldDurationMode == 1) {
+        _remainingDuration = _starFieldDuration;
+        _stopOnMouseClick = NO;
+    } else if (_starFieldDurationMode == 0) {
+        _remainingDuration = DBL_MAX;
+        _stopOnMouseClick = YES;
     }
     [aContext pauseAllPlayAnimationActions];
     if ([aContext isGraphicCompositionPlaying])
         [aContext stopGraphicComposition];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSStarFieldAction_actionExecutionContextGraphicCompositionDidStop:) name:@"HSActionExecutionContextGraphicCompositionDidEnd" object:aContext];
-    [aContext showGraphicComposition:composition duringTimeInterval:interval stopOnMouseClick:stopOnMouseClick];
     _context = [aContext retain];
+    [self resume];
 }
+
+- (void)pause
+{
+    if (_graphicComposition != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSActionExecutionContextGraphicCompositionDidEnd" object:_context];
+        if (_remainingDuration != DBL_MAX)
+            _remainingDuration = [_startDate timeIntervalSinceNow] + _remainingDuration;
+        [_context stopGraphicComposition];
+    }
+}
+
+- (void)resume
+{
+    if (_graphicComposition != nil) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSStarFieldAction_actionExecutionContextGraphicCompositionDidStop:) name:@"HSActionExecutionContextGraphicCompositionDidEnd" object:_context];
+        [_context showGraphicComposition:_graphicComposition duringTimeInterval:_remainingDuration stopOnMouseClick:_stopOnMouseClick];
+        if (_remainingDuration != DBL_MAX) {
+            [_startDate release];
+            _startDate = [[NSDate date] retain];
+        }
+    }
+}
+
 - (void)stop:(id)aStop
 {
     [_context stopGraphicComposition];
@@ -135,7 +154,10 @@
 }
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSActionExecutionContextGraphicCompositionDidEnd" object:_context];
     [_context release];
+    [_graphicComposition release];
+    [_startDate release];
     [super dealloc];
 }
 - (id)init
