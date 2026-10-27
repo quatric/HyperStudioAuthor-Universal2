@@ -179,7 +179,7 @@ static NSString *HSPathsProviderDocumentsFolder = nil;
 
 - (id)sampleProjectsFolder
 {
-    return [[[self defaultTutorialStackName] stringByDeletingLastPathComponent] stringByAppendingPathComponent:@"Sample Projects"];
+    return [[NSBundle mainBundle] pathForResource:@"Samples" ofType:nil];
 }
 
 - (id)readyMadeAnimationsFolder

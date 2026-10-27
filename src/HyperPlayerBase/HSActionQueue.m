@@ -213,7 +213,7 @@ next_group:
 
 - (BOOL)isRunning
 {
-    return [_actionSynchronizer isRunning];
+    return [_delayTimer isValid] || [_actionSynchronizer isRunning];
 }
 
 - (BOOL)isEmpty

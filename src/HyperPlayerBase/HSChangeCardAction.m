@@ -95,6 +95,7 @@ static int sRunningNavigationCount = 0;
 - (void)alertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     [self notifyDidFinish];
+    [self release];
 }
 
 - (void)navigationOperationStageDidChange:(id)aChange
@@ -113,9 +114,8 @@ static int sRunningNavigationCount = 0;
 {
     _context = [aContext retain];
     if (![self canGoToHyperDestinationCard]) {
+        [self retain];
         [aContext displayAlert:[self alert] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
-        [_context release];
-        _context = nil;
     } else {
         [HSCursor clearCursor];
         [self performSelector:@selector(setAndPerformNavigationOperationInContext:) withObject:_context afterDelay:0.0];

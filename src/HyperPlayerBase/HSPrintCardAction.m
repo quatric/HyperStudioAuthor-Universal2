@@ -114,7 +114,7 @@
 }
 - (void)documentDidEndPageSetupDialog
 {
-    [self printCurrentCard];
+    [self performSelector:@selector(printCurrentCard) withObject:nil afterDelay:0.0];
 }
 // The context is not retained.
 - (void)startInContext:(id)aContext

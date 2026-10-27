@@ -211,7 +211,7 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
 
 - (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
 {
-    return [self hasUnsupportedTransitionNames:NULL];
+    return [[self unsupportedTransitions] count] != 0;
 }
 
 // With aNames NULL this returns at the first unsupported name.

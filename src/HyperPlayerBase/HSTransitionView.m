@@ -398,14 +398,7 @@ static size_t HSTransitionViewPixelLength(float aLength)
         return NO;
     if (_activeConsumers != NULL && CFDictionaryGetCount(_activeConsumers) > 0)
         return NO;
-    if (!(NSAppKitVersionNumber < 949.0))
-        return YES;
-    NSRect surface = [self openGLSurfaceBounds];
-    NSRect visible = [self visibleRect];
-    if (surface.origin.x + 0.0001 < visible.origin.x || surface.origin.y + 0.0001 < visible.origin.y ||
-        visible.origin.x + visible.size.width < surface.origin.x + surface.size.width - 0.0001)
-        return NO;
-    return surface.origin.y + surface.size.height - 0.0001 <= visible.origin.y + visible.size.height;
+    return YES;
 }
 
 // The bounds of every superview are observed, so they are observed anew.

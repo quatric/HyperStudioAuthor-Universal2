@@ -117,8 +117,9 @@
 
 - (void)removePath
 {
-    [self setPathKeyFrames:nil];
-    [self setPath:nil];
+    [_pathKeyFrames removeAllObjects];
+    [_path release];
+    _path = nil;
 }
 
 - (void)setPathAndGenerateKeyFrames:(id)aFrames

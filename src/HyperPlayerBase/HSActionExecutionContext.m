@@ -824,15 +824,11 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 - (void)cancelOperation:(id)aOperation
 {
     [[self buttonScannerAction] stop:self];
-    if ([self isRecording])
-        [self stopRecording];
 }
 
 - (BOOL)canCancelOperation
 {
-    if ([[self buttonScannerAction] canBeStopped])
-        return YES;
-    return [self isRecording];
+    return [[self buttonScannerAction] canBeStopped];
 }
 
 - (BOOL)runActionsForKeyEvent:(id)aEvent
