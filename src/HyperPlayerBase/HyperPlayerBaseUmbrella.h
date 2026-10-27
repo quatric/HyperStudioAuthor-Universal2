@@ -773,3 +773,5 @@
 #import "HSFunctions.h"
 #import "HSPauseView.h"
 #import "HSToolbarPopUpButton.h"
+#import "HSFluidSwipe.h"
+#import "HSFluidSwipeTracker.h"

@@ -858,6 +858,8 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSFluidSwipe;
+@class HSFluidSwipeTracker;
 @class HSPauseView;
 @class HSToolbarPopUpButton;
 @class AUInputDevice;
