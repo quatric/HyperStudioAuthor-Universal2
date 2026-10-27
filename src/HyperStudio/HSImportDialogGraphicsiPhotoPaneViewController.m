@@ -483,6 +483,16 @@ int FUN_001b4fe5(HSImportDialogGraphicsiPhotoPaneViewController *self,SEL _cmd,i
 - (void)willMountToDialogController:(id)aController
 {
     [super willMountToDialogController:aController];
+    if (!_iPhotoDBWasNotFoundAlertWasShown && [HSGraphicsLibraryiPhotoHelper iPhotoRecentDatabasesWasNotFound]) {
+        HSAlert *alert = [HSAlert new];
+        [alert setAlertStyle:NSAlertStyleWarning];
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        [alert setMessageText:[bundle localizedStringForKey:@"Cannot open iPhoto library alert message text" value:@"" table:@"ImportDialogs"]];
+        [alert setInformativeText:[bundle localizedStringForKey:@"Cannot open iPhoto library alert informative text" value:@"" table:@"ImportDialogs"]];
+        [alert runModal];
+        [alert release];
+        _iPhotoDBWasNotFoundAlertWasShown = YES;
+    }
 }
 
 - (void)paneDialogWillOpen

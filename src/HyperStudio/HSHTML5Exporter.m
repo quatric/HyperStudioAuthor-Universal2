@@ -5,7 +5,7 @@ static NSUInteger sJSonIndentLevel;
 
 @implementation HSHTML5Exporter
 
-/* i386 ivar offsets: _isDownloadFinished=0x21, _linkedStackPaths=0x24, _linkedStacksNumber=0x28, _context=0x2c, _widgetSize=0x30, _embeddedCode=0x38 */
+/* i386 ivar offsets: _isDownloadFinished=0x21, _linkedStackPaths=0x24, _linkedStacksLevel=0x28, _context=0x2c, _widgetSize=0x30, _embeddedCode=0x38 */
 
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0028efef @ 0028efef, 1073 bytes * /
@@ -857,7 +857,7 @@ void FUN_0028e55b(HSHTML5Exporter *self,SEL _cmd,id finalizeExportForDocument)
   if (pvVar4 != (id)0x0) {
     pvVar1 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,pvVar1);
     pvVar1 = _objc_msgSend(pvVar1,sel_integerForKey_,*(undefined4 *)PTR_PTR_003369ec);
-    self->_linkedStacksNumber = (uint)pvVar1;
+    self->_linkedStacksLevel = (uint)pvVar1;
     pcVar6 = self->_context;
     pvVar1 = pvVar3;
     _objc_msgSend(self,sel_linkedStacksFileWrapper_withContext_currentLevel_,pvVar3,pcVar6,1);
@@ -895,7 +895,7 @@ void FUN_0028e55b(HSHTML5Exporter *self,SEL _cmd,id finalizeExportForDocument)
     [stackData addFileWrapper:stackWrapper];
     [stackWrapper release];
     if ([[_context linkedStackURLs] count] != 0) {
-        _linkedStacksNumber = (unsigned int)[[NSUserDefaults standardUserDefaults] integerForKey:HSHTML5ExportLinkedStacksDepth];
+        _linkedStacksLevel = (unsigned int)[[self exportSettingsValueForKey:HSHTML5ExportLinkedStacksLevelKey] intValue];
         [self linkedStacksFileWrapper:stackData withContext:_context currentLevel:1];
     }
     [[[_exportRepresentation fileWrappers] objectForKey:@"data"] addFileWrapper:stackData];
@@ -1409,7 +1409,7 @@ void FUN_002908c0(HSHTML5Exporter *self,SEL _cmd,id linkedStacksFileWrapper,id w
               puVar13 = puVar6;
             }
             _objc_msgSend(pvVar4,sel_release,puVar13);
-            if ((id)self->_linkedStacksNumber != local_84) {
+            if ((id)self->_linkedStacksLevel != local_84) {
               pvVar4 = _objc_msgSend(self->_context,sel_linkedStackURLs,puVar13);
               pvVar4 = _objc_msgSend(pvVar4,sel_count);
               if (pvVar4 != (id)0x0) {
@@ -1516,7 +1516,7 @@ LAB_002910c1:
             [HSTemporaryFilesManager unregisterTempFileAtPath:path];
         }
         [pool release];
-        if (_linkedStacksNumber != aLevel && [[_context linkedStackURLs] count] != 0) {
+        if (_linkedStacksLevel != aLevel && [[_context linkedStackURLs] count] != 0) {
             aLevel++;
             [self linkedStacksFileWrapper:aWrapper withContext:_context currentLevel:aLevel];
         }

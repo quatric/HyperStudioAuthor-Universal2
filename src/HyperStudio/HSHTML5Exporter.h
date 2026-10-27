@@ -6,7 +6,7 @@
 {
     BOOL _isDownloadFinished;
     NSMutableSet *_linkedStackPaths;
-    unsigned int _linkedStacksNumber;
+    unsigned int _linkedStacksLevel;
     HSHTML5ExportContext *_context;
     NSSize _widgetSize;
     HSXMLNode *_embeddedCode;

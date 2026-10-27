@@ -14,6 +14,7 @@
     NSRecursiveLock *_filteredPhotosHashLock;
     NSButton *_openiPhotoButton;
     NSOutlineView *_browseOutlineView;
+    BOOL _iPhotoDBWasNotFoundAlertWasShown;
 }
 + (void)load;
 - (void)openiPhotoApp:(id)aApp;
