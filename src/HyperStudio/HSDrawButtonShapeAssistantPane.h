@@ -33,5 +33,6 @@
 - (void)viewWillAppear:(BOOL)aAppear;
 - (void)viewWillDisappear:(BOOL)aDisappear;
 - (BOOL)shouldDismissWhenDisappearedByDefault;
+- (id)cardView;
 @end
 

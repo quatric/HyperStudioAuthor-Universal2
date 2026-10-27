@@ -130,6 +130,7 @@
 - (void)subscribeToNotifications;
 - (void)HSObjectAssistantController_subscribeForGeometryChangesIfNonContinuousWithAttributeObservingController:(id)aController;
 - (id)objectAssistant;
+- (void)noteSupportsSettingsOnTheSpotDidChange;
 @end
 
 @interface HSObjectAssistantController (HSObjectAssistantDelegate)

@@ -642,5 +642,10 @@ void FUN_0015ecd2(HSStoryboardController *self,SEL _cmd)
     return [[HSEditorNavigationController class] class];
 }
 
+- (void)storyboardViewDidChangedZoomFactor:(id)aFactor
+{
+    [_statusbarController setZoomFactor:[[aFactor object] cardScaleFactor]];
+}
+
 @end
 

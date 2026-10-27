@@ -172,5 +172,10 @@ void FUN_000c3acb(HSTextProvider *self,SEL _cmd,int setDirection)
     return self;
 }
 
+- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRange:(NSRange)aRange
+{
+    return [[self currentTextProvider] hyperReplaceTextForCurrentItem:aItem inRange:aRange];
+}
+
 @end
 

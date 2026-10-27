@@ -2679,6 +2679,18 @@ id FUN_00101c26(HSObjectAssistantController *self,SEL _cmd,id boundingFramePathI
     return [self canSupportSettingsOnTheSpotForObject:_selectedInModelObject];
 }
 
+- (BOOL)shouldOpenCardInfo
+{
+    if (![_selectedInModelObject implementsHyperInterface:@protocol(HSMutableCardAttributes)])
+        return NO;
+    return _shouldOpenCardInfo;
+}
+
+- (void)noteSupportsSettingsOnTheSpotDidChange
+{
+    [[self objectAssistant] setSupportsSettingsOnTheSpotMode:[self canSupportSettingsOnTheSpot]];
+}
+
 @end
 
 @implementation HSObjectAssistantController (HSObjectAssistantDelegate)

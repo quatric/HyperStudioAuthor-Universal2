@@ -115,6 +115,11 @@ static const float kHSAssistantWindowMargin = 16.0f;
     [[self window] orderOut:nil];
 }
 
+- (void)showContent
+{
+    [[self window] orderFront:nil];
+}
+
 @end
 
 @implementation HSObjectAssistant (HSObjectAssistantDrawerSupport)

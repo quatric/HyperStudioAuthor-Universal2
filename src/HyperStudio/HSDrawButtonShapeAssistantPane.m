@@ -480,5 +480,10 @@ void FUN_001961ad(HSDrawButtonShapeAssistantPane *self,SEL _cmd,id buttonShapeCr
     return NO;
 }
 
+- (id)cardView
+{
+    return [[[self stack] document] cardView];
+}
+
 @end
 

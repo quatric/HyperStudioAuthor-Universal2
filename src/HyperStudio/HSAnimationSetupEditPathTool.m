@@ -933,5 +933,10 @@ void FUN_000cd561(HSAnimationSetupEditPathTool *self,SEL _cmd,
     [_delegate userSelectAnotherObject:aObject withEditPathTool:self];
 }
 
+- (void)editPathCanvasLayer:(id)aLayer delegatesToHandleTrackingRectFromPoint:(NSPoint)aPoint event:(id)aEvent hitTestInfo:(id)aInfo
+{
+    [_trackingCanvasLayer handleMouseDownAtPoint:aPoint event:aEvent hitTestInfo:aInfo];
+}
+
 @end
 

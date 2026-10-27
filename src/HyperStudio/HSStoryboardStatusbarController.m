@@ -11,4 +11,9 @@
     return @"StoryboardStatusbar";
 }
 
+- (void)setZoomFactor:(CGFloat)aFactor
+{
+    [super setZoomFactor:HSLinearValueForSliderFromNonLinear(_zoomSlider, aFactor)];
+}
+
 @end

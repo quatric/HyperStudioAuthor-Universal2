@@ -54,4 +54,9 @@
     return [self initWithNibName:@"ExportToHTML5AccessoryView"];
 }
 
+- (id)stack
+{
+    return [[[NSDocumentController sharedDocumentController] currentDocument] stack];
+}
+
 @end

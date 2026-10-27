@@ -56,5 +56,6 @@
 - (void)loadNibIfNeeded;
 - (void)dealloc;
 - (Class)navigationControllerClass;
+- (void)storyboardViewDidChangedZoomFactor:(id)aFactor;
 @end
 

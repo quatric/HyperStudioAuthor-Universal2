@@ -34,5 +34,6 @@
 - (id)textFinder;
 - (void)dealloc;
 - (id)init;
+- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRange:(NSRange)aRange;
 @end
 

@@ -17,5 +17,6 @@
 - (void)viewDidLoad;
 - (void)dealloc;
 - (id)init;
+- (id)stack;
 @end
 

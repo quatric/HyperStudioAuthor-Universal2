@@ -55,5 +55,6 @@
 - (id)init;
 - (BOOL)shouldResetToolOnSelectObjects;
 - (void)userSelectAnotherObject:(id)aObject withEditPathCanvasLayer:(id)aLayer;
+- (void)editPathCanvasLayer:(id)aLayer delegatesToHandleTrackingRectFromPoint:(NSPoint)aPoint event:(id)aEvent hitTestInfo:(id)aInfo;
 @end
 

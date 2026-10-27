@@ -141,4 +141,10 @@
     [self finishDialog:YES];
 }
 
+- (IBAction)ok:(id)aOk
+{
+    [self changeExportChannel:nil];
+    [super ok:aOk];
+}
+
 @end
