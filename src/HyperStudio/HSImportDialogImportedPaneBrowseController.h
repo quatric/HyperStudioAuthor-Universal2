@@ -47,5 +47,6 @@
 - (void)dealloc;
 - (id)customImageLocationBookmarkData;
 - (void)setCustomImageLocationBookmarkData:(id)aData forLocation:(id)aLocation;
+- (void)selectionDidChangeFrom:(NSInteger)aFrom to:(NSInteger)aTo;
 @end
 

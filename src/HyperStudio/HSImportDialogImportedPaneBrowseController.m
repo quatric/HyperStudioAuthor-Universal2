@@ -1189,5 +1189,15 @@ LAB_001ddb5b:
     [bookmarks release];
 }
 
+- (void)selectionDidChangeFrom:(NSInteger)aFrom to:(NSInteger)aTo
+{
+    id data = [[self customImageLocationBookmarkData] objectForKey:[self directoryPathForTableRow:aFrom]];
+    if (data != nil)
+        [[NSURL URLByResolvingBookmarkData:data options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:NULL error:NULL] stopAccessingSecurityScopedResource];
+    data = [[self customImageLocationBookmarkData] objectForKey:[self directoryPathForTableRow:aTo]];
+    if (data != nil)
+        [[NSURL URLByResolvingBookmarkData:data options:NSURLBookmarkResolutionWithSecurityScope relativeToURL:nil bookmarkDataIsStale:NULL error:NULL] startAccessingSecurityScopedResource];
+}
+
 @end
 

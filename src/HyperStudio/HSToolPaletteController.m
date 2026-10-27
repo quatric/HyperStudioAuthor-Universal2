@@ -871,5 +871,23 @@ void FUN_000d6d34(HSToolPaletteController *self,SEL _cmd,id validateView)
     [self performSelector:@selector(validateUserInterfaceForced:) withObject:[NSNumber numberWithBool:YES] afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
 }
 
+- (void)validateUserInterfaceForced:(id)aForced
+{
+    if ([_flatLiveSlider isAnimationInProgress])
+        return;
+    if ([[HSApplicationController sharedDocumentController] isModalSessionPresent] && ![aForced boolValue])
+        return;
+    [self validateView:_buttonsView];
+    [self validateView:_playerEditorButtonsView];
+    [self validateToolPalette];
+    [_activeToolSettingsViewController validateUserInterface];
+    SEL action = NSSelectorFromString([[_flatLiveSlider cell] representedObject]);
+    id validator = [self findValidatorForAction:action target:nil from:nil];
+    BOOL enabled = NO;
+    if ([validator respondsToSelector:@selector(validateUserInterfaceItem:)])
+        enabled = [validator validateUserInterfaceItem:_flatLiveSlider];
+    [_flatLiveSlider setEnabled:enabled];
+}
+
 @end
 

@@ -101,4 +101,18 @@
     return [super tool:aTool didFinalizeStage:aStage withEvent:aEvent nextStage:aNextStage];
 }
 
+- (void)touchStorageDidAddTouch:(id)aStorage
+{
+    if (_touchStorage != aStorage)
+        return;
+    id bitmapTool = [self bitmapTool];
+    CGSize toolSize = [bitmapTool size];
+    CGSize shadowOffset = [bitmapTool shadowOffset];
+    CGFloat rotationAngle = [bitmapTool rotationAngle];
+    CGFloat blurRadius = [bitmapTool shadowMask] == nil ? [bitmapTool shadowBlurRadius] : 0;
+    NSUInteger count = [_touchStorage numberOfTouches];
+    CGRect touchBounds = _touchStorage == nil ? CGRectZero : [_touchStorage boundingRectOfTouchAtIndex:count - 1 forToolSize:toolSize rotationAngle:rotationAngle shadowOffset:shadowOffset shadowBlurRadius:blurRadius];
+    _brushBounds = count == 1 ? touchBounds : CGRectUnion(_brushBounds, touchBounds);
+}
+
 @end

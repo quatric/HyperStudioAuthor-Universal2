@@ -45,5 +45,6 @@
 - (id)nibName;
 - (void)dealloc;
 - (void)appWillOpenModalWindow:(id)aWindow;
+- (void)validateUserInterfaceForced:(id)aForced;
 @end
 

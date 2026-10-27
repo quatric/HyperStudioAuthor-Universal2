@@ -15,5 +15,6 @@
 - (void)deactivateBitmapTool;
 - (BOOL)activateBitmapTool;
 - (BOOL)tool:(id)aTool didFinalizeStage:(id)aStage withEvent:(id)aEvent nextStage:(id)aNextStage;
+- (void)touchStorageDidAddTouch:(id)aStorage;
 @end
 
