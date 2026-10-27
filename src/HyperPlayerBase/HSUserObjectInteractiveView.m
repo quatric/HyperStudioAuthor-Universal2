@@ -130,20 +130,20 @@ static NSMutableArray *HSMenuShortcuts = nil;
 // signature here and forwarded nothing.
 - (void)swipeWithEvent:(id)aEvent
 {
-    if ([self handleSwipeGesture:aEvent])
-        return;
+    if (![self handleSwipeGesture:aEvent])
+        [super swipeWithEvent:aEvent];
 }
 
 - (void)rotateWithEvent:(id)aEvent
 {
-    if ([self handleRotationGesture:aEvent])
-        return;
+    if (![self handleRotationGesture:aEvent])
+        [super rotateWithEvent:aEvent];
 }
 
 - (void)magnifyWithEvent:(id)aEvent
 {
-    if ([self handleMagnificationGesture:aEvent])
-        return;
+    if (![self handleMagnificationGesture:aEvent])
+        [super magnifyWithEvent:aEvent];
 }
 
 // The first gesture of a kind to arrive owns the interaction until all

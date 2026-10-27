@@ -578,8 +578,7 @@
 
 - (void)setupRoundedCornersIfNeeded
 {
-    BOOL rounds = [[self document] isInPresentationMode] || [[self document] isInPurePlayerMode] ||
-                  ([[self document] isInPlayerMode] && [[self document] isStackProtected]);
+    BOOL rounds = [[self document] isInPresentationMode];
     [[self cardView] setRoundsCardCorners:rounds];
 }
 
@@ -775,13 +774,16 @@
 
 - (void)windowDidDeminiaturize:(id)aDeminiaturize
 {
-    [self restoreSlideShow:_miniaturizeWhenSlideShow ? YES : NO];
-    _miniaturizeWhenSlideShow = 0;
+    if (![[HSApplicationController sharedDocumentController] isPauseResumeEnabled]) {
+        [self restoreSlideShow:_miniaturizeWhenSlideShow ? YES : NO];
+        _miniaturizeWhenSlideShow = 0;
+    }
 }
 
 - (void)windowWillMiniaturize:(id)aMiniaturize
 {
-    _miniaturizeWhenSlideShow = [self stopSlideShow] ? 1 : 0;
+    if (![[HSApplicationController sharedDocumentController] isPauseResumeEnabled])
+        _miniaturizeWhenSlideShow = [self stopSlideShow] ? 1 : 0;
 }
 
 - (void)restoreSlideShow:(BOOL)aShow

@@ -799,14 +799,9 @@ static CGAffineTransform HSImageObjectObjectToImageTransform(NSRect aRelativeIma
 // The old format border path is stored alongside for older readers.
 - (id)extraDictionaryRepresentationWithCodingContext:(id)aContext
 {
-    BOOL cacheEnabled = [self isEnabledCacheImage];
-    if (cacheEnabled)
-        [self setEnabledCacheImage:NO];
     [self createOldFormatRelativeBorderPath];
     id representation = [super extraDictionaryRepresentationWithCodingContext:aContext];
     [self dropOldFormatBorderPath];
-    if (cacheEnabled)
-        [self setEnabledCacheImage:YES];
     return representation;
 }
 

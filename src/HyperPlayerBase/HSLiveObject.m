@@ -347,6 +347,7 @@ static BOOL HSOpacityValuesDiffer(float a, float b)
 {
     // fixed: the original leaked a starter still set here
     [_starter release];
+    [_pauseStarter release];
     [super dealloc];
 }
 

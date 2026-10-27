@@ -101,6 +101,8 @@ static BOOL HSFloatsNearlyEqual(float a, float b)
 
 - (BOOL)shouldUseSystemImplementationForRendering
 {
+    if ([self shouldUsePDFUnderlineColor])
+        return NO;
     if ([_underlineColor hyperGradientColor] == nil) {
         if (!_shouldDrawOutline)
             return YES;
