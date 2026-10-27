@@ -38,6 +38,8 @@
 #import "HSAnimationSetupView.h"
 #import "HSAnotherCardActionAssistantPane.h"
 #import "HSApplicationLicensor.h"
+#import "HSANetworkUploader.h"
+#import "HSANetworkConnection.h"
 #import "HSAExportPanelController.h"
 #import "HSPublishComboDialog.h"
 #import "HSHypertextLinksInspectorController.h"

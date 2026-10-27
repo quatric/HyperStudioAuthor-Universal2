@@ -206,6 +206,8 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSANetworkUploader;
+@class HSANetworkConnection;
 @class HSAExportPanelController;
 @class HSPublishComboDialog;
 @class HSHypertextLinksInspectorController;
