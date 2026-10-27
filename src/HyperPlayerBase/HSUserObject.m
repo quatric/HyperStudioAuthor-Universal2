@@ -1190,6 +1190,10 @@ done:
     return [super init];
 }
 
+- (void)verifyUnsupportedFeatures
+{
+}
+
 @end
 
 @implementation NSObject (ScriptKind)

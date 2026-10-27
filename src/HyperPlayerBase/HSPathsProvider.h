@@ -54,6 +54,13 @@
 - (id)hyperStudioSupportFolder;
 - (id)HSPathsProvider_applicationSupportName;
 - (void)dealloc;
+- (id)defaultTutorialsFolder;
+- (id)dotMacExportFolder;
+- (id)dotMacPluginsFolder;
+- (id)internetPluginsFolder;
+- (BOOL)isDefaultHomeStackURL:(id)aURL;
+- (BOOL)isSampleProjectURL:(id)aURL;
+- (BOOL)isTutorialURL:(id)aURL;
 @end
 
 @interface HSPathsProvider (PredefinedPathsCreation)

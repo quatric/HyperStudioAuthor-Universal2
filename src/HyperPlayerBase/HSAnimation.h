@@ -171,5 +171,17 @@
 - (BOOL)isEqual:(id)aEqual;
 - (void)dealloc;
 - (id)init;
+- (BOOL)hasPath;
+- (int)hideMode;
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
+- (float)relativeSpeedAtTime:(double)aTime;
+- (void)removeAttributeWithName:(id)aName;
+- (void)removePath;
+- (void)removeUnsupportedFeatures;
+- (void)setHideMode:(int)aMode;
+- (void)setTime:(double)aTime ofPathKeyFrameAtIndex:(int)aIndex;
+- (double)timeOfPathKeyFrameAtIndex:(int)aIndex;
+- (void)updatePathKeyFramesTo:(id)aFrames;
+- (void)updatePathTo:(id)aPath;
 @end
 

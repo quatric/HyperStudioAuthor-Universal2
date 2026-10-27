@@ -293,6 +293,53 @@ static NSString *HSPathsProviderDocumentsFolder = nil;
     [super dealloc];
 }
 
+- (id)defaultTutorialsFolder
+{
+    return [[NSBundle mainBundle] pathForResource:@"Tutorials" ofType:nil];
+}
+
+- (id)dotMacExportFolder
+{
+    if (_directoriesCache.dotMacExportFolder == nil) {
+        _directoriesCache.dotMacExportFolder = [@"/Sites" retain];
+    }
+    return _directoriesCache.dotMacExportFolder;
+}
+
+- (id)dotMacPluginsFolder
+{
+    if (_directoriesCache.dotMacPluginsFolder == nil) {
+        _directoriesCache.dotMacPluginsFolder = [@"/Library/Internet Plug-Ins" retain];
+    }
+    return _directoriesCache.dotMacPluginsFolder;
+}
+
+- (id)internetPluginsFolder
+{
+    if (_directoriesCache.dotMacExportFolder == nil) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSLocalDomainMask, YES);
+        if ([paths count] != 0) {
+            _directoriesCache.dotMacExportFolder = [[[paths objectAtIndex:0] stringByAppendingPathComponent:@"Internet Plug-Ins"] retain];
+        }
+    }
+    return _directoriesCache.dotMacExportFolder;
+}
+
+- (BOOL)isDefaultHomeStackURL:(id)aURL
+{
+    return [[self defaultHomeStackPath] isEqualToString:[aURL path]];
+}
+
+- (BOOL)isSampleProjectURL:(id)aURL
+{
+    return [[aURL path] rangeOfString:[self sampleProjectsFolder] options:NSCaseInsensitiveSearch].length != 0;
+}
+
+- (BOOL)isTutorialURL:(id)aURL
+{
+    return [[aURL path] rangeOfString:[self defaultTutorialsFolder] options:NSCaseInsensitiveSearch].length != 0;
+}
+
 @end
 
 @implementation HSPathsProvider (PredefinedPathsCreation)

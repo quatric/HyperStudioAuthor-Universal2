@@ -125,6 +125,7 @@
 - (BOOL)canHaveExtraInitializer;
 - (id)init;
 - (id)initUserObject;
+- (void)verifyUnsupportedFeatures;
 @end
 
 @interface NSObject (ScriptKind)

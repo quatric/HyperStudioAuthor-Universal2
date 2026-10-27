@@ -21,6 +21,7 @@
 @protocol HSSelectionKnobsProviderAttribute;
 @protocol HSStoredMenuItemTitleValidationSupport;
 @protocol HSCardViewOffset;
+@protocol HSHomeStackOpenInSeparateWindowAttribute;
 @protocol HSSystemTextFieldVisualPlaceholderAttribute;
 @protocol HSUndoableSubobjectsAttribute;
 @protocol HSUserObjectHitTesterAttribute;
@@ -1700,6 +1701,7 @@ struct HyperPlayerBase_anon3 {
     unsigned int menuVisible:1;
     unsigned int shouldPlayInFullScreen:1;
     unsigned int coveringDesktopMode:1;
+    unsigned int shouldSaveChangesMadeInBrowseMode:1;
 };
 
 struct HyperPlayerBase_anon4 {
@@ -1745,6 +1747,8 @@ struct HyperPlayerBase_anon7 {
     NSString *localApplicationSupportFolder;
     NSString *macKievSupportFolder;
     NSString *localMacKievSupportFolder;
+    NSString *dotMacExportFolder;
+    NSString *dotMacPluginsFolder;
     NSString *libraryMoviesFolder;
     NSString *defaultHomeStackPath;
     NSString *defaultTutorialStackPath;

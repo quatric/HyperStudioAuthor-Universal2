@@ -10,6 +10,7 @@
     NSString *_stackCompression;
     NSString *_password;
     NSString *_recentPassword;
+    BOOL _shouldHomeStackOpenInSeparateWindow;
     BOOL _isSnapToGridEnabled;
     BOOL _isSnapToObjectsEnabled;
     BOOL _arePresentationNotificationsSuspended;
@@ -23,6 +24,7 @@
     struct HyperPlayerBase_anon3 _presentationFlags;
     HSLayoutGrid *_layoutGrid;
     BOOL _isGridVisible;
+    HSNewMedia *_webAppIconMedia;
     NSMutableArray *_hiddenInPlayerObjects;
     NSMutableDictionary *_playedInPlayerMovieObjects;
     BOOL _containsWebCams;
@@ -140,6 +142,21 @@
 - (void)justInsertHyperChildren:(id)aChildren atIndexes:(id)aIndexes;
 - (void)dealloc;
 - (id)init;
+- (id)allActionsOfType:(id)aType shouldLoadChildren:(BOOL)aLoad;
+- (id)defaultWebAppIcon;
+- (id)ownedMediaUIDs;
+- (void)setShouldHomeStackOpenInSeparateWindow:(BOOL)aOpen;
+- (BOOL)shouldHomeStackOpenInSeparateWindow;
+- (void)setShouldSaveChangesMadeInBrowseMode:(BOOL)aSave;
+- (BOOL)shouldSaveChangesMadeInBrowseMode;
+- (void)setWebAppIcon:(id)aIcon;
+- (void)setWebAppIconMedia:(id)aMedia;
+- (id)webAppIconMedia;
+- (void)setWebAppIconMediaUID:(id)aUID;
+- (id)webAppIconMediaUID;
+- (id)webAppIcon;
+- (void)stopPlayingTemporaryObjects;
+- (void)verifyUnsupportedFeatures;
 @end
 
 @interface HSStack (HSValueConstraint)

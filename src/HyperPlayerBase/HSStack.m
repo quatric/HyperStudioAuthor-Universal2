@@ -1096,6 +1096,7 @@ static NSString *HSStackCommentsSeparator(NSString *aComments)
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_password release];
     [_recentPassword release];
+    [_webAppIconMedia release];
     [_stackCompression release];
     [_gridSettings release];
     [_layoutGrid release];
@@ -1127,6 +1128,163 @@ static NSString *HSStackCommentsSeparator(NSString *aComments)
         _presentationFlags.menuVisible = 1;
     }
     return self;
+}
+
+- (id)allActionsOfType:(id)aType shouldLoadChildren:(BOOL)aLoad
+{
+    if (aType == nil) {
+        return nil;
+    }
+    id links = [[self queryHyperInterface:@protocol(HSHypertextLinkContainerAttributes)] allLinks];
+    id enumerator = aLoad ? [self hyperDeepEnumerator] : [self hyperDeepLoadedNodeEnumerator];
+    NSMutableArray *objects = [NSMutableArray arrayWithArray:[enumerator allObjects]];
+    if ([links count] != 0) {
+        [objects addObjectsFromArray:links];
+    }
+    NSMutableSet *result = [NSMutableSet set];
+    [objects enumerateObjectsUsingBlock:^(id aObject, NSUInteger aIndex, BOOL *aStop) {
+        [[[aObject queryHyperInterface:@protocol(HSActor)] hyperActions] enumerateObjectsUsingBlock:^(id aAction, NSUInteger aActionIndex, BOOL *aActionStop) {
+            id action = [aAction queryHyperInterface:aType];
+            if (action != nil) {
+                [result addObject:action];
+            }
+        }];
+    }];
+    return result;
+}
+
+- (id)defaultWebAppIcon
+{
+    NSImage *image = [[[self children] extraFirstObject] imageWithVisualizationProtocol:@protocol(HSPlayerVisualization)];
+    NSSize size = [image size];
+    if (size.width == size.height) {
+        return image;
+    }
+    NSPoint offset = NSZeroPoint;
+    CGFloat side = size.width;
+    if (size.width <= size.height) {
+        offset.y = (size.height - size.width) * 0.5;
+    } else {
+        offset.x = (size.width - size.height) * 0.5;
+        side = size.height;
+    }
+    NSImage *square = [[[NSImage alloc] initWithSize:NSMakeSize(side, side)] autorelease];
+    [square lockFocus];
+    [image drawAtPoint:NSZeroPoint fromRect:NSMakeRect(offset.x, offset.y, side, side) operation:NSCompositeSourceOver fraction:1.0];
+    [square unlockFocus];
+    return square;
+}
+
+- (id)ownedMediaUIDs
+{
+    if ([self webAppIconMediaUID] == nil) {
+        return nil;
+    }
+    return [NSCountedSet setWithObject:[self webAppIconMediaUID]];
+}
+
+- (void)setShouldHomeStackOpenInSeparateWindow:(BOOL)aOpen
+{
+    if (aOpen != _shouldHomeStackOpenInSeparateWindow) {
+        [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Checkbox Selection" value:@"" table:@"UndoManager"]];
+        [[[self undoManager] prepareWithInvocationTarget:self] setShouldHomeStackOpenInSeparateWindow:_shouldHomeStackOpenInSeparateWindow];
+        [self notifyChange:1 ofAttribute:@protocol(HSHomeStackOpenInSeparateWindowAttribute) withUserInfo:nil];
+        _shouldHomeStackOpenInSeparateWindow = aOpen;
+        [self notifyChange:2 ofAttribute:@protocol(HSHomeStackOpenInSeparateWindowAttribute) withUserInfo:nil];
+    }
+}
+
+- (BOOL)shouldHomeStackOpenInSeparateWindow
+{
+    return _shouldHomeStackOpenInSeparateWindow;
+}
+
+- (void)setShouldSaveChangesMadeInBrowseMode:(BOOL)aSave
+{
+    if (_presentationFlags.shouldSaveChangesMadeInBrowseMode != aSave) {
+        [self notifyChange:1 ofAttribute:@protocol(HSStackPresentationModeAttributes) withUserInfo:nil];
+        [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Player View Settings" value:@"" table:@"UndoManager"]];
+        [[[self undoManager] prepareWithInvocationTarget:self] setShouldSaveChangesMadeInBrowseMode:_presentationFlags.shouldSaveChangesMadeInBrowseMode];
+        _presentationFlags.shouldSaveChangesMadeInBrowseMode = aSave;
+        [self notifyChange:2 ofAttribute:@protocol(HSStackPresentationModeAttributes) withUserInfo:nil];
+    }
+}
+
+- (BOOL)shouldSaveChangesMadeInBrowseMode
+{
+    return _presentationFlags.shouldSaveChangesMadeInBrowseMode;
+}
+
+- (void)setWebAppIcon:(id)aIcon
+{
+    if ([self webAppIcon] != aIcon) {
+        [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Edit Web App Icon" value:@"" table:@"UndoManager"]];
+        [[self undoManager] registerUndoWithTarget:self selector:@selector(setWebAppIcon:) object:[self webAppIcon]];
+        [self setWebAppIconMedia:[HSNewMedia mediaWithImage:aIcon]];
+    }
+}
+
+- (void)setWebAppIconMedia:(id)aMedia
+{
+    if (_webAppIconMedia != aMedia) {
+        [_webAppIconMedia release];
+        _webAppIconMedia = [aMedia retain];
+    }
+}
+
+- (id)webAppIconMedia
+{
+    return _webAppIconMedia;
+}
+
+- (void)setWebAppIconMediaUID:(id)aUID
+{
+    id media = [[HSNewMediaAccessor sharedMediaAccessor] mediaForUID:aUID];
+    if ([[media imageRepresentation] image] == nil) {
+        media = [HSNewMedia mediaWithImage:[[[NSImage alloc] initWithData:[media mediaData]] autorelease]];
+    }
+    [self setWebAppIconMedia:media];
+}
+
+- (id)webAppIconMediaUID
+{
+    return [[self webAppIconMedia] mediaUID];
+}
+
+- (id)webAppIcon
+{
+    id image = [[[self webAppIconMedia] imageRepresentation] image];
+    if (image == nil) {
+        image = [self defaultWebAppIcon];
+    }
+    return image;
+}
+
+- (void)stopPlayingTemporaryObjects
+{
+    for (id object in [self temporaryObjects]) {
+        id playable = [object queryHyperInterface:@protocol(HSPlayableObjectAttributes)];
+        if ([playable isHyperPlaying]) {
+            [playable hyperStop];
+        }
+    }
+}
+
+- (void)verifyUnsupportedFeatures
+{
+    [[self undoManager] disableUndoRegistration];
+    [[self queryHyperInterface:@protocol(HSActor)] setHyperActions:nil];
+    [self setPresentationCoveringDesktopMode:NO];
+    [self setPresentationPlaysWithoutTitleBar:NO];
+    [self setPresentationMenuVisible:YES];
+    [self setShouldPlayInFullScreen:NO];
+    [self setShouldHomeStackOpenInSeparateWindow:NO];
+    id cursorAttributes = [self queryHyperInterface:@protocol(HSCursorAttributes)];
+    if ([[cursorAttributes hyperCursor] imageMedia] != nil) {
+        [cursorAttributes setHyperCursor:nil];
+    }
+    [[self undoManager] enableUndoRegistration];
+    [super verifyUnsupportedFeatures];
 }
 
 @end

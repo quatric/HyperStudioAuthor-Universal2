@@ -14,6 +14,7 @@
     BOOL _dontCenterPrintout;
     BOOL _printAllPages;
     HSNavigationController *_navigationController;
+    HSHistoryStack *_historyStack;
     BOOL _needsUpdateSlideshowCache;
     NSString *_imageCachePath;
     NSString *_requiredSlideshowItemType;
@@ -169,6 +170,15 @@
 - (void)destoryModelIfNeeded;
 - (void)dealloc;
 - (id)init;
+- (id)historyStack;
+- (BOOL)isDefaultHomeStack;
+- (BOOL)isInViewingMode;
+- (BOOL)isPaused;
+- (BOOL)isTutorialStack;
+- (void)pause;
+- (void)resume;
+- (void)setHistoryStack:(id)aStack;
++ (BOOL)forceShowSystemErrorForNSError:(id)aError;
 @end
 
 @interface HSDocument (CardPreviewImages)

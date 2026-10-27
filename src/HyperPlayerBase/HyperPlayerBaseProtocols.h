@@ -4762,3 +4762,7 @@
 - (NSSize)cardOffset;
 - (void)setCardOffset:(NSSize)aOffset;
 @end
+
+@protocol HSHomeStackOpenInSeparateWindowAttribute <HSAttribute>
+- (BOOL)shouldHomeStackOpenInSeparateWindow;
+@end

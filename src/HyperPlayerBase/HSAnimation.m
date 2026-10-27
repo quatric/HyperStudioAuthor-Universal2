@@ -1087,4 +1087,67 @@
     return self;
 }
 
+- (BOOL)hasPath
+{
+    return [[self structure] hasPath];
+}
+
+- (int)hideMode
+{
+    return [[self options] hideMode];
+}
+
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext
+{
+    [super loadExtraDictionaryRepresentation:aRepresentation withCodingContext:aContext];
+    if ([self isOnePointPathAnimation]) {
+        [self setLoopMode:1];
+    }
+}
+
+- (float)relativeSpeedAtTime:(double)aTime
+{
+    return [[self structure] relativeSpeedAtTime:aTime];
+}
+
+- (void)removeAttributeWithName:(id)aName
+{
+    [[self structure] removeAttributeWithName:aName];
+}
+
+- (void)removePath
+{
+    [[self structure] clear];
+}
+
+- (void)removeUnsupportedFeatures
+{
+    [[self options] removeUnsupportedFeatures];
+}
+
+- (void)setHideMode:(int)aMode
+{
+    [[self options] setHideMode:aMode];
+}
+
+- (void)setTime:(double)aTime ofPathKeyFrameAtIndex:(int)aIndex
+{
+    [[self structure] setTime:aTime ofPathKeyFrameAtIndex:aIndex];
+}
+
+- (double)timeOfPathKeyFrameAtIndex:(int)aIndex
+{
+    return [[self structure] timeOfPathKeyFrameAtIndex:aIndex];
+}
+
+- (void)updatePathKeyFramesTo:(id)aFrames
+{
+    [[self structure] updatePathKeyFramesTo:aFrames];
+}
+
+- (void)updatePathTo:(id)aPath
+{
+    [[self structure] updatePathTo:aPath];
+}
+
 @end

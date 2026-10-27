@@ -400,6 +400,38 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
     [super dealloc];
 }
 
+- (id)exportCompatibilityChecker
+{
+    return _exportCompatibilityChecker;
+}
+
+- (BOOL)isPauseResumeEnabled
+{
+    return [[HSApplicationController sharedDocumentController] isPauseResumeEnabled];
+}
+
+- (void)setWasWindowRestoration:(BOOL)aRestoration
+{
+    _wasWindowRestoration = aRestoration;
+}
+
+- (void)startHTML5CompatibilityCheckForDocument:(id)aDocument
+{
+    _exportCompatibilityChecker = [[HSAHTML5ExportCompatibilityChecker alloc] init];
+    [_exportCompatibilityChecker setVerifiableDocumentURL:aDocument];
+}
+
+- (void)stopHTML5CompatibilityCheckForDocument
+{
+    [_exportCompatibilityChecker release];
+    _exportCompatibilityChecker = nil;
+}
+
+- (BOOL)wasWindowRestoration
+{
+    return _wasWindowRestoration;
+}
+
 @end
 
 @implementation HSApplicationController (IBActions)

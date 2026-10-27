@@ -14,8 +14,10 @@
     id _previousCardMenuItem;
     BOOL _ignoreVersioning;
     BOOL _resolvingError;
+    BOOL _wasWindowRestoration:1;
     HSMainWindowController *_sharedMainWindowController;
     BOOL _appModalEULADialogIsShowing;
+    HSAHTML5ExportCompatibilityChecker *_exportCompatibilityChecker;
 }
 + (id)buildVersionString;
 + (void)restoreWindowWithIdentifier:(id)aIdentifier state:(id)aState completionHandler:(id /* block */)aHandler;
@@ -54,6 +56,12 @@
 - (id)selectedHyperObject;
 - (Class)defaultNavigationControllerClass;
 - (void)dealloc;
+- (id)exportCompatibilityChecker;
+- (BOOL)isPauseResumeEnabled;
+- (void)setWasWindowRestoration:(BOOL)aRestoration;
+- (void)startHTML5CompatibilityCheckForDocument:(id)aDocument;
+- (void)stopHTML5CompatibilityCheckForDocument;
+- (BOOL)wasWindowRestoration;
 @end
 
 @interface HSApplicationController (IBActions)

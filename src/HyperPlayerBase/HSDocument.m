@@ -1423,6 +1423,64 @@ static NSString *sPlatformInformation;
     return self;
 }
 
+- (id)historyStack
+{
+    if (_historyStack == nil) {
+        _historyStack = [HSHistoryStack new];
+    }
+    return _historyStack;
+}
+
+- (BOOL)isDefaultHomeStack
+{
+    return [[HSPathsProvider sharedPathsProvider] isDefaultHomeStackURL:[self fileURL]];
+}
+
+- (BOOL)isInViewingMode
+{
+    if ([self isTutorialStack]) {
+        return YES;
+    }
+    if ([self isDefaultHomeStack]) {
+        return NO;
+    }
+    return [super isInViewingMode];
+}
+
+- (BOOL)isPaused
+{
+    return NO;
+}
+
+- (BOOL)isTutorialStack
+{
+    return [[HSPathsProvider sharedPathsProvider] isTutorialURL:[self fileURL]];
+}
+
+- (void)pause
+{
+}
+
+- (void)resume
+{
+}
+
+- (void)setHistoryStack:(id)aStack
+{
+    if (_historyStack != aStack) {
+        [_historyStack release];
+        _historyStack = [aStack retain];
+    }
+}
+
++ (BOOL)forceShowSystemErrorForNSError:(id)aError
+{
+    if ([self respondsToSelector:@selector(autosavesInPlace)] && [self autosavesInPlace]) {
+        return [aError code] == 0x200 || [aError code] == 0xc00 || [aError code] == 0x201;
+    }
+    return NO;
+}
+
 @end
 
 @implementation HSDocument (CardPreviewImages)
