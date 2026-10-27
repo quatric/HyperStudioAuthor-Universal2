@@ -77,12 +77,7 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 - (void)deactivate
 {
     _isActive = 0;
-    id undoManager = [_document undoManager];
-    if (undoManager != nil)
-    {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
-    }
+    [self unregisterNotificationForUndoManager];
     if (_arduinoWatchers != nil)
         [[NSNotificationCenter defaultCenter] removeObserver:self name:HSArduinoDevicePinStateDidChangeNotification object:[HSArduinoDevice defaultDevice]];
     [self shutDownSpeechRecognition];
@@ -104,12 +99,12 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
         if (device != nil)
             [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_arduinoDevicePinConfigurationDidChange:) name:HSArduinoDevicePinStateDidChangeNotification object:device];
     }
-    _hasPresentationChanges = 0;
+    _hasChangesInPlayerMode = 0;
     id undoManager = [_document undoManager];
     if (undoManager != nil)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidOpenUndoGroup:) name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidRemoveAllUndoActions:) name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidRemoveAllActions:) name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
     }
     _isActive = 1;
 }
@@ -123,12 +118,12 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 
     // Undo every change the presentation made since the stack was opened.
     NSUndoManager *undoManager = [_document undoManager];
-    if (_hasPresentationChanges && undoManager != nil)
+    if (_hasChangesInPlayerMode && undoManager != nil)
     {
         [[self cardView] deactivateActiveTextField];
         // The original looped without checking canUndo, which never ends
         // when the undo stack runs out first.
-        while (_hasPresentationChanges && [undoManager canUndo])
+        while (_hasChangesInPlayerMode && [undoManager canUndo])
             [undoManager undo];
     }
 
@@ -160,10 +155,10 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 - (void)HSActionExecutionContext_undoManagerDidOpenUndoGroup:(id)aGroup
 {
     id undoManager = [_document undoManager];
-    if (_hasPresentationChanges || undoManager == nil)
+    if (_hasChangesInPlayerMode || undoManager == nil)
         return;
-    [[undoManager prepareWithInvocationTarget:self] HSActionExecutionContext_setHasPresentationChanges:NO];
-    _hasPresentationChanges = 1;
+    [[undoManager prepareWithInvocationTarget:self] HSActionExecutionContext_setHasChangesInPlayerMode:NO];
+    _hasChangesInPlayerMode = 1;
 }
 
 - (void)handleClickInInteractiveLayer
@@ -815,14 +810,14 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
         [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
         [[NSNotificationCenter defaultCenter] removeObserver:self name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
     }
-    _hasPresentationChanges = 0;
+    _hasChangesInPlayerMode = 0;
     [self shutDownSpeechRecognition];
     _document = aDocument;
     undoManager = [aDocument undoManager];
     if (_isActive && undoManager != nil)
     {
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidOpenUndoGroup:) name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidRemoveAllUndoActions:) name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidRemoveAllActions:) name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
     }
 }
 
@@ -1186,6 +1181,68 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     if (self != nil)
         _document = aDocument;
     return self;
+}
+
+- (BOOL)hasChangesInPlayerMode
+{
+    return _hasChangesInPlayerMode;
+}
+
+- (void)setHasChangesInPlayerMode:(BOOL)aChanges
+{
+    _hasChangesInPlayerMode = aChanges;
+}
+
+- (void)HSActionExecutionContext_setHasChangesInPlayerMode:(BOOL)aChanges
+{
+    [[[_document undoManager] prepareWithInvocationTarget:self] HSActionExecutionContext_setHasChangesInPlayerMode:[self hasChangesInPlayerMode]];
+    [self setHasChangesInPlayerMode:aChanges];
+}
+
+- (void)HSActionExecutionContext_undoManagerDidRemoveAllActions:(id)aActions
+{
+    [self setHasChangesInPlayerMode:NO];
+}
+
+- (void)invalidateScrollCardAnimation
+{
+    [_scrollCardAnimation stopAnimation];
+    [_scrollCardAnimation setDelegate:nil];
+    [_scrollCardAnimation release];
+    _scrollCardAnimation = nil;
+}
+
+- (void)pauseSpeechRecognition
+{
+    if (_speechRecognizer != nil) {
+        [_currentSpeechRecognitionCommands release];
+        _currentSpeechRecognitionCommands = [[[self speechRecognizer] commands] retain];
+        [self shutDownSpeechRecognition];
+    }
+}
+
+- (void)resumeSpeechRecognition
+{
+    if ([_currentSpeechRecognitionCommands count] != 0)
+        [self addSpeechCommands:_currentSpeechRecognitionCommands];
+}
+
+- (void)registerNotificationForUndoManager
+{
+    id undoManager = [_document undoManager];
+    if (_isActive && undoManager != nil) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidRemoveAllActions:) name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSActionExecutionContext_undoManagerDidOpenUndoGroup:) name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
+    }
+}
+
+- (void)unregisterNotificationForUndoManager
+{
+    id undoManager = [_document undoManager];
+    if (undoManager != nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:HSUndoManagerDidRemoveAllActionsNotification object:undoManager];
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:NSUndoManagerDidOpenUndoGroupNotification object:undoManager];
+    }
 }
 
 @end

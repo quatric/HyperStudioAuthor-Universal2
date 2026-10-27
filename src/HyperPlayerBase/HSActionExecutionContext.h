@@ -26,8 +26,10 @@
     id<HSArduinoWatchers> _arduinoWatchers;
     BOOL _isCardChangeTransitionPlaying;
     unsigned int _isActive:1;
-    unsigned int _hasPresentationChanges:1;
+    unsigned int _hasChangesInPlayerMode:1;
     NSMutableSet *_sequencerRequestorToIgnore;
+    NSArray *_currentSpeechRecognitionCommands;
+    NSAnimation *_scrollCardAnimation;
 }
 - (void)notifyUserAboutActionRunningFailureIfNeeded:(id)aNeeded;
 - (void)actionRunningFailureAlertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
@@ -41,9 +43,9 @@
 - (void)deactivate;
 - (void)activate;
 - (void)restoreStack;
-- (void)HSActionExecutionContext_undoManagerDidRemoveAllUndoActions:(id)aActions;
+- (void)HSActionExecutionContext_undoManagerDidRemoveAllActions:(id)aActions;
 - (void)HSActionExecutionContext_undoManagerDidOpenUndoGroup:(id)aGroup;
-- (void)HSActionExecutionContext_setHasPresentationChanges:(BOOL)aChanges;
+- (void)HSActionExecutionContext_setHasChangesInPlayerMode:(BOOL)aChanges;
 - (void)handleClickInInteractiveLayer;
 - (BOOL)handleMouseDownEvent:(id)aEvent;
 - (BOOL)handleKeyUpEvent:(id)aEvent;
@@ -183,5 +185,12 @@
 - (NSInteger)mode;
 - (void)dealloc;
 - (id)initWithDocument:(id)aDocument;
+- (BOOL)hasChangesInPlayerMode;
+- (void)setHasChangesInPlayerMode:(BOOL)aChanges;
+- (void)invalidateScrollCardAnimation;
+- (void)pauseSpeechRecognition;
+- (void)resumeSpeechRecognition;
+- (void)registerNotificationForUndoManager;
+- (void)unregisterNotificationForUndoManager;
 @end
 
