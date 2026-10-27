@@ -13,6 +13,7 @@
     id _mainAreaTintedView;
     id _bottomAreaTintedView;
     HSThisCardSelectionHolder *_thisCardSelectionHolder;
+    id _swipeTracker;
     HSSoundRecordingController *_soundRecordingController;
     HSVideoRecordingController *_videoRecordingController;
     HSWebcamWorkshopController *_webcamWorkshopController;
@@ -22,6 +23,7 @@
     HSActionEvent *_playSoundActionEvent;
     HSImportDialogController *_importSoundObjectDialogController;
     HSImportDialogController *_importMoviesObjectDialogController;
+    HSImportDialogController *_importDialogControllerActiveLast;
     BOOL _wasMediaStripVisible;
     HSStackTextProvider *_stackTextProvider;
     id _fieldEditor;
@@ -34,6 +36,18 @@
     BOOL _addChildrenGroupingIsInProgress;
     BOOL _alertHaveShowedForThisGroup;
     BOOL _stackSelectionHostWasCurrentBeforeAssistantHide;
+    BOOL _wasToolPaletteVisible:1;
+    BOOL _wasLibraryPaletteVisible:1;
+    BOOL _wasLayoutPaletteVisible:1;
+    BOOL _wasObjectListPaletteVisible:1;
+    BOOL _wasCommentsAndAttributionsPaletteVisible:1;
+    BOOL _wasShortcutsPaletteVisible:1;
+    BOOL _wasToolbarVisible:1;
+    BOOL _wasMenuVisible:1;
+    BOOL _wasCardIndexVisible:1;
+    BOOL _wasBottomToolbarVisible:1;
+    BOOL _wasObjectAssistantVisible:1;
+    id _selectedObjectForAssistantRefresh;
 }
 + (id)palettesArrayIncludingLibrary:(BOOL)aLibrary toolPalette:(BOOL)aPalette layoutPalette:(BOOL)aPalette2 objectListPalette:(BOOL)aPalette3 commentsAndAttributionsPalette:(BOOL)aPalette4 shortcutsPalette:(BOOL)aPalette5;
 + (id)loadImageAtPath:(id)aPath error:(id *)aError;
@@ -344,6 +358,37 @@
 - (void)setDocument:(id)aDocument;
 - (void)dealloc;
 - (id)initWithWindow:(id)aWindow;
+- (void)addSoundComboDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)captureDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)cardViewOccupiedByToolDidChange:(id)aChange;
+- (void)easyLinkDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)textFieldTamerDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)importMovieDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)openEffectsDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)soundAddingOptionsDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)importSoundObjectDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)importMediaObjectDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)hideFixedToolbars;
+- (void)hideFloatingPalettes;
+- (void)restoreFixedToolbars;
+- (void)restoreFloatingPalettes;
+- (void)inspectorsRestoration;
+- (BOOL)isCurrentCardNotTitle;
+- (void)mediaStripSwitcherDidShowMediaStrip;
+- (void)mediaStripSwitcherWillHideMediaStrip;
+- (Class)navigationControllerClass;
+- (void)navigationControllerDidFinishNavigationOperation:(id)aOperation;
+- (void)nodeContainer:(id)aContainer didLoadChildren:(id)aChildren;
+- (void)notifyDidEnterVersionBrowser:(id)aBrowser;
+- (void)notifyDidExitVersionBrowser:(id)aBrowser;
+- (void)notifyWillEnterVersionBrowser:(id)aBrowser;
+- (void)objectAssistantLockStateDidChange:(id)aChange;
+- (void)refreshObjectsAssistant;
+- (void)setSelectedObjectForAssistantRefresh:(id)aRefresh;
+- (void)storeDocumentWindowState:(id)aState;
+- (id)swipeTracker;
+- (void)windowDidLoad;
+- (BOOL)windowShouldClose:(id)aClose;
 @end
 
 @interface SMKSegmentedControl (UserInterfaceValidation)

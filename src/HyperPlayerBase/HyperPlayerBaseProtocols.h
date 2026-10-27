@@ -4757,3 +4757,8 @@
 - (void)sortByHyperOrder;
 - (id)weightForDelta:(double)aDelta betweenWeight:(id)aWeight andWeight:(id)aWeight2;
 @end
+
+@protocol HSCardViewOffset <NSObject>
+- (NSSize)cardOffset;
+- (void)setCardOffset:(NSSize)aOffset;
+@end

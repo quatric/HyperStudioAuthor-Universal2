@@ -20,6 +20,7 @@
 @protocol HSPlayerVisualization;
 @protocol HSSelectionKnobsProviderAttribute;
 @protocol HSStoredMenuItemTitleValidationSupport;
+@protocol HSCardViewOffset;
 @protocol HSSystemTextFieldVisualPlaceholderAttribute;
 @protocol HSUndoableSubobjectsAttribute;
 @protocol HSUserObjectHitTesterAttribute;

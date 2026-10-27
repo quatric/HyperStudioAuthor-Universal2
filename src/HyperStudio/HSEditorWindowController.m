@@ -205,55 +205,6 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     return self_00;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001efa2 @ 0001efa2, 473 bytes * /
-
-id FUN_0001efa2(id self,SEL _cmd,id loadImageAtPath,id *error)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  float fVar5;
-  float fVar6;
-  undefined4 uVar7;
-  
-  if (loadImageAtPath != (id)0x0) {
-    uVar7 = 1;
-    pvVar1 = _objc_msgSend(cls_NSData,sel_dataWithContentsOfFile_options_error_,loadImageAtPath,1,
-                           error);
-    if (pvVar1 != (id)0x0) {
-      pvVar3 = pvVar1;
-      pvVar2 = _objc_msgSend(cls_NSBitmapImageRep,sel_canInitWithData_,pvVar1,uVar7,error);
-      if (((char)pvVar2 == '\0') ||
-         (pvVar2 = _objc_msgSend(cls_NSBitmapImageRep,sel_imageRepWithData_,pvVar1,uVar7,error),
-         pvVar3 = pvVar1, pvVar2 == (id)0x0)) {
-        pvVar1 = _objc_msgSend(cls_NSImage,sel_alloc,pvVar3,uVar7,error);
-        pvVar1 = _objc_msgSend(pvVar1,sel_initWithContentsOfFile_,loadImageAtPath);
-        pvVar1 = _objc_msgSend(pvVar1,sel_autorelease);
-        return pvVar1;
-      }
-      pvVar3 = _objc_msgSend(pvVar2,sel_pixelsHigh,pvVar1,uVar7,error);
-      pvVar4 = _objc_msgSend(pvVar2,sel_pixelsWide);
-      fVar5 = (float)(int)pvVar4;
-      if ((fVar5 != 0.0) && (fVar6 = (float)(int)pvVar3, fVar6 != 0.0)) {
-        pvVar1 = _objc_msgSend(cls_NSImage,sel_alloc,pvVar1,uVar7,error,fVar6,fVar5);
-        pvVar1 = _objc_msgSend(pvVar1,sel_initWithSize_,fVar5,fVar6);
-        _objc_msgSend(pvVar1,sel_addRepresentation_,pvVar2);
-        pvVar3 = _objc_msgSend(pvVar1,sel_isValid);
-        if ((char)pvVar3 != '\0') {
-          _objc_msgSend(pvVar1,sel_autorelease,pvVar2,fVar6);
-          return pvVar1;
-        }
-        _objc_msgSend(pvVar1,sel_release,pvVar2,fVar6);
-      }
-    }
-  }
-  return (id)0x0;
-}
-
-*/
 + (id)loadImageAtPath:(id)aPath error:(id *)aError
 {
     if (aPath != nil) {
@@ -281,40 +232,6 @@ id FUN_0001efa2(id self,SEL _cmd,id loadImageAtPath,id *error)
     return nil;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001ee98 @ 0001ee98, 266 bytes * /
-
-BOOL FUN_0001ee98(id self,SEL _cmd,id canResizeAndRotateObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  char cVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canResizeAndRotateObject);
-  cVar3 = (char)pvVar1;
-  if (cVar3 == '\0') {
-    puVar4 = &DAT_003620c8;
-    pvVar1 = _objc_msgSend(canResizeAndRotateObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar1,sel_canRotate);
-    if ((((char)pvVar2 == '\0') ||
-        ((pvVar2 = _objc_msgSend(pvVar1,sel_canResizeHorizontally,puVar4), (char)pvVar2 == '\0' &&
-         (pvVar2 = _objc_msgSend(pvVar1,sel_canScaleHorizontally,puVar4), (char)pvVar2 == '\0'))))
-       || ((pvVar2 = _objc_msgSend(pvVar1,sel_canResizeVertically,puVar4), (char)pvVar2 == '\0' &&
-           (pvVar1 = _objc_msgSend(pvVar1,sel_canScaleVertically), (char)pvVar1 == '\0')))) {
-      cVar3 = '\0';
-    }
-    else {
-      pvVar1 = _objc_msgSend(canResizeAndRotateObject,sel_queryHyperInterface_,&DAT_003612cc);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-      cVar3 = (char)pvVar1 == '\0';
-    }
-  }
-  return cVar3;
-}
-
-*/
 + (BOOL)canResizeAndRotateObject:(id)aObject
 {
     BOOL result = [self isValidSelectionTool:aObject];
@@ -329,41 +246,6 @@ BOOL FUN_0001ee98(id self,SEL _cmd,id canResizeAndRotateObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001ed74 @ 0001ed74, 292 bytes * /
-
-BOOL FUN_0001ed74(id self,SEL _cmd,id canMoveAndResizeObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  char cVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canMoveAndResizeObject);
-  cVar3 = (char)pvVar1;
-  if (cVar3 == '\0') {
-    puVar4 = &DAT_003620c8;
-    pvVar1 = _objc_msgSend(canMoveAndResizeObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar1,sel_canMoveHorizontally);
-    if (((((char)pvVar2 == '\0') ||
-         (pvVar2 = _objc_msgSend(pvVar1,sel_canMoveVertically,puVar4), (char)pvVar2 == '\0')) ||
-        ((pvVar2 = _objc_msgSend(pvVar1,sel_canResizeHorizontally,puVar4), (char)pvVar2 == '\0' &&
-         (pvVar2 = _objc_msgSend(pvVar1,sel_canScaleHorizontally,puVar4), (char)pvVar2 == '\0'))))
-       || ((pvVar2 = _objc_msgSend(pvVar1,sel_canResizeVertically), (char)pvVar2 == '\0' &&
-           (pvVar1 = _objc_msgSend(pvVar1,sel_canScaleVertically), (char)pvVar1 == '\0')))) {
-      cVar3 = '\0';
-    }
-    else {
-      pvVar1 = _objc_msgSend(canMoveAndResizeObject,sel_queryHyperInterface_,&DAT_003612cc);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-      cVar3 = (char)pvVar1 == '\0';
-    }
-  }
-  return cVar3;
-}
-
-*/
 + (BOOL)canMoveAndResizeObject:(id)aObject
 {
     BOOL result = [self isValidSelectionTool:aObject];
@@ -378,37 +260,6 @@ BOOL FUN_0001ed74(id self,SEL _cmd,id canMoveAndResizeObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001ecb0 @ 0001ecb0, 196 bytes * /
-
-BOOL FUN_0001ecb0(id self,SEL _cmd,id canMoveObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  char cVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canMoveObject);
-  cVar3 = (char)pvVar1;
-  if (cVar3 == '\0') {
-    puVar4 = &DAT_003620c8;
-    pvVar1 = _objc_msgSend(canMoveObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar1,sel_canMoveHorizontally);
-    if (((char)pvVar2 == '\0') ||
-       (pvVar1 = _objc_msgSend(pvVar1,sel_canMoveVertically,puVar4), (char)pvVar1 == '\0')) {
-      cVar3 = '\0';
-    }
-    else {
-      pvVar1 = _objc_msgSend(canMoveObject,sel_queryHyperInterface_,&DAT_003612cc);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-      cVar3 = (char)pvVar1 == '\0';
-    }
-  }
-  return cVar3;
-}
-
-*/
 + (BOOL)canMoveObject:(id)aObject
 {
     BOOL result = [self isValidSelectionTool:aObject];
@@ -449,53 +300,6 @@ BOOL FUN_0001ecb0(id self,SEL _cmd,id canMoveObject)
     return bVar3;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001ea61 @ 0001ea61, 351 bytes * /
-
-BOOL FUN_0001ea61(id self,SEL _cmd,id canFlipUpsideDownObject)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  char cVar3;
-  
-  pvVar2 = _objc_msgSend(self,sel_isValidSelectionTool_,canFlipUpsideDownObject);
-  if (((((char)pvVar2 == '\0') &&
-       (pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_implementsHyperInterface_,&DAT_00361f38),
-       (char)pvVar2 == '\0')) &&
-      (pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_implementsHyperInterface_,&DAT_00361f4c),
-      (char)pvVar2 == '\0')) &&
-     (pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_implementsHyperInterface_,&DAT_00361970),
-     (char)pvVar2 == '\0')) {
-    cVar3 = '\0';
-  }
-  else {
-    cVar3 = '\x01';
-  }
-  pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_implementsHyperInterface_,&DAT_003613d0);
-  if ((char)pvVar2 == '\0') {
-    if (cVar3 != '\0') {
-      return cVar3;
-    }
-  }
-  else if (cVar3 != '\0') {
-    pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_queryHyperInterface_,&DAT_003613d0);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isEmpty);
-    if ((char)pvVar2 == '\0') {
-      return '\x01';
-    }
-  }
-  BVar1 = '\0';
-  pvVar2 = _objc_msgSend(self,sel_isValidTransformableObject_,canFlipUpsideDownObject);
-  if ((char)pvVar2 != '\0') {
-    pvVar2 = _objc_msgSend(canFlipUpsideDownObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar2,sel_canFlipVertically);
-    BVar1 = (BOOL)pvVar2;
-  }
-  return BVar1;
-}
-
-*/
 + (BOOL)canFlipUpsideDownObject:(id)aObject
 {
     BOOL editable = [self isValidSelectionTool:aObject]
@@ -516,53 +320,6 @@ BOOL FUN_0001ea61(id self,SEL _cmd,id canFlipUpsideDownObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e902 @ 0001e902, 351 bytes * /
-
-BOOL FUN_0001e902(id self,SEL _cmd,id canFlipSidewaysObject)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  char cVar3;
-  
-  pvVar2 = _objc_msgSend(self,sel_isValidSelectionTool_,canFlipSidewaysObject);
-  if (((((char)pvVar2 == '\0') &&
-       (pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_implementsHyperInterface_,&DAT_00361f38),
-       (char)pvVar2 == '\0')) &&
-      (pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_implementsHyperInterface_,&DAT_00361f4c),
-      (char)pvVar2 == '\0')) &&
-     (pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_implementsHyperInterface_,&DAT_00361970),
-     (char)pvVar2 == '\0')) {
-    cVar3 = '\0';
-  }
-  else {
-    cVar3 = '\x01';
-  }
-  pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_implementsHyperInterface_,&DAT_003613d0);
-  if ((char)pvVar2 == '\0') {
-    if (cVar3 != '\0') {
-      return cVar3;
-    }
-  }
-  else if (cVar3 != '\0') {
-    pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_queryHyperInterface_,&DAT_003613d0);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isEmpty);
-    if ((char)pvVar2 == '\0') {
-      return '\x01';
-    }
-  }
-  BVar1 = '\0';
-  pvVar2 = _objc_msgSend(self,sel_isValidTransformableObject_,canFlipSidewaysObject);
-  if ((char)pvVar2 != '\0') {
-    pvVar2 = _objc_msgSend(canFlipSidewaysObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar2,sel_canFlipHorizontally);
-    BVar1 = (BOOL)pvVar2;
-  }
-  return BVar1;
-}
-
-*/
 + (BOOL)canFlipSidewaysObject:(id)aObject
 {
     BOOL editable = [self isValidSelectionTool:aObject]
@@ -583,201 +340,6 @@ BOOL FUN_0001e902(id self,SEL _cmd,id canFlipSidewaysObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001f4e3 @ 0001f4e3, 1063 bytes * /
-
-/* WARNING: Type propagation algorithm not settling * /
-
-id FUN_0001f4e3(id self,SEL _cmd,id transformImage,CGAffineTransform transform,CGRect *pathRect)
-
-{
-  float fVar1;
-  float fVar2;
-  float fVar3;
-  float fVar4;
-  float fVar5;
-  float *pfVar6;
-  id pvVar7;
-  float fVar8;
-  longdouble lVar9;
-  float *apfStack_c8 [3];
-  float local_88;
-  float local_84;
-  id local_74;
-  float local_6c;
-  float local_68;
-  float local_64;
-  float local_60;
-  float local_4c;
-  float fStack_48;
-  float local_3c;
-  float local_38;
-  float local_24;
-  float local_20;
-  
-  pfVar6 = (float *)&stack0xffffff44;
-  apfStack_c8[2] = (float *)0x1f50d;
-  _objc_msgSend(transformImage,sel_imageSize);
-  if (transformImage == (id)0x0) {
-    local_74 = (id)0x0;
-    pvVar7 = (id)0x0;
-    goto LAB_0001f8d5;
-  }
-  if (pathRect == (CGRect *)0x0) {
-    apfStack_c8[2] = (float *)0x1f56c;
-    _CGRectIntegral();
-    pfVar6 = (float *)(apfStack_c8 + 2);
-    local_4c = transform.tx;
-    fStack_48 = transform.ty;
-    local_84 = *(float *)PTR_0033608c;
-    local_88 = *(float *)(PTR_0033608c + 4);
-  }
-  else {
-    apfStack_c8[2] = (float *)0x1f5f1;
-    _CGRectIntegral();
-    local_3c = local_64;
-    local_38 = local_60;
-    local_4c = transform.tx - local_6c;
-    fStack_48 = transform.ty - local_68;
-    apfStack_c8[2] = &local_24;
-    apfStack_c8[1] = (float *)0x1f67f;
-    _CGRectIntegral();
-    pfVar6 = (float *)(apfStack_c8 + 1);
-    local_84 = local_24;
-    local_88 = local_20;
-  }
-  if (0.0 < local_3c) {
-    *pfVar6 = local_3c;
-    pfVar6[-1] = 1.8034e-40;
-    lVar9 = (longdouble)_ceilf();
-    *pfVar6 = (float)lVar9;
-    pfVar6[-1] = 1.80351e-40;
-    fVar1 = (float)_lroundf();
-  }
-  else {
-    fVar1 = 0.0;
-  }
-  if (0.0 < local_38) {
-    *pfVar6 = local_38;
-    pfVar6[-1] = 1.80395e-40;
-    lVar9 = (longdouble)_ceilf();
-    *pfVar6 = (float)lVar9;
-    pfVar6[-1] = 1.80406e-40;
-    fVar2 = (float)_lroundf();
-  }
-  else {
-    fVar2 = 0.0;
-  }
-  pfVar6[1] = (float)sel_alloc;
-  *pfVar6 = (float)cls_NSMutableData;
-  fVar8 = (float)((int)fVar1 * 4 + 0xfU & 0xfffffff0);
-  pfVar6[-1] = 1.80472e-40;
-  pvVar7 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-  pfVar6[2] = (float)((int)fVar2 * (int)fVar8);
-  pfVar6[1] = (float)sel_initWithLength_;
-  *pfVar6 = (float)pvVar7;
-  pfVar6[-1] = 1.80507e-40;
-  local_74 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-  if (local_74 != (id)0x0) {
-    *pfVar6 = (float)local_74;
-    pfVar6[-1] = 1.80542e-40;
-    fVar3 = (float)_CGDataProviderCreateWithCFData();
-    if (fVar3 != 0.0) {
-      pfVar6[-1] = 1.80559e-40;
-      fVar4 = (float)_CGColorSpaceCreateDeviceRGB();
-      if (fVar4 != 0.0) {
-        pfVar6[1] = (float)sel_mutableBytes;
-        *pfVar6 = (float)local_74;
-        pfVar6[-1] = 1.80623e-40;
-        pvVar7 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-        pfVar6[5] = fVar4;
-        pfVar6[4] = fVar8;
-        pfVar6[2] = fVar2;
-        pfVar6[1] = fVar1;
-        *pfVar6 = (float)pvVar7;
-        pfVar6[6] = 2.8026e-45;
-        pfVar6[3] = 1.12104e-44;
-        pfVar6[-1] = 1.80683e-40;
-        fVar5 = (float)_CGBitmapContextCreate();
-        if (fVar5 == 0.0) {
-LAB_0001f7b2:
-          pvVar7 = (id)0x0;
-        }
-        else {
-          *(ulonglong *)(pfVar6 + 5) = CONCAT44(fStack_48,local_4c);
-          *(longlong *)(pfVar6 + 3) = transform._8_8_;
-          *(longlong *)(pfVar6 + 1) = transform._0_8_;
-          *pfVar6 = fVar5;
-          pfVar6[-1] = 1.80759e-40;
-          _CGContextConcatCTM();
-          pfVar6[4] = local_88;
-          pfVar6[3] = local_84;
-          pfVar6[2] = fVar5;
-          pfVar6[1] = (float)sel_drawInCGContext_atPoint_;
-          *pfVar6 = (float)transformImage;
-          pfVar6[-1] = 1.80833e-40;
-          _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-          pfVar6[7] = fVar3;
-          pfVar6[5] = fVar4;
-          pfVar6[4] = fVar8;
-          pfVar6[1] = fVar2;
-          *pfVar6 = fVar1;
-          pfVar6[10] = 0.0;
-          pfVar6[9] = 1.4013e-45;
-          pfVar6[8] = 0.0;
-          pfVar6[6] = 2.8026e-45;
-          pfVar6[3] = 4.48416e-44;
-          pfVar6[2] = 1.12104e-44;
-          pfVar6[-1] = 1.80947e-40;
-          fVar1 = (float)_CGImageCreate();
-          if (fVar1 == 0.0) goto LAB_0001f7b2;
-          pfVar6[1] = (float)sel_alloc;
-          *pfVar6 = (float)cls_BTCGImage;
-          pfVar6[-1] = 1.80999e-40;
-          pvVar7 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-          pfVar6[2] = fVar1;
-          pfVar6[1] = (float)sel_initWithCGImage_;
-          *pfVar6 = (float)pvVar7;
-          pfVar6[-1] = 1.8103e-40;
-          pvVar7 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-          *pfVar6 = fVar1;
-          pfVar6[-1] = 1.81044e-40;
-          _CGImageRelease();
-        }
-        *pfVar6 = fVar3;
-        pfVar6[-1] = 1.81059e-40;
-        _CGDataProviderRelease();
-        if (fVar4 != 0.0) {
-          *pfVar6 = fVar4;
-          pfVar6[-1] = 1.81083e-40;
-          _CGColorSpaceRelease();
-        }
-        if (fVar5 != 0.0) {
-          *pfVar6 = fVar5;
-          pfVar6[-1] = 1.811e-40;
-          _CGContextRelease();
-        }
-        goto LAB_0001f8d5;
-      }
-      *pfVar6 = fVar3;
-      pfVar6[-1] = 1.8058e-40;
-      _CGDataProviderRelease();
-    }
-  }
-  pvVar7 = (id)0x0;
-LAB_0001f8d5:
-  pfVar6[1] = (float)sel_release;
-  *pfVar6 = (float)local_74;
-  pfVar6[-1] = 1.81133e-40;
-  _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-  pfVar6[1] = (float)sel_autorelease;
-  *pfVar6 = (float)pvVar7;
-  pfVar6[-1] = 1.81158e-40;
-  pvVar7 = _objc_msgSend((id)*pfVar6,(SEL)pfVar6[1]);
-  return pvVar7;
-}
-
-*/
 + (id)transformImage:(id)aImage transform:(CGAffineTransform)aTransform pathRect:(CGRect *)aRect
 {
     if (aImage == nil) {
@@ -828,73 +390,6 @@ LAB_0001f8d5:
     return nil;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001f90a @ 0001f90a, 974 bytes * /
-
-void FUN_0001f90a(id self,SEL _cmd,CGAffineTransform setTransform,id toImageOfObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  undefined4 *puVar3;
-  longdouble lVar4;
-  
-  puVar3 = (undefined4 *)&stack0xffffff74;
-  pvVar1 = _objc_msgSend(toImageOfObject,sel_queryHyperInterface_);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(toImageOfObject,sel_respondsToSelector_);
-    if ((char)pvVar1 == '\0') {
-      return;
-    }
-    pvVar2 = _objc_msgSend(toImageOfObject,sel_image);
-    if (pvVar2 == (id)0x0) {
-      return;
-    }
-    _objc_msgSend(pvVar2,sel_size);
-    _CGRectApplyAffineTransform();
-    _CGRectIntegral();
-    puVar3 = (undefined4 *)&stack0xffffff6c;
-    lVar4 = (longdouble)_CGRectGetWidth();
-    if ((float)lVar4 <= 0.0) {
-      return;
-    }
-    lVar4 = (longdouble)_CGRectGetHeight();
-    if ((float)lVar4 <= 0.0) {
-      return;
-    }
-    pvVar1 = _objc_msgSend(cls_NSImage,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithSize_);
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-    _objc_msgSend(pvVar1,sel_lockFocus);
-    self_00 = _objc_msgSend(cls_NSGraphicsContext,sel_currentContext);
-    _objc_msgSend(self_00,sel_graphicsPort);
-    _CGContextTranslateCTM();
-    _CGContextConcatCTM();
-    _objc_msgSend(pvVar2,sel_drawAtPoint_fromRect_operation_fraction_);
-    _objc_msgSend(pvVar1,sel_unlockFocus);
-    _objc_msgSend(toImageOfObject,sel_setImage_);
-  }
-  else {
-    pvVar2 = _objc_msgSend(pvVar1,sel_queryImageWithRequiredProtocols_optionalProtocols_);
-    if (pvVar2 == (id)0x0) {
-      return;
-    }
-    pvVar2 = _objc_msgSend(self,sel_transformImage_transform_pathRect_);
-    if (pvVar2 == (id)0x0) {
-      return;
-    }
-    _objc_msgSend(pvVar1,sel_beginEditImage_);
-  }
-  *puVar3 = pvVar1;
-  puVar3[-1] = 0x1f9e7;
-  _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-  return;
-}
-
-*/
 + (void)setTransform:(CGAffineTransform)aTransform toImageOfObject:(id)aObject
 {
     id imageAttributes = [aObject queryHyperInterface:@protocol(HSEditableImageAttributes)];
@@ -937,22 +432,6 @@ void FUN_0001f90a(id self,SEL _cmd,CGAffineTransform setTransform,id toImageOfOb
     [newImage release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e881 @ 0001e881, 129 bytes * /
-
-void FUN_0001e881(id self,SEL _cmd,CGAffineTransform setTransform,id toBitmapTool)
-
-{
-  id self_00;
-  
-  self_00 = _objc_msgSend(toBitmapTool,sel_bitmapTool);
-  _objc_msgSend(self_00,sel_finalizeSelection_,0);
-  _objc_msgSend(self_00,sel_setSelectionAffineTransform_flippingHorizontally_,setTransform._0_8_,
-                setTransform._8_8_,setTransform._16_8_,0);
-  return;
-}
-
-*/
 + (void)setTransform:(CGAffineTransform)aTransform toBitmapTool:(id)aTool
 {
     id bitmapTool = [aTool bitmapTool];
@@ -960,46 +439,6 @@ void FUN_0001e881(id self,SEL _cmd,CGAffineTransform setTransform,id toBitmapToo
     [bitmapTool setSelectionAffineTransform:aTransform flippingHorizontally:NO];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001fcd8 @ 0001fcd8, 394 bytes * /
-
-void FUN_0001fcd8(id self,SEL _cmd,CGAffineTransform applyTransform,id toTransformableObject)
-
-{
-  id pvVar1;
-  id self_00;
-  float local_44;
-  float local_40;
-  float local_3c;
-  float local_38;
-  float local_34;
-  float local_30;
-  float local_2c;
-  float fStack_28;
-  float local_24;
-  float fStack_20;
-  float local_1c;
-  float fStack_18;
-  
-  pvVar1 = _objc_msgSend(toTransformableObject,sel_queryHyperInterface_);
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryGeometryBehaviorApplier);
-  if (pvVar1 != (id)0x0) {
-    self_00 = _objc_msgSend(pvVar1,sel_mutableGeometryAttributes);
-    _objc_msgSend_stret(&local_44,self_00,sel_affineTransform);
-    fStack_18 = local_34 * applyTransform.b + local_30 * applyTransform.d + applyTransform.ty;
-    local_1c = local_34 * applyTransform.a + local_30 * applyTransform.c + applyTransform.tx;
-    local_2c = local_44 * applyTransform.a + local_40 * applyTransform.c;
-    fStack_28 = local_44 * applyTransform.b + local_40 * applyTransform.d;
-    local_24 = applyTransform.a * local_3c + applyTransform.c * local_38;
-    fStack_20 = local_3c * applyTransform.b + local_38 * applyTransform.d;
-    _objc_msgSend(pvVar1,sel_setAffineTransform_withLayoutGuidingContext_,
-                  CONCAT44(fStack_28,local_2c),CONCAT44(fStack_20,local_24),
-                  CONCAT44(fStack_18,local_1c),0);
-  }
-  return;
-}
-
-*/
 + (void)applyTransform:(CGAffineTransform)aTransform toTransformableObject:(id)aObject
 {
     id applier = [[aObject queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier];
@@ -1009,22 +448,6 @@ void FUN_0001fcd8(id self,SEL _cmd,CGAffineTransform applyTransform,id toTransfo
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e800 @ 0001e800, 129 bytes * /
-
-void FUN_0001e800(id self,SEL _cmd,CGAffineTransform applyTransform,id toBitmapTool)
-
-{
-  id self_00;
-  
-  self_00 = _objc_msgSend(toBitmapTool,sel_bitmapTool);
-  _objc_msgSend(self_00,sel_finalizeSelection_,0);
-  _objc_msgSend(self_00,sel_posttransformSelectionUsingAffineTransform_flippingHorizontally_,
-                applyTransform._0_8_,applyTransform._8_8_,applyTransform._16_8_,0);
-  return;
-}
-
-*/
 + (void)applyTransform:(CGAffineTransform)aTransform toBitmapTool:(id)aTool
 {
     id bitmapTool = [aTool bitmapTool];
@@ -1094,183 +517,6 @@ void FUN_0001e800(id self,SEL _cmd,CGAffineTransform applyTransform,id toBitmapT
     [aVisibility setVisible:[[[HSUI sharedUI] settingsForKey:HSUIModeIsToolbarShown] boolValue]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001fe62 @ 0001fe62, 1507 bytes * /
-
-void FUN_0001fe62(id self,SEL _cmd,id scaleObject,float aboutCenterBy,float rotateAboutCenterBy)
-
-{
-  float fVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL pcVar4;
-  float extraout_EDX;
-  cfstringStruct *pcVar5;
-  longdouble lVar6;
-  longdouble lVar7;
-  float fVar8;
-  float fVar9;
-  float fVar10;
-  float fVar11;
-  undefined8 in_stack_ffffff8c;
-  undefined4 uVar14;
-  undefined8 uVar12;
-  ulonglong uVar13;
-  undefined8 in_stack_ffffff94;
-  undefined4 uVar16;
-  undefined8 uVar15;
-  float local_44;
-  id local_40;
-  undefined *local_34;
-  undefined4 local_30;
-  float local_2c;
-  float fStack_28;
-  float local_24;
-  float fStack_20;
-  float local_1c;
-  float fStack_18;
-  
-  uVar16 = (undefined4)((ulonglong)in_stack_ffffff94 >> 0x20);
-  uVar14 = (undefined4)((ulonglong)in_stack_ffffff8c >> 0x20);
-  pvVar2 = _objc_msgSend(self,sel_isValidSelectionTool_,scaleObject);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(self,sel_isValidTransformableObject_,scaleObject);
-    if ((char)pvVar2 == '\0') {
-      pvVar2 = _objc_msgSend(scaleObject,sel_queryHyperInterface_,&DAT_00361970);
-      local_40 = *(id *)PTR_0033607c;
-      local_44 = *(float *)(PTR_0033607c + 4);
-      if (pvVar2 == (id)0x0) {
-        uVar13 = CONCAT44(uVar14,sel_image);
-        pvVar2 = _objc_msgSend(scaleObject,sel_respondsToSelector_,sel_image);
-        if (((char)pvVar2 != '\0') &&
-           (pvVar2 = _objc_msgSend(scaleObject,sel_image,uVar13), pcVar4 = sel_size,
-           pvVar2 != (id)0x0)) goto LAB_00020286;
-      }
-      else {
-        local_34 = &DAT_003619ac;
-        local_30 = 0;
-        uVar13 = ZEXT48(&local_34);
-        pvVar2 = _objc_msgSend(pvVar2,sel_queryImageWithRequiredProtocols_optionalProtocols_,
-                               &local_34,0);
-        pcVar4 = sel_imageSize;
-        if (pvVar2 == (id)0x0) {
-          return;
-        }
-LAB_00020286:
-        local_40 = _objc_msgSend(pvVar2,pcVar4,uVar13);
-        local_44 = extraout_EDX;
-      }
-      if ((float)local_40 == 0.0) {
-        return;
-      }
-      if (local_44 == 0.0) {
-        return;
-      }
-      lVar6 = (longdouble)_sinf(rotateAboutCenterBy);
-      lVar7 = (longdouble)_cosf(rotateAboutCenterBy);
-      fVar8 = (float)lVar7;
-      fVar9 = (float)lVar6;
-      local_2c = fVar8 * aboutCenterBy;
-      local_44 = local_44 * 0.5;
-      fVar1 = local_44 * (1.0 - aboutCenterBy);
-      fStack_28 = fVar9 * aboutCenterBy;
-      fVar11 = (float)local_40 * 0.5;
-      fVar10 = fVar11 * (1.0 - aboutCenterBy);
-      local_24 = -fVar9 * aboutCenterBy;
-      local_1c = (1.0 - fVar8) * fVar11 + fVar9 * local_44 + (fVar10 * fVar8 - fVar1 * fVar9);
-      fStack_18 = (local_44 * (1.0 - fVar8) - fVar11 * fVar9) + fVar1 * fVar8 + fVar10 * fVar9;
-      uVar12 = CONCAT44(fStack_28,local_2c);
-      pcVar4 = sel_setTransform_toImageOfObject_;
-      fStack_20 = local_2c;
-      goto LAB_0001fed1;
-    }
-    pvVar2 = _objc_msgSend(scaleObject,sel_queryHyperInterface_,&DAT_00361240);
-    pvVar2 = _objc_msgSend(pvVar2,sel_hyperObject);
-    uVar12 = CONCAT44(uVar14,&DAT_003624ec);
-    pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_003624ec);
-    pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-    if (pvVar2 != (id)0x0) {
-      pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle,uVar12);
-      uVar15 = CONCAT44(uVar16,&cfstr_UndoManager);
-      uVar12 = 0x33767c00337fdc;
-      pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_Scale___Rotate,
-                             &cfstr_empty,&cfstr_UndoManager);
-      if ((aboutCenterBy != 0.0) || (NAN(aboutCenterBy))) {
-        fVar8 = ABS(aboutCenterBy);
-      }
-      else {
-        fVar8 = 1.0;
-      }
-      fVar9 = 1.0;
-      fVar10 = fVar9;
-      if (1.0 <= fVar8) {
-        fVar10 = fVar8;
-      }
-      if (fVar10 * 0.0005 < ABS(aboutCenterBy + -1.0)) {
-LAB_000200a1:
-        if ((aboutCenterBy != 0.0) || (fVar8 = fVar9, NAN(aboutCenterBy))) {
-          fVar8 = ABS(aboutCenterBy);
-        }
-        if (1.0 <= fVar8) {
-          fVar9 = fVar8;
-        }
-        if (fVar9 * 0.0005 < ABS(aboutCenterBy + -1.0)) {
-          if ((rotateAboutCenterBy != 0.0) || (NAN(rotateAboutCenterBy))) {
-            fVar8 = ABS(rotateAboutCenterBy);
-          }
-          else {
-            fVar8 = 1.0;
-          }
-          fVar9 = 0.0005;
-          if (1.0 <= fVar8) {
-            fVar9 = fVar8 * 0.0005;
-          }
-          if (ABS(rotateAboutCenterBy) <= fVar9) {
-            pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle,uVar12,uVar15);
-            uVar14 = (undefined4)((ulonglong)uVar15 >> 0x20);
-            pcVar5 = &cfstr_Scale;
-            goto LAB_0002016b;
-          }
-        }
-      }
-      else {
-        if ((rotateAboutCenterBy != 0.0) || (NAN(rotateAboutCenterBy))) {
-          fVar8 = ABS(rotateAboutCenterBy);
-        }
-        else {
-          fVar8 = 1.0;
-        }
-        fVar10 = 0.0005;
-        if (1.0 <= fVar8) {
-          fVar10 = fVar8 * 0.0005;
-        }
-        if (ABS(rotateAboutCenterBy) <= fVar10) goto LAB_000200a1;
-        pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle,uVar12,uVar15);
-        uVar14 = (undefined4)((ulonglong)uVar15 >> 0x20);
-        pcVar5 = &cfstr_Rotate;
-LAB_0002016b:
-        uVar15 = CONCAT44(uVar14,&cfstr_UndoManager);
-        uVar12 = CONCAT44(&cfstr_empty,pcVar5);
-        pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,pcVar5,&cfstr_empty,
-                               uVar15);
-      }
-      _objc_msgSend(pvVar2,sel_setMultipleActionsName_,pvVar3,(int)((ulonglong)uVar12 >> 0x20),
-                    uVar15);
-    }
-    _objc_msgSend(self,sel_scaleTransformableObject_aboutCenterBy_,scaleObject,aboutCenterBy);
-    pcVar4 = sel_rotateTransformableObject_aboutCenterBy_;
-  }
-  else {
-    _objc_msgSend(self,sel_scaleBitmapTool_aboutCenterBy_,scaleObject,aboutCenterBy);
-    pcVar4 = sel_rotateBitmapTool_aboutCenterBy_;
-  }
-  uVar12 = CONCAT44(rotateAboutCenterBy,scaleObject);
-LAB_0001fed1:
-  _objc_msgSend(self,pcVar4,uVar12);
-  return;
-}
-
-*/
 + (void)scaleObject:(id)aObject aboutCenterBy:(CGFloat)aBy rotateAboutCenterBy:(CGFloat)aBy2
 {
     float scale = (float)aBy;
@@ -1330,82 +576,6 @@ LAB_0001fed1:
     [self rotateTransformableObject:aObject aboutCenterBy:aBy2];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e2e2 @ 0001e2e2, 508 bytes * /
-
-void FUN_0001e2e2(id self,SEL _cmd,id scaleObject,float aboutCenterBy)
-
-{
-  id pvVar1;
-  SEL pcVar2;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  float fVar3;
-  undefined8 in_stack_ffffffac;
-  undefined4 uVar6;
-  ulonglong uVar4;
-  undefined8 uVar5;
-  undefined *local_34;
-  undefined4 local_30;
-  float local_2c;
-  undefined4 uStack_28;
-  undefined4 local_24;
-  float fStack_20;
-  float local_1c;
-  float fStack_18;
-  
-  uVar6 = (undefined4)((ulonglong)in_stack_ffffffac >> 0x20);
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,scaleObject);
-  pcVar2 = sel_scaleBitmapTool_aboutCenterBy_;
-  if (((char)pvVar1 == '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_isValidTransformableObject_,scaleObject),
-     pcVar2 = sel_scaleTransformableObject_aboutCenterBy_, (char)pvVar1 == '\0')) {
-    pvVar1 = _objc_msgSend(scaleObject,sel_queryHyperInterface_,&DAT_00361970);
-    if (pvVar1 == (id)0x0) {
-      uVar5 = CONCAT44(uVar6,sel_image);
-      pvVar1 = _objc_msgSend(scaleObject,sel_respondsToSelector_,sel_image);
-      if ((char)pvVar1 == '\0') {
-        return;
-      }
-      pvVar1 = _objc_msgSend(scaleObject,sel_image,uVar5);
-      if (pvVar1 == (id)0x0) {
-        return;
-      }
-      _objc_msgSend(pvVar1,sel_size,uVar5);
-      pcVar2 = sel_size;
-      fVar3 = extraout_EDX_00;
-    }
-    else {
-      local_34 = &DAT_003619ac;
-      local_30 = 0;
-      uVar4 = ZEXT48(&local_34);
-      pvVar1 = _objc_msgSend(pvVar1,sel_queryImageWithRequiredProtocols_optionalProtocols_,&local_34
-                             ,0);
-      if (pvVar1 == (id)0x0) {
-        return;
-      }
-      _objc_msgSend(pvVar1,sel_imageSize,uVar4);
-      pcVar2 = sel_imageSize;
-      fVar3 = extraout_EDX;
-    }
-    pvVar1 = _objc_msgSend(pvVar1,pcVar2);
-    local_2c = aboutCenterBy;
-    uStack_28 = 0;
-    local_24 = 0;
-    local_1c = (float)pvVar1 * 0.5 * (1.0 - aboutCenterBy);
-    fStack_18 = fVar3 * 0.5 * (1.0 - aboutCenterBy);
-    uVar4 = (ulonglong)(uint)aboutCenterBy;
-    pcVar2 = sel_setTransform_toImageOfObject_;
-    fStack_20 = local_2c;
-  }
-  else {
-    uVar4 = CONCAT44(aboutCenterBy,scaleObject);
-  }
-  _objc_msgSend(self,pcVar2,uVar4);
-  return;
-}
-
-*/
 + (void)scaleObject:(id)aObject aboutCenterBy:(CGFloat)aBy
 {
     if ([self isValidSelectionTool:aObject]) {
@@ -1440,86 +610,6 @@ void FUN_0001e2e2(id self,SEL _cmd,id scaleObject,float aboutCenterBy)
     [self setTransform:transform toImageOfObject:aObject];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00020445 @ 00020445, 584 bytes * /
-
-void FUN_00020445(id self,SEL _cmd,id rotateObject,float aboutCenterBy)
-
-{
-  id pvVar1;
-  SEL pcVar2;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  float fVar3;
-  longdouble lVar4;
-  longdouble lVar5;
-  undefined8 in_stack_ffffff9c;
-  undefined4 uVar8;
-  undefined8 uVar6;
-  ulonglong uVar7;
-  undefined *local_34;
-  undefined4 local_30;
-  float local_2c;
-  float fStack_28;
-  float local_24;
-  float fStack_20;
-  float local_1c;
-  float fStack_18;
-  
-  uVar8 = (undefined4)((ulonglong)in_stack_ffffff9c >> 0x20);
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,rotateObject);
-  pcVar2 = sel_rotateBitmapTool_aboutCenterBy_;
-  if (((char)pvVar1 == '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_isValidTransformableObject_,rotateObject),
-     pcVar2 = sel_rotateTransformableObject_aboutCenterBy_, (char)pvVar1 == '\0')) {
-    pvVar1 = _objc_msgSend(rotateObject,sel_queryHyperInterface_,&DAT_00361970);
-    if (pvVar1 == (id)0x0) {
-      uVar6 = CONCAT44(uVar8,sel_image);
-      pvVar1 = _objc_msgSend(rotateObject,sel_respondsToSelector_,sel_image);
-      if ((char)pvVar1 == '\0') {
-        return;
-      }
-      pvVar1 = _objc_msgSend(rotateObject,sel_image,uVar6);
-      if (pvVar1 == (id)0x0) {
-        return;
-      }
-      _objc_msgSend(pvVar1,sel_size,uVar6);
-      pcVar2 = sel_size;
-      fVar3 = extraout_EDX_00;
-    }
-    else {
-      local_34 = &DAT_003619ac;
-      local_30 = 0;
-      uVar7 = ZEXT48(&local_34);
-      pvVar1 = _objc_msgSend(pvVar1,sel_queryImageWithRequiredProtocols_optionalProtocols_,&local_34
-                             ,0);
-      if (pvVar1 == (id)0x0) {
-        return;
-      }
-      _objc_msgSend(pvVar1,sel_imageSize,uVar7);
-      pcVar2 = sel_imageSize;
-      fVar3 = extraout_EDX;
-    }
-    pvVar1 = _objc_msgSend(pvVar1,pcVar2);
-    lVar4 = (longdouble)_sinf(aboutCenterBy);
-    lVar5 = (longdouble)_cosf(aboutCenterBy);
-    local_2c = (float)lVar5;
-    fStack_28 = (float)lVar4;
-    local_24 = -fStack_28;
-    local_1c = (1.0 - local_2c) * (float)pvVar1 * 0.5 + fStack_28 * fVar3 * 0.5;
-    fStack_18 = (1.0 - local_2c) * fVar3 * 0.5 - (float)pvVar1 * 0.5 * fStack_28;
-    uVar6 = CONCAT44(fStack_28,local_2c);
-    pcVar2 = sel_setTransform_toImageOfObject_;
-    fStack_20 = local_2c;
-  }
-  else {
-    uVar6 = CONCAT44(aboutCenterBy,rotateObject);
-  }
-  _objc_msgSend(self,pcVar2,uVar6);
-  return;
-}
-
-*/
 + (void)rotateObject:(id)aObject aboutCenterBy:(CGFloat)aBy
 {
     if ([self isValidSelectionTool:aObject]) {
@@ -1558,39 +648,6 @@ void FUN_00020445(id self,SEL _cmd,id rotateObject,float aboutCenterBy)
     [self setTransform:transform toImageOfObject:aObject];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e1f2 @ 0001e1f2, 240 bytes * /
-
-BOOL FUN_0001e1f2(id self,SEL _cmd,id canResizeObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  char cVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canResizeObject);
-  cVar3 = (char)pvVar1;
-  if (cVar3 == '\0') {
-    puVar4 = &DAT_003620c8;
-    pvVar1 = _objc_msgSend(canResizeObject,sel_queryHyperInterface_,&DAT_003620c8);
-    pvVar2 = _objc_msgSend(pvVar1,sel_canResizeHorizontally);
-    if ((((char)pvVar2 == '\0') &&
-        (pvVar2 = _objc_msgSend(pvVar1,sel_canScaleHorizontally,puVar4), (char)pvVar2 == '\0')) ||
-       ((pvVar2 = _objc_msgSend(pvVar1,sel_canResizeVertically,puVar4), (char)pvVar2 == '\0' &&
-        (pvVar1 = _objc_msgSend(pvVar1,sel_canScaleVertically,puVar4), (char)pvVar1 == '\0')))) {
-      cVar3 = '\0';
-    }
-    else {
-      pvVar1 = _objc_msgSend(canResizeObject,sel_queryHyperInterface_,&DAT_003612cc);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-      cVar3 = (char)pvVar1 == '\0';
-    }
-  }
-  return cVar3;
-}
-
-*/
 + (BOOL)canResizeObject:(id)aObject
 {
     BOOL result = [self isValidSelectionTool:aObject];
@@ -1605,35 +662,6 @@ BOOL FUN_0001e1f2(id self,SEL _cmd,id canResizeObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e148 @ 0001e148, 170 bytes * /
-
-BOOL FUN_0001e148(id self,SEL _cmd,id canRotateObject)
-
-{
-  id pvVar1;
-  char cVar2;
-  undefined *puVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canRotateObject);
-  cVar2 = (char)pvVar1;
-  if (cVar2 == '\0') {
-    puVar3 = &DAT_003620c8;
-    pvVar1 = _objc_msgSend(canRotateObject,sel_queryHyperInterface_,&DAT_003620c8);
-    if ((pvVar1 == (id)0x0) ||
-       (pvVar1 = _objc_msgSend(pvVar1,sel_canRotate,puVar3), (char)pvVar1 == '\0')) {
-      cVar2 = '\0';
-    }
-    else {
-      pvVar1 = _objc_msgSend(canRotateObject,sel_queryHyperInterface_,&DAT_003612cc);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-      cVar2 = (char)pvVar1 == '\0';
-    }
-  }
-  return cVar2;
-}
-
-*/
 + (BOOL)canRotateObject:(id)aObject
 {
     BOOL result = [self isValidSelectionTool:aObject];
@@ -1648,29 +676,6 @@ BOOL FUN_0001e148(id self,SEL _cmd,id canRotateObject)
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001e088 @ 0001e088, 192 bytes * /
-
-BOOL FUN_0001e088(id self,SEL _cmd,id canTransformObject)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,canTransformObject);
-  if (((((char)pvVar1 == '\0') &&
-       (pvVar1 = _objc_msgSend(self,sel_isValidTransformableObject_,canTransformObject),
-       (char)pvVar1 == '\0')) &&
-      (pvVar1 = _objc_msgSend(canTransformObject,sel_implementsHyperInterface_,&DAT_00361f38),
-      (char)pvVar1 == '\0')) &&
-     (pvVar1 = _objc_msgSend(canTransformObject,sel_implementsHyperInterface_,&DAT_00361f4c),
-     (char)pvVar1 == '\0')) {
-    pvVar1 = _objc_msgSend(canTransformObject,sel_implementsHyperInterface_,&DAT_00361970);
-    return (char)pvVar1 != '\0';
-  }
-  return '\x01';
-}
-
-*/
 + (BOOL)canTransformObject:(id)aObject
 {
     return [self isValidSelectionTool:aObject]
@@ -1727,38 +732,6 @@ BOOL FUN_0001e088(id self,SEL _cmd,id canTransformObject)
     return cVar2;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001dd88 @ 0001dd88, 321 bytes * /
-
-void FUN_0001dd88(id self,SEL _cmd,CGAffineTransform setTransform,id toObject)
-
-{
-  id pvVar1;
-  SEL op;
-  undefined8 in_stack_ffffffcc;
-  undefined8 uVar2;
-  
-  uVar2 = CONCAT44((int)((ulonglong)in_stack_ffffffcc >> 0x20),toObject);
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,toObject);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_isValidTransformableObject_,toObject);
-    op = sel_setTransform_toImageOfObject_;
-    if (((char)pvVar1 != '\0') &&
-       (self = _objc_msgSend(toObject,sel_queryHyperInterface_,&DAT_00361f24),
-       op = sel_setAffineTransform_, self == (id)0x0)) {
-      return;
-    }
-  }
-  else {
-    self = _objc_msgSend(toObject,sel_bitmapTool,uVar2);
-    _objc_msgSend(self,sel_finalizeSelection_,0);
-    op = sel_setSelectionAffineTransform_flippingHorizontally_;
-  }
-  _objc_msgSend(self,op,setTransform._0_8_,setTransform._8_8_,setTransform._16_8_);
-  return;
-}
-
-*/
 + (void)setTransform:(CGAffineTransform)aTransform toObject:(id)aObject
 {
     if ([self isValidSelectionTool:aObject]) {
@@ -1775,29 +748,6 @@ void FUN_0001dd88(id self,SEL _cmd,CGAffineTransform setTransform,id toObject)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001dcba @ 0001dcba, 206 bytes * /
-
-void FUN_0001dcba(id self,SEL _cmd,CGAffineTransform applyTransform,id toObject)
-
-{
-  id pvVar1;
-  SEL pcVar2;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_isValidSelectionTool_,toObject);
-  pcVar2 = sel_applyTransform_toBitmapTool_;
-  if (((char)pvVar1 != '\0') ||
-     (pvVar1 = _objc_msgSend(self,sel_isValidTransformableObject_,toObject),
-     pcVar2 = sel_applyTransform_toTransformableObject_, op = sel_setTransform_toImageOfObject_,
-     (char)pvVar1 != '\0')) {
-    op = pcVar2;
-  }
-  _objc_msgSend(self,op,applyTransform._0_8_,applyTransform._8_8_,applyTransform._16_8_,toObject);
-  return;
-}
-
-*/
 + (void)applyTransform:(CGAffineTransform)aTransform toObject:(id)aObject
 {
     if ([self isValidSelectionTool:aObject]) {
@@ -1809,25 +759,6 @@ void FUN_0001dcba(id self,SEL _cmd,CGAffineTransform applyTransform,id toObject)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001dc2c @ 0001dc2c, 142 bytes * /
-
-void FUN_0001dc2c(id self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  if (DAT_00342780 == '\0') {
-    pvVar1 = _objc_msgSend(cls_NSArray,sel_array);
-    pvVar2 = _objc_msgSend(cls_NSArray,sel_arrayWithObjects_,*(undefined4 *)PTR_00336154,0);
-    _objc_msgSend(*(id *)PTR_00336058,sel_registerServicesMenuSendTypes_returnTypes_,pvVar1,pvVar2);
-    DAT_00342780 = '\x01';
-  }
-  return;
-}
-
-*/
 + (void)initialize
 {
     static BOOL servicesRegistered = NO;
@@ -1854,38 +785,6 @@ void FUN_0001dc2c(id self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001daae @ 0001daae, 206 bytes * /
-
-BOOL FUN_0001daae(HSEditorWindowController *self,SEL _cmd)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_typeOfAcceptedFile);
-  if (pvVar2 == (id)0x0) {
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,sel_stack);
-    pvVar2 = _objc_msgSend(pvVar2,sel_hyperDeepEnumerator);
-    do {
-      pvVar3 = _objc_msgSend(pvVar2,sel_nextObject);
-      if (pvVar3 == (id)0x0) goto LAB_0001dae8;
-      pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_00361e98);
-      pvVar3 = _objc_msgSend(pvVar3,sel_canButtonStyleBeUpdated);
-    } while ((char)pvVar3 == '\0');
-    BVar1 = '\x01';
-  }
-  else {
-LAB_0001dae8:
-    BVar1 = '\0';
-  }
-  return BVar1;
-}
-
-*/
 - (BOOL)isThereButtonStylesToUpdate
 {
     if ([[self document] typeOfAcceptedFile] == nil) {
@@ -1900,83 +799,6 @@ LAB_0001dae8:
     return NO;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002068d @ 0002068d, 553 bytes * /
-
-ulonglong FUN_0002068d(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  float extraout_EDX;
-  int *piVar2;
-  undefined4 local_94;
-  id local_64;
-  float local_60;
-  HSEditorWindowController *local_5c;
-  undefined *local_58;
-  undefined1 local_54 [16];
-  undefined1 local_44 [8];
-  float local_3c;
-  undefined8 local_34;
-  undefined8 local_2c;
-  undefined1 local_24 [12];
-  float local_18;
-  
-  local_5c = self;
-  local_58 = PTR_s_HSMainWindowController_0034dbd0;
-  local_64 = _objc_msgSendSuper(&local_5c,sel_mainWindowMinCardAreaSize);
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_isMultiDocument);
-  if ((char)pvVar1 == '\0') {
-LAB_0002072f:
-    pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isMultiDocument);
-    piVar2 = (int *)&stack0xffffff74;
-    if ((char)pvVar1 != '\0') goto LAB_00020818;
-    pvVar1 = _objc_msgSend(cls_HSUI,sel_sharedUI);
-    pvVar1 = _objc_msgSend(pvVar1,sel_settingsForKey_);
-    pvVar1 = _objc_msgSend(pvVar1,sel_boolValue);
-    piVar2 = (int *)&stack0xffffff74;
-    if ((char)pvVar1 == '\0') goto LAB_00020818;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_stackController);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isStripVisible);
-    if ((char)pvVar1 == '\0') goto LAB_0002072f;
-  }
-  pvVar1 = self->_canisterContainerView;
-  _objc_msgSend_stret(local_54,pvVar1,sel_bounds);
-  local_94 = 0x20806;
-  _objc_msgSend_stret(local_44,pvVar1,sel_convertRect_toView_);
-  piVar2 = &local_94;
-  local_64 = (id)((float)local_64 + local_3c);
-LAB_00020818:
-  piVar2[1] = (int)sel_isBottomToolbarVisible;
-  *piVar2 = (int)self;
-  piVar2[-1] = 0x2082d;
-  pvVar1 = _objc_msgSend((id)*piVar2,(SEL)piVar2[1]);
-  local_60 = extraout_EDX;
-  if ((char)pvVar1 != '\0') {
-    pvVar1 = self->_bottomAreaTintedView;
-    piVar2[2] = (int)sel_bounds;
-    piVar2[1] = (int)pvVar1;
-    *piVar2 = (int)&local_34;
-    piVar2[-1] = 0x20850;
-    _objc_msgSend_stret((void *)*piVar2,(id)piVar2[1],(SEL)piVar2[2]);
-    *(undefined8 *)(piVar2 + 4) = local_2c;
-    *(undefined8 *)(piVar2 + 2) = local_34;
-    piVar2[1] = (int)sel_convertRect_toView_;
-    *piVar2 = (int)pvVar1;
-    piVar2[-1] = (int)local_24;
-    piVar2[6] = 0;
-    piVar2[-2] = 0x2088a;
-    _objc_msgSend_stret((void *)piVar2[-1],(id)*piVar2,(SEL)piVar2[1]);
-    local_60 = extraout_EDX + local_18;
-  }
-  return CONCAT44(local_60,local_64);
-}
-
-*/
 - (NSSize)mainWindowMinCardAreaSize
 {
     NSSize size = [super mainWindowMinCardAreaSize];
@@ -1997,73 +819,6 @@ LAB_00020818:
     return size;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000208b6 @ 000208b6, 557 bytes * /
-
-ulonglong FUN_000208b6(HSEditorWindowController *self,SEL _cmd)
-
-{
-  undefined4 uVar1;
-  undefined4 uVar2;
-  float fVar3;
-  id pvVar4;
-  id pvVar5;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  float extraout_EDX_01;
-  double dVar6;
-  float local_4c;
-  undefined1 local_44 [8];
-  ulonglong local_3c;
-  undefined4 local_34;
-  float local_30;
-  float local_28;
-  undefined4 local_24;
-  undefined4 uStack_20;
-  id local_1c;
-  float fStack_18;
-  
-  pvVar4 = _objc_msgSend(self,sel_document);
-  pvVar4 = _objc_msgSend(pvVar4,sel_currentCard);
-  pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_,&DAT_003614fc);
-  uVar1 = *(undefined4 *)PTR_00336078;
-  uVar2 = *(undefined4 *)(PTR_00336078 + 4);
-  local_1c = _objc_msgSend(pvVar4,sel_size);
-  local_24 = uVar1;
-  uStack_20 = uVar2;
-  fStack_18 = extraout_EDX;
-  pvVar4 = _objc_msgSend(self,sel_cardView);
-  dVar6 = _objc_msgSend_fpret(pvVar4,sel_zoomFactor);
-  fVar3 = (float)dVar6;
-  if (1.0 < fVar3) {
-    local_1c = (id)((float)local_1c * fVar3);
-    fStack_18 = fVar3 * fStack_18;
-  }
-  pvVar4 = _objc_msgSend(self,sel_mainWindowMinCardAreaSize);
-  if ((float)local_1c < (float)pvVar4) {
-    local_1c = pvVar4;
-  }
-  if (fStack_18 < extraout_EDX_00) {
-    fStack_18 = extraout_EDX_00;
-  }
-  pvVar4 = _objc_msgSend(self,sel_cardView);
-  pvVar4 = _objc_msgSend(pvVar4,sel_enclosingScrollView);
-  _objc_msgSend_stret(&local_34,pvVar4,sel_bounds);
-  local_4c = local_30;
-  pvVar5 = _objc_msgSend(pvVar4,sel_isFlipped);
-  if ((char)pvVar5 != '\0') {
-    local_4c = local_30 + local_28;
-  }
-  pvVar4 = _objc_msgSend(pvVar4,sel_convertPoint_toView_,local_34,local_4c,0);
-  local_1c = (id)((float)pvVar4 + (float)local_1c);
-  fStack_18 = extraout_EDX_01 + fStack_18;
-  pvVar4 = _objc_msgSend(self,sel_window);
-  _objc_msgSend_stret(local_44,pvVar4,sel_frameRectForContentRect_,CONCAT44(uStack_20,local_24),
-                      CONCAT44(fStack_18,local_1c));
-  return local_3c;
-}
-
-*/
 - (NSSize)windowFrameSizeAdjustedToCurrentContent
 {
     NSSize size = [[[[self document] currentCard] queryHyperInterface:@protocol(HSSizeAttributes)] size];
@@ -2152,105 +907,12 @@ ulonglong FUN_000208b6(HSEditorWindowController *self,SEL _cmd)
     [_cardView acceptDrawingQualityLoss:0.9999];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001d6d3 @ 0001d6d3, 137 bytes * /
-
-void FUN_0001d6d3(HSEditorWindowController *self,SEL _cmd,
-                 id HSEditorWindowController_modeSwitcherDidEndModeSwitching)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  pvVar1 = _objc_msgSend(HSEditorWindowController_modeSwitcherDidEndModeSwitching,sel_object);
-  _objc_msgSend(self_00,sel_removeObserver_name_object_,self,*(undefined4 *)PTR_PTR_00336104,pvVar1)
-  ;
-  _objc_msgSend(self->_statusbarController,sel_validateUI);
-  return;
-}
-
-*/
 - (void)HSEditorWindowController_modeSwitcherDidEndModeSwitching:(id)aSwitching
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSModeSwitcherDidEndModeSwitchingNotification" object:[aSwitching object]];
     [_statusbarController validateUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00020b5b @ 00020b5b, 964 bytes * /
-
-void FUN_00020b5b(HSEditorWindowController *self,SEL _cmd,id didBecomeWorkingInModeSwitcher)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  _objc_msgSend(self,sel_restoreScrollerPosition);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_activate);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar1,sel_window);
-  if (pvVar2 != (id)0x0) {
-    pvVar3 = _objc_msgSend(pvVar2,sel_firstResponder);
-    if (pvVar3 == pvVar2) {
-      _objc_msgSend(pvVar2,sel_makeFirstResponder_,pvVar1);
-    }
-  }
-  if (self->_stackSelectionHostWasCurrentBeforeAssistantHide == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    op = sel_localNotifyHyperSelectionDidChangeAndActivate_;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_stackSelectionHolder);
-    op = sel_makeCurrent;
-  }
-  _objc_msgSend(pvVar1,op);
-  pvVar1 = _objc_msgSend(self,sel_selectionController);
-  _objc_msgSend(pvVar1,sel_setEnabled_,1);
-  pvVar1 = _objc_msgSend(self,sel_documentSelectionSync);
-  _objc_msgSend(pvVar1,sel_setEnabled_,1);
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar1,sel_navigationController);
-  pvVar1 = _objc_msgSend(cls_HSEditorNavigationController,sel_class);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isKindOfClass_,pvVar1);
-  if ((char)pvVar2 == '\0') {
-    pvVar1 = _objc_msgSend(cls_HSEditorNavigationController,sel_alloc,pvVar1);
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar1,sel_initWithDocument_,pvVar2);
-    pvVar3 = _objc_msgSend(self,sel_document);
-    pvVar1 = pvVar2;
-    _objc_msgSend(pvVar3,sel_setNavigationController_,pvVar2);
-    _objc_msgSend(pvVar2,sel_release);
-  }
-  pvVar1 = _objc_msgSend(self,sel_stackView,pvVar1);
-  _objc_msgSend(pvVar1,sel_reloadCards);
-  pvVar1 = _objc_msgSend(cls_HSToolPaletteController,sel_sharedInstance);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_validateUserInterfaceWithView_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_didFinishSwitchToEditMode);
-  pvVar1 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_postNotificationName_object_,
-                &cfstr_HSDocumentDidActivateObjectListDataProviderNotif,pvVar2);
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_1c,sel_didBecomeWorkingInModeSwitcher_,didBecomeWorkingInModeSwitcher);
-  pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  _objc_msgSend(pvVar1,sel_activateIfNeeded);
-  pvVar1 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  _objc_msgSend(pvVar1,sel_addObserver_selector_name_object_,self,
-                sel_HSEditorWindowController_modeSwitcherDidEndModeSwitching_,
-                *(undefined4 *)PTR_PTR_00336104,didBecomeWorkingInModeSwitcher);
-  return;
-}
-
-*/
 - (void)didBecomeWorkingInModeSwitcher:(id)aSwitcher
 {
     [self restoreScrollerPosition];
@@ -2281,82 +943,6 @@ void FUN_00020b5b(HSEditorWindowController *self,SEL _cmd,id didBecomeWorkingInM
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSEditorWindowController_modeSwitcherDidEndModeSwitching:) name:@"HSModeSwitcherDidEndModeSwitchingNotification" object:aSwitcher];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00020f1f @ 00020f1f, 1025 bytes * /
-
-void FUN_00020f1f(HSEditorWindowController *self,SEL _cmd,id willBecomeWorkingInModeSwitcher)
-
-{
-  id pvVar1;
-  id pvVar2;
-  double dVar3;
-  undefined4 uVar4;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_1c,sel_willBecomeWorkingInModeSwitcher_,willBecomeWorkingInModeSwitcher)
-  ;
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar1 = _objc_msgSend(pvVar1,sel_undoManager);
-  _objc_msgSend(pvVar1,sel_disableUndoRegistration);
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar1 = _objc_msgSend(pvVar1,sel_stack);
-  _objc_msgSend(pvVar1,sel_removeAllTemporaryObjects);
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar1 = _objc_msgSend(pvVar1,sel_undoManager);
-  _objc_msgSend(pvVar1,sel_enableUndoRegistration);
-  pvVar1 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setPlayerView_,0);
-  _objc_msgSend(self->_statusbarController,sel_validateUI);
-  _objc_msgSend(self->_statusbarController,sel_updateScalePopUpButtonTarget);
-  pvVar1 = _objc_msgSend(self,sel_selectionController);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_setCardView_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_documentSelectionSync);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_setCardView_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_documentSelectionSync);
-  pvVar2 = _objc_msgSend(self,sel_thisCardSelectionHolder);
-  _objc_msgSend(pvVar1,sel_setThisCardSelectionHost_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_documentSelectionSync);
-  pvVar2 = _objc_msgSend(self,sel_stackSelectionHolder);
-  _objc_msgSend(pvVar1,sel_setStackSelectionHost_,pvVar2);
-  pvVar1 = _objc_msgSend(self->_cardView,sel_card);
-  pvVar1 = _objc_msgSend(pvVar1,sel_hyperIndex);
-  if (pvVar1 == (id)0x7fffffff) {
-    pvVar1 = _objc_msgSend(self,sel_document,pvVar2);
-    pvVar1 = _objc_msgSend(pvVar1,sel_stack);
-    pvVar1 = _objc_msgSend(pvVar1,sel_hyperChildren);
-    pvVar2 = _objc_msgSend(pvVar1,sel_lastObject);
-    _objc_msgSend(self->_cardView,sel_setCard_,pvVar2);
-  }
-  pvVar1 = _objc_msgSend(self,sel_cardView,pvVar2);
-  pvVar1 = _objc_msgSend(pvVar1,sel_runTimeEditorController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_selectedRunTimeEditorObject);
-  if (pvVar1 != (id)0x0) {
-    _objc_msgSend(pvVar1,sel_updateEmbeddedViewWithEditingObject);
-  }
-  pvVar1 = self->_statusbarController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  dVar3 = _objc_msgSend_fpret(pvVar2,sel_zoomFactor);
-  _objc_msgSend(pvVar1,sel_setZoomFactor_,(float)dVar3);
-  uVar4 = 1;
-  _objc_msgSend(self->_statusbarController,sel_setZoomControlsEnabled_,1);
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_replacingDocument);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(cls_HSSystemUI,sel_sharedSystemUI,uVar4);
-    uVar4 = 0;
-    _objc_msgSend(pvVar1,sel_setupWithMode_options_,0,0);
-  }
-  pvVar1 = _objc_msgSend(cls_HSCommentsAndAttributionsPaletteController,sel_sharedInstance,uVar4);
-  _objc_msgSend(pvVar1,sel_setDataProvider_,self);
-  return;
-}
-
-*/
 - (void)willBecomeWorkingInModeSwitcher:(id)aSwitcher
 {
     [super willBecomeWorkingInModeSwitcher:aSwitcher];
@@ -2463,37 +1049,6 @@ void FUN_00020f1f(HSEditorWindowController *self,SEL _cmd,id willBecomeWorkingIn
     return self;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001d547 @ 0001d547, 176 bytes * /
-
-id FUN_0001d547(HSEditorWindowController *self,SEL _cmd,id modeSwitcherView)
-
-{
-  HSEditorWindowController *pHVar1;
-  id pvVar2;
-  
-  pHVar1 = _objc_msgSend(modeSwitcherView,sel_previousModeController);
-  if (pHVar1 == self) {
-    pvVar2 = _objc_msgSend(modeSwitcherView,sel_activeModeController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_prefersToEmbedModeSwitcherViewIntoScrollViewIfPossible);
-    if ((char)pvVar2 == '\0') goto LAB_0001d59a;
-LAB_0001d5e3:
-    pvVar2 = _objc_msgSend(self,sel_cardView);
-  }
-  else {
-LAB_0001d59a:
-    pvVar2 = _objc_msgSend(modeSwitcherView,sel_previousModeController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_prefersToEmbedModeSwitcherViewIntoScrollViewIfPossible);
-    if ((char)pvVar2 != '\0') {
-      pHVar1 = _objc_msgSend(modeSwitcherView,sel_activeModeController);
-      if (pHVar1 == self) goto LAB_0001d5e3;
-    }
-    pvVar2 = self->_workAreaContainerView;
-  }
-  return pvVar2;
-}
-
-*/
 - (id)modeSwitcherView:(id)aView
 {
     if ([aView previousModeController] == self && [[aView activeModeController] prefersToEmbedModeSwitcherViewIntoScrollViewIfPossible]) {
@@ -2526,79 +1081,6 @@ LAB_0001d59a:
     [[[HSEraseBackgroundDialogController alloc] initWithOriginalObject:[self document]] runForWindow:[[[self document] currentWindowController] window] delegate:self didEndSelector:@selector(effectDialog:didEndWithReturnCode:)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00021765 @ 00021765, 1024 bytes * /
-
-void FUN_00021765(HSEditorWindowController *self,SEL _cmd,id youTubeDialog,int didEndWithReturnCode)
-
-{
-  char cVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  undefined4 extraout_EDX;
-  undefined4 extraout_EDX_00;
-  double dVar5;
-  undefined8 uVar6;
-  
-  if (didEndWithReturnCode == 1) {
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,
-                           sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-    if ((char)pvVar2 != '\0') {
-      pvVar2 = _objc_msgSend(self,sel_document);
-      pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-      _objc_msgSend(pvVar2,sel_disableUndoRegistration);
-      pvVar2 = _objc_msgSend(cls_HSYouTubeObject,sel_new);
-      pvVar2 = _objc_msgSend(pvVar2,sel_autorelease);
-      pvVar3 = _objc_msgSend(pvVar2,sel_defaultSize);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieID);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieID_,pvVar4);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieURL);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieURL_,pvVar4);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieWatchURL);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieWatchURL_,pvVar4);
-      pvVar4 = _objc_msgSend(pvVar4,sel_absoluteString);
-      _objc_msgSend(pvVar2,sel_setHyperComments_,pvVar4);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieSize_,pvVar3,extraout_EDX);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieTitle);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieTitle_,pvVar4);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieAuthor);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieAuthor_,pvVar4);
-      pvVar4 = _objc_msgSend(youTubeDialog,sel_youTubeMovieAuthorURL);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieAuthorURL_,pvVar4);
-      dVar5 = _objc_msgSend_fpret(youTubeDialog,sel_youTubeMovieDuration);
-      _objc_msgSend(pvVar2,sel_setYouTubeMovieDuration_,dVar5);
-      pvVar4 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_00361de4);
-      cVar1 = _NSEqualSizes(pvVar3,extraout_EDX,*(undefined4 *)PTR_0033607c,
-                            *(undefined4 *)(PTR_0033607c + 4));
-      if (cVar1 == '\0') {
-        uVar6 = CONCAT44(extraout_EDX,pvVar3);
-      }
-      else {
-        pvVar3 = _objc_msgSend(pvVar4,sel_defaultSize);
-        uVar6 = CONCAT44(extraout_EDX_00,pvVar3);
-      }
-      _objc_msgSend(pvVar4,sel_setSize_,uVar6);
-      pvVar3 = _objc_msgSend(self,sel_document);
-      pvVar3 = _objc_msgSend(pvVar3,sel_undoManager);
-      _objc_msgSend(pvVar3,sel_enableUndoRegistration);
-      pvVar3 = _objc_msgSend(self,sel_document);
-      pvVar3 = _objc_msgSend(pvVar3,sel_undoManager);
-      pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,&cfstr_Add_Item,
-                             &cfstr_empty,&cfstr_UndoManager);
-      _objc_msgSend(pvVar3,sel_setMultipleActionsName_,pvVar4);
-      pvVar3 = _objc_msgSend(self,sel_cardView);
-      _objc_msgSend(pvVar3,sel_addObjectToCenter_useDragPreferences_,pvVar2,0);
-      _objc_msgSend(self,sel_didAddNewObject);
-    }
-  }
-  _objc_msgSend(youTubeDialog,sel_autorelease);
-  return;
-}
-
-*/
 - (void)youTubeDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode
 {
     if (aCode == 1 && [[self document] prepareForHandlingActionThatRequiresConditionalSwitchToEditMode]) {
@@ -2661,44 +1143,6 @@ void FUN_00021765(HSEditorWindowController *self,SEL _cmd,id youTubeDialog,int d
     [_effectsDialogController runModal];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001d041 @ 0001d041, 358 bytes * /
-
-void FUN_0001d041(HSEditorWindowController *self,SEL _cmd,id rotateSelectedObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  undefined *puVar3;
-  
-  puVar3 = sel_selectedItem;
-  pvVar1 = _objc_msgSend(rotateSelectedObject,sel_respondsToSelector_,sel_selectedItem);
-  pvVar2 = rotateSelectedObject;
-  if ((char)pvVar1 != '\0') {
-    pvVar2 = _objc_msgSend(rotateSelectedObject,sel_selectedItem,puVar3);
-  }
-  pvVar2 = _objc_msgSend(pvVar2,sel_tag,puVar3);
-  op = sel_scaleAndRotate_;
-  if ((int)pvVar2 - 1U < 2) {
-    pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar3);
-    rotateSelectedObject = _objc_msgSend(pvVar2,sel_currentTool);
-    pvVar1 = _objc_msgSend(self,sel_class);
-    pvVar2 = rotateSelectedObject;
-    pvVar1 = _objc_msgSend(pvVar1,sel_isValidSelectionTool_,rotateSelectedObject);
-    if ((char)pvVar1 == '\0') {
-      rotateSelectedObject =
-           _objc_msgSend(self,sel_selectedCardObjectForEditingOperationWithImplicitVerification,
-                         pvVar2);
-    }
-    self = _objc_msgSend(self,sel_class,pvVar2);
-    op = sel_rotateObject_aboutCenterBy_;
-  }
-  _objc_msgSend(self,op,rotateSelectedObject);
-  return;
-}
-
-*/
 - (void)rotateSelectedObject:(id)aObject
 {
     id item = [aObject respondsToSelector:@selector(selectedItem)] ? [aObject selectedItem] : aObject;
@@ -2720,111 +1164,6 @@ void FUN_0001d041(HSEditorWindowController *self,SEL _cmd,id rotateSelectedObjec
     [self applyEffectUsingControllerClass:[HSTransformationEffectDialogController class]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001cc6b @ 0001cc6b, 914 bytes * /
-
-void FUN_0001cc6b(HSEditorWindowController *self,SEL _cmd,id drawCentered)
-
-{
-  undefined *puVar1;
-  undefined *puVar2;
-  undefined *puVar3;
-  undefined *puVar4;
-  undefined *puVar5;
-  undefined *puVar6;
-  undefined *puVar7;
-  id pvVar8;
-  id pvVar9;
-  undefined4 uVar10;
-  id pvVar11;
-  id pvVar12;
-  id pvVar13;
-  id pvVar14;
-  id pvVar15;
-  id pvVar16;
-  id pvVar17;
-  id pvVar18;
-  id pvVar19;
-  undefined4 *puVar20;
-  undefined4 uVar21;
-  
-  pvVar8 = _objc_msgSend(cls_NSMenuItem,sel_class);
-  pvVar9 = _objc_msgSend(drawCentered,sel_isKindOfClass_,pvVar8);
-  if ((char)pvVar9 == '\0') {
-    return;
-  }
-  pvVar9 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,pvVar8);
-  pvVar9 = _objc_msgSend(pvVar9,sel_toolSettings);
-  puVar1 = cls_NSNumber;
-  if (pvVar9 == (id)0x0) {
-    return;
-  }
-  pvVar8 = _objc_msgSend(drawCentered,sel_state,pvVar8);
-  uVar10 = 0xffffffff;
-  if (pvVar8 != (id)0x1) {
-    uVar10 = 0;
-  }
-  pvVar8 = _objc_msgSend(puVar1,sel_numberWithUnsignedInteger_,uVar10);
-  if (pvVar8 == (id)0x0) {
-    return;
-  }
-  pvVar11 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,uVar10);
-  pvVar11 = _objc_msgSend(pvVar11,sel_selectedToolTag);
-  puVar4 = PTR_PTR_003360fc;
-  pvVar12 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360fc);
-  puVar2 = PTR_PTR_003360b0;
-  pvVar13 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360b0);
-  puVar1 = PTR_PTR_003360ac;
-  pvVar14 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360ac);
-  puVar3 = PTR_PTR_003360b4;
-  pvVar15 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360b4);
-  puVar7 = PTR_PTR_00336140;
-  pvVar16 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336140);
-  puVar5 = PTR_PTR_00336138;
-  pvVar17 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336138);
-  puVar20 = (undefined4 *)PTR_PTR_00336134;
-  pvVar18 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336134);
-  puVar6 = PTR_PTR_0033613c;
-  pvVar19 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_0033613c);
-  if ((pvVar11 == pvVar12) || (pvVar11 == pvVar16)) {
-    uVar10 = *(undefined4 *)PTR_00336118;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar4,uVar10);
-    puVar20 = (undefined4 *)puVar7;
-  }
-  else if ((pvVar11 == pvVar13) || (pvVar11 == pvVar17)) {
-    uVar10 = *(undefined4 *)PTR_00336118;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar2,uVar10);
-    puVar20 = (undefined4 *)puVar5;
-  }
-  else {
-    if ((pvVar11 != pvVar14) && (pvVar11 != pvVar18)) {
-      if ((pvVar11 != pvVar15) && (pvVar11 != pvVar19)) {
-        return;
-      }
-      uVar10 = *(undefined4 *)PTR_00336118;
-      _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar3,uVar10)
-      ;
-      uVar21 = *(undefined4 *)puVar6;
-      goto LAB_0001cf09;
-    }
-    uVar10 = *(undefined4 *)PTR_00336118;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar1,uVar10);
-  }
-  uVar21 = *puVar20;
-LAB_0001cf09:
-  _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,uVar21,uVar10);
-  return;
-}
-
-*/
 - (void)drawCentered:(id)aCentered
 {
     if (![aCentered isKindOfClass:[NSMenuItem class]]) {
@@ -2856,111 +1195,6 @@ LAB_0001cf09:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c8d9 @ 0001c8d9, 914 bytes * /
-
-void FUN_0001c8d9(HSEditorWindowController *self,SEL _cmd,id drawMultiple)
-
-{
-  undefined *puVar1;
-  undefined *puVar2;
-  undefined *puVar3;
-  undefined *puVar4;
-  undefined *puVar5;
-  undefined *puVar6;
-  undefined *puVar7;
-  id pvVar8;
-  id pvVar9;
-  undefined4 uVar10;
-  id pvVar11;
-  id pvVar12;
-  id pvVar13;
-  id pvVar14;
-  id pvVar15;
-  id pvVar16;
-  id pvVar17;
-  id pvVar18;
-  id pvVar19;
-  undefined4 *puVar20;
-  undefined4 uVar21;
-  
-  pvVar8 = _objc_msgSend(cls_NSMenuItem,sel_class);
-  pvVar9 = _objc_msgSend(drawMultiple,sel_isKindOfClass_,pvVar8);
-  if ((char)pvVar9 == '\0') {
-    return;
-  }
-  pvVar9 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,pvVar8);
-  pvVar9 = _objc_msgSend(pvVar9,sel_toolSettings);
-  puVar1 = cls_NSNumber;
-  if (pvVar9 == (id)0x0) {
-    return;
-  }
-  pvVar8 = _objc_msgSend(drawMultiple,sel_state,pvVar8);
-  uVar10 = 0xffffffff;
-  if (pvVar8 == (id)0x1) {
-    uVar10 = 0;
-  }
-  pvVar8 = _objc_msgSend(puVar1,sel_numberWithUnsignedInteger_,uVar10);
-  if (pvVar8 == (id)0x0) {
-    return;
-  }
-  pvVar11 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,uVar10);
-  pvVar11 = _objc_msgSend(pvVar11,sel_selectedToolTag);
-  puVar4 = PTR_PTR_003360fc;
-  pvVar12 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360fc);
-  puVar7 = PTR_PTR_00336140;
-  pvVar13 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336140);
-  puVar2 = PTR_PTR_003360b0;
-  pvVar14 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360b0);
-  puVar5 = PTR_PTR_00336138;
-  pvVar15 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336138);
-  puVar1 = PTR_PTR_003360ac;
-  pvVar16 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360ac);
-  puVar20 = (undefined4 *)PTR_PTR_00336134;
-  pvVar17 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_00336134);
-  puVar3 = PTR_PTR_003360b4;
-  pvVar18 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_003360b4);
-  puVar6 = PTR_PTR_0033613c;
-  pvVar19 = _objc_msgSend(cls_HSToolManager,sel_toolTagForIdentifier_,
-                          *(undefined4 *)PTR_PTR_0033613c);
-  if ((pvVar11 == pvVar12) || (pvVar11 == pvVar13)) {
-    uVar10 = *(undefined4 *)PTR_0033611c;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar4,uVar10);
-    puVar20 = (undefined4 *)puVar7;
-  }
-  else if ((pvVar11 == pvVar14) || (pvVar11 == pvVar15)) {
-    uVar10 = *(undefined4 *)PTR_0033611c;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar2,uVar10);
-    puVar20 = (undefined4 *)puVar5;
-  }
-  else {
-    if ((pvVar11 != pvVar16) && (pvVar11 != pvVar17)) {
-      if ((pvVar11 != pvVar18) && (pvVar11 != pvVar19)) {
-        return;
-      }
-      uVar10 = *(undefined4 *)PTR_0033611c;
-      _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar3,uVar10)
-      ;
-      uVar21 = *(undefined4 *)puVar6;
-      goto LAB_0001cb77;
-    }
-    uVar10 = *(undefined4 *)PTR_0033611c;
-    _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,*(undefined4 *)puVar1,uVar10);
-  }
-  uVar21 = *puVar20;
-LAB_0001cb77:
-  _objc_msgSend(pvVar9,sel_setSetting_forIdentifier_andKey_,pvVar8,uVar21,uVar10);
-  return;
-}
-
-*/
 - (void)drawMultiple:(id)aMultiple
 {
     if (![aMultiple isKindOfClass:[NSMenuItem class]]) {
@@ -2992,51 +1226,6 @@ LAB_0001cb77:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c666 @ 0001c666, 627 bytes * /
-
-void FUN_0001c666(HSEditorWindowController *self,SEL _cmd,id draw3DShapes)
-
-{
-  undefined4 uVar1;
-  id pvVar2;
-  SEL op;
-  undefined4 uVar3;
-  
-  pvVar2 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-  uVar1 = *(undefined4 *)PTR_003360b8;
-  uVar3 = uVar1;
-  pvVar2 = _objc_msgSend(pvVar2,sel_objectForKey_,uVar1);
-  if ((pvVar2 == (id)0x0) ||
-     (pvVar2 = _objc_msgSend(pvVar2,sel_intValue,uVar3), op = sel_continueDraw3DShapes_,
-     pvVar2 != (id)0x0)) {
-    self = _objc_msgSend(cls_HSDontShowAgainAlert,sel_new,uVar3);
-    _objc_msgSend(self,sel_setShowAlertKey_,uVar1);
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSDraw3dShapesAlertMessageText,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(self,sel_setMessageText_,pvVar2);
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSDraw3dShapesAlertInformativeText,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(self,sel_setInformativeText_,pvVar2);
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSDraw3dShapesAlertContinueButtonTitle,&cfstr_empty,&cfstr_Alerts)
-    ;
-    _objc_msgSend(self,sel_addButtonWithTitle_,pvVar2);
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                           &cfstr_Alerts);
-    _objc_msgSend(self,sel_addButtonWithTitle_,pvVar2);
-    draw3DShapes = _objc_msgSend(*(id *)PTR_00336058,sel_mainWindow);
-    op = sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_;
-  }
-  _objc_msgSend(self,op,draw3DShapes);
-  return;
-}
-
-*/
 - (void)draw3DShapes:(id)aShapes
 {
     id showAlert = [[NSUserDefaults standardUserDefaults] objectForKey:HSDraw3dShapesShowAlertKey];
@@ -3066,25 +1255,6 @@ void FUN_0001c666(HSEditorWindowController *self,SEL _cmd,id draw3DShapes)
     [self switchTool:aShapes];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c571 @ 0001c571, 146 bytes * /
-
-void FUN_0001c571(HSEditorWindowController *self,SEL _cmd,id textFieldTamer)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSTextFieldTamerDialogController,sel_alloc);
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_editObjectDialogContext);
-  pvVar1 = _objc_msgSend(pvVar1,sel_initWithContext_,pvVar2);
-  _objc_msgSend(pvVar1,sel_runModal);
-  _objc_msgSend(pvVar1,sel_release);
-  return;
-}
-
-*/
 - (void)textFieldTamer:(id)aTamer
 {
     id controller = [[HSTextFieldTamerDialogController alloc] initWithContext:[[self document] editObjectDialogContext]];
@@ -3102,28 +1272,6 @@ void FUN_0001c571(HSEditorWindowController *self,SEL _cmd,id textFieldTamer)
     [[[HSGridSetupDialogController alloc] initWithContext:[[self document] editObjectDialogContext]] runForWindow:[self window] delegate:self didEndSelector:@selector(gridSetupDialog:didEndWithReturnCode:)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c3e1 @ 0001c3e1, 190 bytes * /
-
-void FUN_0001c3e1(HSEditorWindowController *self,SEL _cmd,id editFeatures)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar2 = _objc_msgSend(pvVar1,sel_isActive);
-  if ((char)pvVar2 == '\0') {
-    _objc_msgSend(pvVar1,sel_setActive_explicitlyByUser_,1,1);
-  }
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar2,sel_saveRunTimeEditors);
-  pvVar1 = _objc_msgSend(pvVar1,sel_objectAssistant);
-  _objc_msgSend(pvVar1,sel_openPaneWithIdentifier_,*(undefined4 *)PTR_PTR_003360c0);
-  return;
-}
-
-*/
 - (void)editFeatures:(id)aFeatures
 {
     HSObjectAssistantController *assistant = [HSObjectAssistantController sharedAssistantController];
@@ -3134,28 +1282,6 @@ void FUN_0001c3e1(HSEditorWindowController *self,SEL _cmd,id editFeatures)
     [[assistant objectAssistant] openPaneWithIdentifier:@"HSGenericObjectFeaturesAssistantPane"];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c323 @ 0001c323, 190 bytes * /
-
-void FUN_0001c323(HSEditorWindowController *self,SEL _cmd,id editActions)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_saveRunTimeEditors);
-  pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar2 = _objc_msgSend(pvVar1,sel_isActive);
-  if ((char)pvVar2 == '\0') {
-    _objc_msgSend(pvVar1,sel_setActive_explicitlyByUser_,1,1);
-  }
-  pvVar1 = _objc_msgSend(pvVar1,sel_objectAssistant);
-  _objc_msgSend(pvVar1,sel_openPaneWithIdentifier_,*(undefined4 *)PTR_PTR_00336018);
-  return;
-}
-
-*/
 - (void)editActions:(id)aActions
 {
     [[self cardView] saveRunTimeEditors];
@@ -3166,26 +1292,6 @@ void FUN_0001c323(HSEditorWindowController *self,SEL _cmd,id editActions)
     [[assistant objectAssistant] openPaneWithIdentifier:@"HSActionsAssistantPane"];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001c28c @ 0001c28c, 151 bytes * /
-
-void FUN_0001c28c(HSEditorWindowController *self,SEL _cmd,id editAppearance)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar2 = _objc_msgSend(pvVar1,sel_isActive);
-  if ((char)pvVar2 == '\0') {
-    _objc_msgSend(pvVar1,sel_setActive_explicitlyByUser_,1,1);
-  }
-  pvVar1 = _objc_msgSend(pvVar1,sel_objectAssistant);
-  _objc_msgSend(pvVar1,sel_openPaneWithIdentifier_,*(undefined4 *)PTR_PTR_00336094);
-  return;
-}
-
-*/
 - (void)editAppearance:(id)aAppearance
 {
     HSObjectAssistantController *assistant = [HSObjectAssistantController sharedAssistantController];
@@ -3283,83 +1389,6 @@ void FUN_0001c28c(HSEditorWindowController *self,SEL _cmd,id editAppearance)
     [self removeHelpPaneOverCurrentPaneOfClass:[HSCardAssistantPane class]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00021b65 @ 00021b65, 501 bytes * /
-
-void FUN_00021b65(HSEditorWindowController *self,SEL _cmd,Class removeHelpPaneOverCurrentPaneOfClass
-                 )
-
-{
-  undefined4 uVar1;
-  int iVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  id pvVar7;
-  undefined1 *puVar8;
-  undefined4 uVar9;
-  undefined4 local_6c;
-  int local_68;
-  int *local_64;
-  undefined4 local_60;
-  undefined4 local_5c;
-  undefined4 local_58;
-  undefined4 local_54;
-  undefined4 local_50;
-  undefined1 local_4c [64];
-  
-  pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar3 = _objc_msgSend(pvVar3,sel_objectAssistant);
-  pvVar3 = _objc_msgSend(pvVar3,sel_currentPane);
-  pvVar4 = _objc_msgSend(pvVar3,sel_modalViewController);
-  if (pvVar4 != (id)0x0) {
-    pvVar5 = _objc_msgSend(cls_HSObjectAssistantNavigationController,sel_class);
-    pvVar6 = _objc_msgSend(pvVar4,sel_isKindOfClass_,pvVar5);
-    if ((char)pvVar6 != '\0') {
-      pvVar4 = _objc_msgSend(pvVar4,sel_viewControllers,pvVar5);
-      local_6c = 0;
-      local_68 = 0;
-      local_64 = (int *)0x0;
-      local_60 = 0;
-      local_5c = 0;
-      local_58 = 0;
-      local_54 = 0;
-      local_50 = 0;
-      puVar8 = local_4c;
-      uVar9 = 0x10;
-      pvVar5 = _objc_msgSend(pvVar4,sel_countByEnumeratingWithState_objects_count_,&local_6c,puVar8,
-                             0x10);
-      if (pvVar5 != (id)0x0) {
-        uVar1 = *(undefined4 *)PTR_PTR_00336108;
-        iVar2 = *local_64;
-        do {
-          pvVar6 = (id)0x0;
-          do {
-            if (iVar2 != *local_64) {
-              _objc_enumerationMutation(pvVar4);
-            }
-            pvVar7 = _objc_msgSend(*(id *)(local_68 + (int)pvVar6 * 4),sel_objectForKey_,uVar1,
-                                   puVar8,uVar9);
-            pvVar7 = _objc_msgSend(pvVar7,sel_isCoachingPane);
-            if ((char)pvVar7 == '\0') {
-              return;
-            }
-            pvVar6 = (id)((int)pvVar6 + 1);
-          } while (pvVar6 < pvVar5);
-          puVar8 = local_4c;
-          uVar9 = 0x10;
-          pvVar5 = _objc_msgSend(pvVar4,sel_countByEnumeratingWithState_objects_count_,&local_6c,
-                                 puVar8,0x10);
-        } while (pvVar5 != (id)0x0);
-      }
-      _objc_msgSend(pvVar3,sel_dismissModalViewControllerAnimated_,1,puVar8,uVar9);
-    }
-  }
-  return;
-}
-
-*/
 - (void)effectDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode
 {
     [aDialog autorelease];
@@ -3437,39 +1466,6 @@ void FUN_00021b65(HSEditorWindowController *self,SEL _cmd,Class removeHelpPaneOv
     [self addActionToActorOfActiveCard:aCard ofEvent:[HSActionEvent actionEventOfType:kHSClickActionEventType]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b8f8 @ 0001b8f8, 256 bytes * /
-
-void FUN_0001b8f8(HSEditorWindowController *self,SEL _cmd,id addActionToActorOfActiveCard,id ofEvent
-                 )
-
-{
-  id pvVar1;
-  id self_00;
-  id self_01;
-  id pvVar2;
-  SEL op;
-  id pvVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_activeCard);
-  self_00 = _objc_msgSend(pvVar1,sel_actor);
-  pvVar1 = _objc_msgSend(cls_HSPlaySoundAction,sel_actionType);
-  pvVar3 = ofEvent;
-  self_01 = _objc_msgSend(self_00,sel_hyperActionsOfType_forEvent_,pvVar1,ofEvent);
-  pvVar2 = _objc_msgSend(self_01,sel_count);
-  op = sel_addHyperAction_forEvent_;
-  pvVar1 = addActionToActorOfActiveCard;
-  if (pvVar2 != (id)0x0) {
-    _objc_msgSend(cls_NSArray,sel_arrayWithObject_,ofEvent,pvVar3);
-    pvVar1 = _objc_msgSend(self_01,sel_extraFirstObject);
-    op = sel_replaceHyperAction_withAction_forEvents_;
-    ofEvent = addActionToActorOfActiveCard;
-  }
-  _objc_msgSend(self_00,op,pvVar1,ofEvent);
-  return;
-}
-
-*/
 - (void)addActionToActorOfActiveCard:(id)aCard ofEvent:(id)aEvent
 {
     id actor = [[self activeCard] actor];
@@ -3481,84 +1477,6 @@ void FUN_0001b8f8(HSEditorWindowController *self,SEL _cmd,id addActionToActorOfA
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00021efe @ 00021efe, 665 bytes * /
-
-id FUN_00021efe(HSEditorWindowController *self,SEL _cmd,id verifyObjects,id beforeAddToCard)
-
-{
-  undefined *self_00;
-  id self_01;
-  id self_02;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_03;
-  id pvVar4;
-  id self_04;
-  id self_05;
-  SEL op;
-  undefined *puVar5;
-  undefined4 uVar6;
-  
-  self_01 = _objc_msgSend(cls_NSMutableArray,sel_array);
-  self_02 = _objc_msgSend(verifyObjects,sel_objectEnumerator);
-LAB_0002217f:
-  self_05 = _objc_msgSend(self_02,sel_nextObject);
-  if (self_05 == (id)0x0) {
-    return self_01;
-  }
-  puVar5 = &DAT_00361b78;
-  pvVar1 = _objc_msgSend(self_05,sel_queryHyperInterface_,&DAT_00361b78);
-  self_03 = self_01;
-  op = sel_addObject_;
-  pvVar3 = self_05;
-  if (pvVar1 != (id)0x0) {
-    pvVar2 = _objc_msgSend(pvVar1,sel_media,puVar5);
-    pvVar3 = _objc_msgSend(pvVar2,sel_fullPathToMediaFileCreateIfNeeded_,1);
-    self_03 = _objc_msgSend(cls_HSMovieVerifier,sel_new);
-    pvVar4 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_,pvVar3);
-    uVar6 = 0;
-    pvVar1 = (id)0x0;
-    pvVar3 = pvVar4;
-    self_04 = _objc_msgSend(self_03,sel_verifyMovieAtURL_withOptions_error_,pvVar4,0,0);
-    if (self_04 == (id)0x0) {
-      _NSBeep();
-      op = sel_release;
-      goto LAB_00021ffa;
-    }
-    pvVar3 = _objc_msgSend(self_04,sel_path,pvVar3,pvVar1,uVar6);
-    pvVar3 = _objc_msgSend(pvVar3,sel_stringByResolvingSymlinksInPath);
-    pvVar4 = _objc_msgSend(pvVar4,sel_path);
-    pvVar4 = _objc_msgSend(pvVar4,sel_stringByResolvingSymlinksInPath);
-    pvVar3 = _objc_msgSend(pvVar3,sel_isEqual_,pvVar4);
-    if ((char)pvVar3 == '\0') goto code_r0x00022146;
-    goto LAB_00021fca;
-  }
-  goto LAB_00021ffa;
-code_r0x00022146:
-  puVar5 = &DAT_00361bb4;
-  pvVar3 = _objc_msgSend(self_05,sel_queryHyperInterface_,&DAT_00361bb4);
-  self_00 = cls_HSNewMedia;
-  if (pvVar3 != (id)0x0) {
-    pvVar1 = _objc_msgSend(pvVar2,sel_mediaName,puVar5);
-    pvVar2 = _objc_msgSend(self_04,sel_path);
-    uVar6 = 1;
-    pvVar2 = _objc_msgSend(self_00,sel_mediaWithPath_name_removeWhenDone_,pvVar2,pvVar1,1);
-    if (pvVar2 != (id)0x0) {
-      _objc_msgSend(pvVar3,sel_setMedia_,pvVar2,pvVar1,uVar6);
-LAB_00021fca:
-      _objc_msgSend(self_01,sel_addObject_,self_05,pvVar1,uVar6);
-      op = sel_release;
-      pvVar3 = self_05;
-LAB_00021ffa:
-      _objc_msgSend(self_03,op,pvVar3);
-    }
-  }
-  goto LAB_0002217f;
-}
-
-*/
 - (id)verifyObjects:(id)aObjects beforeAddToCard:(id)aCard
 {
     NSMutableArray *verified = [NSMutableArray array];
@@ -3596,716 +1514,6 @@ LAB_00021ffa:
     return verified;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00022197 @ 00022197, 5809 bytes * /
-
-void FUN_00022197(HSEditorWindowController *self,SEL _cmd,id importBackgroundDialogDidEnd,
-                 int returnCode,void *contextInfo)
-
-{
-  undefined4 uVar1;
-  float fVar2;
-  undefined4 uVar3;
-  bool bVar4;
-  undefined *puVar5;
-  char cVar6;
-  id pvVar7;
-  id pvVar8;
-  id pvVar9;
-  id pvVar10;
-  id pvVar11;
-  id pvVar12;
-  cfstringStruct *pcVar13;
-  HSEditorWindowController *pHVar14;
-  undefined4 extraout_EDX;
-  undefined4 extraout_EDX_00;
-  undefined4 *puVar15;
-  float *pfVar16;
-  float *pfVar17;
-  undefined4 *puVar18;
-  bool bVar19;
-  longdouble lVar20;
-  longdouble lVar21;
-  undefined4 uStack_164;
-  SEL op;
-  id local_114;
-  float local_10c;
-  id local_100;
-  undefined4 local_f4;
-  undefined4 local_f0;
-  undefined4 local_ec;
-  undefined4 local_e8;
-  int local_c0;
-  float local_bc;
-  float local_b8;
-  float local_b4;
-  float local_b0;
-  float local_ac;
-  float fStack_a8;
-  float local_a4;
-  float fStack_a0;
-  undefined4 local_9c;
-  undefined4 uStack_98;
-  id local_94;
-  undefined4 local_8c;
-  undefined4 uStack_88;
-  id local_84;
-  float local_7c;
-  float local_78;
-  float local_74;
-  float local_70;
-  float local_6c;
-  float local_68;
-  float local_64;
-  float local_60;
-  undefined4 local_5c;
-  undefined4 uStack_58;
-  id local_54;
-  undefined4 local_4c;
-  undefined4 uStack_48;
-  id local_44;
-  undefined4 local_3c;
-  undefined4 local_38;
-  undefined1 local_34 [16];
-  undefined1 local_24 [20];
-  
-  puVar15 = (undefined4 *)&stack0xfffffea4;
-  pfVar16 = (float *)&stack0xfffffea4;
-  pfVar17 = (float *)&stack0xfffffea4;
-  puVar18 = (undefined4 *)&stack0xfffffea4;
-  if (returnCode == 1) {
-    pvVar7 = _objc_msgSend(cls_NSAutoreleasePool,sel_new);
-    pvVar8 = _objc_msgSend(importBackgroundDialogDidEnd,sel_dialogUserOptions);
-    pvVar9 = _objc_msgSend(pvVar8,sel_valueForKey_);
-    pvVar9 = _objc_msgSend(pvVar9,sel_boolValue);
-    cVar6 = (char)pvVar9;
-    pvVar9 = _objc_msgSend(pvVar8,sel_valueForKey_);
-    pvVar9 = _objc_msgSend(pvVar9,sel_boolValue);
-    pvVar10 = _objc_msgSend(importBackgroundDialogDidEnd,sel_dialogType);
-    pvVar11 = _objc_msgSend(pvVar8,sel_valueForKey_);
-    pvVar11 = _objc_msgSend(pvVar11,sel_intValue);
-    if ((char)pvVar9 != '\0') {
-      _objc_msgSend(pvVar8,sel_valueForKey_);
-    }
-    pvVar8 = _objc_msgSend(pvVar8,sel_valueForKey_);
-    local_100 = _objc_msgSend(importBackgroundDialogDidEnd,sel_fileName);
-    local_114 = _objc_msgSend(importBackgroundDialogDidEnd,sel_fileDisplayName);
-    if (cVar6 == '\0') {
-      local_100 = _objc_msgSend(self,sel_checkFileExistenceAtPath_expectedType_);
-      bVar19 = local_100 == (id)0x0;
-    }
-    else {
-      bVar19 = false;
-    }
-    local_38 = 0;
-    if (bVar19 || cVar6 != '\0') {
-      pvVar9 = (id)0x0;
-    }
-    else {
-      pvVar9 = _objc_msgSend(self,sel_class);
-      pvVar9 = _objc_msgSend(pvVar9,sel_loadImageAtPath_error_);
-    }
-    if (cVar6 != '\0') {
-      pvVar8 = _objc_msgSend(cls_HSCaptureImageController,sel_alloc);
-      pvVar8 = _objc_msgSend(pvVar8,sel_init);
-      pvVar8 = _objc_msgSend(pvVar8,sel_autorelease);
-      pvVar9 = _objc_msgSend(pvVar8,sel_runModal);
-      if (pvVar9 != (id)0x1) goto LAB_00022645;
-      pvVar9 = _objc_msgSend(pvVar8,sel_capturedImage);
-      _objc_msgSend(pvVar9,sel_setScalesWhenResized_);
-      pvVar12 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar8 = (id)0x0;
-      local_114 = _objc_msgSend(pvVar12,sel_localizedStringForKey_value_table_);
-    }
-    if (pvVar8 != (id)0x0) {
-      pvVar9 = pvVar8;
-    }
-    if (pvVar9 == (id)0x0) goto LAB_000224c6;
-    pvVar8 = _objc_msgSend(pvVar10,sel_isEqualToString_);
-    if ((char)pvVar8 == '\0') {
-      pvVar8 = _objc_msgSend(pvVar10,sel_isEqualToString_);
-      if ((char)pvVar8 == '\0') {
-        pvVar8 = _objc_msgSend(pvVar10,sel_isEqualToString_);
-        if ((char)pvVar8 == '\0') {
-LAB_000224c6:
-          bVar4 = false;
-          pfVar16 = (float *)&stack0xfffffea4;
-          goto LAB_000224c8;
-        }
-        pvVar8 = _objc_msgSend(self,sel_document);
-        pvVar8 = _objc_msgSend(pvVar8,
-                               sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-        if ((char)pvVar8 == '\0') goto LAB_000224c6;
-        uVar3 = *(undefined4 *)PTR_0033608c;
-        uVar1 = *(undefined4 *)(PTR_0033608c + 4);
-        local_84 = _objc_msgSend(pvVar9,sel_size);
-        local_8c = uVar3;
-        uStack_88 = uVar1;
-        pvVar8 = _objc_msgSend(self,sel_document);
-        pvVar8 = _objc_msgSend(pvVar8,sel_stack);
-        uVar3 = *(undefined4 *)PTR_00336074;
-        uVar1 = *(undefined4 *)(PTR_00336074 + 4);
-        local_94 = _objc_msgSend(pvVar8,sel_hyperCardSize);
-        local_9c = uVar3;
-        uStack_98 = uVar1;
-        FUN_00012a1c();
-        pvVar8 = _objc_msgSend(self,sel_cardView);
-        pvVar8 = _objc_msgSend(pvVar8,sel_enclosingScrollView);
-        pfVar17 = (float *)&stack0xfffffea4;
-        if (((int)pvVar11 - 4U < 2) && (pfVar17 = (float *)&stack0xfffffea4, pvVar8 != (id)0x0)) {
-          pvVar10 = _objc_msgSend(self,sel_cardView);
-          _objc_msgSend_stret(local_24,pvVar8,sel_documentVisibleRect);
-          uStack_164 = 0x231da;
-          _objc_msgSend_stret(&local_bc,pvVar10,sel_userBoundingRectForViewRect_);
-          local_ac = ((local_b4 * 0.5 + local_bc) - (local_a4 * 0.5 + local_ac)) + local_ac;
-          fStack_a8 = ((local_b0 * 0.5 + local_b8) - (fStack_a0 * 0.5 + fStack_a8)) + fStack_a8;
-          pfVar17 = (float *)&uStack_164;
-        }
-        fVar2 = fStack_a8;
-        *pfVar17 = local_ac;
-        pfVar17[-1] = 2.01758e-40;
-        lVar20 = (longdouble)_roundf();
-        local_ac = (float)lVar20;
-        *pfVar17 = fVar2;
-        pfVar17[-1] = 2.01791e-40;
-        lVar20 = (longdouble)_roundf();
-        fStack_a8 = (float)lVar20;
-        *(ulonglong *)(pfVar17 + 5) = CONCAT44(fStack_a0,local_a4);
-        *(ulonglong *)(pfVar17 + 3) = CONCAT44(fStack_a8,local_ac);
-        pfVar17[2] = (float)pvVar9;
-        pfVar17[1] = (float)sel_addImageToBackgroundAndSwitchToBitmapSelectionTool_inRect_;
-        *pfVar17 = (float)self;
-        pfVar17[-1] = 2.01882e-40;
-        _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-        pfVar17[1] = (float)sel_sharedLibraryManager;
-        *pfVar17 = (float)cls_HSLibraryManager;
-        pfVar17[-1] = 2.01916e-40;
-        pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-        pfVar17[1] = (float)sel_mediaContentFilter;
-        *pfVar17 = (float)pvVar8;
-        pfVar17[-1] = 2.01941e-40;
-        pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-        pfVar17[2] = (float)local_100;
-        pfVar17[1] = (float)sel_globalUIDStringForMediaItem_;
-        *pfVar17 = (float)pvVar8;
-        pfVar17[-1] = 2.0198e-40;
-        pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-        puVar5 = cls_HSMediaCommentsAndAttributionsProvider;
-        if (pvVar8 == (id)0x0) {
-          pvVar8 = (id)0x0;
-LAB_0002334e:
-          pfVar17[1] = (float)sel_length;
-          *pfVar17 = (float)local_100;
-          pfVar17[-1] = 2.02112e-40;
-          pvVar9 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          puVar5 = cls_HSEditorCardViewDragHelper;
-          if (pvVar9 != (id)0x0) {
-            pfVar17[2] = (float)local_100;
-            pfVar17[1] = (float)sel_fileURLWithPath_;
-            *pfVar17 = (float)cls_NSURL;
-            pfVar17[-1] = 2.02179e-40;
-            pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-            pfVar17[2] = (float)pvVar8;
-            pfVar17[1] = (float)sel_commentsForDroppedObjectWithURL_;
-            *pfVar17 = (float)puVar5;
-            pfVar17[-1] = 2.0221e-40;
-            pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          }
-        }
-        else {
-          pfVar17[2] = (float)pvVar8;
-          pfVar17[1] = (float)sel_UIDWithString_;
-          *pfVar17 = (float)cls_HSUID;
-          pfVar17[-1] = 2.02039e-40;
-          pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[2] = (float)pvVar8;
-          pfVar17[1] = (float)sel_commentsAndAttributionsForMediaUID_;
-          *pfVar17 = (float)puVar5;
-          pfVar17[-1] = 2.0207e-40;
-          pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          if (pvVar8 == (id)0x0) goto LAB_0002334e;
-        }
-        pfVar17[1] = (float)sel_length;
-        *pfVar17 = (float)pvVar8;
-        pfVar17[-1] = 2.02244e-40;
-        pvVar9 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-        pfVar16 = pfVar17;
-        if (pvVar9 != (id)0x0) {
-          pfVar17[1] = (float)sel_document;
-          *pfVar17 = (float)self;
-          pfVar17[-1] = 2.02284e-40;
-          pvVar9 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[1] = (float)sel_currentCard;
-          *pfVar17 = (float)pvVar9;
-          pfVar17[-1] = 2.0231e-40;
-          pvVar9 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[2] = (float)&DAT_00361e20;
-          pfVar17[1] = (float)sel_queryHyperInterface_;
-          *pfVar17 = (float)pvVar9;
-          pfVar17[-1] = 2.02349e-40;
-          pvVar9 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          if (pvVar9 == (id)0x0) goto LAB_000227ea;
-          pfVar17[1] = (float)sel_hyperComments;
-          *pfVar17 = (float)pvVar9;
-          pfVar17[-1] = 2.02394e-40;
-          pvVar10 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[2] = (float)pvVar8;
-          pfVar17[1] = (float)sel_hasHyperSubstring_;
-          *pfVar17 = (float)pvVar10;
-          pfVar17[-1] = 2.02436e-40;
-          pvVar11 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          puVar5 = cls_NSString;
-          if (pvVar11 != (id)0x0) goto LAB_000227ea;
-          pfVar17[1] = (float)sel_length;
-          *pfVar17 = (float)pvVar10;
-          pfVar17[-1] = 2.02489e-40;
-          pvVar11 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[5] = (float)pvVar8;
-          pcVar13 = &cfstr__;
-          if (pvVar11 == (id)0x0) {
-            pcVar13 = &cfstr_empty;
-          }
-          pfVar17[4] = (float)pcVar13;
-          pfVar17[3] = (float)pvVar10;
-          pfVar17[2] = (float)&cfstr_______;
-          pfVar17[1] = (float)sel_stringWithFormat_;
-          *pfVar17 = (float)puVar5;
-          pfVar17[-1] = 2.02586e-40;
-          pvVar8 = _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar17[2] = (float)pvVar8;
-          pfVar17[1] = (float)sel_setHyperComments_;
-          goto LAB_000228ee;
-        }
-        goto LAB_000227ea;
-      }
-      pHVar14 = (HSEditorWindowController *)cls_HSNewMedia;
-      op = sel_mediaWithImage_;
-      if (cVar6 == '\0') {
-        pvVar8 = _objc_msgSend(cls_HSLibraryManager,sel_sharedLibraryManager);
-        _objc_msgSend(pvVar8,sel_mediaContentFilter);
-        pHVar14 = self;
-        op = sel_reusableMediaForPath_contentFilter_;
-      }
-      _objc_msgSend(pHVar14,op);
-      local_3c = 0;
-      pvVar8 = _objc_msgSend(cls_HSImageObject,sel_alloc);
-      pvVar8 = _objc_msgSend(pvVar8,sel_initWithMedia_error_);
-      if ((local_114 != (id)0x0) &&
-         (pvVar10 = _objc_msgSend(local_114,sel_length), pvVar10 != (id)0x0)) {
-        _objc_msgSend(pvVar8,sel_setHyperName_);
-      }
-      pvVar10 = _objc_msgSend(cls_HSImageCropApplier,sel_cropApplierForImageObject_);
-      _objc_msgSend(pvVar10,sel_updateCurrentBorderPath);
-      _objc_msgSend(pvVar10,sel_cropImageObjectWithPaths_modifyObjectGeometry_);
-      pvVar10 = _objc_msgSend(pvVar8,sel_queryHyperInterface_);
-      _objc_msgSend(pvVar10,sel_setAllClipPathsAsInitial);
-      _objc_msgSend(pvVar8,sel_setCurrentClipPathsAreInitial_);
-      pvVar10 = _objc_msgSend(pvVar8,sel_queryHyperInterface_);
-      pvVar10 = _objc_msgSend(pvVar10,sel_queryGeometryBehaviorApplier);
-      if (pvVar10 == (id)0x0) {
-        bVar4 = false;
-      }
-      else {
-        pvVar12 = _objc_msgSend(self,sel_document);
-        pvVar12 = _objc_msgSend(pvVar12,sel_stack);
-        puVar5 = PTR_00336074;
-        uVar3 = *(undefined4 *)PTR_00336074;
-        uVar1 = *(undefined4 *)(PTR_00336074 + 4);
-        local_44 = _objc_msgSend(pvVar12,sel_hyperCardSize);
-        local_4c = uVar3;
-        uStack_48 = uVar1;
-        local_54 = _objc_msgSend(pvVar9,sel_size);
-        local_5c = uVar3;
-        uStack_58 = uVar1;
-        FUN_00012a1c();
-        pvVar9 = _objc_msgSend(self,sel_cardView);
-        pvVar9 = _objc_msgSend(pvVar9,sel_enclosingScrollView);
-        if ((pvVar9 == (id)0x0) || (pvVar11 != (id)0x4)) {
-          local_10c = local_60;
-          local_114 = (id)local_64;
-          pfVar16 = (float *)&stack0xfffffea4;
-        }
-        else {
-          pvVar11 = _objc_msgSend(self,sel_cardView);
-          _objc_msgSend_stret(local_34,pvVar9,sel_documentVisibleRect);
-          uStack_164 = 0x22cbd;
-          _objc_msgSend_stret(&local_7c,pvVar11,sel_userBoundingRectForViewRect_);
-          pfVar16 = (float *)&uStack_164;
-          local_10c = local_60;
-          local_114 = (id)local_64;
-          local_6c = ((local_74 * 0.5 + local_7c) - (local_64 * 0.5 + local_6c)) + local_6c;
-          local_68 = ((local_70 * 0.5 + local_78) - (local_60 * 0.5 + local_68)) + local_68;
-        }
-        fVar2 = local_68;
-        *pfVar16 = local_6c;
-        pfVar16[-1] = 1.99912e-40;
-        lVar20 = (longdouble)_roundf();
-        *pfVar16 = fVar2;
-        pfVar16[-1] = 1.99975e-40;
-        local_6c = (float)lVar20;
-        lVar21 = (longdouble)_roundf();
-        fVar2 = *(float *)puVar5;
-        pfVar16[5] = *(float *)(puVar5 + 4);
-        pfVar16[4] = fVar2;
-        pfVar16[3] = local_10c;
-        pfVar16[2] = (float)local_114;
-        pfVar16[1] = (float)
-                     sel_resizeFrameTo_aboutRelativePoint_followResizingScalingPreference_maintainAspectRatio_byAspectRatioMaintainingRule_withLayoutGuidingContext_
-        ;
-        *pfVar16 = (float)pvVar10;
-        pfVar16[9] = 0.0;
-        pfVar16[8] = 0.0;
-        pfVar16[7] = 2.8026e-45;
-        pfVar16[6] = 1.4013e-45;
-        pfVar16[-1] = 2.00168e-40;
-        local_68 = (float)lVar21;
-        _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[3] = (float)lVar21;
-        pfVar16[2] = (float)lVar20;
-        pfVar16[1] = (float)sel_moveFrameBoundingRectOriginTo_withLayoutGuidingContext_;
-        *pfVar16 = (float)pvVar10;
-        pfVar16[4] = 0.0;
-        pfVar16[-1] = 2.00244e-40;
-        _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[1] = (float)sel_document;
-        *pfVar16 = (float)self;
-        pfVar16[-1] = 2.00274e-40;
-        pvVar9 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[1] = (float)sel_currentCard;
-        *pfVar16 = (float)pvVar9;
-        pfVar16[-1] = 2.00299e-40;
-        pvVar9 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[1] = (float)sel_document;
-        *pfVar16 = (float)self;
-        pfVar16[-1] = 2.00332e-40;
-        pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[1] = (float)sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode;
-        *pfVar16 = (float)pvVar10;
-        pfVar16[-1] = 2.00358e-40;
-        pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        puVar5 = cls_HSEditorCardViewDragHelper;
-        if ((char)pvVar10 != '\0') {
-          if (cVar6 == '\0') {
-            pfVar16[2] = (float)local_100;
-            pfVar16[1] = (float)sel_fileURLWithPath_;
-            *pfVar16 = (float)cls_NSURL;
-            pfVar16[-1] = 2.00443e-40;
-            pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-            pfVar16[2] = (float)pvVar10;
-            pfVar16[1] = (float)sel_commentsForDroppedObjectWithURL_;
-            *pfVar16 = (float)puVar5;
-            pfVar16[-1] = 2.00474e-40;
-            pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-          }
-          else {
-            pvVar10 = (id)0x0;
-          }
-          pfVar16[1] = (float)sel_length;
-          *pfVar16 = (float)pvVar10;
-          pfVar16[-1] = 2.00502e-40;
-          pvVar11 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-          if (pvVar11 != (id)0x0) {
-            pfVar16[2] = (float)&DAT_00361e20;
-            pfVar16[1] = (float)sel_queryHyperInterface_;
-            *pfVar16 = (float)pvVar8;
-            pfVar16[-1] = 2.00555e-40;
-            pvVar11 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-            pfVar16[1] = (float)sel_copy;
-            *pfVar16 = (float)pvVar10;
-            pfVar16[-1] = 2.00583e-40;
-            pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-            pfVar16[1] = (float)sel_autorelease;
-            *pfVar16 = (float)pvVar10;
-            pfVar16[-1] = 2.00608e-40;
-            pvVar10 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-            pfVar16[2] = (float)pvVar10;
-            pfVar16[1] = (float)sel_setHyperComments_;
-            *pfVar16 = (float)pvVar11;
-            pfVar16[-1] = 2.00639e-40;
-            _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-          }
-          pfVar16[2] = (float)pvVar8;
-          pfVar16[1] = (float)sel_addHyperChild_;
-          *pfVar16 = (float)pvVar9;
-          pfVar16[-1] = 2.00687e-40;
-          _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        }
-        pfVar16[1] = (float)sel_didAddNewObject;
-        *pfVar16 = (float)self;
-        pfVar16[-1] = 2.00716e-40;
-        _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        bVar4 = true;
-      }
-      pfVar16[1] = (float)sel_release;
-      *pfVar16 = (float)pvVar8;
-      pfVar16[-1] = 2.00753e-40;
-      _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-LAB_000224c8:
-      puVar5 = cls_HSMovieObject;
-      if ((local_100 == (id)0x0) || (bVar4)) goto LAB_000227ec;
-      *(undefined **)((int)pfVar16 + 4) = sel_defaultManager;
-      *pfVar16 = (float)cls_NSFileManager;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x22501;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      *(id *)((int)pfVar16 + 8) = local_100;
-      *(undefined **)((int)pfVar16 + 4) = sel_hyperFileTypeAtPath_;
-      *pfVar16 = (float)pvVar8;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x2251d;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      *(id *)((int)pfVar16 + 8) = pvVar8;
-      *(undefined **)((int)pfVar16 + 4) = sel_isMediaTypeSupported_;
-      *pfVar16 = (float)puVar5;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x22539;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      if ((char)pvVar8 == '\0') goto LAB_000227ec;
-      *(undefined **)((int)pfVar16 + 4) = sel_sharedLibraryManager;
-      *pfVar16 = (float)cls_HSLibraryManager;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x22559;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      *(undefined **)((int)pfVar16 + 4) = sel_moviesContentFilter;
-      *pfVar16 = (float)pvVar8;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x2256b;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      *(id *)((int)pfVar16 + 0xc) = pvVar8;
-      *(id *)((int)pfVar16 + 8) = local_100;
-      *(undefined **)((int)pfVar16 + 4) = sel_reusableMediaForPath_contentFilter_;
-      *pfVar16 = (float)self;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x2258a;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      local_c0 = 0;
-      *(undefined **)((int)pfVar16 + 4) = sel_alloc;
-      *pfVar16 = (float)cls_HSMovieObject;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x225ae;
-      pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      *(int **)((int)pfVar16 + 0xc) = &local_c0;
-      *(id *)((int)pfVar16 + 8) = pvVar8;
-      *(undefined **)((int)pfVar16 + 4) = sel_initWithMedia_error_;
-      *pfVar16 = (float)pvVar9;
-      *(undefined4 *)((int)pfVar16 + -4) = 0x225ce;
-      pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      if (pvVar8 == (id)0x0) {
-        if (local_c0 != 0) {
-          *(undefined **)((int)pfVar16 + 4) = sel_sharedErrorManager;
-          *pfVar16 = (float)cls_HSErrorManager;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x225fb;
-          pvVar8 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(undefined **)((int)pfVar16 + 4) = sel_window;
-          *pfVar16 = (float)self;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x22612;
-          pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(id *)((int)pfVar16 + 0xc) = pvVar9;
-          *(int *)((int)pfVar16 + 8) = local_c0;
-          *(undefined **)((int)pfVar16 + 4) = sel_presentError_inWindow_;
-          *pfVar16 = (float)pvVar8;
-          goto LAB_00023760;
-        }
-      }
-      else {
-        *(undefined **)((int)pfVar16 + 8) = &DAT_00361df8;
-        *(undefined **)((int)pfVar16 + 4) = sel_queryHyperInterface_;
-        *pfVar16 = (float)pvVar8;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x234fb;
-        pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        *(undefined4 *)((int)pfVar16 + 8) = *(undefined4 *)PTR_00336080;
-        *(undefined **)((int)pfVar16 + 4) = sel_actionEventOfType_;
-        *pfVar16 = (float)cls_HSActionEvent;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x23521;
-        pvVar10 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        *(id *)((int)pfVar16 + 8) = pvVar10;
-        *(undefined **)((int)pfVar16 + 4) = sel_setAutoPlayActionEvent_;
-        *pfVar16 = (float)pvVar9;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x23537;
-        _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        *(undefined **)((int)pfVar16 + 8) = &DAT_003619d4;
-        *(undefined **)((int)pfVar16 + 4) = sel_queryHyperInterface_;
-        *pfVar16 = (float)pvVar8;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x23559;
-        pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        *(undefined **)((int)pfVar16 + 4) = sel_queryGeometryBehaviorApplier;
-        *pfVar16 = (float)pvVar9;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x2356b;
-        pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        if (pvVar9 != (id)0x0) {
-          *(undefined **)((int)pfVar16 + 4) = sel_document;
-          *pfVar16 = (float)self;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x2358e;
-          pvVar10 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(undefined **)((int)pfVar16 + 4) = sel_stack;
-          *pfVar16 = (float)pvVar10;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x235a0;
-          pvVar10 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(undefined **)((int)pfVar16 + 4) = sel_hyperCardSize;
-          *pfVar16 = (float)pvVar10;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x235b2;
-          pvVar10 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(undefined **)((int)pfVar16 + 4) = sel_defaultSize;
-          *pfVar16 = (float)pvVar8;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x235ce;
-          pvVar11 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(ulonglong *)((int)pfVar16 + 0x18) = CONCAT44(extraout_EDX,pvVar10);
-          *(undefined8 *)((int)pfVar16 + 0x10) = 0;
-          *(ulonglong *)((int)pfVar16 + 8) = CONCAT44(extraout_EDX_00,pvVar11);
-          *(undefined8 *)pfVar16 = 0;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x23656;
-          FUN_00012a1c();
-          uVar3 = *(undefined4 *)PTR_00336074;
-          *(undefined4 *)((int)pfVar16 + 0x14) = *(undefined4 *)(PTR_00336074 + 4);
-          *(undefined4 *)((int)pfVar16 + 0x10) = uVar3;
-          *(undefined4 *)((int)pfVar16 + 0xc) = local_e8;
-          *(undefined4 *)((int)pfVar16 + 8) = local_ec;
-          *(undefined **)((int)pfVar16 + 4) =
-               sel_resizeFrameTo_aboutRelativePoint_withLayoutGuidingContext_;
-          *pfVar16 = (float)pvVar9;
-          *(undefined4 *)((int)pfVar16 + 0x18) = 0;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x236ad;
-          _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(undefined4 *)((int)pfVar16 + 0xc) = local_f0;
-          *(undefined4 *)((int)pfVar16 + 8) = local_f4;
-          *(undefined **)((int)pfVar16 + 4) =
-               sel_moveFrameBoundingRectOriginTo_withLayoutGuidingContext_;
-          *pfVar16 = (float)pvVar9;
-          *(undefined4 *)((int)pfVar16 + 0x10) = 0;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x236e9;
-          _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        }
-        *(undefined **)((int)pfVar16 + 4) = sel_document;
-        *pfVar16 = (float)self;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x236fe;
-        pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        *(undefined **)((int)pfVar16 + 4) =
-             sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode;
-        *pfVar16 = (float)pvVar9;
-        *(undefined4 *)((int)pfVar16 + -4) = 0x23710;
-        pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        if ((char)pvVar9 != '\0') {
-          *(undefined **)((int)pfVar16 + 4) = sel_cardView;
-          *pfVar16 = (float)self;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x23729;
-          pvVar9 = _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-          *(id *)((int)pfVar16 + 8) = pvVar8;
-          *(undefined **)((int)pfVar16 + 4) = sel_addObjectToCenter_useDragPreferences_;
-          *pfVar16 = (float)pvVar9;
-          *(undefined4 *)((int)pfVar16 + 0xc) = 0;
-          *(undefined4 *)((int)pfVar16 + -4) = 0x2374d;
-          _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-        }
-        *(undefined **)((int)pfVar16 + 4) = sel_release;
-        *pfVar16 = (float)pvVar8;
-LAB_00023760:
-        *(undefined4 *)((int)pfVar16 + -4) = 0x23765;
-        _objc_msgSend((id)*pfVar16,*(SEL *)((int)pfVar16 + 4));
-      }
-      *(undefined **)((int)pfVar16 + 4) = sel_didAddNewObject;
-      pHVar14 = self;
-LAB_000237d7:
-      *pfVar16 = (float)pHVar14;
-      pfVar16[-1] = 2.03714e-40;
-      _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-    }
-    else {
-      pvVar8 = _objc_msgSend(self,sel_document);
-      pvVar8 = _objc_msgSend(pvVar8,sel_currentCard);
-      _objc_msgSend(pvVar8,sel_importBackgroundFromImage_imageScalingOption_eraseBackground_);
-      if (cVar6 == '\0') {
-        pvVar9 = _objc_msgSend(cls_HSLibraryManager,sel_sharedLibraryManager);
-        pvVar9 = _objc_msgSend(pvVar9,sel_mediaContentFilter);
-        pvVar9 = _objc_msgSend(pvVar9,sel_globalUIDStringForMediaItem_);
-        puVar5 = cls_HSMediaCommentsAndAttributionsProvider;
-        if (pvVar9 == (id)0x0) goto LAB_000226e5;
-        _objc_msgSend(cls_HSUID,sel_UIDWithString_);
-        pvVar9 = _objc_msgSend(puVar5,sel_commentsAndAttributionsForMediaUID_);
-        if (pvVar9 == (id)0x0) goto LAB_00022772;
-      }
-      else {
-LAB_000226e5:
-        pvVar9 = (id)0x0;
-LAB_00022772:
-        pvVar10 = _objc_msgSend(local_100,sel_length);
-        puVar5 = cls_HSEditorCardViewDragHelper;
-        if (pvVar10 != (id)0x0) {
-          _objc_msgSend(cls_NSURL,sel_fileURLWithPath_);
-          pvVar9 = _objc_msgSend(puVar5,sel_commentsForDroppedObjectWithURL_);
-        }
-      }
-      pvVar9 = _objc_msgSend(pvVar9,sel_length);
-      pfVar16 = (float *)&stack0xfffffea4;
-      if ((pvVar9 != (id)0x0) &&
-         (pvVar9 = _objc_msgSend(pvVar8,sel_queryHyperInterface_),
-         pfVar16 = (float *)&stack0xfffffea4, pvVar9 != (id)0x0)) {
-        pvVar8 = _objc_msgSend(pvVar9,sel_hyperComments);
-        pvVar10 = _objc_msgSend(pvVar8,sel_hasHyperSubstring_);
-        puVar5 = cls_NSString;
-        pfVar16 = (float *)&stack0xfffffea4;
-        if (pvVar10 == (id)0x0) {
-          _objc_msgSend(pvVar8,sel_length);
-          _objc_msgSend(puVar5,sel_stringWithFormat_);
-LAB_000228ee:
-          *pfVar17 = (float)pvVar9;
-          pfVar17[-1] = 1.98365e-40;
-          _objc_msgSend((id)*pfVar17,(SEL)pfVar17[1]);
-          pfVar16 = pfVar17;
-        }
-      }
-LAB_000227ea:
-      bVar4 = true;
-LAB_000227ec:
-      if (!bVar4 && !bVar19) {
-        pfVar16[1] = (float)sel_code;
-        *pfVar16 = (float)local_38;
-        pfVar16[-1] = 1.98039e-40;
-        pvVar8 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        if (pvVar8 == (id)0x0) {
-          pvVar8 = (id)0x103;
-        }
-        else {
-          pfVar16[1] = (float)sel_code;
-          *pfVar16 = (float)local_38;
-          pfVar16[-1] = 2.03593e-40;
-          pvVar8 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        }
-        pfVar16[3] = (float)local_100;
-        pfVar16[2] = (float)pvVar8;
-        pfVar16[1] = (float)sel_fileErrorWithHSCode_filePath_;
-        *pfVar16 = (float)cls_HSError;
-        pfVar16[-1] = 2.03647e-40;
-        pvVar8 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[1] = (float)sel_sharedErrorManager;
-        *pfVar16 = (float)cls_HSErrorManager;
-        pfVar16[-1] = 2.03683e-40;
-        pHVar14 = _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-        pfVar16[2] = (float)pvVar8;
-        pfVar16[1] = (float)sel_presentError_;
-        goto LAB_000237d7;
-      }
-    }
-    pfVar16[1] = (float)sel_release;
-    *pfVar16 = (float)pvVar7;
-    pfVar16[-1] = 2.03747e-40;
-    _objc_msgSend((id)*pfVar16,(SEL)pfVar16[1]);
-    puVar18 = pfVar16;
-  }
-  puVar18[1] = sel_hyperDocument;
-  *puVar18 = importBackgroundDialogDidEnd;
-  puVar18[-1] = 0x2380c;
-  pvVar7 = _objc_msgSend((id)*puVar18,(SEL)puVar18[1]);
-  puVar18[1] = sel_document;
-  *puVar18 = self;
-  puVar18[-1] = 0x23823;
-  pvVar8 = _objc_msgSend((id)*puVar18,(SEL)puVar18[1]);
-  if (pvVar7 != pvVar8) {
-    return;
-  }
-  puVar18[1] = sel_setHyperDocument_;
-  *puVar18 = importBackgroundDialogDidEnd;
-  puVar18[2] = 0;
-  puVar15 = puVar18;
-LAB_00022645:
-  puVar15[-1] = 0x2264a;
-  _objc_msgSend((id)*puVar15,(SEL)puVar15[1]);
-  return;
-}
-
-*/
 - (void)importBackgroundDialogDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     if (aCode == 1) {
@@ -4479,58 +1687,11 @@ LAB_00022645:
     [aEnd setHyperDocument:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b8b0 @ 0001b8b0, 72 bytes * /
-
-void FUN_0001b8b0(HSEditorWindowController *self,SEL _cmd,
-                 id addImageToBackgroundAndSwitchToBitmapSelectionTool,NSRect inRect)
-
-{
-  _objc_msgSend(self->_cardView,sel_addImageToBackgroundAndSwitchToBitmapSelectionTool_inRect_,
-                addImageToBackgroundAndSwitchToBitmapSelectionTool,inRect.origin,inRect.size);
-  return;
-}
-
-*/
 - (void)addImageToBackgroundAndSwitchToBitmapSelectionTool:(id)aTool inRect:(NSRect)aRect
 {
     [_cardView addImageToBackgroundAndSwitchToBitmapSelectionTool:aTool inRect:aRect];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b75f @ 0001b75f, 337 bytes * /
-
-void FUN_0001b75f(HSEditorWindowController *self,SEL _cmd,id importBackground)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = self->_importBackgroundDialogController;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSImportDialogController,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithDialogType_,*(undefined4 *)PTR_PTR_003360d0);
-    self->_importBackgroundDialogController = pvVar1;
-  }
-  _objc_msgSend(self,sel_setSettingsForGraphicImportDialogController_,pvVar1);
-  _objc_msgSend(self->_importBackgroundDialogController,sel_setCaptureImageButtonEnabled_,1);
-  pvVar1 = self->_importBackgroundDialogController;
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setHyperDocument_,pvVar2);
-  self_00 = cls_HSImportDialogController;
-  pvVar1 = self->_importBackgroundDialogController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  pvVar2 = _objc_msgSend(self_00,sel_defaultButtonTitleForObject_,pvVar2);
-  _objc_msgSend(pvVar1,sel_setDefaultButtonTitle_,pvVar2);
-  pvVar1 = _objc_msgSend(self->_importBackgroundDialogController,sel_runModal);
-  _objc_msgSend(self,sel_importBackgroundDialogDidEnd_returnCode_contextInfo_,
-                self->_importBackgroundDialogController,pvVar1,0);
-  return;
-}
-
-*/
 - (void)importBackground:(id)aBackground
 {
     if (_importBackgroundDialogController == nil) {
@@ -4543,40 +1704,6 @@ void FUN_0001b75f(HSEditorWindowController *self,SEL _cmd,id importBackground)
     [self importBackgroundDialogDidEnd:_importBackgroundDialogController returnCode:[_importBackgroundDialogController runModal] contextInfo:NULL];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b60e @ 0001b60e, 337 bytes * /
-
-void FUN_0001b60e(HSEditorWindowController *self,SEL _cmd,id addGraphicObject)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = self->_importGraphicObjectDialogController;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSImportDialogController,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithDialogType_,*(undefined4 *)PTR_PTR_003360d8);
-    self->_importGraphicObjectDialogController = pvVar1;
-  }
-  _objc_msgSend(self,sel_setSettingsForGraphicImportDialogController_,pvVar1);
-  _objc_msgSend(self->_importGraphicObjectDialogController,sel_setCaptureImageButtonEnabled_,1);
-  pvVar1 = self->_importGraphicObjectDialogController;
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setHyperDocument_,pvVar2);
-  self_00 = cls_HSImportDialogController;
-  pvVar1 = self->_importGraphicObjectDialogController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  pvVar2 = _objc_msgSend(self_00,sel_defaultButtonTitleForObject_,pvVar2);
-  _objc_msgSend(pvVar1,sel_setDefaultButtonTitle_,pvVar2);
-  pvVar1 = _objc_msgSend(self->_importGraphicObjectDialogController,sel_runModal);
-  _objc_msgSend(self,sel_importBackgroundDialogDidEnd_returnCode_contextInfo_,
-                self->_importGraphicObjectDialogController,pvVar1,0);
-  return;
-}
-
-*/
 - (void)addGraphicObject:(id)aObject
 {
     if (_importGraphicObjectDialogController == nil) {
@@ -4589,40 +1716,6 @@ void FUN_0001b60e(HSEditorWindowController *self,SEL _cmd,id addGraphicObject)
     [self importBackgroundDialogDidEnd:_importGraphicObjectDialogController returnCode:[_importGraphicObjectDialogController runModal] contextInfo:NULL];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b4bd @ 0001b4bd, 337 bytes * /
-
-void FUN_0001b4bd(HSEditorWindowController *self,SEL _cmd,id addGraphic)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = self->_importGraphicDialogController;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSImportDialogController,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithDialogType_,*(undefined4 *)PTR_PTR_003360d4);
-    self->_importGraphicDialogController = pvVar1;
-  }
-  _objc_msgSend(self,sel_setSettingsForGraphicImportDialogController_,pvVar1);
-  _objc_msgSend(self->_importGraphicDialogController,sel_setCaptureImageButtonEnabled_,1);
-  pvVar1 = self->_importGraphicDialogController;
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setHyperDocument_,pvVar2);
-  self_00 = cls_HSImportDialogController;
-  pvVar1 = self->_importGraphicDialogController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  pvVar2 = _objc_msgSend(self_00,sel_defaultButtonTitleForObject_,pvVar2);
-  _objc_msgSend(pvVar1,sel_setDefaultButtonTitle_,pvVar2);
-  pvVar1 = _objc_msgSend(self->_importGraphicDialogController,sel_runModal);
-  _objc_msgSend(self,sel_importBackgroundDialogDidEnd_returnCode_contextInfo_,
-                self->_importGraphicDialogController,pvVar1,0);
-  return;
-}
-
-*/
 - (void)addGraphic:(id)aGraphic
 {
     if (_importGraphicDialogController == nil) {
@@ -4635,49 +1728,11 @@ void FUN_0001b4bd(HSEditorWindowController *self,SEL _cmd,id addGraphic)
     [self importBackgroundDialogDidEnd:_importGraphicDialogController returnCode:[_importGraphicDialogController runModal] contextInfo:NULL];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b452 @ 0001b452, 107 bytes * /
-
-void FUN_0001b452(HSEditorWindowController *self,SEL _cmd,
-                 id setSettingsForGraphicImportDialogController)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectionToolTolerance);
-  pvVar1 = _objc_msgSend(cls_NSDictionary,sel_dictionaryWithObject_forKey_,pvVar1,
-                         *(undefined4 *)PTR_PTR_003360f8);
-  _objc_msgSend(setSettingsForGraphicImportDialogController,sel_setOptions_,pvVar1);
-  return;
-}
-
-*/
 - (void)setSettingsForGraphicImportDialogController:(id)aController
 {
     [aController setOptions:[NSDictionary dictionaryWithObject:[self selectionToolTolerance] forKey:@"selectionTolerance"]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001b3c5 @ 0001b3c5, 141 bytes * /
-
-id FUN_0001b3c5(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  undefined4 uVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_toolSettings);
-  uVar2 = *(undefined4 *)PTR_PTR_003360f8;
-  pvVar1 = _objc_msgSend(pvVar1,sel_settingForIdentifier_andKey_,*(undefined4 *)PTR_PTR_003360f4,
-                         uVar2);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_NSNumber,sel_numberWithFloat_,0,uVar2);
-  }
-  return pvVar1;
-}
-
-*/
 - (id)selectionToolTolerance
 {
     id tolerance = [[[HSToolManager sharedToolManager] toolSettings] settingForIdentifier:@"HSLassoSelectionTool" andKey:@"selectionTolerance"];
@@ -4687,119 +1742,6 @@ id FUN_0001b3c5(HSEditorWindowController *self,SEL _cmd)
     return tolerance;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001af71 @ 0001af71, 1108 bytes * /
-
-void FUN_0001af71(HSEditorWindowController *self,SEL _cmd,id addSoundObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *puVar3;
-  undefined *puVar4;
-  id pvVar5;
-  undefined *puVar6;
-  id pvVar7;
-  SEL op;
-  undefined *local_18;
-  id local_14;
-  
-  pvVar1 = self->_importSoundObjectDialogController;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSImportDialogController,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithDialogType_,*(undefined4 *)PTR_PTR_003360dc);
-    self->_importSoundObjectDialogController = pvVar1;
-  }
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setHyperDocument_,pvVar2);
-  puVar4 = cls_HSImportDialogController;
-  pvVar1 = self->_importSoundObjectDialogController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  pvVar2 = _objc_msgSend(puVar4,sel_defaultButtonTitleForObject_,pvVar2);
-  _objc_msgSend(pvVar1,sel_setDefaultButtonTitle_,pvVar2);
-  pvVar2 = _objc_msgSend(self->_importSoundObjectDialogController,sel_runModal);
-  pvVar1 = _objc_msgSend(self->_importSoundObjectDialogController,sel_fileName);
-  if (pvVar1 == (id)0x0) {
-    return;
-  }
-  puVar4 = *(undefined **)PTR_00336168;
-  puVar3 = _objc_msgSend(self,sel_checkFileExistenceAtPath_expectedType_,pvVar1,puVar4);
-  if (pvVar2 != (id)0x1) {
-    return;
-  }
-  if (puVar3 == (undefined *)0x0) {
-    return;
-  }
-  if (self->_playSoundActionEvent == (id)0x0) {
-    pvVar1 = *(id *)PTR_00336080;
-    pvVar2 = _objc_msgSend(cls_HSActionEvent,sel_actionEventOfType_,pvVar1,puVar4);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_playSoundActionEvent = pvVar2;
-  }
-  pvVar1 = _objc_msgSend(self,sel_document,pvVar1,puVar4);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentCard);
-  puVar6 = &DAT_00361d6c;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361d6c);
-  if (pvVar1 != (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSLibraryManager,sel_sharedLibraryManager,puVar6);
-    puVar4 = _objc_msgSend(pvVar2,sel_soundsContentFilter);
-    puVar6 = puVar3;
-    pvVar2 = _objc_msgSend(self,sel_reusableMediaForPath_contentFilter_,puVar3,puVar4);
-    if (pvVar2 != (id)0x0) {
-      pvVar5 = _objc_msgSend(cls_HSMovie,sel_alloc,puVar6,puVar4);
-      puVar6 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_,puVar3);
-      puVar4 = (undefined *)0x0;
-      local_18 = _objc_msgSend(pvVar5,sel_initWithURL_error_,puVar6,0);
-      if (local_18 == (undefined *)0x0) {
-        puVar3 = (undefined *)0x0;
-        local_14 = (id)0x0;
-      }
-      else {
-        pvVar5 = _objc_msgSend(cls_HSSoundItem,sel_alloc,puVar6,puVar4);
-        puVar6 = _objc_msgSend(pvVar2,sel_mediaUID);
-        puVar4 = local_18;
-        local_14 = _objc_msgSend(pvVar5,sel_initWithMediaUID_andApplyOptionsFromSound_,puVar6,
-                                 local_18);
-        if (local_14 == (id)0x0) {
-          puVar3 = (undefined *)0x0;
-        }
-        else {
-          puVar3 = _objc_msgSend(cls_HSPlaySoundAction,sel_new,puVar6,puVar4);
-          pvVar2 = self->_playSoundActionEvent;
-          pvVar5 = _objc_msgSend(cls_HSPlaySoundAction,sel_actionType);
-          pvVar5 = _objc_msgSend(pvVar1,sel_hyperActionsOfType_forEvent_,pvVar5,pvVar2);
-          _objc_msgSend(puVar3,sel_addSound_,local_14);
-          pvVar7 = _objc_msgSend(pvVar5,sel_count);
-          if (pvVar7 == (id)0x0) {
-            puVar4 = self->_playSoundActionEvent;
-            op = sel_addHyperAction_forEvent_;
-            puVar6 = puVar3;
-          }
-          else {
-            _objc_msgSend(cls_NSArray,sel_arrayWithObject_,self->_playSoundActionEvent,pvVar2);
-            puVar6 = _objc_msgSend(pvVar5,sel_extraFirstObject);
-            op = sel_replaceHyperAction_withAction_forEvents_;
-            puVar4 = puVar3;
-          }
-          _objc_msgSend(pvVar1,op,puVar6,puVar4);
-          _objc_msgSend(self,sel_didAddNewObject);
-        }
-      }
-      goto LAB_0001b381;
-    }
-  }
-  puVar3 = (undefined *)0x0;
-  local_18 = (undefined *)0x0;
-  local_14 = (id)0x0;
-LAB_0001b381:
-  _objc_msgSend(local_18,sel_release,puVar6,puVar4);
-  _objc_msgSend(local_14,sel_release);
-  _objc_msgSend(puVar3,sel_release);
-  return;
-}
-
-*/
 - (void)addSoundObject:(id)aObject
 {
     if (_importSoundObjectDialogController == nil) {
@@ -4848,218 +1790,6 @@ LAB_0001b381:
     [action release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001a59a @ 0001a59a, 2519 bytes * /
-
-void FUN_0001a59a(HSEditorWindowController *self,SEL _cmd,id addMediaObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *puVar4;
-  undefined *puVar5;
-  undefined *puVar6;
-  undefined *self_00;
-  id pvVar7;
-  id self_01;
-  undefined **extraout_EDX;
-  float extraout_EDX_00;
-  bool bVar8;
-  float fVar9;
-  SEL op;
-  undefined **ppuVar10;
-  id local_24;
-  undefined **local_1c;
-  undefined *local_18;
-  undefined *local_14;
-  
-  pvVar1 = self->_importMoviesObjectDialogController;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSImportDialogController,sel_alloc);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithDialogType_,*(undefined4 *)PTR_PTR_003360cc);
-    self->_importMoviesObjectDialogController = pvVar1;
-  }
-  pvVar2 = _objc_msgSend(self,sel_document);
-  _objc_msgSend(pvVar1,sel_setHyperDocument_,pvVar2);
-  puVar5 = cls_HSImportDialogController;
-  pvVar1 = self->_importMoviesObjectDialogController;
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  pvVar2 = _objc_msgSend(puVar5,sel_defaultButtonTitleForObject_,pvVar2);
-  _objc_msgSend(pvVar1,sel_setDefaultButtonTitle_,pvVar2);
-  pvVar1 = _objc_msgSend(self->_importMoviesObjectDialogController,sel_runModal);
-  if (pvVar1 != (id)0x1) {
-    return;
-  }
-  pvVar1 = _objc_msgSend(cls_HSActionEvent,sel_actionEventOfType_,*(undefined4 *)PTR_00336080);
-  pvVar2 = _objc_msgSend(self->_importMoviesObjectDialogController,sel_dialogUserOptions);
-  pvVar2 = _objc_msgSend(pvVar2,sel_valueForKey_,*(undefined4 *)PTR_PTR_003360f0);
-  pvVar3 = _objc_msgSend(self->_importMoviesObjectDialogController,sel_fileName);
-  local_1c = *(undefined ***)PTR_00336164;
-  puVar4 = _objc_msgSend(self,sel_checkFileExistenceAtPath_expectedType_,pvVar3,local_1c);
-  puVar5 = &DAT_00361b78;
-  pvVar3 = _objc_msgSend(pvVar2,sel_implementsHyperInterface_,&DAT_00361b78);
-  puVar6 = cls_HSMovieObject;
-  if (((char)pvVar3 == '\0') && (puVar4 == (undefined *)0x0)) {
-    puVar6 = &DAT_00361e48;
-    pvVar1 = _objc_msgSend(pvVar2,sel_implementsHyperInterface_,&DAT_00361e48,local_1c);
-    puVar5 = puVar6;
-    ppuVar10 = local_1c;
-    if ((char)pvVar1 == '\0') goto LAB_0001af54;
-    local_18 = _objc_msgSend(pvVar2,sel_copy,puVar6,local_1c);
-LAB_0001af0f:
-    pvVar1 = _objc_msgSend(self,sel_cardView,puVar6,local_1c);
-    local_1c = (undefined **)0x0;
-    puVar6 = local_18;
-    _objc_msgSend(pvVar1,sel_addObjectToCenter_useDragPreferences_,local_18,0);
-    op = sel_release;
-  }
-  else {
-    ppuVar10 = local_1c;
-    if (puVar4 == (undefined *)0x0) goto LAB_0001af54;
-    pvVar3 = _objc_msgSend(cls_NSFileManager,sel_defaultManager,puVar5,local_1c);
-    puVar5 = _objc_msgSend(pvVar3,sel_hyperFileTypeAtPath_,puVar4);
-    pvVar3 = _objc_msgSend(puVar6,sel_isMediaTypeSupported_,puVar5);
-    ppuVar10 = local_1c;
-    if ((char)pvVar3 == '\0') goto LAB_0001af54;
-    pvVar3 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController,puVar5);
-    ppuVar10 = (undefined **)0x1;
-    puVar5 = puVar4;
-    pvVar3 = _objc_msgSend(pvVar3,sel_canImportFileAtPath_showAlert_,puVar4,1);
-    if ((char)pvVar3 == '\0') goto LAB_0001af54;
-    pvVar3 = _objc_msgSend(self,sel_document,puVar5,ppuVar10);
-    ppuVar10 = _objc_msgSend(pvVar3,sel_currentCard);
-    pvVar3 = _objc_msgSend(cls_HSLibraryManager,sel_sharedLibraryManager);
-    local_1c = _objc_msgSend(pvVar3,sel_moviesContentFilter);
-    puVar5 = puVar4;
-    puVar6 = _objc_msgSend(self,sel_reusableMediaForPath_contentFilter_,puVar4,local_1c);
-    local_14 = (undefined *)0x0;
-    if (pvVar2 == (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSMovieObject,sel_alloc,puVar5,local_1c);
-      local_1c = &local_14;
-      puVar5 = puVar6;
-      local_18 = _objc_msgSend(pvVar2,sel_initWithMedia_error_,puVar6,local_1c);
-      if (local_18 != (undefined *)0x0) {
-        puVar5 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,local_18,local_1c);
-        local_1c = ppuVar10;
-        pvVar2 = _objc_msgSend(self,sel_verifyObjects_beforeAddToCard_,puVar5,ppuVar10);
-        pvVar3 = _objc_msgSend(pvVar2,sel_count);
-        if (pvVar3 != (id)0x0) {
-          _objc_msgSend(local_18,sel_release,puVar5,local_1c);
-          pvVar2 = _objc_msgSend(pvVar2,sel_lastObject);
-          bVar8 = true;
-          local_18 = _objc_msgSend(pvVar2,sel_retain);
-          goto LAB_0001aa16;
-        }
-      }
-      bVar8 = true;
-    }
-    else {
-      local_18 = _objc_msgSend(pvVar2,sel_copy,puVar5,local_1c);
-      pvVar2 = _objc_msgSend(cls_HSUID,sel_UID);
-      _objc_msgSend(local_18,sel_setHyperUID_,pvVar2);
-      puVar5 = &DAT_00361d6c;
-      pvVar2 = _objc_msgSend(local_18,sel_queryHyperInterface_,&DAT_00361d6c);
-      self_00 = _objc_msgSend(pvVar2,sel_hyperActions);
-      pvVar3 = _objc_msgSend(self_00,sel_count);
-      if (pvVar3 != (id)0x0) {
-        _objc_msgSend(pvVar2,sel_removeActions_,self_00);
-        puVar5 = self_00;
-      }
-      bVar8 = local_18 == (undefined *)0x0;
-    }
-LAB_0001aa16:
-    if (local_18 == (undefined *)0x0) {
-      if (local_14 == (undefined *)0x0) {
-        puVar5 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_,puVar4,local_1c);
-        local_1c = &local_14;
-        ppuVar10 = local_1c;
-        pvVar1 = _objc_msgSend(cls_HSMovie,sel_movieWithURL_error_,puVar5,local_1c);
-        if (((local_14 != (undefined *)0x0) || (pvVar1 == (id)0x0)) ||
-           ((pvVar2 = _objc_msgSend(pvVar1,sel_isGifMovie,puVar5,ppuVar10), (char)pvVar2 == '\0' ||
-            (pvVar1 = _objc_msgSend(pvVar1,sel_hasMultiplySamples,puVar5,ppuVar10),
-            (char)pvVar1 != '\0')))) goto LAB_0001af54;
-        pvVar1 = _objc_msgSend(cls_HSImageObject,sel_alloc,puVar5,ppuVar10);
-        local_18 = _objc_msgSend(pvVar1,sel_initWithMedia_error_,puVar6,local_1c);
-        pvVar1 = _objc_msgSend(self,sel_document);
-        pvVar1 = _objc_msgSend(pvVar1,
-                               sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-        op = sel_release;
-        if ((char)pvVar1 != '\0') goto LAB_0001af0f;
-      }
-      else {
-        local_18 = _objc_msgSend(cls_HSErrorManager,sel_sharedErrorManager,puVar5,local_1c);
-        local_1c = _objc_msgSend(self,sel_window);
-        op = sel_presentError_inWindow_;
-        puVar6 = local_14;
-      }
-    }
-    else {
-      pvVar2 = _objc_msgSend(self,sel_document,puVar5,local_1c);
-      pvVar2 = _objc_msgSend(pvVar2,
-                             sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-      op = sel_release;
-      puVar6 = puVar5;
-      if ((char)pvVar2 != '\0') {
-        puVar5 = &DAT_00361218;
-        pvVar2 = _objc_msgSend(local_18,sel_queryHyperInterface_,&DAT_00361218);
-        if ((pvVar2 != (id)0x0) && (bVar8)) {
-          pvVar3 = _objc_msgSend(ppuVar10,sel_support,puVar5);
-          _objc_msgSend(pvVar2,sel_setSupport_,pvVar3);
-          pvVar3 = _objc_msgSend(ppuVar10,sel_queryHyperInterface_,&DAT_003614fc);
-          local_24 = _objc_msgSend(pvVar3,sel_size);
-          puVar5 = &DAT_00361de4;
-          pvVar3 = _objc_msgSend(local_18,sel_queryHyperInterface_,&DAT_00361de4);
-          pvVar7 = _objc_msgSend(pvVar3,sel_size);
-          if ((pvVar3 != (id)0x0) &&
-             ((((float)local_24 < (float)pvVar7 || ((float)extraout_EDX < extraout_EDX_00)) ||
-              ((float)local_24 * (float)extraout_EDX * 0.9 < (float)pvVar7 * extraout_EDX_00)))) {
-            self_01 = _objc_msgSend(ppuVar10,sel_undoManager,puVar5);
-            fVar9 = (float)pvVar7 / extraout_EDX_00;
-            _objc_msgSend(self_01,sel_disableUndoRegistration);
-            if (fVar9 <= (float)local_24 / (float)extraout_EDX) {
-              local_24 = (id)(fVar9 * (float)extraout_EDX);
-              local_1c = extraout_EDX;
-            }
-            else {
-              local_1c = (undefined **)((float)local_24 / fVar9);
-            }
-            _objc_msgSend(pvVar3,sel_setSize_,local_24,local_1c);
-            pvVar3 = _objc_msgSend(ppuVar10,sel_undoManager);
-            _objc_msgSend(pvVar3,sel_enableUndoRegistration);
-          }
-          _objc_msgSend(pvVar2,sel_setSupport_,0,local_1c);
-        }
-        pvVar2 = _objc_msgSend(local_18,sel_queryHyperInterface_,&DAT_00361df8);
-        _objc_msgSend(pvVar2,sel_setAutoPlayActionEvent_,pvVar1);
-        puVar5 = cls_HSEditorCardViewDragHelper;
-        pvVar1 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_,puVar4);
-        pvVar2 = _objc_msgSend(puVar5,sel_commentsForDroppedObjectWithURL_,pvVar1);
-        if ((pvVar2 != (id)0x0) &&
-           (pvVar3 = _objc_msgSend(pvVar2,sel_length,pvVar1), pvVar3 != (id)0x0)) {
-          pvVar3 = _objc_msgSend(local_18,sel_queryHyperInterface_,&DAT_00361e20);
-          pvVar1 = _objc_msgSend(pvVar2,sel_copy);
-          pvVar1 = _objc_msgSend(pvVar1,sel_autorelease);
-          _objc_msgSend(pvVar3,sel_setHyperComments_,pvVar1);
-        }
-        pvVar1 = _objc_msgSend(self,sel_cardView,pvVar1);
-        local_1c = (undefined **)0x0;
-        puVar6 = local_18;
-        _objc_msgSend(pvVar1,sel_addObjectToCenter_useDragPreferences_,local_18,0);
-        op = sel_release;
-      }
-    }
-  }
-  _objc_msgSend(local_18,op,puVar6,local_1c);
-  puVar5 = puVar6;
-  ppuVar10 = local_1c;
-LAB_0001af54:
-  _objc_msgSend(self,sel_didAddNewObject,puVar5,ppuVar10);
-  return;
-}
-
-*/
 - (void)addMediaObject:(id)aObject
 {
     if (_importMoviesObjectDialogController == nil) {
@@ -5177,42 +1907,6 @@ LAB_0001af54:
     [self didAddNewObject];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001a308 @ 0001a308, 355 bytes * /
-
-void FUN_0001a308(HSEditorWindowController *self,SEL _cmd,id addSoundComboObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  _objc_msgSend(self->_playSoundActionEvent,sel_release);
-  self->_playSoundActionEvent = (id)0x0;
-  pvVar1 = _objc_msgSend(cls_HSSoundAddingOptionsDialog,sel_new);
-  pvVar2 = _objc_msgSend(cls_NSApplication,sel_sharedApplication);
-  pvVar3 = _objc_msgSend(pvVar1,sel_window);
-  pvVar2 = _objc_msgSend(pvVar2,sel_runModalForWindow_,pvVar3);
-  if (pvVar2 == (id)0x1) {
-    pvVar2 = _objc_msgSend(pvVar1,sel_selectedActionEvent,pvVar3);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_playSoundActionEvent = pvVar2;
-  }
-  _objc_msgSend(pvVar1,sel_release,pvVar3);
-  if (self->_playSoundActionEvent != (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSAddSoundComboDialog,sel_new,pvVar3);
-    pvVar2 = _objc_msgSend(pvVar1,sel_runModal);
-    if (pvVar2 == (id)0x1) {
-      pvVar2 = *(id *)PTR_00336058;
-      pvVar3 = _objc_msgSend(pvVar1,sel_action);
-      _objc_msgSend(pvVar2,sel_sendAction_to_from_,pvVar3,0,0);
-    }
-    _objc_msgSend(pvVar1,sel_release,pvVar3);
-  }
-  return;
-}
-
-*/
 - (void)addSoundComboObject:(id)aObject
 {
     [_playSoundActionEvent release];
@@ -5231,28 +1925,6 @@ void FUN_0001a308(HSEditorWindowController *self,SEL _cmd,id addSoundComboObject
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001a26e @ 0001a26e, 154 bytes * /
-
-void FUN_0001a26e(HSEditorWindowController *self,SEL _cmd,id addMovieComboObject)
-
-{
-  id self_00;
-  id pvVar1;
-  id pvVar2;
-  
-  self_00 = _objc_msgSend(cls_HSAddVideoComboDialog,sel_new);
-  pvVar1 = _objc_msgSend(self_00,sel_runModal);
-  if (pvVar1 == (id)0x1) {
-    pvVar1 = *(id *)PTR_00336058;
-    pvVar2 = _objc_msgSend(self_00,sel_action);
-    _objc_msgSend(pvVar1,sel_sendAction_to_from_,pvVar2,0,0);
-  }
-  _objc_msgSend(self_00,sel_release);
-  return;
-}
-
-*/
 - (void)addMovieComboObject:(id)aObject
 {
     id dialog = [HSAddVideoComboDialog new];
@@ -5272,125 +1944,6 @@ void FUN_0001a26e(HSEditorWindowController *self,SEL _cmd,id addMovieComboObject
     [self didAddNewObject];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00023848 @ 00023848, 1133 bytes * /
-
-void FUN_00023848(HSEditorWindowController *self,SEL _cmd,id importText)
-
-{
-  int iVar1;
-  id pvVar2;
-  id self_00;
-  id pvVar3;
-  id pvVar4;
-  undefined4 *puVar5;
-  id pvVar6;
-  SEL pcVar7;
-  cfstringStruct *pcVar8;
-  undefined1 *puVar9;
-  undefined4 uVar10;
-  undefined4 local_74;
-  int local_70;
-  int *local_6c;
-  undefined4 local_68;
-  undefined4 local_64;
-  undefined4 local_60;
-  undefined4 local_5c;
-  undefined4 local_58;
-  undefined1 local_50 [64];
-  
-  pvVar2 = _objc_msgSend(cls_NSOpenPanel,sel_openPanel);
-  self_00 = _objc_msgSend(pvVar2,sel_retain);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pcVar8 = &cfstr_empty;
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_ImportTextPrompt,
-                         &cfstr_empty,0);
-  _objc_msgSend(self_00,sel_setPrompt_,pvVar2);
-  _objc_msgSend(self_00,sel_setAllowsMultipleSelection_,0);
-  _objc_msgSend(self_00,sel_setCanChooseFiles_,1);
-  pvVar2 = (id)0x0;
-  _objc_msgSend(self_00,sel_setCanChooseDirectories_,0);
-  pvVar3 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-  pvVar3 = _objc_msgSend(pvVar3,sel_textDocumentsFolder);
-  if (pvVar3 != (id)0x0) {
-    pcVar7 = sel_setDirectory_;
-    pvVar2 = pvVar3;
-    if (1038.0 < *(double *)PTR_0033605c || *(double *)PTR_0033605c == 1038.0) {
-      pcVar8 = (cfstringStruct *)0x1;
-      pvVar2 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_isDirectory_,pvVar3,1);
-      pcVar7 = sel_setDirectoryURL_;
-    }
-    _objc_msgSend(self_00,pcVar7,pvVar2,pcVar8);
-  }
-  pvVar2 = _objc_msgSend(cls_NSAttributedString,sel_textUnfilteredFileTypes,pvVar2,pcVar8);
-  pvVar3 = _objc_msgSend(self_00,sel_runModalForTypes_,pvVar2);
-  if (pvVar3 == (id)0x1) {
-    pvVar3 = _objc_msgSend(self,sel_document,pvVar2);
-    pvVar3 = _objc_msgSend(pvVar3,
-                           sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-    if ((char)pvVar3 != '\0') {
-      pvVar3 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider,pvVar2);
-      if (*(double *)PTR_0033605c <= 1038.0 && *(double *)PTR_0033605c != 1038.0) {
-        pvVar2 = _objc_msgSend(self_00,sel_directory,pvVar2);
-        _objc_msgSend(pvVar3,sel_setTextDocumentsFolder_,pvVar2);
-        pvVar3 = _objc_msgSend(self,sel_cardView);
-        pvVar2 = _objc_msgSend(self_00,sel_filenames);
-        pcVar8 = (cfstringStruct *)0x1;
-        pcVar7 = sel_importToCardDataFromFiles_showHelpPane_;
-      }
-      else {
-        pvVar2 = _objc_msgSend(self_00,sel_directoryURL,pvVar2);
-        pvVar2 = _objc_msgSend(pvVar2,sel_path);
-        _objc_msgSend(pvVar3,sel_setTextDocumentsFolder_,pvVar2);
-        pvVar2 = _objc_msgSend(self_00,sel_URLs);
-        pvVar3 = _objc_msgSend(cls_NSMutableArray,sel_new);
-        local_74 = 0;
-        local_70 = 0;
-        local_6c = (int *)0x0;
-        local_68 = 0;
-        local_64 = 0;
-        local_60 = 0;
-        local_5c = 0;
-        local_58 = 0;
-        puVar9 = local_50;
-        puVar5 = &local_74;
-        uVar10 = 0x10;
-        pvVar4 = _objc_msgSend(pvVar2,sel_countByEnumeratingWithState_objects_count_,puVar5,puVar9,
-                               0x10);
-        if (pvVar4 != (id)0x0) {
-          iVar1 = *local_6c;
-          do {
-            pvVar6 = (id)0x0;
-            do {
-              if (iVar1 != *local_6c) {
-                _objc_enumerationMutation(pvVar2);
-              }
-              puVar5 = _objc_msgSend(*(id *)(local_70 + (int)pvVar6 * 4),sel_path,puVar5,puVar9,
-                                     uVar10);
-              _objc_msgSend(pvVar3,sel_addObject_);
-              pvVar6 = (id)((int)pvVar6 + 1);
-            } while (pvVar6 < pvVar4);
-            puVar9 = local_50;
-            puVar5 = &local_74;
-            uVar10 = 0x10;
-            pvVar4 = _objc_msgSend(pvVar2,sel_countByEnumeratingWithState_objects_count_,puVar5,
-                                   puVar9,0x10);
-          } while (pvVar4 != (id)0x0);
-        }
-        pvVar4 = _objc_msgSend(self,sel_cardView,puVar5,puVar9,uVar10);
-        pcVar8 = (cfstringStruct *)0x1;
-        pvVar2 = pvVar3;
-        _objc_msgSend(pvVar4,sel_importToCardDataFromFiles_showHelpPane_,pvVar3,1);
-        pcVar7 = sel_release;
-      }
-      _objc_msgSend(pvVar3,pcVar7,pvVar2,pcVar8);
-    }
-  }
-  _objc_msgSend(self_00,sel_release,pvVar2,pcVar8);
-  return;
-}
-
-*/
 - (void)importText:(id)aText
 {
     NSOpenPanel *panel = [[NSOpenPanel openPanel] retain];
@@ -5488,61 +2041,6 @@ void FUN_00023848(HSEditorWindowController *self,SEL _cmd,id importText)
     [self showAssistantIfNeeded];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00019bb0 @ 00019bb0, 594 bytes * /
-
-id FUN_00019bb0(HSEditorWindowController *self,SEL _cmd,id checkFileExistenceAtPath,id expectedType)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  undefined4 uVar6;
-  
-  pvVar1 = _objc_msgSend(checkFileExistenceAtPath,sel_length);
-  if (pvVar1 != (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_NSFileManager,sel_defaultManager);
-    pvVar1 = checkFileExistenceAtPath;
-    pvVar2 = _objc_msgSend(pvVar2,sel_fileExistsAtPath_,checkFileExistenceAtPath);
-    self_00 = cls_NSString;
-    if ((char)pvVar2 == '\0') {
-      pvVar1 = _objc_msgSend(checkFileExistenceAtPath,sel_lastPathComponent,pvVar1);
-      pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                             &cfstr_CannotFindFileMessageText,&cfstr_empty,&cfstr_Alerts);
-      pvVar1 = _objc_msgSend(self_00,sel_stringWithFormat_,pvVar2,pvVar1);
-      pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                             &cfstr_CannotFindFileAlertFindButtonTitle,&cfstr_empty,&cfstr_Alerts);
-      pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                             &cfstr_CannotFindFileAlertCancelButtonTitle,&cfstr_empty,&cfstr_Alerts)
-      ;
-      pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                             &cfstr_CannotFindFileInformativeText,&cfstr_empty,&cfstr_Alerts);
-      uVar6 = 0;
-      pvVar5 = _objc_msgSend(cls_HSAlert,
-                             sel_alertWithMessageText_defaultButton_alternateButton_otherButton_informativeText_
-                             ,pvVar1,pvVar2,pvVar3,0,pvVar4);
-      pvVar5 = _objc_msgSend(pvVar5,sel_runModal);
-      if (pvVar5 == (id)0x3e8) {
-        pvVar1 = _objc_msgSend(cls_HSOpenPanelProvider,sel_sharedOpenPanelProvider,pvVar1,pvVar2,
-                               pvVar3,uVar6,pvVar4);
-        checkFileExistenceAtPath = _objc_msgSend(pvVar1,sel_chooseFileOfType_,expectedType);
-      }
-      else {
-        checkFileExistenceAtPath = (id)0x0;
-      }
-    }
-  }
-  return checkFileExistenceAtPath;
-}
-
-*/
 - (id)checkFileExistenceAtPath:(id)aPath expectedType:(id)aType
 {
     if ([aPath length] != 0 && ![[NSFileManager defaultManager] fileExistsAtPath:aPath]) {
@@ -5560,63 +2058,6 @@ id FUN_00019bb0(HSEditorWindowController *self,SEL _cmd,id checkFileExistenceAtP
     return aPath;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001994a @ 0001994a, 614 bytes * /
-
-void FUN_0001994a(HSEditorWindowController *self,SEL _cmd,id convertToGraphicObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *puVar4;
-  HSEditorCardView *self_00;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedUserObject);
-  puVar4 = &DAT_00361a10;
-  pvVar2 = _objc_msgSend(pvVar1,sel_implementsHyperInterface_,&DAT_00361a10);
-  if ((char)pvVar2 != '\0') {
-    pvVar2 = _objc_msgSend(self,sel_class,puVar4);
-    pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-    puVar4 = _objc_msgSend(pvVar3,sel_currentTool);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isValidSelectionTool_,puVar4);
-    if ((char)pvVar2 == '\0') {
-      pvVar2 = _objc_msgSend(self,sel_document,puVar4);
-      pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-      pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-      pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                             &cfstr_Consolidate_Graphic_Object,&cfstr_empty,&cfstr_UndoManager);
-      _objc_msgSend(pvVar2,sel_setMultipleActionsName_,pvVar3);
-      pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361b64);
-      pvVar2 = _objc_msgSend(pvVar2,sel_mediaUIDsForOptimization);
-      pvVar2 = _objc_msgSend(pvVar2,sel_anyObject);
-      puVar4 = cls_HSImageObjectsOptimizer;
-      if (pvVar2 == (id)0x0) {
-        return;
-      }
-      pvVar1 = _objc_msgSend(cls_NSSet,sel_setWithObject_,pvVar1);
-      self_00 = _objc_msgSend(puVar4,sel_optimizerForMediaUID_usedInObjects_,pvVar2,pvVar1);
-      op = sel_optimize;
-      goto LAB_00019a79;
-    }
-  }
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar4);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentTool);
-  pvVar2 = _objc_msgSend(cls_HSBaseBitmapTool,sel_class);
-  pvVar1 = _objc_msgSend(pvVar1,sel_isKindOfClass_,pvVar2);
-  if ((char)pvVar1 != '\0') {
-    _objc_msgSend(self,sel_createObjectFromSelection_,convertToGraphicObject);
-    pvVar2 = convertToGraphicObject;
-  }
-  self_00 = self->_cardView;
-  op = sel_convertSelectedObjectToImage;
-LAB_00019a79:
-  _objc_msgSend(self_00,op,pvVar2);
-  return;
-}
-
-*/
 - (void)convertToGraphicObject:(id)aObject
 {
     id object = [self selectedUserObject];
@@ -5642,437 +2083,6 @@ LAB_00019a79:
     [self addGraphicObjectUsingSelection:YES tool:[[HSToolManager sharedToolManager] currentTool]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00023cb5 @ 00023cb5, 4333 bytes * /
-
-void FUN_00023cb5(HSEditorWindowController *self,SEL _cmd,BOOL addGraphicObjectUsingSelection,
-                 id tool)
-
-{
-  float fVar1;
-  undefined8 uVar2;
-  undefined8 uVar3;
-  undefined8 uVar4;
-  undefined *puVar5;
-  id pvVar6;
-  int iVar7;
-  int iVar8;
-  id pvVar9;
-  float *pfVar10;
-  id pvVar11;
-  id pvVar12;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  float *pfVar13;
-  float *ret;
-  longdouble lVar14;
-  longdouble lVar15;
-  float fVar16;
-  float fVar17;
-  float fVar18;
-  float fVar19;
-  float fVar20;
-  float fVar21;
-  float fVar22;
-  float fVar23;
-  float fVar24;
-  float fVar25;
-  float fVar26;
-  float fVar27;
-  float fVar28;
-  undefined4 local_1d4;
-  float local_180;
-  float local_17c;
-  float local_11c;
-  float fStack_118;
-  float local_114;
-  float fStack_110;
-  float local_10c;
-  float fStack_108;
-  id local_c4;
-  id local_b8;
-  float local_b4;
-  float local_b0 [3];
-  float local_a4;
-  float local_a0;
-  float local_9c;
-  float local_98;
-  float local_94;
-  float local_90;
-  undefined4 local_8c;
-  undefined4 local_88;
-  undefined4 local_84;
-  undefined4 local_80;
-  float local_7c;
-  float local_78;
-  int local_74 [22];
-  id local_1c;
-  BOOL local_15;
-  HSEditorWindowController *local_14;
-  
-  pfVar10 = (float *)&stack0xfffffe34;
-  local_14 = self;
-  local_15 = addGraphicObjectUsingSelection;
-  local_1c = tool;
-  local_b8 = (id)0x0;
-  if ((addGraphicObjectUsingSelection == '\0') || (tool == (id)0x0)) {
-    pvVar6 = _objc_msgSend(cls_HSOpenPanelProvider,sel_sharedOpenPanelProvider);
-    pvVar6 = _objc_msgSend(pvVar6,sel_chooseFileOfType_);
-    if (pvVar6 == (id)0x0) {
-      return;
-    }
-    pvVar6 = _objc_msgSend(cls_HSImageObject,sel_defaultObject);
-    _objc_msgSend(cls_HSNewMedia,sel_mediaWithPath_);
-    _objc_msgSend(pvVar6,sel_setMedia_);
-    if (pvVar6 == (id)0x0) {
-      return;
-    }
-    _objc_msgSend(local_14,sel_cardView);
-    goto LAB_00024d97;
-  }
-  pvVar6 = _objc_msgSend(tool,sel_bitmapTool);
-  fVar24 = *(float *)PTR_00336090;
-  fVar18 = *(float *)(PTR_00336090 + 4);
-  fVar21 = *(float *)(PTR_00336090 + 8);
-  fVar22 = *(float *)(PTR_00336090 + 0xc);
-  local_11c = *(float *)PTR_00336088;
-  fStack_118 = *(float *)(PTR_00336088 + 4);
-  uVar3 = *(undefined8 *)PTR_00336088;
-  local_114 = *(float *)(PTR_00336088 + 8);
-  fStack_110 = *(float *)(PTR_00336088 + 0xc);
-  uVar4 = *(undefined8 *)(PTR_00336088 + 8);
-  local_10c = *(float *)(PTR_00336088 + 0x10);
-  fStack_108 = *(float *)(PTR_00336088 + 0x14);
-  uVar2 = *(undefined8 *)(PTR_00336088 + 0x10);
-  local_17c = *(float *)PTR_0033607c;
-  local_180 = *(float *)(PTR_0033607c + 4);
-  _objc_exception_try_enter();
-  iVar7 = __setjmp(local_74);
-  if (iVar7 == 0) {
-    pvVar9 = _objc_msgSend(pvVar6,sel_valueForKey_);
-    pfVar10 = (float *)&stack0xfffffe34;
-    if (pvVar9 != (id)0x0) {
-      _CGEPathGetPathBoundingBox();
-      pfVar13 = (float *)&stack0xfffffe30;
-      local_1d4 = 0x23f34;
-      local_c4 = _objc_msgSend(pvVar6,sel_valueForKey_);
-      if (local_c4 == (id)0x0) {
-        local_1d4 = 0x23f65;
-        pvVar9 = _objc_msgSend(pvVar6,sel_respondsToSelector_);
-        if ((char)pvVar9 != '\0') {
-          local_1d4 = 0x23f89;
-          _objc_msgSend(pvVar6,sel_finalizeSelection_);
-          local_1d4 = 0x23fa5;
-          local_c4 = _objc_msgSend(pvVar6,sel_valueForKey_);
-        }
-      }
-      local_1d4 = 0x23fcd;
-      pvVar9 = _objc_msgSend(pvVar6,sel_valueForKey_);
-      if (pvVar9 != (id)0x0) {
-        local_1d4 = 0x23fed;
-        _objc_msgSend(pvVar9,sel_getValue_);
-      }
-      local_1d4 = 0x2400f;
-      pvVar9 = _objc_msgSend(pvVar6,sel_valueForKey_);
-      if (pvVar9 != (id)0x0) {
-        local_1d4 = 0x2402f;
-        _objc_msgSend(pvVar9,sel_getValue_);
-      }
-      local_1d4 = 0x24051;
-      pvVar9 = _objc_msgSend(pvVar6,sel_valueForKey_);
-      if (pvVar9 == (id)0x0) {
-        pfVar10 = (float *)(PTR_00336074 + 4);
-        ret = (float *)PTR_00336074;
-      }
-      else {
-        ret = &local_b4;
-        local_1d4 = 0x2407c;
-        _objc_msgSend_stret(ret,pvVar9,sel_rectValue);
-        pfVar13 = (float *)&local_1d4;
-        pfVar10 = local_b0;
-      }
-      fVar25 = *ret;
-      fVar27 = *pfVar10;
-      *(undefined8 *)(pfVar13 + 5) = uVar2;
-      *(undefined8 *)(pfVar13 + 3) = uVar4;
-      *(undefined8 *)(pfVar13 + 1) = uVar3;
-      *pfVar13 = (float)&local_a4;
-      pfVar13[-1] = 2.06928e-40;
-      _CGAffineTransformInvert();
-      fVar23 = local_11c * local_a4 + fStack_118 * local_9c;
-      fVar19 = local_11c * local_a0 + fStack_118 * local_98;
-      fVar26 = local_a4 * local_114 + local_9c * fStack_110;
-      fVar16 = local_114 * local_a0 + fStack_110 * local_98;
-      *pfVar13 = fVar19;
-      pfVar13[-1] = fVar23;
-      pfVar13[-2] = 2.07415e-40;
-      lVar14 = (longdouble)_hypotf();
-      *pfVar13 = fVar16;
-      pfVar13[-1] = fVar26;
-      fVar28 = (float)lVar14;
-      pfVar13[-2] = 2.07468e-40;
-      lVar14 = (longdouble)_hypotf();
-      fVar1 = (float)lVar14;
-      if ((fVar1 != 0.0) || (NAN(fVar1))) {
-        fVar17 = 1.0 / fVar1;
-      }
-      else {
-        fVar17 = 1.0;
-      }
-      if ((fVar28 != 0.0) || (NAN(fVar28))) {
-        fVar20 = 1.0 / fVar28;
-      }
-      else {
-        fVar20 = 1.0;
-      }
-      *(ulonglong *)(pfVar13 + 4) =
-           CONCAT44(local_10c * local_a0 + fStack_108 * local_98 + local_90,
-                    local_10c * local_a4 + fStack_108 * local_9c + local_94);
-      *(ulonglong *)(pfVar13 + 2) = CONCAT44(fVar16 * fVar17,fVar26 * fVar17);
-      *(ulonglong *)pfVar13 = CONCAT44(fVar19 * fVar20,fVar23 * fVar20);
-      pfVar13[-1] = (float)&local_8c;
-      pfVar13[-2] = 2.07961e-40;
-      _CGAffineTransformInvert();
-      pfVar13[-2] = fVar28 * fVar21;
-      pfVar13[-3] = 2.08153e-40;
-      lVar14 = (longdouble)_roundf();
-      pfVar13[-2] = fVar1 * fVar22;
-      pfVar13[-3] = 2.08209e-40;
-      lVar15 = (longdouble)_roundf();
-      pfVar13[-1] = (float)sel_alloc;
-      pfVar13[-2] = (float)cls_NSImage;
-      fVar16 = (float)lVar15;
-      pfVar13[-3] = 2.08251e-40;
-      pvVar9 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-      pfVar13[1] = fVar16;
-      fVar19 = (float)lVar14;
-      *pfVar13 = fVar19;
-      pfVar13[-1] = (float)sel_initWithSize_;
-      pfVar13[-2] = (float)pvVar9;
-      pfVar13[-3] = 2.08355e-40;
-      pvVar9 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-      pfVar10 = pfVar13 + -2;
-      if (pvVar9 != (id)0x0) {
-        pfVar13[-1] = (float)sel_lockFocus;
-        pfVar13[-2] = (float)pvVar9;
-        pfVar13[-3] = 2.08408e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_currentContext;
-        pfVar13[-2] = (float)cls_NSGraphicsContext;
-        pfVar13[-3] = 2.08442e-40;
-        pvVar11 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_graphicsPort;
-        pfVar13[-2] = (float)pvVar11;
-        pfVar13[-3] = 2.08467e-40;
-        pvVar11 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        *(ulonglong *)(pfVar13 + 3) = CONCAT44(local_78 - fVar18 * fVar1,local_7c - fVar24 * fVar28)
-        ;
-        *(ulonglong *)(pfVar13 + 1) = CONCAT44(local_80,local_84);
-        *(ulonglong *)(pfVar13 + -1) = CONCAT44(local_88,local_8c);
-        pfVar13[-2] = (float)pvVar11;
-        pfVar13[-3] = 2.08537e-40;
-        _CGContextConcatCTM();
-        pfVar13[-1] = (float)sel_currentContext;
-        pfVar13[-2] = (float)cls_NSGraphicsContext;
-        pfVar13[-3] = 2.08579e-40;
-        pvVar11 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_graphicsPort;
-        pfVar13[-2] = (float)pvVar11;
-        pfVar13[-3] = 2.08604e-40;
-        pvVar11 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[2] = fVar27;
-        pfVar13[1] = fVar25;
-        *pfVar13 = (float)pvVar11;
-        pfVar13[-1] = (float)sel_drawInCGContext_atPoint_;
-        pfVar13[-2] = (float)local_c4;
-        pfVar13[-3] = 2.08674e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_unlockFocus;
-        pfVar13[-2] = (float)pvVar9;
-        pfVar13[-3] = 2.08708e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_hyperPixelsSize;
-        pfVar13[-2] = (float)pvVar9;
-        pfVar13[-3] = 2.08742e-40;
-        pvVar11 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_defaultObject;
-        pfVar13[-2] = (float)cls_HSImageObject;
-        pfVar13[-3] = 2.08809e-40;
-        local_b8 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        puVar5 = cls_HSNewMedia;
-        pfVar13[-1] = (float)sel_mainBundle;
-        pfVar13[-2] = (float)cls_NSBundle;
-        pfVar13[-3] = 2.08859e-40;
-        pvVar12 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[1] = (float)&cfstr_empty;
-        *pfVar13 = (float)&cfstr_Untitled;
-        pfVar13[-1] = (float)sel_localizedStringForKey_value_table_;
-        pfVar13[-2] = (float)pvVar12;
-        pfVar13[2] = 0.0;
-        pfVar13[-3] = 2.08924e-40;
-        pvVar12 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[1] = (float)pvVar12;
-        *pfVar13 = (float)pvVar9;
-        pfVar13[-1] = (float)sel_mediaWithImage_name_;
-        pfVar13[-2] = (float)puVar5;
-        pfVar13[-3] = 2.08969e-40;
-        pvVar12 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        *pfVar13 = (float)pvVar12;
-        pfVar13[-1] = (float)sel_setMedia_;
-        pfVar13[-2] = (float)local_b8;
-        pfVar13[-3] = 2.09008e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        *pfVar13 = (float)&DAT_00362460;
-        pfVar13[-1] = (float)sel_queryHyperInterface_;
-        pfVar13[-2] = (float)local_b8;
-        pfVar13[-3] = 2.09056e-40;
-        pvVar12 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_setShadowEnabled_;
-        pfVar13[-2] = (float)pvVar12;
-        *pfVar13 = 0.0;
-        pfVar13[-3] = 2.09092e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        if ((fVar19 != 0.0) || (NAN(fVar19))) {
-          fVar21 = fVar21 / fVar19;
-        }
-        else {
-          fVar21 = 1.0;
-        }
-        if ((fVar16 != 0.0) || (NAN(fVar16))) {
-          fVar22 = fVar22 / fVar16;
-        }
-        else {
-          fVar22 = 1.0;
-        }
-        fVar24 = fVar24 - fVar21 * 0.0;
-        fVar18 = fVar18 - fVar22 * 0.0;
-        fVar25 = fVar21 * local_11c + local_114 * 0.0;
-        fVar27 = local_11c * 0.0 + fVar22 * local_114;
-        fVar28 = fStack_118 * 0.0 + fVar22 * fStack_110;
-        fVar22 = -fVar27;
-        local_10c = fVar27 * fVar16 + fVar18 * local_114 + fVar24 * local_11c + local_10c;
-        pfVar13[-1] = (float)sel_workImage;
-        pfVar13[-2] = (float)pvVar6;
-        pfVar13[-3] = 2.10029e-40;
-        pvVar12 = _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar13[-1] = (float)sel_imageSize;
-        pfVar13[-2] = (float)pvVar12;
-        pfVar13[-3] = 2.10055e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        fStack_108 = extraout_EDX_00 -
-                     (fVar28 * fVar16 + fVar24 * fStack_118 + fVar18 * fStack_110 + fStack_108);
-        fStack_118 = -(fVar21 * fStack_118 + fStack_110 * 0.0);
-        fStack_110 = --fVar28;
-        pfVar13[-1] = fStack_118;
-        pfVar13[-2] = fVar25;
-        pfVar13[-3] = 2.10304e-40;
-        lVar14 = (longdouble)_hypotf();
-        pfVar13[-1] = fStack_110;
-        pfVar13[-2] = fVar22;
-        local_17c = (float)lVar14;
-        pfVar13[-3] = 2.10357e-40;
-        lVar14 = (longdouble)_hypotf();
-        local_180 = (float)lVar14;
-        if ((local_180 != 0.0) || (NAN(local_180))) {
-          fVar24 = 1.0 / local_180;
-        }
-        else {
-          fVar24 = 1.0;
-        }
-        if ((local_17c != 0.0) || (NAN(local_17c))) {
-          fVar18 = 1.0 / local_17c;
-        }
-        else {
-          fVar18 = 1.0;
-        }
-        local_11c = fVar25 * fVar18;
-        fStack_118 = fStack_118 * fVar18;
-        local_114 = fVar22 * fVar24;
-        fStack_110 = fStack_110 * fVar24;
-        local_17c = (float)pvVar11 * local_17c;
-        local_180 = extraout_EDX * local_180;
-        pfVar13[-1] = (float)sel_release;
-        pfVar13[-2] = (float)pvVar9;
-        pfVar13[-3] = 2.10772e-40;
-        _objc_msgSend((id)pfVar13[-2],(SEL)pfVar13[-1]);
-        pfVar10 = pfVar13 + -2;
-      }
-    }
-  }
-  else {
-    iVar8 = _objc_exception_extract();
-    _objc_exception_try_enter();
-    iVar7 = __setjmp(local_74);
-    if (iVar7 == 0) {
-      iVar7 = _objc_exception_match();
-      pfVar10 = (float *)&stack0xfffffe34;
-      if (iVar7 != 0) goto LAB_00024b8c;
-      _objc_exception_try_exit();
-    }
-    else {
-      iVar8 = _objc_exception_extract();
-    }
-    pfVar10 = (float *)&stack0xfffffe34;
-    if (iVar8 != 0) {
-                    /* WARNING: Subroutine does not return * /
-      _objc_exception_throw();
-    }
-  }
-LAB_00024b8c:
-  *pfVar10 = (float)local_74;
-  pfVar10[-1] = 2.10788e-40;
-  _objc_exception_try_exit();
-  if (local_b8 == (id)0x0) {
-    return;
-  }
-  pfVar10[2] = (float)local_14;
-  pfVar10[1] = (float)sel_delete_;
-  *pfVar10 = (float)pvVar6;
-  pfVar10[-1] = 2.10849e-40;
-  _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[2] = (float)&DAT_003619d4;
-  pfVar10[1] = (float)sel_queryHyperInterface_;
-  *pfVar10 = (float)local_b8;
-  pfVar10[-1] = 2.10897e-40;
-  pvVar6 = _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[1] = (float)sel_queryGeometryBehaviorApplier;
-  *pfVar10 = (float)pvVar6;
-  pfVar10[-1] = 2.10922e-40;
-  pvVar6 = _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  *(ulonglong *)(pfVar10 + 8) = CONCAT44(fStack_108,local_10c);
-  *(ulonglong *)(pfVar10 + 6) = CONCAT44(fStack_110,local_114);
-  *(ulonglong *)(pfVar10 + 4) = CONCAT44(fStack_118,local_11c);
-  pfVar10[3] = local_180;
-  pfVar10[2] = local_17c;
-  pfVar10[1] = (float)sel_setSize_affineTransform_flippedHorizontally_withLayoutGuidingContext_;
-  *pfVar10 = (float)pvVar6;
-  pfVar10[0xb] = 0.0;
-  pfVar10[10] = 0.0;
-  pfVar10[-1] = 2.11068e-40;
-  _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[2] = (float)local_b8;
-  pfVar10[1] = (float)sel_cropApplierForImageObject_;
-  *pfVar10 = (float)cls_HSImageCropApplier;
-  pfVar10[-1] = 2.11115e-40;
-  pvVar6 = _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[1] = (float)sel_updateCurrentBorderPath;
-  *pfVar10 = (float)pvVar6;
-  pfVar10[-1] = 2.11141e-40;
-  _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[1] = (float)sel_activeCard;
-  *pfVar10 = (float)local_14;
-  pfVar10[-1] = 2.1117e-40;
-  pvVar6 = _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  pfVar10[2] = (float)local_b8;
-  pfVar10[1] = (float)sel_addHyperChild_;
-  *pfVar10 = (float)pvVar6;
-LAB_00024d97:
-  pfVar10[-1] = 2.11512e-40;
-  _objc_msgSend((id)*pfVar10,(SEL)pfVar10[1]);
-  return;
-}
-
-*/
 - (void)addGraphicObjectUsingSelection:(BOOL)aSelection tool:(id)aTool
 {
     id object = nil;
@@ -6197,53 +2207,6 @@ LAB_00024d97:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00019652 @ 00019652, 347 bytes * /
-
-void FUN_00019652(HSEditorWindowController *self,SEL _cmd,id changeFontTrait)
-
-{
-  char cVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  SEL op;
-  undefined *puVar6;
-  
-  pvVar2 = _objc_msgSend(changeFontTrait,sel_tag);
-  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar4 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar6 = &DAT_003616dc;
-  pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_,&DAT_003616dc);
-  if ((pvVar4 == (id)0x0) &&
-     (pvVar5 = _objc_msgSend(pvVar3,sel_selectedToolTag,puVar6), pvVar5 == (id)0x2)) {
-    pvVar4 = _objc_msgSend(pvVar3,sel_toolSettings,puVar6);
-    pvVar3 = _objc_msgSend(pvVar3,sel_currentTool);
-    pvVar3 = _objc_msgSend(pvVar4,sel_userObjectPrototypeForTool_,pvVar3);
-    puVar6 = &DAT_003616dc;
-    pvVar4 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003616dc);
-  }
-  if (pvVar4 != (id)0x0) {
-    if (pvVar2 == (id)0x2) {
-      pvVar2 = _objc_msgSend(pvVar4,sel_isHyperBold,puVar6);
-      cVar1 = (char)pvVar2;
-      op = sel_setHyperBold_;
-    }
-    else {
-      if (pvVar2 != (id)0x1) {
-        return;
-      }
-      pvVar2 = _objc_msgSend(pvVar4,sel_isHyperItalic,puVar6);
-      cVar1 = (char)pvVar2;
-      op = sel_setHyperItalic_;
-    }
-    _objc_msgSend(pvVar4,op,(uint)(cVar1 == '\0'));
-  }
-  return;
-}
-
-*/
 - (void)changeFontTrait:(id)aTrait
 {
     NSInteger trait = [aTrait tag];
@@ -6270,58 +2233,6 @@ void FUN_00019652(HSEditorWindowController *self,SEL _cmd,id changeFontTrait)
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSButtonObjectAssistantPaneDidCancelNotification" object:pvVar1];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000192cb @ 000192cb, 544 bytes * /
-
-void FUN_000192cb(HSEditorWindowController *self,SEL _cmd,id addButtonObject)
-
-{
-  id pvVar1;
-  HSEditorWindowController *pHVar2;
-  id self_00;
-  HSEditorWindowController *self_01;
-  SEL op;
-  cfstringStruct *pcVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar1 = _objc_msgSend(pvVar1,sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode)
-  ;
-  if ((char)pvVar1 != '\0') {
-    pHVar2 = _objc_msgSend(cls_HSButtonObject,sel_defaultObject);
-    pvVar1 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager);
-    pcVar3 = &cfstr_NewButtonTypeCoachingHintsKey;
-    pvVar1 = _objc_msgSend(pvVar1,sel_dontShowCoachingHintsForKey_,
-                           &cfstr_NewButtonTypeCoachingHintsKey);
-    if ((char)pvVar1 == '\0') {
-      pvVar1 = _objc_msgSend(cls_HSButtonTypeAssistantPane,sel_new,pcVar3);
-      pvVar1 = _objc_msgSend(pvVar1,sel_autorelease);
-      self_00 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager);
-      _objc_msgSend(self_00,sel_pushAdditionalCoachingPane_forObject_,pvVar1,pHVar2);
-      pvVar1 = _objc_msgSend(self,sel_cardView);
-      _objc_msgSend(pvVar1,sel_addObjectToCenter_useDragPreferences_,pHVar2,0);
-      _objc_msgSend(self,sel_didAddNewObject);
-      pvVar1 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-      _objc_msgSend(pvVar1,sel_addObserver_selector_name_object_,self,sel_addNewButtonDidDone_,
-                    &cfstr_HSButtonObjectAssistantPaneDidDoneNotification,pHVar2);
-      self_01 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-      op = sel_addObserver_selector_name_object_;
-      pHVar2 = self;
-      puVar4 = sel_addNewButtonDidCancel_;
-    }
-    else {
-      pvVar1 = _objc_msgSend(self,sel_cardView,pcVar3);
-      puVar4 = (undefined *)0x0;
-      _objc_msgSend(pvVar1,sel_addObjectToCenter_useDragPreferences_,pHVar2,0);
-      self_01 = self;
-      op = sel_didAddNewObject;
-    }
-    _objc_msgSend(self_01,op,pHVar2,puVar4);
-  }
-  return;
-}
-
-*/
 - (void)addButtonObject:(id)aObject
 {
     if ([[self document] prepareForHandlingActionThatRequiresConditionalSwitchToEditMode]) {
@@ -6384,45 +2295,6 @@ void FUN_000192cb(HSEditorWindowController *self,SEL _cmd,id addButtonObject)
     ;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00018ee1 @ 00018ee1, 318 bytes * /
-
-void FUN_00018ee1(HSEditorWindowController *self,SEL _cmd,id hyperShowGuessPanel)
-
-{
-  id pvVar1;
-  id self_00;
-  SEL op;
-  undefined *puVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentToolSet);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_currentCard);
-    pvVar1 = _objc_msgSend(pvVar1,sel_hyperCount);
-    if (pvVar1 == (id)0x0) {
-      pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-      puVar2 = &DAT_003619e8;
-      pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619e8);
-      if (pvVar1 != (id)0x0) {
-        pvVar1 = *(id *)PTR_00336058;
-        self_00 = _objc_msgSend(self,sel_window,puVar2);
-        _objc_msgSend(self_00,sel_firstResponder);
-        op = sel_sendAction_to_from_;
-        hyperShowGuessPanel = sel_showGuessPanel_;
-        goto LAB_00019012;
-      }
-    }
-  }
-  pvVar1 = _objc_msgSend(cls_HSTextProvider,sel_sharedInstance);
-  op = sel_performShowGuessPanel_;
-LAB_00019012:
-  _objc_msgSend(pvVar1,op,hyperShowGuessPanel);
-  return;
-}
-
-*/
 - (void)hyperShowGuessPanel:(id)aPanel
 {
     if ([[HSToolManager sharedToolManager] currentToolSet] == nil && [[[self document] currentCard] hyperCount] == 0
@@ -6433,45 +2305,6 @@ LAB_00019012:
     [[HSTextProvider sharedInstance] performShowGuessPanel:aPanel];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00018da3 @ 00018da3, 318 bytes * /
-
-void FUN_00018da3(HSEditorWindowController *self,SEL _cmd,id hyperCheckSpelling)
-
-{
-  id pvVar1;
-  id self_00;
-  SEL op;
-  undefined *puVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentToolSet);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_currentCard);
-    pvVar1 = _objc_msgSend(pvVar1,sel_hyperCount);
-    if (pvVar1 == (id)0x0) {
-      pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-      puVar2 = &DAT_003619e8;
-      pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619e8);
-      if (pvVar1 != (id)0x0) {
-        pvVar1 = *(id *)PTR_00336058;
-        self_00 = _objc_msgSend(self,sel_window,puVar2);
-        _objc_msgSend(self_00,sel_firstResponder);
-        op = sel_sendAction_to_from_;
-        hyperCheckSpelling = sel_checkSpelling_;
-        goto LAB_00018ed4;
-      }
-    }
-  }
-  pvVar1 = _objc_msgSend(cls_HSTextProvider,sel_sharedInstance);
-  op = sel_performCheckSpelling_;
-LAB_00018ed4:
-  _objc_msgSend(pvVar1,op,hyperCheckSpelling);
-  return;
-}
-
-*/
 - (void)hyperCheckSpelling:(id)aSpelling
 {
     if ([[HSToolManager sharedToolManager] currentToolSet] == nil && [[[self document] currentCard] hyperCount] == 0
@@ -6487,33 +2320,6 @@ LAB_00018ed4:
     [[HSTextProvider sharedInstance] performFindAction:aAction];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00018c74 @ 00018c74, 235 bytes * /
-
-void FUN_00018c74(HSEditorWindowController *self,SEL _cmd,id toolPaletteSwitchTool)
-
-{
-  id pvVar1;
-  id self_00;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(toolPaletteSwitchTool,sel_tag);
-  op = sel_switchTool_;
-  if (pvVar1 == (id)0x18) {
-    pvVar1 = _objc_msgSend(cls_NSMenuItem,sel_new);
-    _objc_msgSend(pvVar1,sel_setTag_,0);
-    self_00 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    _objc_msgSend(self_00,sel_setOnionSkin_,pvVar1);
-    _objc_msgSend(pvVar1,sel_release);
-    self = _objc_msgSend(self,sel_document);
-    toolPaletteSwitchTool = (id)0x0;
-    op = sel_testCard_;
-  }
-  _objc_msgSend(self,op,toolPaletteSwitchTool);
-  return;
-}
-
-*/
 - (void)toolPaletteSwitchTool:(id)aTool
 {
     if ([aTool tag] == 0x18) {
@@ -6527,77 +2333,6 @@ void FUN_00018c74(HSEditorWindowController *self,SEL _cmd,id toolPaletteSwitchTo
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00018a0a @ 00018a0a, 618 bytes * /
-
-void FUN_00018a0a(HSEditorWindowController *self,SEL _cmd,id activateSelectedObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *puVar4;
-  id pvVar5;
-  SEL pcVar6;
-  undefined4 uVar7;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar4 = &DAT_003612cc;
-  pvVar1 = _objc_msgSend(pvVar1,sel_implementsHyperInterface_,&DAT_003612cc);
-  if ((char)pvVar1 == '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,puVar4);
-  puVar4 = &DAT_003619e8;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619e8);
-  pvVar2 = _objc_msgSend(self,sel_selectedHyperObject);
-  if (pvVar1 != (id)0x0) {
-    pvVar3 = _objc_msgSend(self,sel_cardView,puVar4);
-    puVar4 = _objc_msgSend(self,sel_selectedHyperObject);
-    pcVar6 = sel_startEditorForObject_creationMode_;
-    if (pvVar2 == pvVar1) {
-      pcVar6 = sel_endEditorForObject_;
-    }
-    _objc_msgSend(pvVar3,pcVar6,puVar4);
-  }
-  pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,puVar4);
-  pvVar5 = _objc_msgSend(pvVar3,sel_isActive);
-  if ((char)pvVar5 == '\0') {
-    if ((pvVar1 != (id)0x0) && (pvVar2 == pvVar1)) {
-      return;
-    }
-    pvVar1 = _objc_msgSend(self,sel_selectedUserObject);
-    puVar4 = &DAT_00361358;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361358);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isLocked);
-    if ((char)pvVar1 != '\0') {
-      return;
-    }
-    pvVar1 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,puVar4);
-    uVar7 = *(undefined4 *)PTR_003360c4;
-    pvVar1 = _objc_msgSend(pvVar1,sel_boolForKey_,uVar7);
-    if ((char)pvVar1 != '\0') {
-      pvVar1 = _objc_msgSend(pvVar3,sel_objectAssistant,uVar7);
-      _objc_msgSend(pvVar1,sel_setPrefersInspectorMode_,0);
-    }
-    uVar7 = 1;
-    _objc_msgSend(pvVar3,sel_setActive_explicitlyByUser_,1,1);
-    pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-    pcVar6 = sel_setSelectedInModelObjectAndBringAssistantToFront_;
-  }
-  else {
-    if (pvVar2 != pvVar1 && pvVar1 != (id)0x0) {
-      return;
-    }
-    uVar7 = 1;
-    pvVar1 = (id)0x0;
-    pcVar6 = sel_setActive_explicitlyByUser_;
-  }
-  _objc_msgSend(pvVar3,pcVar6,pvVar1,uVar7);
-  return;
-}
-
-*/
 - (void)activateSelectedObject:(id)aObject
 {
     if (![[self selectedHyperObject] implementsHyperInterface:@protocol(HSCardObjectAttributes)]) {
@@ -6649,26 +2384,6 @@ void FUN_00018a0a(HSEditorWindowController *self,SEL _cmd,id activateSelectedObj
     [pvVar1_3 setIsSnapToGridEnabled:(unsigned int)(![pvVar1_3 isSnapToGridEnabled])];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001885c @ 0001885c, 174 bytes * /
-
-void FUN_0001885c(HSEditorWindowController *self,SEL _cmd,id toggleAuxiliaryIcons)
-
-{
-  undefined4 uVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  pvVar2 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-  uVar1 = *(undefined4 *)PTR_00336034;
-  pvVar3 = _objc_msgSend(pvVar2,sel_boolForKey_,uVar1);
-  _objc_msgSend(pvVar2,sel_setBool_forKey_,(uint)((char)pvVar3 == '\0'),uVar1);
-  pvVar2 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  _objc_msgSend(pvVar2,sel_postNotificationName_object_,*(undefined4 *)PTR_00336038,self);
-  return;
-}
-
-*/
 - (void)toggleAuxiliaryIcons:(id)aIcons
 {
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
@@ -6703,61 +2418,6 @@ void FUN_0001885c(HSEditorWindowController *self,SEL _cmd,id toggleAuxiliaryIcon
     [_cardView flatSelectedObjects:NO];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00024da7 @ 00024da7, 265 bytes * /
-
-NSRect * FUN_00024da7(NSRect *__return_storage_ptr__,HSEditorWindowController *self,SEL _cmd,
-                     id unionRectForArrayOfObjects)
-
-{
-  id self_00;
-  id pvVar1;
-  int *piVar2;
-  int aiStack_68 [3];
-  undefined8 local_54 [4];
-  float local_34;
-  float fStack_30;
-  float local_2c;
-  float fStack_28;
-  undefined8 local_24;
-  undefined8 local_1c;
-  
-  local_34 = *(float *)PTR_00336078;
-  fStack_30 = *(float *)(PTR_00336078 + 4);
-  local_2c = *(float *)(PTR_00336078 + 8);
-  fStack_28 = *(float *)(PTR_00336078 + 0xc);
-  self_00 = _objc_msgSend(unionRectForArrayOfObjects,sel_objectEnumerator);
-  pvVar1 = _objc_msgSend(self_00,sel_nextObject);
-  if (pvVar1 != (id)0x0) {
-    piVar2 = (int *)&stack0xffffffa4;
-    do {
-      piVar2[2] = (int)sel_frameBoundingRect;
-      piVar2[1] = (int)pvVar1;
-      *piVar2 = (int)&local_24;
-      piVar2[-1] = 0x24e2c;
-      _objc_msgSend_stret((void *)*piVar2,(id)piVar2[1],(SEL)piVar2[2]);
-      *(undefined8 *)(piVar2 + 6) = local_1c;
-      *(undefined8 *)(piVar2 + 4) = local_24;
-      *(ulonglong *)(piVar2 + 2) = CONCAT44(fStack_28,local_2c);
-      *(ulonglong *)piVar2 = CONCAT44(fStack_30,local_34);
-      piVar2[-1] = (int)&local_34;
-      piVar2[-2] = 0x24e63;
-      _NSUnionRect();
-      piVar2[-1] = (int)sel_nextObject;
-      piVar2[-2] = (int)self_00;
-      piVar2[-3] = 0x24e78;
-      pvVar1 = _objc_msgSend((id)piVar2[-2],(SEL)piVar2[-1]);
-      piVar2 = piVar2 + -2;
-    } while (pvVar1 != (id)0x0);
-  }
-  (__return_storage_ptr__->origin).x = local_34;
-  (__return_storage_ptr__->origin).y = fStack_30;
-  (__return_storage_ptr__->size).width = local_2c;
-  (__return_storage_ptr__->size).height = fStack_28;
-  return __return_storage_ptr__;
-}
-
-*/
 - (NSRect)unionRectForArrayOfObjects:(id)aObjects
 {
     NSRect result = NSZeroRect;
@@ -6769,110 +2429,6 @@ NSRect * FUN_00024da7(NSRect *__return_storage_ptr__,HSEditorWindowController *s
     return result;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00018404 @ 00018404, 755 bytes * /
-
-void FUN_00018404(HSEditorWindowController *self,SEL _cmd,id flipUpsideDown)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL pcVar3;
-  float extraout_EDX;
-  undefined8 in_stack_ffffff9c;
-  ulonglong uVar4;
-  undefined4 uVar5;
-  uint uVar6;
-  float local_3c;
-  id local_38;
-  undefined *local_34;
-  undefined4 local_30;
-  undefined4 local_2c;
-  undefined4 uStack_28;
-  undefined4 local_24;
-  undefined4 uStack_20;
-  undefined4 local_1c;
-  float fStack_18;
-  
-  uVar5 = (undefined4)((ulonglong)in_stack_ffffff9c >> 0x20);
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentTool);
-  pvVar2 = _objc_msgSend(self,sel_class);
-  uVar4 = CONCAT44(uVar5,pvVar1);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isValidSelectionTool_,pvVar1);
-  if ((char)pvVar2 != '\0') {
-    pvVar1 = _objc_msgSend(pvVar1,sel_bitmapTool,uVar4);
-    uVar4 = uVar4 & 0xffffffff00000000;
-    _objc_msgSend(pvVar1,sel_finalizeSelection_,0);
-    pcVar3 = sel_flipSelectionVertically;
-    goto LAB_000186ea;
-  }
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,uVar4);
-  pvVar2 = _objc_msgSend(self,sel_selectedCard);
-  if (pvVar1 == pvVar2) {
-    pvVar2 = _objc_msgSend(self,sel_class,uVar4);
-    uVar4 = CONCAT44((int)(uVar4 >> 0x20),pvVar1);
-    pvVar2 = _objc_msgSend(pvVar2,sel_canFlipUpsideDownObject_,pvVar1);
-    if ((char)pvVar2 != '\0') {
-      uVar5 = (undefined4)(uVar4 >> 0x20);
-      pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361970);
-      local_38 = *(id *)PTR_0033607c;
-      local_3c = *(float *)(PTR_0033607c + 4);
-      if (pvVar2 == (id)0x0) {
-        uVar4 = CONCAT44(uVar5,sel_image);
-        pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_image);
-        if (((char)pvVar2 != '\0') &&
-           (pvVar1 = _objc_msgSend(pvVar1,sel_image,uVar4), pcVar3 = sel_size, pvVar1 != (id)0x0))
-        goto LAB_000185c7;
-      }
-      else {
-        local_34 = &DAT_003619ac;
-        local_30 = 0;
-        uVar4 = ZEXT48(&local_34);
-        pvVar1 = _objc_msgSend(pvVar2,sel_queryImageWithRequiredProtocols_optionalProtocols_,
-                               &local_34,0);
-        pcVar3 = sel_imageSize;
-        if (pvVar1 == (id)0x0) {
-          return;
-        }
-LAB_000185c7:
-        local_38 = _objc_msgSend(pvVar1,pcVar3,uVar4);
-        local_3c = extraout_EDX;
-      }
-      if ((float)local_38 == 0.0) {
-        return;
-      }
-      if (local_3c == 0.0) {
-        return;
-      }
-      fStack_18 = local_3c + 0.0;
-      local_2c = 0x3f800000;
-      uStack_28 = 0;
-      local_24 = 0;
-      uStack_20 = 0xbf800000;
-      local_1c = 0;
-      pvVar1 = _objc_msgSend(self,sel_class,uVar4);
-      uVar4 = CONCAT44(uStack_28,local_2c);
-      pcVar3 = sel_setTransform_toImageOfObject_;
-      goto LAB_000186ea;
-    }
-  }
-  pvVar1 = _objc_msgSend(self,sel_selectedCardObjectForEditingOperationWithImplicitVerification,
-                         uVar4);
-  uVar6 = (uint)(uVar4 >> 0x20);
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619d4);
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryGeometryBehaviorApplier);
-  if (pvVar1 == (id)0x0) {
-    return;
-  }
-  uVar4 = (ulonglong)uVar6 << 0x20;
-  pcVar3 = sel_flipVerticallyWithLayoutGuidingContext_;
-LAB_000186ea:
-  _objc_msgSend(pvVar1,pcVar3,uVar4);
-  return;
-}
-
-*/
 - (void)flipUpsideDown:(id)aDown
 {
     id tool = [[HSToolManager sharedToolManager] currentTool];
@@ -6914,110 +2470,6 @@ LAB_000186ea:
     [applier flipVerticallyWithLayoutGuidingContext:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001810c @ 0001810c, 760 bytes * /
-
-void FUN_0001810c(HSEditorWindowController *self,SEL _cmd,id flipSideways)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL pcVar3;
-  float extraout_EDX;
-  undefined8 in_stack_ffffff9c;
-  ulonglong uVar4;
-  undefined4 uVar5;
-  uint uVar6;
-  float local_3c;
-  id local_38;
-  undefined *local_34;
-  undefined4 local_30;
-  undefined4 local_2c;
-  undefined4 uStack_28;
-  undefined4 local_24;
-  undefined4 uStack_20;
-  float local_1c;
-  undefined4 uStack_18;
-  
-  uVar5 = (undefined4)((ulonglong)in_stack_ffffff9c >> 0x20);
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentTool);
-  pvVar2 = _objc_msgSend(self,sel_class);
-  uVar4 = CONCAT44(uVar5,pvVar1);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isValidSelectionTool_,pvVar1);
-  if ((char)pvVar2 != '\0') {
-    pvVar1 = _objc_msgSend(pvVar1,sel_bitmapTool,uVar4);
-    uVar4 = uVar4 & 0xffffffff00000000;
-    _objc_msgSend(pvVar1,sel_finalizeSelection_,0);
-    pcVar3 = sel_flipSelectionHorizontally;
-    goto LAB_000183f7;
-  }
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,uVar4);
-  pvVar2 = _objc_msgSend(self,sel_selectedCard);
-  if (pvVar1 == pvVar2) {
-    pvVar2 = _objc_msgSend(self,sel_class,uVar4);
-    uVar4 = CONCAT44((int)(uVar4 >> 0x20),pvVar1);
-    pvVar2 = _objc_msgSend(pvVar2,sel_canFlipSidewaysObject_,pvVar1);
-    if ((char)pvVar2 != '\0') {
-      uVar5 = (undefined4)(uVar4 >> 0x20);
-      pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361970);
-      local_38 = *(id *)PTR_0033607c;
-      local_3c = *(float *)(PTR_0033607c + 4);
-      if (pvVar2 == (id)0x0) {
-        uVar4 = CONCAT44(uVar5,sel_image);
-        pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_image);
-        if (((char)pvVar2 != '\0') &&
-           (pvVar1 = _objc_msgSend(pvVar1,sel_image,uVar4), pcVar3 = sel_size, pvVar1 != (id)0x0))
-        goto LAB_000182cf;
-      }
-      else {
-        local_34 = &DAT_003619ac;
-        local_30 = 0;
-        uVar4 = ZEXT48(&local_34);
-        pvVar1 = _objc_msgSend(pvVar2,sel_queryImageWithRequiredProtocols_optionalProtocols_,
-                               &local_34,0);
-        pcVar3 = sel_imageSize;
-        if (pvVar1 == (id)0x0) {
-          return;
-        }
-LAB_000182cf:
-        local_38 = _objc_msgSend(pvVar1,pcVar3,uVar4);
-        local_3c = extraout_EDX;
-      }
-      if ((float)local_38 == 0.0) {
-        return;
-      }
-      if (local_3c == 0.0) {
-        return;
-      }
-      local_1c = (float)local_38 + 0.0;
-      local_2c = 0xbf800000;
-      uStack_28 = 0;
-      local_24 = 0;
-      uStack_20 = 0x3f800000;
-      uStack_18 = 0;
-      pvVar1 = _objc_msgSend(self,sel_class,uVar4);
-      uVar4 = CONCAT44(uStack_28,local_2c);
-      pcVar3 = sel_setTransform_toImageOfObject_;
-      goto LAB_000183f7;
-    }
-  }
-  pvVar1 = _objc_msgSend(self,sel_selectedCardObjectForEditingOperationWithImplicitVerification,
-                         uVar4);
-  uVar6 = (uint)(uVar4 >> 0x20);
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619d4);
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryGeometryBehaviorApplier);
-  if (pvVar1 == (id)0x0) {
-    return;
-  }
-  uVar4 = (ulonglong)uVar6 << 0x20;
-  pcVar3 = sel_flipHorizontallyWithLayoutGuidingContext_;
-LAB_000183f7:
-  _objc_msgSend(pvVar1,pcVar3,uVar4);
-  return;
-}
-
-*/
 - (void)flipSideways:(id)aSideways
 {
     id tool = [[HSToolManager sharedToolManager] currentTool];
@@ -7059,63 +2511,6 @@ LAB_000183f7:
     [applier flipHorizontallyWithLayoutGuidingContext:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00024eb0 @ 00024eb0, 982 bytes * /
-
-void FUN_00024eb0(HSEditorWindowController *self,SEL _cmd,id centerSelectedObjectOnCard)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  undefined4 *puVar3;
-  
-  puVar3 = (undefined4 *)&stack0xffffff74;
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentTool);
-  pvVar2 = _objc_msgSend(self,sel_class);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isValidSelectionTool_);
-  if ((char)pvVar2 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_selectedCardObjectForEditingOperationWithImplicitVerification);
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_);
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryGeometryBehaviorApplier);
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_stack);
-    _objc_msgSend(pvVar1,sel_hyperCardSize);
-  }
-  else {
-    pvVar2 = _objc_msgSend(pvVar1,sel_bitmapTool);
-    pvVar2 = _objc_msgSend(pvVar2,sel_selectionPath);
-    if (pvVar2 == (id)0x0) {
-      return;
-    }
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,sel_currentCard);
-    pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_);
-    op = sel_size;
-    if (pvVar2 == (id)0x0) {
-      pvVar2 = _objc_msgSend(self,sel_document);
-      pvVar2 = _objc_msgSend(pvVar2,sel_stack);
-      op = sel_hyperCardSize;
-    }
-    _objc_msgSend(pvVar2,op);
-    _CGEPathGetPathBoundingBox();
-    pvVar1 = _objc_msgSend(pvVar1,sel_bitmapTool);
-    pvVar1 = _objc_msgSend(pvVar1,sel_selectionPathTransform);
-    _objc_msgSend(pvVar1,sel_getValue_);
-    _CGAffineTransformMakeTranslation();
-    puVar3 = (undefined4 *)&stack0xffffff6c;
-    _objc_msgSend(self,sel_class);
-  }
-  puVar3[-1] = 0x2527c;
-  _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-  return;
-}
-
-*/
 - (void)centerSelectedObjectOnCard:(id)aCard
 {
     id tool = [[HSToolManager sharedToolManager] currentTool];
@@ -7160,226 +2555,6 @@ void FUN_00024eb0(HSEditorWindowController *self,SEL _cmd,id centerSelectedObjec
     [self resizeSelectedObject:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00025286 @ 00025286, 1802 bytes * /
-
-void FUN_00025286(HSEditorWindowController *self,SEL _cmd,BOOL resizeSelectedObject)
-
-{
-  bool bVar1;
-  float fVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  SEL pcVar7;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  float extraout_EDX_01;
-  float fVar8;
-  float fVar9;
-  float fVar10;
-  float fVar11;
-  double dVar12;
-  undefined8 uVar13;
-  undefined8 in_stack_ffffff70;
-  uint uVar15;
-  ulonglong uVar14;
-  float local_54;
-  float local_4c;
-  float local_48;
-  float local_44;
-  float local_40;
-  float local_3c;
-  undefined4 uStack_38;
-  undefined4 local_34;
-  float fStack_30;
-  float local_2c;
-  float fStack_28;
-  float local_24;
-  float local_20;
-  
-  uVar15 = (uint)((ulonglong)in_stack_ffffff70 >> 0x20);
-  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar4 = _objc_msgSend(pvVar3,sel_currentTool);
-  pvVar5 = _objc_msgSend(self,sel_class);
-  pvVar3 = pvVar4;
-  pvVar5 = _objc_msgSend(pvVar5,sel_isValidSelectionTool_);
-  if ((char)pvVar5 == '\0') {
-    pvVar3 = _objc_msgSend(self,sel_selectedCardObjectForEditingOperationWithImplicitVerification);
-    pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_);
-    pvVar3 = _objc_msgSend(pvVar3,sel_queryGeometryBehaviorApplier);
-    if (pvVar3 == (id)0x0) {
-      return;
-    }
-    pvVar4 = _objc_msgSend(self,sel_document);
-    pvVar4 = _objc_msgSend(pvVar4,sel_currentCard);
-    pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_);
-    pcVar7 = sel_size;
-    if (pvVar4 == (id)0x0) {
-      pvVar4 = _objc_msgSend(self,sel_document);
-      pvVar4 = _objc_msgSend(pvVar4,sel_stack);
-      pcVar7 = sel_hyperCardSize;
-    }
-    pvVar4 = _objc_msgSend(pvVar4,pcVar7);
-    pvVar5 = _objc_msgSend(pvVar3,sel_mutableGeometryAttributes);
-    dVar12 = _objc_msgSend_fpret(pvVar5,sel_rotationAngle);
-    fVar2 = (float)dVar12;
-    if ((fVar2 != 0.0) || (NAN(fVar2))) {
-      local_54 = ABS(fVar2);
-    }
-    else {
-      local_54 = 1.0;
-    }
-    bVar1 = local_54 <= 1.0;
-    local_54 = local_54 * 0.0005;
-    if (bVar1) {
-      local_54 = 0.0005;
-    }
-    pvVar6 = _objc_msgSend(pvVar5,sel_affineFrameSize);
-    if (((float)pvVar6 != 0.0) || (NAN((float)pvVar6))) {
-      fVar8 = ABS((float)pvVar6);
-    }
-    else {
-      fVar8 = 1.0;
-    }
-    if (((float)pvVar4 != 0.0) || (NAN((float)pvVar4))) {
-      fVar9 = ABS((float)pvVar4);
-    }
-    else {
-      fVar9 = 1.0;
-    }
-    if (fVar9 <= fVar8) {
-      fVar9 = fVar8;
-    }
-    if (ABS((float)pvVar6 - (float)pvVar4) <= fVar9 * 0.0005) {
-      if ((extraout_EDX_01 != 0.0) || (NAN(extraout_EDX_01))) {
-        fVar8 = ABS(extraout_EDX_01);
-      }
-      else {
-        fVar8 = 1.0;
-      }
-      if ((extraout_EDX_00 != 0.0) || (NAN(extraout_EDX_00))) {
-        fVar9 = ABS(extraout_EDX_00);
-      }
-      else {
-        fVar9 = 1.0;
-      }
-      if (fVar9 <= fVar8) {
-        fVar9 = fVar8;
-      }
-      bVar1 = fVar9 * 0.0005 < ABS(extraout_EDX_01 - extraout_EDX_00);
-    }
-    else {
-      bVar1 = true;
-    }
-    _objc_msgSend_stret(&local_24,pvVar5,sel_frameBoundingRect);
-    fVar8 = *(float *)PTR_00336074;
-    fVar9 = *(float *)(PTR_00336074 + 4);
-    if ((fVar8 != 0.0) || (NAN(fVar8))) {
-      fVar10 = ABS(fVar8);
-    }
-    else {
-      fVar10 = 1.0;
-    }
-    if ((local_24 != 0.0) || (NAN(local_24))) {
-      fVar11 = ABS(local_24);
-    }
-    else {
-      fVar11 = 1.0;
-    }
-    if (fVar11 <= fVar10) {
-      fVar11 = fVar10;
-    }
-    if (ABS(fVar8 - local_24) <= fVar11 * 0.0005) {
-      if ((fVar9 != 0.0) || (NAN(fVar9))) {
-        fVar8 = ABS(fVar9);
-      }
-      else {
-        fVar8 = 1.0;
-      }
-      if ((local_20 != 0.0) || (NAN(local_20))) {
-        fVar10 = ABS(local_20);
-      }
-      else {
-        fVar10 = 1.0;
-      }
-      if (ABS(0.0 - fVar2) <= local_54 && !bVar1) {
-        if (fVar10 <= fVar8) {
-          fVar10 = fVar8;
-        }
-        if (ABS(fVar9 - local_20) <= fVar10 * 0.0005) {
-          return;
-        }
-      }
-    }
-    pvVar5 = _objc_msgSend(self,sel_document);
-    pvVar5 = _objc_msgSend(pvVar5,sel_undoManager);
-    pvVar6 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    uVar14 = (ulonglong)uVar15 << 0x20;
-    pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,&cfstr_Resize,&cfstr_empty,
-                           &cfstr_UndoManager);
-    _objc_msgSend(pvVar5,sel_setMultipleActionsName_,pvVar6);
-    if (local_54 < ABS(0.0 - fVar2)) {
-      uVar14 = 0;
-      _objc_msgSend(pvVar3,sel_rotateTo_aboutRelativePoint_withLayoutGuidingContext_,0,0x3f000000,
-                    0x3f000000,0);
-    }
-    if (bVar1) {
-      uVar14 = 0x3f0000003f000000;
-      _objc_msgSend(pvVar3,
-                    sel_resizeFrameTo_aboutRelativePoint_followResizingScalingPreference_maintainAspectRatio_byAspectRatioMaintainingRule_withLayoutGuidingContext_
-                    ,pvVar4,extraout_EDX_00,0x3f000000,0x3f000000,1,3,
-                    (uint)(resizeSelectedObject == '\0'),0);
-    }
-    uVar13 = CONCAT44(extraout_EDX_00 * 0.5,(float)pvVar4 * 0.5);
-    uVar14 = uVar14 & 0xffffffff00000000;
-    pcVar7 = sel_moveCenterTo_withLayoutGuidingContext_;
-  }
-  else {
-    pvVar4 = _objc_msgSend(pvVar4,sel_bitmapTool);
-    pvVar4 = _objc_msgSend(pvVar4,sel_selectionPath);
-    if (pvVar4 == (id)0x0) {
-      return;
-    }
-    _CGEPathGetPathBoundingBox(&local_4c,pvVar4);
-    pvVar4 = _objc_msgSend(self,sel_document);
-    pvVar4 = _objc_msgSend(pvVar4,sel_currentCard);
-    uVar13 = CONCAT44(pvVar3,&DAT_003614fc);
-    pvVar3 = _objc_msgSend(pvVar4,sel_queryHyperInterface_,&DAT_003614fc);
-    pcVar7 = sel_size;
-    if (pvVar3 == (id)0x0) {
-      pvVar3 = _objc_msgSend(self,sel_document,uVar13);
-      pvVar3 = _objc_msgSend(pvVar3,sel_stack);
-      pcVar7 = sel_hyperCardSize;
-    }
-    pvVar3 = _objc_msgSend(pvVar3,pcVar7,uVar13);
-    if ((local_44 != 0.0) || (NAN(local_44))) {
-      local_3c = (float)pvVar3 / local_44;
-    }
-    else {
-      local_3c = 1.0;
-    }
-    if ((local_40 != 0.0) || (NAN(local_40))) {
-      fStack_30 = extraout_EDX / local_40;
-    }
-    else {
-      fStack_30 = 1.0;
-    }
-    local_2c = 0.0 - local_4c * local_3c;
-    uStack_38 = 0;
-    local_34 = 0;
-    fStack_28 = 0.0 - local_48 * fStack_30;
-    pvVar3 = _objc_msgSend(self,sel_class,uVar13);
-    uVar13 = CONCAT44(uStack_38,local_3c);
-    uVar14 = CONCAT44(fStack_30,local_34);
-    pcVar7 = sel_setTransform_toBitmapTool_;
-  }
-  _objc_msgSend(pvVar3,pcVar7,uVar13,uVar14);
-  return;
-}
-
-*/
 - (void)resizeSelectedObject:(BOOL)aObject
 {
     id tool = [[HSToolManager sharedToolManager] currentTool];
@@ -7437,103 +2612,6 @@ void FUN_00025286(HSEditorWindowController *self,SEL _cmd,BOOL resizeSelectedObj
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00025990 @ 00025990, 802 bytes * /
-
-void FUN_00025990(HSEditorWindowController *self,SEL _cmd,BOOL spacingObjectsWithDirection)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  code *pcVar5;
-  SEL op;
-  uint uVar6;
-  float fVar7;
-  float fVar8;
-  undefined *puVar9;
-  undefined4 uVar10;
-  cfstringStruct *pcVar11;
-  int local_68;
-  float local_54 [2];
-  float local_4c;
-  undefined1 local_44 [4];
-  float local_40;
-  float local_38;
-  float local_34 [2];
-  float local_2c;
-  undefined1 local_24 [4];
-  float local_20;
-  float local_18;
-  
-  uVar10 = 0;
-  pvVar1 = _objc_msgSend(self,
-                         sel_selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray_
-                         ,0);
-  pvVar2 = _objc_msgSend(pvVar1,sel_count);
-  if ((id)0x2 < pvVar2) {
-    pvVar2 = _objc_msgSend(self,sel_document,uVar10);
-    pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-    pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pcVar11 = &cfstr_UndoManager;
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_Align_Objects,
-                           &cfstr_empty,&cfstr_UndoManager);
-    _objc_msgSend(pvVar2,sel_setMultipleActionsName_,pvVar3);
-    if (spacingObjectsWithDirection == '\0') {
-      pcVar5 = FUN_0002d92a;
-    }
-    else {
-      pcVar5 = FUN_0002d898;
-    }
-    uVar10 = 0;
-    pvVar1 = _objc_msgSend(pvVar1,sel_sortedArrayUsingFunction_context_,pcVar5,0,pcVar11);
-    if (pvVar1 != (id)0x0) {
-      pvVar2 = _objc_msgSend(pvVar1,sel_objectAtIndex_,0,uVar10,pcVar11);
-      pvVar3 = _objc_msgSend(pvVar1,sel_lastObject);
-      pvVar4 = _objc_msgSend(pvVar1,sel_count);
-      if (spacingObjectsWithDirection == '\0') {
-        _objc_msgSend_stret(local_44,pvVar2,sel_frameBoundingRect);
-        fVar7 = local_38 * 0.5 + local_40;
-        puVar9 = sel_frameBoundingRect;
-        _objc_msgSend_stret(local_24,pvVar3,sel_frameBoundingRect);
-        fVar8 = local_18 * 0.5 + local_20;
-      }
-      else {
-        _objc_msgSend_stret(local_54,pvVar2,sel_frameBoundingRect);
-        fVar7 = local_4c * 0.5 + local_54[0];
-        puVar9 = sel_frameBoundingRect;
-        _objc_msgSend_stret(local_34,pvVar3,sel_frameBoundingRect);
-        fVar8 = local_2c * 0.5 + local_34[0];
-      }
-      if (1 < (int)pvVar4 - 1U) {
-        local_68 = (int)pvVar4 + -2;
-        uVar6 = 1;
-        do {
-          pvVar2 = _objc_msgSend(pvVar1,sel_objectAtIndex_,uVar6,puVar9);
-          pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterfaceForAllObjects_,&DAT_003619d4);
-          pvVar2 = _objc_msgSend(pvVar2,sel_queryGeometryBehaviorApplier);
-          op = sel_moveVerticalCenterTo_withLayoutGuidingContext_;
-          if (spacingObjectsWithDirection != '\0') {
-            op = sel_moveHorizontalCenterTo_withLayoutGuidingContext_;
-          }
-          puVar9 = (undefined *)0x0;
-          _objc_msgSend(pvVar2,op,
-                        (float)((double)((ulonglong)uVar6 | 0x4330000000000000) - 4503599627370496.0
-                               ) *
-                        ((fVar8 - fVar7) /
-                        (float)((double)((ulonglong)((int)pvVar4 - 1U) | 0x4330000000000000) -
-                               4503599627370496.0)) + fVar7,0);
-          uVar6 = uVar6 + 1;
-          local_68 = local_68 + -1;
-        } while (local_68 != 0);
-      }
-    }
-  }
-  return;
-}
-
-*/
 - (void)spacingObjectsWithDirection:(BOOL)aDirection
 {
     NSArray *objects = [self selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray:NULL];
@@ -7610,195 +2688,6 @@ void FUN_00025990(HSEditorWindowController *self,SEL _cmd,BOOL spacingObjectsWit
     [self alignObjectWithDirection:0];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00025cb2 @ 00025cb2, 1306 bytes * /
-
-void FUN_00025cb2(HSEditorWindowController *self,SEL _cmd,int alignObjectWithDirection)
-
-{
-  float fVar1;
-  int iVar2;
-  id self_00;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id self_01;
-  SEL op;
-  float extraout_EDX;
-  undefined4 *puVar6;
-  undefined *puVar7;
-  float fVar8;
-  int local_a4;
-  id local_a0;
-  float local_9c;
-  float local_98;
-  id local_94;
-  float local_90;
-  float local_8c;
-  float local_88;
-  id local_84;
-  float local_80;
-  id local_78;
-  undefined4 local_74;
-  int local_70;
-  int *local_6c;
-  undefined4 local_68;
-  undefined4 local_64;
-  undefined4 local_60;
-  undefined4 local_5c;
-  undefined4 local_58;
-  
-  puVar7 = PTR_00336078;
-  puVar6 = (undefined4 *)&stack0xffffff34;
-  local_78 = (id)0x0;
-  fVar8 = *(float *)PTR_00336078;
-  fVar1 = *(float *)(PTR_00336078 + 4);
-  pvVar3 = _objc_msgSend(self,
-                         sel_selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray_
-                        );
-  local_84 = *(id *)(puVar7 + 8);
-  local_80 = *(float *)(puVar7 + 0xc);
-  local_8c = fVar8;
-  local_88 = fVar1;
-  pvVar4 = _objc_msgSend(pvVar3,sel_count);
-  pvVar5 = _objc_msgSend(local_78,sel_count);
-  if (pvVar5 == pvVar4) {
-    if (pvVar4 < (id)0x2) {
-      pvVar4 = _objc_msgSend(self,sel_document);
-      pvVar4 = _objc_msgSend(pvVar4,sel_currentCard);
-      pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_);
-      op = sel_size;
-      if (pvVar4 == (id)0x0) {
-        pvVar4 = _objc_msgSend(self,sel_document);
-        pvVar4 = _objc_msgSend(pvVar4,sel_stack);
-        op = sel_hyperCardSize;
-      }
-      local_84 = _objc_msgSend(pvVar4,op);
-      local_8c = 0.0;
-      local_88 = 0.0;
-      local_80 = extraout_EDX;
-    }
-    else {
-      _objc_msgSend_stret(&local_9c,self,sel_unionRectForArrayOfObjects_);
-      puVar6 = (undefined4 *)&stack0xffffff30;
-      local_8c = local_9c;
-      local_88 = local_98;
-      local_84 = local_94;
-      local_80 = local_90;
-    }
-  }
-  else {
-    self_01 = _objc_msgSend(cls_NSMutableArray,sel_new);
-    self_00 = local_78;
-    local_74 = 0;
-    local_70 = 0;
-    local_6c = (int *)0x0;
-    local_68 = 0;
-    local_64 = 0;
-    local_60 = 0;
-    local_5c = 0;
-    local_58 = 0;
-    local_a0 = _objc_msgSend(local_78,sel_countByEnumeratingWithState_objects_count_);
-    if (local_a0 != (id)0x0) {
-      local_a4 = (int)pvVar5 - (int)pvVar4;
-      iVar2 = *local_6c;
-      do {
-        pvVar4 = (id)0x0;
-        do {
-          if (iVar2 != *local_6c) {
-            _objc_enumerationMutation();
-          }
-          pvVar5 = (id)((int)pvVar4 + 1);
-          pvVar4 = _objc_msgSend(*(id *)(local_70 + (int)pvVar4 * 4),sel_queryHyperInterface_);
-          pvVar4 = _objc_msgSend(pvVar4,sel_isLocked);
-          if ((char)pvVar4 != '\0') {
-            _objc_msgSend(self_01,sel_addObject_);
-            local_a4 = local_a4 + -1;
-            if (local_a4 == 0) goto LAB_00025ef4;
-          }
-          pvVar4 = pvVar5;
-        } while (pvVar5 < local_a0);
-        local_a0 = _objc_msgSend(self_00,sel_countByEnumeratingWithState_objects_count_);
-      } while (local_a0 != (id)0x0);
-    }
-LAB_00025ef4:
-    _objc_msgSend_stret(&local_8c,self,sel_unionRectForArrayOfObjects_);
-    puVar6 = (undefined4 *)&stack0xffffff30;
-    _objc_msgSend(self_01,sel_release);
-  }
-  puVar6[1] = sel_document;
-  *puVar6 = self;
-  puVar6[-1] = 0x2605b;
-  pvVar4 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[1] = sel_undoManager;
-  *puVar6 = pvVar4;
-  puVar6[-1] = 0x2606d;
-  pvVar4 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[1] = sel_mainBundle;
-  *puVar6 = cls_NSBundle;
-  puVar6[-1] = 0x26087;
-  pvVar5 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[4] = &cfstr_UndoManager;
-  puVar6[3] = &cfstr_empty;
-  puVar6[2] = &cfstr_Align_Object;
-  puVar6[1] = sel_localizedStringForKey_value_table_;
-  *puVar6 = pvVar5;
-  puVar6[-1] = 0x260b7;
-  pvVar5 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[2] = pvVar5;
-  puVar6[1] = sel_setMultipleActionsName_;
-  *puVar6 = pvVar4;
-  puVar6[-1] = 0x260cd;
-  _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[2] = &DAT_003619d4;
-  puVar6[1] = sel_queryHyperInterfaceForAllObjects_;
-  *puVar6 = pvVar3;
-  puVar6[-1] = 0x260ef;
-  pvVar3 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  puVar6[1] = sel_queryGeometryBehaviorApplier;
-  *puVar6 = pvVar3;
-  puVar6[-1] = 0x26101;
-  pvVar3 = _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-  switch(alignObjectWithDirection) {
-  case 0:
-    puVar7 = sel_moveMinHorizontalFrameBoundTo_withLayoutGuidingContext_;
-    fVar8 = local_8c;
-    break;
-  case 1:
-    fVar8 = (float)local_84 * 0.5 + local_8c;
-    puVar7 = sel_moveHorizontalCenterTo_withLayoutGuidingContext_;
-    break;
-  case 2:
-    fVar8 = local_8c + (float)local_84;
-    puVar7 = sel_moveMaxHorizontalFrameBoundTo_withLayoutGuidingContext_;
-    break;
-  case 3:
-    puVar7 = sel_moveMinVerticalFrameBoundTo_withLayoutGuidingContext_;
-    fVar8 = local_88;
-    break;
-  case 4:
-    puVar7 = sel_moveVerticalCenterTo_withLayoutGuidingContext_;
-    fVar8 = local_80 * 0.5 + local_88;
-    break;
-  case 5:
-    puVar6[2] = local_88 + local_80;
-    puVar6[1] = sel_moveMaxVerticalFrameBoundTo_withLayoutGuidingContext_;
-    goto LAB_0002612d;
-  default:
-    goto switchD_00026113_default;
-  }
-  puVar6[2] = fVar8;
-  puVar6[1] = puVar7;
-LAB_0002612d:
-  *puVar6 = pvVar3;
-  puVar6[3] = 0;
-  puVar6[-1] = 0x2613d;
-  _objc_msgSend((id)*puVar6,(SEL)puVar6[1]);
-switchD_00026113_default:
-  return;
-}
-
-*/
 - (void)alignObjectWithDirection:(NSInteger)aDirection
 {
     NSArray *originalObjects = nil;
@@ -7859,46 +2748,6 @@ switchD_00026113_default:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017dfd @ 00017dfd, 323 bytes * /
-
-void FUN_00017dfd(HSEditorWindowController *self,SEL _cmd,id alignJustified)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar4 = &DAT_00361934;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361934);
-  op = sel_setHyperAlignment_;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,puVar4);
-    puVar4 = &DAT_00361948;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-    if (pvVar1 == (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar4);
-      pvVar3 = _objc_msgSend(pvVar2,sel_selectedToolTag);
-      if (pvVar3 == (id)0x2) {
-        pvVar1 = _objc_msgSend(pvVar2,sel_toolSettings,puVar4);
-        pvVar2 = _objc_msgSend(pvVar2,sel_currentTool);
-        pvVar1 = _objc_msgSend(pvVar1,sel_userObjectPrototypeForTool_,pvVar2);
-        pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-      }
-    }
-    op = sel_setHyperTextAlignment_;
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-  }
-  _objc_msgSend(pvVar1,op,3);
-  return;
-}
-
-*/
 - (void)alignJustified:(id)aJustified
 {
     id target = [[self selectedHyperObject] queryHyperInterface:@protocol(HSSystemTextViewFontTraitsAttributes)];
@@ -7919,46 +2768,6 @@ void FUN_00017dfd(HSEditorWindowController *self,SEL _cmd,id alignJustified)
     [target performSelector:action withObject:(id)3];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017cba @ 00017cba, 323 bytes * /
-
-void FUN_00017cba(HSEditorWindowController *self,SEL _cmd,id alignCenter)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar4 = &DAT_00361934;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361934);
-  op = sel_setHyperAlignment_;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,puVar4);
-    puVar4 = &DAT_00361948;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-    if (pvVar1 == (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar4);
-      pvVar3 = _objc_msgSend(pvVar2,sel_selectedToolTag);
-      if (pvVar3 == (id)0x2) {
-        pvVar1 = _objc_msgSend(pvVar2,sel_toolSettings,puVar4);
-        pvVar2 = _objc_msgSend(pvVar2,sel_currentTool);
-        pvVar1 = _objc_msgSend(pvVar1,sel_userObjectPrototypeForTool_,pvVar2);
-        pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-      }
-    }
-    op = sel_setHyperTextAlignment_;
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-  }
-  _objc_msgSend(pvVar1,op,2);
-  return;
-}
-
-*/
 - (void)alignCenter:(id)aCenter
 {
     id target = [[self selectedHyperObject] queryHyperInterface:@protocol(HSSystemTextViewFontTraitsAttributes)];
@@ -7979,46 +2788,6 @@ void FUN_00017cba(HSEditorWindowController *self,SEL _cmd,id alignCenter)
     [target performSelector:action withObject:(id)2];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017b77 @ 00017b77, 323 bytes * /
-
-void FUN_00017b77(HSEditorWindowController *self,SEL _cmd,id alignLeft)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar4 = &DAT_00361934;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361934);
-  op = sel_setHyperAlignment_;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,puVar4);
-    puVar4 = &DAT_00361948;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-    if (pvVar1 == (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar4);
-      pvVar3 = _objc_msgSend(pvVar2,sel_selectedToolTag);
-      if (pvVar3 == (id)0x2) {
-        pvVar1 = _objc_msgSend(pvVar2,sel_toolSettings,puVar4);
-        pvVar2 = _objc_msgSend(pvVar2,sel_currentTool);
-        pvVar1 = _objc_msgSend(pvVar1,sel_userObjectPrototypeForTool_,pvVar2);
-        pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-      }
-    }
-    op = sel_setHyperTextAlignment_;
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-  }
-  _objc_msgSend(pvVar1,op,0);
-  return;
-}
-
-*/
 - (void)alignLeft:(id)aLeft
 {
     id target = [[self selectedHyperObject] queryHyperInterface:@protocol(HSSystemTextViewFontTraitsAttributes)];
@@ -8039,46 +2808,6 @@ void FUN_00017b77(HSEditorWindowController *self,SEL _cmd,id alignLeft)
     [target performSelector:action withObject:(id)0];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017a34 @ 00017a34, 323 bytes * /
-
-void FUN_00017a34(HSEditorWindowController *self,SEL _cmd,id alignRight)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedHyperObject);
-  puVar4 = &DAT_00361934;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361934);
-  op = sel_setHyperAlignment_;
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_selectedHyperObject,puVar4);
-    puVar4 = &DAT_00361948;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-    if (pvVar1 == (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar4);
-      pvVar3 = _objc_msgSend(pvVar2,sel_selectedToolTag);
-      if (pvVar3 == (id)0x2) {
-        pvVar1 = _objc_msgSend(pvVar2,sel_toolSettings,puVar4);
-        pvVar2 = _objc_msgSend(pvVar2,sel_currentTool);
-        pvVar1 = _objc_msgSend(pvVar1,sel_userObjectPrototypeForTool_,pvVar2);
-        pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361948);
-      }
-    }
-    op = sel_setHyperTextAlignment_;
-    if (pvVar1 == (id)0x0) {
-      return;
-    }
-  }
-  _objc_msgSend(pvVar1,op,1);
-  return;
-}
-
-*/
 - (void)alignRight:(id)aRight
 {
     id target = [[self selectedHyperObject] queryHyperInterface:@protocol(HSSystemTextViewFontTraitsAttributes)];
@@ -8099,33 +2828,6 @@ void FUN_00017a34(HSEditorWindowController *self,SEL _cmd,id alignRight)
     [target performSelector:action withObject:(id)1];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000179af @ 000179af, 133 bytes * /
-
-id FUN_000179af(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  id pvVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedObjectsForEditingOperationWithImplicitVerification);
-  pvVar2 = _objc_msgSend(pvVar1,sel_count);
-  op = sel_lastObject;
-  if ((id)0x1 < pvVar2) {
-    op = sel_hyperObjectForAllInterfaces;
-  }
-  pvVar2 = _objc_msgSend(pvVar1,op);
-  pvVar3 = _objc_msgSend(pvVar2,sel_implementsHyperInterface_,&DAT_003612cc);
-  pvVar1 = (id)0x0;
-  if ((char)pvVar3 != '\0') {
-    pvVar1 = pvVar2;
-  }
-  return pvVar1;
-}
-
-*/
 - (id)selectedCardObjectForEditingOperationWithImplicitVerification
 {
     id objects = [self selectedObjectsForEditingOperationWithImplicitVerification];
@@ -8138,42 +2840,6 @@ id FUN_000179af(HSEditorWindowController *self,SEL _cmd)
     return [self selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001785c @ 0001785c, 293 bytes * /
-
-id FUN_0001785c(HSEditorWindowController *self,SEL _cmd,
-               id *selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *puVar3;
-  
-  pvVar1 = _objc_msgSend(cls_HSSelectionOperationVerifier,sel_alloc);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(pvVar2,sel_editorSelection);
-  pvVar1 = _objc_msgSend(pvVar1,sel_initWithSelection_,pvVar2);
-  pvVar1 = _objc_msgSend(pvVar1,sel_autorelease);
-  puVar3 = (undefined *)0x1;
-  pvVar1 = _objc_msgSend(pvVar1,sel_selectedNodesArrayForEditingOperationWithImplicitCheck_,1);
-  pvVar2 = _objc_msgSend(pvVar1,sel_count);
-  if (pvVar2 == (id)0x0) {
-    pvVar1 = (id)0x0;
-  }
-  else {
-    puVar3 = &DAT_003617a4;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryAllHyperInterfaces_,&DAT_003617a4);
-  }
-  if (selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray != (id *)0x0) {
-    pvVar2 = _objc_msgSend(self->_cardView,sel_selection,puVar3);
-    pvVar2 = _objc_msgSend(pvVar2,sel_objectsArray);
-    pvVar2 = _objc_msgSend(pvVar2,sel_queryAllHyperInterfaces_,&DAT_003617a4);
-    *selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray = pvVar2;
-  }
-  return pvVar1;
-}
-
-*/
 - (id)selectedObjectsForEditingOperationWithImplicitVerificationOfOriginalArray:(id *)aArray
 {
     id verifier = [[[HSSelectionOperationVerifier alloc] initWithSelection:[[self cardView] editorSelection]] autorelease];
@@ -8205,25 +2871,6 @@ id FUN_0001785c(HSEditorWindowController *self,SEL _cmd,
     [[[self selectedHyperObject] queryHyperInterface:@protocol(HSMutableCardObjectAttributes)] setLocked:(unsigned int)(!pvVar1_6)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017609 @ 00017609, 146 bytes * /
-
-void FUN_00017609(HSEditorWindowController *self,SEL _cmd,id runEasyLinkDialog)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSEasyLinkDialogController,sel_alloc);
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_editObjectDialogContext);
-  pvVar1 = _objc_msgSend(pvVar1,sel_initWithContext_,pvVar2);
-  _objc_msgSend(pvVar1,sel_runModal);
-  _objc_msgSend(pvVar1,sel_release);
-  return;
-}
-
-*/
 - (void)runEasyLinkDialog:(id)aDialog
 {
     id controller = [[HSEasyLinkDialogController alloc] initWithContext:[[self document] editObjectDialogContext]];
@@ -8231,68 +2878,6 @@ void FUN_00017609(HSEditorWindowController *self,SEL _cmd,id runEasyLinkDialog)
     [controller release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000173fa @ 000173fa, 527 bytes * /
-
-void FUN_000173fa(HSEditorWindowController *self,SEL _cmd,id runHypertextLinksDialog)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *self_00;
-  id pvVar3;
-  cfstringStruct *pcVar4;
-  undefined4 extraout_EDX;
-  SEL op;
-  undefined *puVar5;
-  
-  puVar5 = (undefined *)0x1;
-  _objc_msgSend(self,sel_switchToToolWithTag_,1);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  pvVar1 = _objc_msgSend(pvVar1,sel_selection);
-  pvVar2 = _objc_msgSend(pvVar1,sel_nodesEnumerator);
-  self_00 = _objc_msgSend(pvVar2,sel_nextObject);
-  while (self_00 != (undefined *)0x0) {
-    puVar5 = &DAT_003616b4;
-    pvVar3 = _objc_msgSend(self_00,sel_implementsHyperInterface_,&DAT_003616b4);
-    if ((char)pvVar3 == '\0') {
-      _objc_msgSend(pvVar1,sel_removeNode_,self_00);
-      puVar5 = self_00;
-    }
-    self_00 = _objc_msgSend(pvVar2,sel_nextObject,puVar5);
-  }
-  pvVar1 = _objc_msgSend(self,sel_cardView,puVar5);
-  pvVar1 = _objc_msgSend(pvVar1,sel_runTimeEditorController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_selectedRunTimeEditorObject);
-  if (pvVar1 != (id)0x0) {
-    puVar5 = &DAT_003616c8;
-    pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003616c8);
-    if (pvVar2 == (id)0x0) {
-      pvVar2 = _objc_msgSend(pvVar1,sel_editingObject,puVar5);
-      puVar5 = &DAT_0036177c;
-      pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_0036177c);
-      op = sel_objectString;
-    }
-    else {
-      pvVar2 = _objc_msgSend(pvVar2,sel_hyperText,puVar5);
-      op = sel_string;
-    }
-    pvVar2 = _objc_msgSend(pvVar2,op,puVar5);
-    puVar5 = sel_hyperSelectedRange;
-    pvVar3 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_hyperSelectedRange);
-    if ((char)pvVar3 != '\0') {
-      pvVar1 = _objc_msgSend(pvVar1,sel_hyperSelectedRange,puVar5);
-      pcVar4 = _objc_msgSend(pvVar2,sel_substringWithRange_,pvVar1,extraout_EDX);
-      goto LAB_000175e8;
-    }
-  }
-  pcVar4 = &cfstr_empty;
-LAB_000175e8:
-  _objc_msgSend(self,sel_openHypertextLinksPane_,pcVar4);
-  return;
-}
-
-*/
 - (void)runHypertextLinksDialog:(id)aDialog
 {
     [self switchToToolWithTag:1];
@@ -8321,36 +2906,6 @@ LAB_000175e8:
     [self openHypertextLinksPane:text];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00017314 @ 00017314, 230 bytes * /
-
-void FUN_00017314(HSEditorWindowController *self,SEL _cmd,id openHypertextLinksPane)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  id pvVar3;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar1,sel_selectedHyperObject);
-  pvVar1 = pvVar2;
-  op = sel_hyperObject;
-  if (pvVar2 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_document);
-    op = sel_currentCard;
-  }
-  pvVar1 = _objc_msgSend(pvVar1,op);
-  self_00 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar3 = _objc_msgSend(self,sel_document);
-  pvVar3 = _objc_msgSend(pvVar3,sel_stack);
-  _objc_msgSend(self_00,sel_openHypertextLinksPaneForField_selectedObject_initialText_stack_,pvVar2,
-                pvVar1,openHypertextLinksPane,pvVar3);
-  return;
-}
-
-*/
 - (void)openHypertextLinksPane:(id)aPane
 {
     id selected = [[self document] selectedHyperObject];
@@ -8358,39 +2913,6 @@ void FUN_00017314(HSEditorWindowController *self,SEL _cmd,id openHypertextLinksP
     [[HSObjectAssistantController sharedAssistantController] openHypertextLinksPaneForField:selected selectedObject:object initialText:aPane stack:[[self document] stack]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000261e4 @ 000261e4, 364 bytes * /
-
-void FUN_000261e4(HSEditorWindowController *self,SEL _cmd,id runWebcamWorkshopPanel)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  double dVar4;
-  
-  dVar4 = _objc_msgSend_fpret(cls_HSWebCamDataProvider,sel_safariApplicationVersion);
-  if ((float)dVar4 < 3.0) {
-    pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,&cfstr_OK,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_You_must_have_Safari_3_0_or_later_installed_to_v,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_Cannot_show_webcams,
-                           &cfstr_empty,&cfstr_Alerts);
-    _NSRunAlertPanel(pvVar3,pvVar2,pvVar1,0,0);
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_webcamWorkshopController);
-    _objc_msgSend(pvVar1,sel_runModal);
-  }
-  return;
-}
-
-*/
 - (void)runWebcamWorkshopPanel:(id)aPanel
 {
     if ([HSWebCamDataProvider safariApplicationVersion] < 3.0f) {
@@ -8403,52 +2925,6 @@ void FUN_000261e4(HSEditorWindowController *self,SEL _cmd,id runWebcamWorkshopPa
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001718d @ 0001718d, 391 bytes * /
-
-void FUN_0001718d(HSEditorWindowController *self,SEL _cmd,id captureImageController,
-                 uint didEndWithReturnCode)
-
-{
-  id pvVar1;
-  id self_00;
-  HSEditorWindowController *pHVar2;
-  SEL op;
-  HSEditorWindowController *pHVar3;
-  
-  if (didEndWithReturnCode == 1) {
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,
-                           sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-    if ((char)pvVar1 == '\0') goto LAB_0001728e;
-    pvVar1 = _objc_msgSend(captureImageController,sel_capturedImage);
-    self_00 = _objc_msgSend(cls_HSImageObject,sel_alloc);
-    pvVar1 = _objc_msgSend(cls_HSNewMedia,sel_mediaWithImage_,pvVar1);
-    pHVar2 = _objc_msgSend(self_00,sel_initWithMedia_,pvVar1);
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    pHVar3 = pHVar2;
-    _objc_msgSend(pvVar1,sel_addObjectToCenter_useDragPreferences_,pHVar2,0);
-    _objc_msgSend(self,sel_didAddNewObject);
-    self = pHVar2;
-    op = sel_release;
-  }
-  else {
-LAB_0001728e:
-    pvVar1 = _objc_msgSend(self->_importGraphicObjectDialogController,sel_dialogUserOptions);
-    pHVar3 = *(HSEditorWindowController **)PTR_PTR_003360a0;
-    pvVar1 = _objc_msgSend(pvVar1,sel_valueForKey_,pHVar3);
-    pvVar1 = _objc_msgSend(pvVar1,sel_boolValue);
-    if ((char)pvVar1 == '\0') goto LAB_000172f7;
-    pHVar3 = (HSEditorWindowController *)0x0;
-    op = sel_addGraphicObject_;
-  }
-  _objc_msgSend(self,op,pHVar3);
-LAB_000172f7:
-  _objc_msgSend(captureImageController,sel_autorelease,pHVar3);
-  return;
-}
-
-*/
 - (void)captureImageController:(id)aController didEndWithReturnCode:(NSUInteger)aCode
 {
     BOOL handled = NO;
@@ -8502,47 +2978,11 @@ LAB_000172f7:
     [[HSQuickCaptureImageController sharedQuickCaptureImageController] requestImageFor:self];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016ec9 @ 00016ec9, 82 bytes * /
-
-void FUN_00016ec9(HSEditorWindowController *self,SEL _cmd,id runVideoRecordingPanel)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_videoRecordingController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_runModal);
-  _objc_msgSend(self,sel_videoRecordingDidEndWithCode_,pvVar1);
-  return;
-}
-
-*/
 - (void)runVideoRecordingPanel:(id)aPanel
 {
     [self videoRecordingDidEndWithCode:[[self videoRecordingController] runModal]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016e2f @ 00016e2f, 154 bytes * /
-
-void FUN_00016e2f(HSEditorWindowController *self,SEL _cmd,id runSoundRecordingPanel)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_soundRecordingController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_runModal);
-  if (self->_playSoundActionEvent == (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSActionEvent,sel_actionEventOfType_,*(undefined4 *)PTR_00336080);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_playSoundActionEvent = pvVar2;
-  }
-  _objc_msgSend(self,sel_soundRecordingDidEndWithCode_,pvVar1);
-  return;
-}
-
-*/
 - (void)runSoundRecordingPanel:(id)aPanel
 {
     id code = (id)[[self soundRecordingController] runModal];
@@ -8552,52 +2992,6 @@ void FUN_00016e2f(HSEditorWindowController *self,SEL _cmd,id runSoundRecordingPa
     [self soundRecordingDidEndWithCode:(NSInteger)code];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00026350 @ 00026350, 272 bytes * /
-
-void FUN_00026350(HSEditorWindowController *self,SEL _cmd,id zoomFactorDidChange)
-
-{
-  float fVar1;
-  longdouble lVar2;
-  float fVar3;
-  float fVar4;
-  double dVar5;
-  float fVar6;
-  
-  dVar5 = _objc_msgSend_fpret(cls_HSEditorZoomController,sel_zoomFactorValueFrom_,
-                              zoomFactorDidChange);
-  fVar6 = (float)dVar5;
-  dVar5 = _objc_msgSend_fpret(self->_cardView,sel_zoomFactor);
-  fVar1 = (float)dVar5;
-  if ((fVar6 != 0.0) || (NAN(fVar6))) {
-    fVar3 = ABS(fVar6);
-  }
-  else {
-    fVar3 = 1.0;
-  }
-  if ((fVar1 != 0.0) || (NAN(fVar1))) {
-    fVar4 = ABS(fVar1);
-  }
-  else {
-    fVar4 = 1.0;
-  }
-  if (fVar4 <= fVar3) {
-    fVar4 = fVar3;
-  }
-  if (ABS(fVar6 - fVar1) <= fVar4 * 0.0005) {
-    lVar2 = (longdouble)_HSLinearValueForSliderFromNonLinear(zoomFactorDidChange,fVar1);
-    fVar6 = (float)lVar2;
-    _objc_msgSend(zoomFactorDidChange,sel_setFloatValue_,fVar6);
-  }
-  else {
-    _objc_msgSend(self->_cardView,sel_zoomToFactor_,fVar6);
-  }
-  _objc_msgSend(self,sel_refreshToolManager,fVar6);
-  return;
-}
-
-*/
 - (void)zoomFactorDidChange:(id)aChange
 {
     float target = [HSEditorZoomController zoomFactorValueFrom:aChange];
@@ -8678,45 +3072,6 @@ void FUN_00026350(HSEditorWindowController *self,SEL _cmd,id zoomFactorDidChange
     [pvVar1_2 incrementHyperIndex];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016add @ 00016add, 214 bytes * /
-
-void FUN_00016add(HSEditorWindowController *self,SEL _cmd,id goToCard)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  SEL op;
-  id pvVar3;
-  undefined **ppuVar4;
-  
-  pvVar2 = _objc_msgSend(goToCard,sel_clickedCell);
-  op = sel_keyCell;
-  if (pvVar2 != (id)0x0) {
-    op = sel_clickedCell;
-  }
-  pvVar2 = _objc_msgSend(goToCard,op);
-  if ((pvVar2 != (id)0x0) && (pvVar3 = _objc_msgSend(pvVar2,sel_isEnabled), (char)pvVar3 != '\0')) {
-    pvVar2 = _objc_msgSend(pvVar2,sel_tag);
-    if (pvVar2 == (id)0x1) {
-      ppuVar4 = &sel_goToNextCard_;
-    }
-    else {
-      if (pvVar2 != (id)0x0) goto LAB_00016b96;
-      ppuVar4 = &sel_goToPreviousCard_;
-    }
-    puVar1 = *ppuVar4;
-    if (puVar1 != (undefined *)0x0) {
-      pvVar2 = _objc_msgSend(goToCard,sel_target);
-      _objc_msgSend(goToCard,sel_sendAction_to_,puVar1,pvVar2);
-    }
-  }
-LAB_00016b96:
-  _objc_msgSend(self,sel_validateStackNavigationControl);
-  return;
-}
-
-*/
 - (void)goToCard:(id)aCard
 {
     id cell = [aCard clickedCell] != nil ? [aCard clickedCell] : [aCard keyCell];
@@ -8762,73 +3117,6 @@ LAB_00016b96:
     [self switchToToolWithTag:[aTool tag]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016747 @ 00016747, 564 bytes * /
-
-void FUN_00016747(HSEditorWindowController *self,SEL _cmd,int switchToToolWithTag)
-
-{
-  id pvVar1;
-  undefined *puVar2;
-  
-  switch(switchToToolWithTag) {
-  case 0x19:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_0036159c;
-    break;
-  case 0x1a:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_003615d8;
-    break;
-  case 0x1b:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_003615ec;
-    break;
-  case 0x1c:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361600;
-    break;
-  case 0x1d:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361614;
-    break;
-  case 0x1e:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361628;
-    break;
-  case 0x1f:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_0036163c;
-    break;
-  case 0x20:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361650;
-    break;
-  case 0x21:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361664;
-    break;
-  case 0x22:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_00361678;
-    break;
-  case 0x23:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_0036168c;
-    break;
-  default:
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    puVar2 = &DAT_003615b0;
-  }
-  _objc_msgSend(pvVar1,sel_setHitTestingInterface_,puVar2);
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  _objc_msgSend(pvVar1,sel_selectToolWithTag_setAsPermanent_,switchToToolWithTag,1);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_updateCursor);
-  return;
-}
-
-*/
 - (void)switchToToolWithTag:(NSInteger)aTag
 {
     Protocol *hitTesting;
@@ -8857,33 +3145,6 @@ void FUN_00016747(HSEditorWindowController *self,SEL _cmd,int switchToToolWithTa
     [[self cardView] performSelector:_cmd withObject:aObjects];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001664c @ 0001664c, 151 bytes * /
-
-void FUN_0001664c(HSEditorWindowController *self,SEL _cmd,id delete)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedCardObject);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_canDeleteSelectedObjectInSelectionHolder_,0);
-    if ((char)pvVar1 == '\0') {
-      return;
-    }
-    _cmd = (SEL)0x0;
-    op = sel_deleteSelectedObjectInSelectionHolder_;
-  }
-  else {
-    self = _objc_msgSend(self,sel_cardView);
-    op = sel_performSelector_withObject_;
-  }
-  _objc_msgSend(self,op,_cmd);
-  return;
-}
-
-*/
 - (void)delete:(id)aDelete
 {
     if ([self selectedCardObject] != nil) {
@@ -8893,35 +3154,6 @@ void FUN_0001664c(HSEditorWindowController *self,SEL _cmd,id delete)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016597 @ 00016597, 181 bytes * /
-
-void FUN_00016597(HSEditorWindowController *self,SEL _cmd,id cut)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedCardObject);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_canDeleteSelectedObjectInSelectionHolder_,0);
-    if ((char)pvVar1 == '\0') {
-      return;
-    }
-    _objc_msgSend(self,sel_copy_,cut);
-    cut = (id)0x0;
-    _cmd = (SEL)0x0;
-    op = sel_deleteSelectedObjectInSelectionHolder_showAlert_;
-  }
-  else {
-    self = _objc_msgSend(self,sel_cardView);
-    op = sel_performSelector_withObject_;
-  }
-  _objc_msgSend(self,op,_cmd,cut);
-  return;
-}
-
-*/
 - (void)cut:(id)aCut
 {
     if ([self selectedCardObject] != nil) {
@@ -8932,111 +3164,6 @@ void FUN_00016597(HSEditorWindowController *self,SEL _cmd,id cut)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00016181 @ 00016181, 1046 bytes * /
-
-void FUN_00016181(HSEditorWindowController *self,SEL _cmd,id paste)
-
-{
-  id self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  HSEditorWindowController *self_01;
-  id pvVar4;
-  undefined *puVar5;
-  int iVar6;
-  HSEditorWindowController *self_02;
-  SEL pcVar7;
-  cfstringStruct *pcVar8;
-  cfstringStruct *pcVar9;
-  
-  self_00 = _objc_msgSend(cls_NSPasteboard,sel_generalPasteboard);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(cls_HSMediaLoader,sel_forceLoadMediasFromPasteboard_,self_00);
-  pvVar2 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,&cfstr_HSCardPasteboardType);
-  pvVar3 = _objc_msgSend(self_00,sel_availableTypeFromArray_,pvVar2);
-  if (pvVar3 == (id)0x0) {
-    puVar5 = sel_paste_;
-    pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_paste_);
-    if ((char)pvVar2 != '\0') {
-      puVar5 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,&cfstr_BTArchivedImageRegionPboardType
-                            );
-      pvVar2 = _objc_msgSend(self_00,sel_availableTypeFromArray_,puVar5);
-      pcVar7 = sel_paste_;
-      if (pvVar2 != (id)0x0) goto LAB_00016487;
-    }
-    pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar5);
-    pvVar2 = self_00;
-    pvVar3 = _objc_msgSend(pvVar3,sel_toolForPastingPasteboardContents_,self_00);
-    if (pvVar3 != (id)0x0) {
-      pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,pvVar2);
-      _objc_msgSend(pvVar2,sel_selectToolWithTag_,pvVar3);
-      pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_paste_);
-      if ((char)pvVar2 != '\0') {
-        pvVar2 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,
-                               &cfstr_BTArchivedImageRegionPboardType);
-        pvVar2 = _objc_msgSend(self_00,sel_availableTypeFromArray_,pvVar2);
-        pcVar7 = sel_paste_;
-        if (pvVar2 != (id)0x0) goto LAB_00016487;
-      }
-    }
-    pvVar2 = _objc_msgSend(pvVar1,sel_canRecieveDataFromPasteboard_,self_00);
-    pcVar7 = sel_readSelectionFromPasteboard_;
-    paste = self_00;
-    if ((char)pvVar2 == '\0') {
-      return;
-    }
-  }
-  else {
-    self_01 = _objc_msgSend(self,sel_stackView,pvVar2);
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,sel_stack);
-    puVar5 = sel_selectedCard;
-    pvVar3 = _objc_msgSend(self_01,sel_respondsToSelector_,sel_selectedCard);
-    self_02 = self;
-    pcVar7 = sel_selectedCard;
-    if ((char)pvVar3 != '\0') {
-      self_02 = self_01;
-      pcVar7 = sel_performSelector_;
-      puVar5 = sel_selectedCard;
-    }
-    pvVar3 = _objc_msgSend(self_02,pcVar7,puVar5);
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_undoManager);
-    pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pcVar9 = &cfstr_UndoManager;
-    pcVar8 = &cfstr_empty;
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,&cfstr_Paste,&cfstr_empty,
-                           &cfstr_UndoManager);
-    _objc_msgSend(pvVar1,sel_setMultipleActionsName_,pvVar4);
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isNewAndNotChanged);
-    if ((char)pvVar1 == '\0') {
-      pvVar1 = _objc_msgSend(pvVar2,sel_indexOfHyperChild_,pvVar3,pcVar8,pcVar9);
-    }
-    else {
-      _objc_msgSend(pvVar2,sel_removeHyperAllChildren,pvVar4,pcVar8,pcVar9);
-      pvVar1 = (id)0x7fffffff;
-      pvVar3 = pvVar4;
-    }
-    pvVar4 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager,pvVar3);
-    iVar6 = (int)pvVar1 + 1;
-    if (pvVar1 == (id)0x7fffffff) {
-      iVar6 = 0;
-    }
-    _objc_msgSend(pvVar4,sel_disableObjectRegistration,pvVar3);
-    _objc_msgSend(pvVar2,sel_insertCardsFromPasteboard_atIndex_,self_00,iVar6);
-    pvVar1 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager);
-    pcVar7 = sel_enableObjectRegistration;
-    paste = self_00;
-  }
-LAB_00016487:
-  _objc_msgSend(pvVar1,pcVar7,paste);
-  return;
-}
-
-*/
 - (void)paste:(id)aPaste
 {
     NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
@@ -9080,77 +3207,6 @@ LAB_00016487:
     [[HSCoachingHelpManager sharedCoachingHelpManager] enableObjectRegistration];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00015dea @ 00015dea, 919 bytes * /
-
-void FUN_00015dea(HSEditorWindowController *self,SEL _cmd,id copy)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_01;
-  id self_02;
-  id self_03;
-  undefined4 extraout_EDX;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectedCardObject);
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_selectedCards);
-    pvVar2 = _objc_msgSend(pvVar1,sel_count);
-    if (pvVar2 == (id)0x0) {
-      return;
-    }
-    pvVar3 = _objc_msgSend(pvVar1,sel_extraFirstObject);
-    pvVar2 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003614fc);
-    pvVar2 = _objc_msgSend(pvVar2,sel_size);
-    pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_00361560);
-    pvVar3 = _objc_msgSend(pvVar3,sel_imageOfSize_,pvVar2,extraout_EDX);
-    copy = _objc_msgSend(cls_NSMutableSet,sel_set);
-    self_01 = _objc_msgSend(cls_NSMutableSet,sel_set);
-    self_02 = _objc_msgSend(cls_NSMutableArray,sel_array);
-    self_03 = _objc_msgSend(pvVar1,sel_objectEnumerator);
-    pvVar1 = _objc_msgSend(self_03,sel_nextObject);
-    while (pvVar1 != (id)0x0) {
-      pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361574);
-      pvVar2 = _objc_msgSend(pvVar2,sel_mediaUIDs);
-      _objc_msgSend(copy,sel_unionSet_,pvVar2);
-      pvVar2 = _objc_msgSend(pvVar1,sel_fullDictionaryRepresentation);
-      _objc_msgSend(self_02,sel_addObject_,pvVar2);
-      pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_00361588);
-      pvVar2 = _objc_msgSend(pvVar1,sel_unrefreshingUIDs);
-      _objc_msgSend(self_01,sel_unionSet_,pvVar2);
-      pvVar1 = _objc_msgSend(self_03,sel_nextObject);
-    }
-    pvVar1 = _objc_msgSend(copy,sel_count,pvVar2);
-    if ((pvVar1 == (id)0x0) && (pvVar1 = _objc_msgSend(self_02,sel_count,pvVar2), pvVar1 == (id)0x0)
-       ) {
-      return;
-    }
-    self_00 = cls_HSPasteboardDataProvider;
-    pvVar1 = _objc_msgSend(self,sel_zone);
-    pvVar1 = _objc_msgSend(self_00,sel_allocWithZone_,pvVar1);
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,sel_stack);
-    pvVar2 = _objc_msgSend(pvVar2,sel_cardGroupController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_allGroupedObjectsUIDs);
-    pvVar1 = _objc_msgSend(pvVar1,sel_initWithCards_UIDs_groupUIDs_unrefreshingUIDs_cardImage_,
-                           self_02,copy,pvVar2,self_01,pvVar3);
-    _cmd = _objc_msgSend(cls_NSPasteboard,sel_generalPasteboard);
-    _objc_msgSend(pvVar1,sel_declareTypesForPasteboard_,_cmd);
-    op = sel_release;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_cardView);
-    op = sel_performSelector_withObject_;
-  }
-  _objc_msgSend(pvVar1,op,_cmd,copy);
-  return;
-}
-
-*/
 - (void)copy:(id)aCopy
 {
     if ([self selectedCardObject] != nil) {
@@ -9212,47 +3268,6 @@ void FUN_00015dea(HSEditorWindowController *self,SEL _cmd,id copy)
     [self_00 setActive:(unsigned int)(![self_00 isActive]) explicitlyByUser:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000264f2 @ 000264f2, 473 bytes * /
-
-void FUN_000264f2(HSEditorWindowController *self,SEL _cmd,id hideIfNeededBottomToolbarView,
-                 id mainAreaTintedView,id mainWindow,BOOL animated,BOOL moveFrame)
-
-{
-  id pvVar1;
-  undefined4 extraout_EDX;
-  undefined1 local_34 [12];
-  float local_28;
-  undefined4 local_24;
-  float fStack_20;
-  undefined4 local_1c;
-  float fStack_18;
-  
-  pvVar1 = _objc_msgSend(hideIfNeededBottomToolbarView,sel_superview);
-  if (((pvVar1 != (id)0x0) && (mainWindow != (id)0x0)) && (mainAreaTintedView != (id)0x0)) {
-    pvVar1 = _objc_msgSend(self,sel_mainWindowMinCardAreaSize);
-    _objc_msgSend(self,sel_updateContentMinSize_forWindow_animated_,pvVar1,extraout_EDX,mainWindow,
-                  (int)animated);
-    _objc_msgSend_stret(&local_24,mainWindow,sel_frame);
-    _objc_msgSend_stret(local_34,hideIfNeededBottomToolbarView,sel_bounds);
-    pvVar1 = _objc_msgSend(mainAreaTintedView,sel_autoresizingMask);
-    if (moveFrame != '\0') {
-      fStack_20 = fStack_20 + local_28;
-    }
-    fStack_18 = fStack_18 - local_28;
-    _objc_msgSend(mainAreaTintedView,sel_setAutoresizingMask_,10);
-    _objc_msgSend(hideIfNeededBottomToolbarView,sel_setAutoresizingMask_,10);
-    _objc_msgSend(mainWindow,sel_setFrame_display_animate_,CONCAT44(fStack_20,local_24),
-                  CONCAT44(fStack_18,local_1c),1,(int)animated);
-    _objc_msgSend(hideIfNeededBottomToolbarView,sel_retain);
-    _objc_msgSend(hideIfNeededBottomToolbarView,sel_removeFromSuperviewWithoutNeedingDisplay);
-    _objc_msgSend(mainAreaTintedView,sel_setAutoresizingMask_,pvVar1);
-    _objc_msgSend(hideIfNeededBottomToolbarView,sel_setAutoresizingMask_,0x22);
-  }
-  return;
-}
-
-*/
 - (void)hideIfNeededBottomToolbarView:(id)aView mainAreaTintedView:(id)aView2 mainWindow:(id)aWindow animated:(BOOL)aAnimated moveFrame:(BOOL)aFrame
 {
     if ([aView superview] != nil && aWindow != nil && aView2 != nil) {
@@ -9279,131 +3294,6 @@ void FUN_000264f2(HSEditorWindowController *self,SEL _cmd,id hideIfNeededBottomT
     [self hideIfNeededBottomToolbarView:aView mainAreaTintedView:aView2 mainWindow:aWindow animated:aAnimated moveFrame:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000266cb @ 000266cb, 1109 bytes * /
-
-void FUN_000266cb(HSEditorWindowController *self,SEL _cmd,id showIfNeededBottomToolbarView,
-                 id workAreaView,id mainAreaTintedView,id mainWindow,BOOL animated)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined4 extraout_EDX;
-  undefined4 *puVar4;
-  float fVar5;
-  undefined1 local_a4 [4];
-  float fStack_a0;
-  float fStack_98;
-  undefined1 local_94 [12];
-  float local_88;
-  undefined4 local_84;
-  float fStack_80;
-  undefined4 local_7c;
-  float fStack_78;
-  undefined4 local_74;
-  float fStack_70;
-  undefined4 local_6c;
-  float fStack_68;
-  undefined1 local_64 [16];
-  undefined1 local_54 [16];
-  undefined1 local_44 [8];
-  undefined4 local_3c;
-  undefined1 local_34 [4];
-  float local_30;
-  undefined1 local_24 [12];
-  float local_18;
-  
-  if (showIfNeededBottomToolbarView != (id)0x0) {
-    pvVar1 = _objc_msgSend(showIfNeededBottomToolbarView,sel_superview);
-    if ((((pvVar1 == (id)0x0) && (workAreaView != (id)0x0)) && (mainWindow != (id)0x0)) &&
-       (mainAreaTintedView != (id)0x0)) {
-      pvVar2 = _objc_msgSend(self,sel_mainWindowMinCardAreaSize);
-      pvVar1 = self->_bottomAreaTintedView;
-      _objc_msgSend_stret(local_64,pvVar1,sel_bounds);
-      _objc_msgSend_stret(local_54,pvVar1,sel_convertRect_toView_);
-      _objc_msgSend(self,sel_updateContentMinSize_forWindow_animated_);
-      _objc_msgSend_stret(&local_74,mainWindow,sel_frame);
-      _objc_msgSend_stret(&local_84,showIfNeededBottomToolbarView,sel_frame);
-      _objc_msgSend_stret(local_94,showIfNeededBottomToolbarView,sel_bounds);
-      pvVar1 = _objc_msgSend(mainAreaTintedView,sel_autoresizingMask);
-      _objc_msgSend_stret(local_44,workAreaView,sel_bounds);
-      local_7c = local_3c;
-      fStack_80 = -fStack_78;
-      pvVar3 = _objc_msgSend(mainWindow,sel_screen);
-      _objc_msgSend_stret(local_34,pvVar3,sel_visibleFrame);
-      fStack_70 = fStack_70 - local_88;
-      if (fStack_70 <= local_30) {
-        fStack_70 = local_30;
-      }
-      fStack_68 = local_88 + fStack_68;
-      pvVar3 = _objc_msgSend(mainWindow,sel_screen);
-      _objc_msgSend_stret(local_24,pvVar3,sel_visibleFrame);
-      puVar4 = (undefined4 *)&stack0xffffff04;
-      if (local_18 < fStack_68) {
-        fVar5 = fStack_68 - local_18;
-        fStack_80 = fVar5 - fStack_78;
-        _objc_msgSend_stret(local_a4,mainAreaTintedView,sel_frame);
-        puVar4 = (undefined4 *)&stack0xffffff00;
-        fStack_98 = fStack_98 - fVar5;
-        fStack_a0 = fVar5 + fStack_a0;
-        _objc_msgSend(mainAreaTintedView,sel_setFrame_);
-      }
-      puVar4[1] = sel_setAutoresizingMask_;
-      *puVar4 = mainAreaTintedView;
-      puVar4[2] = 10;
-      puVar4[-1] = 0x26a01;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[1] = sel_setAutoresizingMask_;
-      *puVar4 = showIfNeededBottomToolbarView;
-      puVar4[2] = 10;
-      puVar4[-1] = 0x26a1e;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      *(ulonglong *)(puVar4 + 4) = CONCAT44(fStack_78,local_7c);
-      *(ulonglong *)(puVar4 + 2) = CONCAT44(fStack_80,local_84);
-      puVar4[1] = sel_setFrame_;
-      *puVar4 = showIfNeededBottomToolbarView;
-      puVar4[-1] = 0x26a49;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[2] = showIfNeededBottomToolbarView;
-      puVar4[1] = sel_addSubview_;
-      *puVar4 = workAreaView;
-      puVar4[-1] = 0x26a65;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[1] = sel_release;
-      *puVar4 = showIfNeededBottomToolbarView;
-      puVar4[-1] = 0x26a7a;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      *(ulonglong *)(puVar4 + 4) = CONCAT44(fStack_68,local_6c);
-      *(ulonglong *)(puVar4 + 2) = CONCAT44(fStack_70,local_74);
-      puVar4[7] = (int)animated;
-      puVar4[1] = sel_setFrame_display_animate_;
-      *puVar4 = mainWindow;
-      puVar4[6] = 1;
-      puVar4[-1] = 0x26ab1;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[3] = extraout_EDX;
-      puVar4[2] = pvVar2;
-      puVar4[1] = sel_setContentMinSize_;
-      *puVar4 = mainWindow;
-      puVar4[-1] = 0x26adf;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[1] = sel_setAutoresizingMask_;
-      *puVar4 = showIfNeededBottomToolbarView;
-      puVar4[2] = 0x22;
-      puVar4[-1] = 0x26afc;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-      puVar4[2] = pvVar1;
-      puVar4[1] = sel_setAutoresizingMask_;
-      *puVar4 = mainAreaTintedView;
-      puVar4[-1] = 0x26b15;
-      _objc_msgSend((id)*puVar4,(SEL)puVar4[1]);
-    }
-  }
-  return;
-}
-
-*/
 - (void)showIfNeededBottomToolbarView:(id)aView workAreaView:(id)aView2 mainAreaTintedView:(id)aView3 mainWindow:(id)aWindow animated:(BOOL)aAnimated
 {
     if (aView != nil && [aView superview] == nil && aView2 != nil && aWindow != nil && aView3 != nil) {
@@ -9448,57 +3338,6 @@ void FUN_000266cb(HSEditorWindowController *self,SEL _cmd,id showIfNeededBottomT
     return _statusbarController;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00026b20 @ 00026b20, 354 bytes * /
-
-void FUN_00026b20(HSEditorWindowController *self,SEL _cmd,BOOL setBottomToolbarVisible,BOOL animated
-                 ,BOOL moveFrame)
-
-{
-  undefined4 uVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  SEL op;
-  id pvVar5;
-  id pvVar6;
-  int iVar7;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_1c,sel_setBottomToolbarVisible_,(int)setBottomToolbarVisible);
-  pvVar2 = _objc_msgSend(self,sel_window);
-  if (setBottomToolbarVisible == 0) {
-    pvVar3 = self->_bottomAreaTintedView;
-    pvVar4 = (id)(int)animated;
-    op = sel_hideIfNeededBottomToolbarView_mainAreaTintedView_mainWindow_animated_moveFrame_;
-    pvVar5 = self->_mainAreaTintedView;
-    pvVar6 = pvVar2;
-    animated = moveFrame;
-  }
-  else {
-    pvVar3 = self->_bottomAreaTintedView;
-    op = sel_showIfNeededBottomToolbarView_workAreaView_mainAreaTintedView_mainWindow_animated_;
-    pvVar5 = self->_workAreaView;
-    pvVar6 = self->_mainAreaTintedView;
-    pvVar4 = pvVar2;
-  }
-  iVar7 = (int)animated;
-  _objc_msgSend(self,op,pvVar3,pvVar5,pvVar6,pvVar4,iVar7);
-  pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isMultiDocument);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(cls_HSUI,sel_sharedUI,pvVar3,pvVar5,pvVar6,pvVar4,iVar7);
-    uVar1 = *(undefined4 *)PTR_00336124;
-    pvVar3 = _objc_msgSend(cls_NSNumber,sel_numberWithBool_,(uint)(byte)setBottomToolbarVisible);
-    _objc_msgSend(pvVar2,sel_setSettings_forKey_,pvVar3,uVar1);
-  }
-  return;
-}
-
-*/
 - (void)setBottomToolbarVisible:(BOOL)aVisible animated:(BOOL)aAnimated moveFrame:(BOOL)aFrame
 {
     [super setBottomToolbarVisible:aVisible animated:aAnimated moveFrame:aFrame];
@@ -9523,36 +3362,6 @@ void FUN_00026b20(HSEditorWindowController *self,SEL _cmd,BOOL setBottomToolbarV
     [self setBottomToolbarVisible:aVisible animated:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00026c82 @ 00026c82, 267 bytes * /
-
-void FUN_00026c82(HSEditorWindowController *self,SEL _cmd,id hideShowToolbar)
-
-{
-  undefined4 uVar1;
-  id pvVar2;
-  id self_00;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_1c,sel_hideShowToolbar_,hideShowToolbar);
-  pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isMultiDocument);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(self,sel_toolbarController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_toolbar);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isVisible);
-    self_00 = _objc_msgSend(cls_HSUI,sel_sharedUI);
-    uVar1 = *(undefined4 *)PTR_0033612c;
-    pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithBool_,(uint)pvVar2 & 0xff);
-    _objc_msgSend(self_00,sel_setSettings_forKey_,pvVar2,uVar1);
-  }
-  return;
-}
-
-*/
 - (void)hideShowToolbar:(id)aToolbar
 {
     [super hideShowToolbar:aToolbar];
@@ -9566,1155 +3375,6 @@ void FUN_00026c82(HSEditorWindowController *self,SEL _cmd,id hideShowToolbar)
     return YES;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00026d8d @ 00026d8d, 12352 bytes * /
-
-BOOL FUN_00026d8d(HSEditorWindowController *self,SEL _cmd,id validateUserInterfaceItem)
-
-{
-  char cVar1;
-  undefined *puVar2;
-  id pvVar3;
-  cfstringStruct *pcVar4;
-  cfstringStruct *pcVar5;
-  HSEditorWindowController *pHVar6;
-  id pvVar7;
-  cfstringStruct *pcVar8;
-  undefined *puVar9;
-  id pvVar10;
-  id pvVar11;
-  undefined *puVar12;
-  SEL pcVar13;
-  undefined4 *puVar14;
-  bool bVar15;
-  double dVar16;
-  undefined4 uVar17;
-  undefined *local_2c;
-  char local_24;
-  cfstringStruct *local_20;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  puVar2 = _objc_msgSend(validateUserInterfaceItem,sel_action);
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  puVar12 = validateUserInterfaceItem;
-  pvVar3 = _objc_msgSendSuper(&local_1c,sel_validateUserInterfaceItem_,validateUserInterfaceItem);
-  puVar9 = cls_HSEditorZoomController;
-  local_24 = (char)pvVar3;
-  if (puVar2 == sel_delete_) {
-    if (local_24 == '\0') {
-      puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-      pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-      if ((char)pvVar3 == '\0') goto LAB_0002993f;
-      local_2c = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,puVar12);
-      pcVar5 = &cfstr_HSDeleteMenuTitle;
-LAB_00028feb:
-      pcVar8 = &cfstr_Editor;
-      pcVar4 = &cfstr_empty;
-      pcVar13 = sel_localizedStringForKey_value_table_;
-    }
-    else {
-      pvVar3 = _objc_msgSend(self,sel_selectedCard);
-      local_2c = cls_NSString;
-      if (pvVar3 == (id)0x0) goto LAB_0002993f;
-      pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pcVar4 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_HSCopyCard,
-                             &cfstr_empty,&cfstr_Editor);
-      pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pcVar8 = &cfstr_Editor;
-      pcVar5 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_HSDeleteFormat,
-                             &cfstr_empty,&cfstr_Editor);
-      pcVar13 = sel_stringWithFormat_;
-    }
-LAB_00028ff3:
-    puVar12 = _objc_msgSend(local_2c,pcVar13,pcVar5,pcVar4,pcVar8);
-    _objc_msgSend(validateUserInterfaceItem,sel_setTitle_,puVar12);
-  }
-  else {
-    if (puVar2 == sel_cut_) {
-      if (local_24 == '\0') {
-        puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-        pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-        if ((char)pvVar3 != '\0') {
-          local_2c = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,puVar12);
-          pcVar5 = &cfstr_HSCutMenuTitle;
-          goto LAB_00028feb;
-        }
-      }
-      else {
-        pvVar3 = _objc_msgSend(self,sel_selectedCard);
-        if (pvVar3 != (id)0x0) {
-          local_2c = cls_NSString;
-          pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-          pcVar4 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_HSCopyCard,
-                                 &cfstr_empty,&cfstr_Editor);
-          pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-          pcVar5 = &cfstr_HSCutFormat;
-LAB_00026ff2:
-          pcVar8 = &cfstr_Editor;
-          pcVar5 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,pcVar5,&cfstr_empty,
-                                 &cfstr_Editor);
-          pcVar13 = sel_stringWithFormat_;
-          goto LAB_00028ff3;
-        }
-      }
-      goto LAB_0002993f;
-    }
-    if (puVar2 == sel_deleteSelectedCardObjects_) {
-LAB_0002709d:
-      pHVar6 = _objc_msgSend(self,sel_cardView,puVar12);
-      pcVar13 = sel_validateUserInterfaceItem_;
-      goto LAB_00029937;
-    }
-    if (puVar2 == sel_copy_) {
-      if (local_24 == '\0') {
-        puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-        pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-        if ((char)pvVar3 != '\0') {
-          local_2c = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,puVar12);
-          pcVar5 = &cfstr_HSCopyMenuTitle;
-          goto LAB_00028feb;
-        }
-      }
-      else {
-        pvVar3 = _objc_msgSend(self,sel_selectedCard);
-        if (pvVar3 != (id)0x0) {
-          local_2c = cls_NSString;
-          pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-          pcVar4 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_HSCopyCard,
-                                 &cfstr_empty,&cfstr_Editor);
-          pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-          pcVar5 = &cfstr_HSCopyFormat;
-          goto LAB_00026ff2;
-        }
-      }
-      goto LAB_0002993f;
-    }
-    if (puVar2 == sel_paste_) {
-      local_20 = (cfstringStruct *)0x0;
-      pvVar3 = _objc_msgSend(cls_NSPasteboard,sel_generalPasteboard);
-      pvVar7 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,&cfstr_HSCardPasteboardType);
-      pvVar3 = _objc_msgSend(pvVar3,sel_availableTypeFromArray_,pvVar7);
-      if (pvVar3 == (id)0x0) {
-        pvVar3 = _objc_msgSend(self,sel_cardView,pvVar7);
-        pvVar7 = _objc_msgSend(cls_NSPasteboard,sel_generalPasteboard);
-        pvVar3 = _objc_msgSend(pvVar3,sel_canRecieveDataFromPasteboard_dataName_,pvVar7,&local_20);
-        if ((char)pvVar3 != '\0') goto LAB_00027336;
-        local_24 = '\0';
-      }
-      else {
-LAB_00027336:
-        pvVar7 = _objc_msgSend(cls_NSMenuItem,sel_class,pvVar7);
-        pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-        if ((char)pvVar3 != '\0') {
-          if (local_20 == (cfstringStruct *)0x0) {
-            pvVar3 = _objc_msgSend(self,sel_class,pvVar7);
-            pvVar7 = _objc_msgSend(cls_NSPasteboard,sel_generalPasteboard);
-            local_20 = _objc_msgSend(pvVar3,sel_localizedMenuTitleForCardsPasteBoardType_,pvVar7);
-          }
-          pcVar4 = local_20;
-          puVar12 = cls_NSString;
-          pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,pvVar7);
-          pcVar5 = &cfstr_Editor;
-          pcVar8 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_HSPasteFormat,
-                                 &cfstr_empty,&cfstr_Editor);
-          pcVar13 = sel_stringWithFormat_;
-LAB_00028050:
-          puVar12 = _objc_msgSend(puVar12,pcVar13,pcVar8,pcVar4,pcVar5);
-          pcVar13 = sel_setTitle_;
-LAB_00027eeb:
-          _objc_msgSend(validateUserInterfaceItem,pcVar13,puVar12);
-          goto LAB_000290ca;
-        }
-        local_24 = '\x01';
-      }
-      puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class,pvVar7);
-      pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-      if ((char)pvVar3 != '\0') {
-        local_2c = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,puVar12);
-        pcVar5 = &cfstr_HSPasteMenuTitle;
-        goto LAB_00028feb;
-      }
-    }
-    else {
-      if (puVar2 == sel_changeObjectsVisibility_) {
-        puVar12 = sel_setState_;
-        pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-        if ((char)pvVar3 != '\0') {
-          pvVar3 = _objc_msgSend(self,sel_document,puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_stack);
-          pvVar3 = _objc_msgSend(pvVar3,sel_cardObjectsVisibility);
-          pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_tag);
-          puVar12 = (undefined *)(uint)(pvVar3 == pvVar7);
-          _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-        }
-        if (local_24 != '\0') {
-          pvVar3 = _objc_msgSend(self,sel_document,puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isInStoryboardMode);
-          if ((char)pvVar3 == '\0') {
-            pvVar3 = _objc_msgSend(self,sel_document,puVar12);
-            pcVar13 = sel_isStackProtected;
-LAB_0002751f:
-            pvVar3 = _objc_msgSend(pvVar3,pcVar13,puVar12);
-            if ((char)pvVar3 == '\0') goto LAB_000290ca;
-          }
-        }
-        goto LAB_00027533;
-      }
-      if (puVar2 == sel_removeCurrentObject_) {
-        pvVar3 = _objc_msgSend(self,
-                               sel_selectedCardObjectForEditingOperationWithImplicitVerification);
-        puVar12 = &DAT_00361218;
-        pcVar13 = sel_queryHyperInterface_;
-LAB_00027b3b:
-        pvVar3 = _objc_msgSend(pvVar3,pcVar13,puVar12);
-        local_24 = pvVar3 != (id)0x0;
-      }
-      else {
-        if ((puVar2 == sel_bringForward_) || (puVar2 == sel_bringToFront_)) {
-          pvVar3 = _objc_msgSend(self,sel_class);
-          pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-          puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-          local_24 = (char)pvVar3 == '\0';
-          if ((bool)local_24) {
-            pvVar3 = _objc_msgSend(self,
-                                   sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                   ,puVar12);
-            pHVar6 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003616a0);
-            validateUserInterfaceItem = sel_compareWeight_;
-            _objc_msgSend(pHVar6,sel_sortHyperInterfacesUsingSelector_,sel_compareWeight_);
-            pcVar13 = sel_canIncrementHyperIndex;
-            goto LAB_00029937;
-          }
-          goto LAB_0002993f;
-        }
-        if ((puVar2 == sel_sendBackward_) || (puVar2 == sel_sendToBack_)) {
-          pvVar3 = _objc_msgSend(self,sel_class);
-          pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-          puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-          local_24 = (char)pvVar3 == '\0';
-          if ((bool)local_24) {
-            pvVar3 = _objc_msgSend(self,
-                                   sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                   ,puVar12);
-            pHVar6 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003616a0);
-            validateUserInterfaceItem = sel_compareWeightBack_;
-            _objc_msgSend(pHVar6,sel_sortHyperInterfacesUsingSelector_,sel_compareWeightBack_);
-            pcVar13 = sel_canDecrementHyperIndex;
-            goto LAB_00029937;
-          }
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_zoomIn_) {
-          dVar16 = _objc_msgSend_fpret(self->_cardView,sel_zoomFactor);
-          puVar12 = (undefined *)(float)dVar16;
-          pcVar13 = sel_canZoomInForZoomFactor_;
-LAB_00027749:
-          pvVar3 = _objc_msgSend(puVar9,pcVar13,puVar12);
-          local_24 = (char)pvVar3;
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_zoomOut_) {
-          dVar16 = _objc_msgSend_fpret(self->_cardView,sel_zoomFactor);
-          puVar12 = (undefined *)(float)dVar16;
-          pcVar13 = sel_canZoomOutForZoomFactor_;
-          goto LAB_00027749;
-        }
-        if (puVar2 == sel_zoomToActualSize_) {
-          dVar16 = _objc_msgSend_fpret(self->_cardView,sel_zoomFactor);
-          puVar12 = (undefined *)(float)dVar16;
-          pcVar13 = sel_canZoomToActualSizeForZoomFactor_;
-          goto LAB_00027749;
-        }
-        if (puVar2 == sel_fitInWindow_) {
-          pvVar3 = _objc_msgSend(self->_cardView,sel_zoomMode);
-          local_24 = pvVar3 != (id)0x1;
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_toggleLockGeometry_) {
-          pvVar3 = _objc_msgSend(self,sel_class);
-          pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-          puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-          if ((char)pvVar3 == '\0') {
-            pvVar3 = _objc_msgSend(self->_cardView,sel_selection,puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-            puVar12 = &DAT_003612cc;
-            pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612cc);
-          }
-          else {
-            pvVar3 = (id)0x0;
-          }
-          puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class,puVar12);
-          pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-          if ((char)pvVar7 != '\0') {
-            pvVar7 = _objc_msgSend(pvVar3,sel_isLocked,puVar12);
-            if ((char)pvVar7 == '\0') {
-              puVar12 = (undefined *)0x0;
-            }
-            else {
-              puVar12 = (undefined *)0x1;
-            }
-LAB_0002791f:
-            _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-          }
-          local_24 = pvVar3 != (id)0x0;
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_lockGeometry_) {
-          pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-          pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-          puVar12 = &DAT_003612cc;
-          pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612cc);
-          pcVar13 = sel_isLocked;
-          if (pvVar3 != (id)0x0) goto LAB_0002751f;
-LAB_00027533:
-          local_24 = '\0';
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_unlockGeometry_) {
-          pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-          pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-          puVar12 = &DAT_003612cc;
-          puVar9 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612cc);
-          pcVar13 = sel_isLocked;
-          if (puVar9 != (undefined *)0x0) {
-LAB_000279f9:
-            pvVar3 = _objc_msgSend(puVar9,pcVar13,puVar12);
-            if ((char)pvVar3 != '\0') goto LAB_000290ca;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_runSoundRecordingPanel_) {
-          pHVar6 = _objc_msgSend(self,sel_soundRecordingController);
-          pcVar13 = sel_isInputSoundValid;
-          validateUserInterfaceItem = puVar12;
-          goto LAB_00029937;
-        }
-        if (((puVar2 == sel_runVideoRecordingPanel_) || (puVar2 == sel_addQuickShotGraphicObject_))
-           || (puVar2 == sel_addQuickShotBackground_)) {
-          if (self->_captureDeviceList == (id)0x0) {
-            pvVar3 = _objc_msgSend(cls_HSSystem,sel_sharedSystem);
-            pvVar3 = _objc_msgSend(pvVar3,sel_isQTKitCapturingAvailable);
-            if ((char)pvVar3 != '\0') {
-              pvVar3 = _objc_msgSend(cls_NSArray,sel_alloc);
-              puVar9 = _objc_msgSend(pvVar3,sel_initWithObjects_,*(undefined4 *)PTR_0033615c,
-                                     *(undefined4 *)PTR_00336158,0);
-              puVar12 = puVar9;
-              pvVar3 = _objc_msgSend(cls_HSCaptureDeviceList,sel_captureDeviceListForMediaTypes_,
-                                     puVar9);
-              pvVar3 = _objc_msgSend(pvVar3,sel_retain);
-              self->_captureDeviceList = pvVar3;
-              _objc_msgSend(puVar9,sel_release);
-            }
-          }
-          pvVar3 = self->_captureDeviceList;
-          pcVar13 = sel_captureDeviceCount;
-          goto LAB_00027b3b;
-        }
-        if (puVar2 == sel_runHypertextLinksDialog_) {
-          pvVar3 = _objc_msgSend(self,sel_selectedUserObject);
-          puVar12 = &DAT_0036221c;
-          pvVar7 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_0036221c);
-          pvVar10 = _objc_msgSend(pvVar7,sel_card);
-          pvVar11 = _objc_msgSend(pvVar3,sel_hyperObject);
-          if (pvVar10 != pvVar11) {
-            pvVar7 = _objc_msgSend(pvVar7,sel_stack,puVar12);
-            pvVar10 = _objc_msgSend(pvVar3,sel_hyperObject);
-            if (pvVar7 != pvVar10) {
-              pvVar7 = _objc_msgSend(pvVar3,sel_isHyperProxy);
-              if ((char)pvVar7 == '\0') {
-                puVar12 = &DAT_003616b4;
-                pvVar7 = pvVar3;
-                pcVar13 = sel_implementsHyperInterface_;
-                goto LAB_000291ac;
-              }
-              goto LAB_00027533;
-            }
-          }
-LAB_00027c1f:
-          puVar12 = &DAT_003612cc;
-LAB_00027c36:
-          pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,puVar12);
-          pcVar13 = sel_isLocked;
-          goto LAB_0002751f;
-        }
-        if ((puVar2 == sel_switchTool_) || (puVar2 == sel_switchToolTypes_)) goto LAB_000290ca;
-        if ((puVar2 == sel_flatSelection_) ||
-           ((puVar2 == sel_flatSelectionToImage_ || (puVar2 == sel_mergeSelectionToImage_)))) {
-          pvVar3 = _objc_msgSend(self,sel_class);
-          pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-          puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-          local_24 = (char)pvVar3 == '\0';
-          if ((bool)local_24) {
-            pvVar3 = _objc_msgSend(self->_cardView,sel_selection,puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-            puVar12 = &DAT_003612cc;
-            pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612cc);
-            pvVar7 = _objc_msgSend(pvVar3,sel_lastHyperAccessDidReturnMultipleValues);
-            if ((((char)pvVar7 != '\0') ||
-                (pvVar7 = _objc_msgSend(pvVar3,sel_canBeFlatten,puVar12), (char)pvVar7 == '\0')) ||
-               (pvVar3 = _objc_msgSend(pvVar3,sel_lastHyperAccessDidReturnMultipleValues,puVar12),
-               (char)pvVar3 != '\0')) goto LAB_00027533;
-            if (puVar2 != sel_mergeSelectionToImage_) goto LAB_000290ca;
-            pvVar3 = _objc_msgSend(self->_cardView,sel_selection,puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_nodesCount);
-            local_24 = (id)0x1 < pvVar3;
-          }
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_restoreToOriginalGraphic_) {
-          pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-          pvVar3 = _objc_msgSend(pvVar3,sel_nodesCount);
-          puVar9 = cls_HSImageObjectRestorer;
-          if (pvVar3 == (id)0x1) {
-            pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-            puVar12 = _objc_msgSend(pvVar3,sel_selectedObject);
-            pcVar13 = sel_canRestoreNode_;
-            goto LAB_000279f9;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_showGridOptionsDialog_) {
-          return '\x01';
-        }
-        if (puVar2 == sel_snapToGrid_) {
-          puVar12 = sel_setState_;
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-          if ((char)pvVar3 == '\0') goto LAB_000290ca;
-          pvVar3 = _objc_msgSend(self,sel_document,puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_stack);
-          pHVar6 = _objc_msgSend(pvVar3,sel_gridSettings);
-          pcVar13 = sel_isSnapToGridEnabled;
-LAB_00027ec7:
-          pvVar3 = _objc_msgSend(pHVar6,pcVar13,puVar12);
-          pcVar13 = sel_setState_;
-          if ((char)pvVar3 == '\0') {
-            puVar12 = (undefined *)0x0;
-          }
-          else {
-            puVar12 = (undefined *)0x1;
-          }
-          goto LAB_00027eeb;
-        }
-        if (puVar2 == sel_snapToObjects_) {
-          puVar12 = sel_setState_;
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-          pHVar6 = self;
-          pcVar13 = sel_isSnapToObjectsEnabled;
-          if ((char)pvVar3 != '\0') goto LAB_00027ec7;
-          goto LAB_000290ca;
-        }
-        if (puVar2 == sel_toggleAuxiliaryIcons_) {
-          puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-          if ((char)pvVar3 == '\0') goto LAB_000290ca;
-          pvVar3 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_boolForKey_,*(undefined4 *)PTR_00336034);
-          puVar12 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-          if ((char)pvVar3 != '\0') {
-            puVar12 = _objc_msgSend(puVar12,sel_localizedStringForKey_value_table_,
-                                    &cfstr_Show_Action_Icons,&cfstr_empty,0);
-            pcVar13 = sel_setTitle_;
-            goto LAB_00027eeb;
-          }
-          pcVar4 = &cfstr_empty;
-          pcVar8 = &cfstr_Hide_Action_Icons;
-          pcVar5 = (cfstringStruct *)0x0;
-          pcVar13 = sel_localizedStringForKey_value_table_;
-          goto LAB_00028050;
-        }
-        if (puVar2 == sel_toolPaletteSwitchTool_) {
-          pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-          pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_tag);
-          pvVar3 = _objc_msgSend(pvVar3,sel_canSelectToolWithTag_,pvVar7);
-          local_24 = (char)pvVar3;
-          puVar12 = sel_setState_;
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_selectedToolTag);
-            pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_tag);
-            puVar12 = (undefined *)(uint)(pvVar3 == pvVar7);
-            _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-          }
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_tag,puVar12);
-          if (pvVar3 == (id)0x10) {
-            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_selectedToolTag);
-            if ((pvVar3 == (id)0x10) || (self->_isLassoIconChanged != '\0')) {
-              pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-              pvVar3 = _objc_msgSend(pvVar3,sel_selectedToolTag);
-              pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-              if (pvVar3 == (id)0x10) {
-                pvVar3 = _objc_msgSend(pvVar7,sel_currentTool);
-                pvVar3 = _objc_msgSend(pvVar3,sel_bitmapTool);
-                pvVar3 = _objc_msgSend(pvVar3,sel_currentCreateSelectionMode);
-                self->_isLassoIconChanged = '\x01';
-              }
-              else {
-                pvVar3 = _objc_msgSend(pvVar7,sel_toolSettings);
-                puVar12 = *(undefined **)PTR_PTR_003360f4;
-                pvVar3 = _objc_msgSend(pvVar3,sel_settingForIdentifier_andKey_,puVar12,
-                                       &cfstr_initialCreateSelectionMode);
-                self->_isLassoIconChanged = '\0';
-              }
-              pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12);
-              pvVar7 = _objc_msgSend(pvVar7,sel_currentToolSet);
-              pvVar10 = _objc_msgSend(pvVar3,sel_isEqualToString_,
-                                      &cfstr_BTMagicWandCreateSelectionMode);
-              if ((char)pvVar10 == '\0') {
-                pvVar3 = _objc_msgSend(pvVar3,sel_isEqualToString_,
-                                       &cfstr_BTFreeHandCreateSelectionMode);
-                if ((char)pvVar3 == '\0') {
-                  if (pvVar7 == (id)0x1) {
-                    pcVar5 = &cfstr____Disable;
-                  }
-                  else {
-                    pcVar5 = &cfstr____Normal;
-                  }
-                  pvVar3 = _objc_msgSend(cls_NSString,sel_stringWithFormat_,pcVar5,&cfstr_Lasso_tool
-                                        );
-                  pcVar5 = &cfstr_Lasso_tool;
-                }
-                else {
-                  if (pvVar7 == (id)0x1) {
-                    pcVar5 = &cfstr____Disabled;
-                  }
-                  else {
-                    pcVar5 = &cfstr____Normal;
-                  }
-                  pvVar3 = _objc_msgSend(cls_NSString,sel_stringWithFormat_,pcVar5,
-                                         &cfstr_PencilLasso_tool);
-                  pcVar5 = &cfstr_PencilLasso_tool;
-                }
-              }
-              else {
-                if (pvVar7 == (id)0x1) {
-                  pcVar5 = &cfstr____Disable;
-                }
-                else {
-                  pcVar5 = &cfstr____Normal;
-                }
-                pvVar3 = _objc_msgSend(cls_NSString,sel_stringWithFormat_,pcVar5,
-                                       &cfstr_Freeform_selection);
-                pcVar5 = &cfstr_Freeform_selection;
-              }
-              pvVar7 = _objc_msgSend(cls_NSString,sel_stringWithFormat_,&cfstr____Press,pcVar5);
-              pvVar3 = _objc_msgSend(cls_NSImage,sel_imageNamed_,pvVar3);
-              _objc_msgSend(validateUserInterfaceItem,sel_setImage_,pvVar3);
-              puVar12 = _objc_msgSend(cls_NSImage,sel_imageNamed_,pvVar7);
-              _objc_msgSend(validateUserInterfaceItem,sel_setAlternateImage_,puVar12);
-            }
-          }
-          goto LAB_0002993f;
-        }
-        if (((puVar2 == sel_performHyperFindPanelAction_) || (puVar2 == sel_hyperShowGuessPanel_))
-           || (puVar2 == sel_hyperCheckSpelling_)) goto LAB_000290ca;
-        if ((((puVar2 == sel_showCardOptionsDialog_) || (puVar2 == sel_showStackOptionsDialog_)) ||
-            (puVar2 == sel_editStackActions_)) || (puVar2 == sel_editCardActions_)) {
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isLocked);
-          local_24 = (char)pvVar3 == '\0';
-          goto LAB_0002993f;
-        }
-        if (puVar2 == sel_standardColors_) goto LAB_000290ca;
-        if (puVar2 == sel_editAppearance_) {
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-          pcVar13 = sel_canChangeActive;
-LAB_00028599:
-          pvVar3 = _objc_msgSend(pvVar3,pcVar13,puVar12);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(self,sel_selectedUserObject,puVar12);
-            pcVar13 = sel_isHyperProxy;
-            goto LAB_0002751f;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_editActions_) {
-          pvVar3 = _objc_msgSend(self,sel_selectedUserObject);
-          puVar12 = &DAT_003612cc;
-          pvVar3 = _objc_msgSend(pvVar3,sel_implementsHyperInterface_,&DAT_003612cc);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(self,sel_selectedUserObject,puVar12);
-            puVar12 = &DAT_00361d6c;
-            pcVar13 = sel_implementsHyperInterface_;
-            goto LAB_00028599;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_editFeatures_) {
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-          pvVar3 = _objc_msgSend(pvVar3,sel_canChangeActive);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(self,sel_selectedUserObject);
-            puVar12 = &DAT_003612cc;
-            pcVar13 = sel_implementsHyperInterface_;
-            goto LAB_00028599;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_textFieldTamer_) goto LAB_000290ca;
-        if ((puVar2 == sel_makeGroupCard_) || (puVar2 == sel_sameBackground_)) {
-          pvVar3 = _objc_msgSend(self,sel_document);
-          pcVar13 = sel_currentCard;
-          goto LAB_00027b3b;
-        }
-        if (puVar2 == sel_toggleObjectAssistant_) {
-          puVar12 = sel_setState_;
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                   puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_isActive);
-            puVar12 = (undefined *)(uint)((char)pvVar3 != '\0');
-            _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-          }
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                 puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_canChangeActive);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(self,sel_selectedUserObject,puVar12);
-            puVar12 = &DAT_00361358;
-            goto LAB_00027c36;
-          }
-          goto LAB_00027533;
-        }
-        if (puVar2 == sel_toggleObjectAssistantInspectorMode_) {
-          puVar12 = sel_setState_;
-          pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                   puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_objectAssistant);
-            pvVar3 = _objc_msgSend(pvVar3,sel_isCurrentlyWorkingInSOTSMode);
-            puVar12 = (undefined *)(uint)((char)pvVar3 != '\0');
-            _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-          }
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                 puVar12);
-          pvVar3 = _objc_msgSend(pvVar3,sel_isActive);
-          if ((char)pvVar3 != '\0') {
-            pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                   puVar12);
-            pvVar3 = _objc_msgSend(pvVar3,sel_objectAssistant);
-            pvVar3 = _objc_msgSend(pvVar3,sel_supportsSettingsOnTheSpotMode);
-            if ((char)pvVar3 != '\0') {
-              pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-              pvVar3 = _objc_msgSend(pvVar3,sel_objectAssistant);
-              pcVar13 = sel_isWorkingInTemporaryMode;
-              goto LAB_0002751f;
-            }
-          }
-          goto LAB_00027533;
-        }
-        if (((puVar2 != sel_addButtonObject_) && (puVar2 != sel_addGraphic_)) &&
-           ((puVar2 != sel_addGraphicObject_ && (puVar2 != sel_addTextObject_)))) {
-          if (puVar2 == sel_importText_) {
-            pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-            pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-            pvVar7 = _objc_msgSend(self,sel_document);
-            pvVar7 = _objc_msgSend(pvVar7,sel_isInPlayerMode);
-            if ((char)pvVar7 == '\0') {
-              puVar12 = &DAT_00362230;
-              pvVar7 = _objc_msgSend(pvVar3,sel_implementsHyperInterface_,&DAT_00362230);
-              if ((char)pvVar7 != '\0') {
-                puVar12 = &DAT_003612cc;
-                goto LAB_00027c36;
-              }
-            }
-          }
-          else if ((((puVar2 != sel_addWebObject_) && (puVar2 != sel_addMovieComboObject_)) &&
-                   (puVar2 != sel_addSoundComboObject_)) &&
-                  ((puVar2 != sel_addMediaObject_ && (puVar2 != sel_addLiveVideoObject_)))) {
-            puVar14 = (undefined4 *)PTR_00336144;
-            if (puVar2 == sel_addWebCamObject_) {
-LAB_000289bc:
-              pHVar6 = (HSEditorWindowController *)cls_HSRestrictionsManager;
-              pcVar13 = sel_restrictionState_;
-              validateUserInterfaceItem = (undefined *)*puVar14;
-              goto LAB_00029937;
-            }
-            if (puVar2 == sel_draw3DShapes_) goto LAB_000290ca;
-            if (puVar2 == sel_drawMultiple_) {
-              puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-              pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-              if ((((char)pvVar3 == '\0') ||
-                  (pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12),
-                  pvVar3 == (id)0x0)) ||
-                 ((pvVar7 = _objc_msgSend(pvVar3,sel_selectedToolTag,puVar12), 3 < (int)pvVar7 - 10U
-                  && ((pvVar7 != (id)0x2b && (2 < (int)pvVar7 - 0x2cU)))))) goto LAB_00027533;
-              pvVar7 = _objc_msgSend(cls_HSToolManager,sel_toolIdentifierForTag_,pvVar7);
-              pvVar3 = _objc_msgSend(pvVar3,sel_toolSettings);
-              uVar17 = *(undefined4 *)PTR_0033611c;
-              pvVar3 = _objc_msgSend(pvVar3,sel_settingForIdentifier_andKey_,pvVar7,uVar17);
-              if (pvVar3 == (id)0x0) {
-LAB_00028abe:
-                bVar15 = false;
-              }
-              else {
-                pvVar3 = _objc_msgSend(pvVar3,sel_unsignedIntegerValue,pvVar7,uVar17);
-                bVar15 = pvVar3 == (id)0xffffffff;
-              }
-            }
-            else {
-              if (puVar2 != sel_drawCentered_) {
-                if (puVar2 == sel_rotateSelectedObject_) {
-                  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                  validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                  pvVar3 = _objc_msgSend(self,sel_class);
-                  puVar12 = validateUserInterfaceItem;
-                  pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,validateUserInterfaceItem);
-                  if ((char)pvVar3 == '\0') {
-                    validateUserInterfaceItem =
-                         _objc_msgSend(self,
-                                       sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                       ,puVar12);
-                  }
-                  pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                  pcVar13 = sel_canRotateObject_;
-                }
-                else if (puVar2 == sel_scaleAndRotate_) {
-                  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                  validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                  pvVar3 = _objc_msgSend(self,sel_class);
-                  puVar12 = validateUserInterfaceItem;
-                  pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,validateUserInterfaceItem);
-                  if ((char)pvVar3 == '\0') {
-                    validateUserInterfaceItem =
-                         _objc_msgSend(self,
-                                       sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                       ,puVar12);
-                  }
-                  pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                  pcVar13 = sel_canResizeAndRotateObject_;
-                }
-                else {
-                  if (puVar2 != sel_createObjectFromSelection_) {
-                    if (puVar2 != sel_convertToGraphicObject_) {
-                      if (((puVar2 == sel_alignRight_) || (puVar2 == sel_alignLeft_)) ||
-                         ((puVar2 == sel_alignCenter_ || (puVar2 == sel_alignJustified_)))) {
-                        pvVar3 = _objc_msgSend(self,
-                                               sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                              );
-                        puVar12 = &DAT_00361934;
-                        pvVar7 = _objc_msgSend(pvVar3,sel_implementsHyperInterface_,&DAT_00361934);
-                        if ((char)pvVar7 == '\0') {
-                          puVar12 = &DAT_00361948;
-                          pvVar3 = _objc_msgSend(pvVar3,sel_implementsHyperInterface_,&DAT_00361948)
-                          ;
-                          if ((char)pvVar3 == '\0') {
-                            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12);
-                            pvVar3 = _objc_msgSend(pvVar3,sel_selectedToolTag);
-                            if (pvVar3 != (id)0x2) goto LAB_00027533;
-                          }
-                        }
-                        goto LAB_000290ca;
-                      }
-                      if (((puVar2 == sel_alignObjectRight_) || (puVar2 == sel_alignObjectLeft_)) ||
-                         (puVar2 == sel_alignObjectCenter_)) {
-                        pvVar3 = _objc_msgSend(self,sel_class);
-                        pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                        puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-                        pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-                        local_24 = (char)pvVar3 == '\0';
-                        if ((bool)local_24) {
-                          pvVar3 = _objc_msgSend(self,
-                                                 sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                 ,puVar12);
-                          pvVar7 = _objc_msgSend(pvVar3,sel_countOfAllHyperInterfaces);
-                          if (pvVar7 != (id)0x0) {
-                            puVar12 = &DAT_003620c8;
-                            pvVar7 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003620c8);
-                            pcVar13 = sel_canMoveHorizontally;
-LAB_000291ac:
-                            pvVar7 = _objc_msgSend(pvVar7,pcVar13,puVar12);
-                            if ((char)pvVar7 != '\0') goto LAB_00027c1f;
-                          }
-                          goto LAB_00027533;
-                        }
-                      }
-                      else {
-                        if (((puVar2 != sel_alignObjectTop_) && (puVar2 != sel_alignObjectMiddle_))
-                           && (puVar2 != sel_alignObjectBottom_)) {
-                          if ((puVar2 == sel_resizeToFillCard_) || (puVar2 == sel_resizeToFitCard_))
-                          {
-                            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                            validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                            pvVar3 = _objc_msgSend(self,sel_class);
-                            puVar12 = validateUserInterfaceItem;
-                            pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,
-                                                   validateUserInterfaceItem);
-                            if ((char)pvVar3 == '\0') {
-                              validateUserInterfaceItem =
-                                   _objc_msgSend(self,
-                                                 sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                 ,puVar12);
-                            }
-                            pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                            pcVar13 = sel_canMoveAndResizeObject_;
-                          }
-                          else if (puVar2 == sel_centerSelectedObjectOnCard_) {
-                            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                            validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                            pvVar3 = _objc_msgSend(self,sel_class);
-                            puVar12 = validateUserInterfaceItem;
-                            pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,
-                                                   validateUserInterfaceItem);
-                            if ((char)pvVar3 == '\0') {
-                              validateUserInterfaceItem =
-                                   _objc_msgSend(self,
-                                                 sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                 ,puVar12);
-                            }
-                            pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                            pcVar13 = sel_canMoveObject_;
-                          }
-                          else if (puVar2 == sel_flipSideways_) {
-                            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                            validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                            pvVar3 = _objc_msgSend(self,sel_class);
-                            puVar12 = validateUserInterfaceItem;
-                            pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,
-                                                   validateUserInterfaceItem);
-                            if ((char)pvVar3 == '\0') {
-                              validateUserInterfaceItem =
-                                   _objc_msgSend(self,sel_selectedHyperObject,puVar12);
-                              puVar9 = _objc_msgSend(self,sel_selectedCard);
-                              if (validateUserInterfaceItem != puVar9) {
-                                validateUserInterfaceItem =
-                                     _objc_msgSend(self,
-                                                  sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                  ,puVar12);
-                              }
-                            }
-                            pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                            pcVar13 = sel_canFlipSidewaysObject_;
-                          }
-                          else {
-                            if (puVar2 != sel_flipUpsideDown_) {
-                              if (puVar2 == sel_openEffectsDialog_) {
-                                pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                                puVar12 = _objc_msgSend(pvVar3,sel_currentTool);
-                                pvVar3 = _objc_msgSend(self,sel_class);
-                                pvVar3 = _objc_msgSend(pvVar3,sel_isValidSelectionTool_,puVar12);
-                                local_24 = (char)pvVar3 != '\0';
-                                if (!(bool)local_24) {
-                                  validateUserInterfaceItem =
-                                       _objc_msgSend(self,sel_selectedHyperObject,puVar12);
-                                  pHVar6 = (HSEditorWindowController *)cls_HSEffectsDialogController
-                                  ;
-                                  pcVar13 = sel_canEditObject_;
-                                  if (validateUserInterfaceItem == (undefined *)0x0) {
-                                    pvVar3 = _objc_msgSend(self,sel_cardView,puVar12);
-                                    validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_card);
-                                    pHVar6 = (HSEditorWindowController *)
-                                             cls_HSEffectsDialogController;
-                                    pcVar13 = sel_canEditObject_;
-                                  }
-                                  goto LAB_00029937;
-                                }
-                              }
-                              else {
-                                puVar14 = (undefined4 *)PTR_00336148;
-                                if (puVar2 == sel_showYouTubeDialog_) goto LAB_000289bc;
-                                if (puVar2 == sel_copyIntoSelection_) {
-                                  pvVar3 = _objc_msgSend(self,sel_cardView);
-                                  puVar12 = puVar2;
-                                  pvVar3 = _objc_msgSend(pvVar3,sel_respondsToSelector_,puVar2);
-                                  if ((char)pvVar3 != '\0') goto LAB_0002709d;
-                                  goto LAB_00027533;
-                                }
-                                if (puVar2 == sel_changeFontTrait_) {
-                                  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                                  pvVar7 = _objc_msgSend(self,
-                                                  sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                  );
-                                  puVar12 = &DAT_003616dc;
-                                  pvVar7 = _objc_msgSend(pvVar7,sel_queryHyperInterface_,
-                                                         &DAT_003616dc);
-                                  if ((pvVar7 == (id)0x0) &&
-                                     (pvVar10 = _objc_msgSend(pvVar3,sel_selectedToolTag,puVar12),
-                                     pvVar10 == (id)0x2)) {
-                                    pvVar7 = _objc_msgSend(pvVar3,sel_toolSettings,puVar12);
-                                    pvVar3 = _objc_msgSend(pvVar3,sel_currentTool);
-                                    pvVar3 = _objc_msgSend(pvVar7,sel_userObjectPrototypeForTool_,
-                                                           pvVar3);
-                                    puVar12 = &DAT_003616dc;
-                                    pvVar7 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,
-                                                           &DAT_003616dc);
-                                  }
-                                  pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_tag,puVar12);
-                                  pcVar13 = sel_isHyperBold;
-                                  if ((pvVar3 == (id)0x2) ||
-                                     (pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_tag,
-                                                             puVar12), pcVar13 = sel_isHyperItalic,
-                                     pvVar3 == (id)0x1)) {
-                                    pvVar3 = _objc_msgSend(pvVar7,pcVar13,puVar12);
-                                    puVar12 = (undefined *)(uint)((char)pvVar3 != '\0');
-                                    _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar12);
-                                  }
-                                  local_24 = pvVar7 != (id)0x0;
-                                }
-                                else {
-                                  if (puVar2 == sel_underline_) {
-                                    pvVar7 = _objc_msgSend(self,
-                                                  sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                  );
-                                    puVar12 = &DAT_00361934;
-                                    pvVar3 = _objc_msgSend(pvVar7,sel_queryHyperInterface_,
-                                                           &DAT_00361934);
-                                    if (pvVar3 == (id)0x0) {
-                                      puVar12 = &DAT_00361948;
-                                      pvVar3 = _objc_msgSend(pvVar7,sel_queryHyperInterface_,
-                                                             &DAT_00361948);
-                                    }
-                                    pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,
-                                                           puVar12);
-                                    if ((pvVar3 == (id)0x0) &&
-                                       (pvVar10 = _objc_msgSend(pvVar7,sel_selectedToolTag,puVar12),
-                                       pvVar10 == (id)0x2)) {
-                                      pvVar3 = _objc_msgSend(pvVar7,sel_toolSettings,puVar12);
-                                      pvVar7 = _objc_msgSend(pvVar7,sel_currentTool);
-                                      pvVar3 = _objc_msgSend(pvVar3,sel_userObjectPrototypeForTool_,
-                                                             pvVar7);
-                                      puVar12 = &DAT_00361948;
-                                      pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,
-                                                             &DAT_00361948);
-                                    }
-                                    pvVar7 = _objc_msgSend(pvVar3,sel_isHyperUnderlined,puVar12);
-                                    puVar12 = (undefined *)(uint)((char)pvVar7 != '\0');
-                                    goto LAB_0002791f;
-                                  }
-                                  pHVar6 = self;
-                                  pcVar13 = sel_isThereButtonStylesToUpdate;
-                                  validateUserInterfaceItem = puVar12;
-                                  if (puVar2 == sel_updateAllButtonStyles_) goto LAB_00029937;
-                                }
-                              }
-                              goto LAB_0002993f;
-                            }
-                            pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                            validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                            pvVar3 = _objc_msgSend(self,sel_class);
-                            puVar12 = validateUserInterfaceItem;
-                            pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,
-                                                   validateUserInterfaceItem);
-                            if ((char)pvVar3 == '\0') {
-                              validateUserInterfaceItem =
-                                   _objc_msgSend(self,sel_selectedHyperObject,puVar12);
-                              puVar9 = _objc_msgSend(self,sel_selectedCard);
-                              if (validateUserInterfaceItem != puVar9) {
-                                validateUserInterfaceItem =
-                                     _objc_msgSend(self,
-                                                  sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                  ,puVar12);
-                              }
-                            }
-                            pHVar6 = _objc_msgSend(self,sel_class,puVar12);
-                            pcVar13 = sel_canFlipUpsideDownObject_;
-                          }
-                          goto LAB_00029937;
-                        }
-                        pvVar3 = _objc_msgSend(self,sel_class);
-                        pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                        puVar12 = _objc_msgSend(pvVar7,sel_currentTool);
-                        pvVar3 = _objc_msgSend(pvVar3,sel_isSelectionTool_,puVar12);
-                        local_24 = (char)pvVar3 == '\0';
-                        if ((bool)local_24) {
-                          pvVar3 = _objc_msgSend(self,
-                                                 sel_selectedCardObjectForEditingOperationWithImplicitVerification
-                                                 ,puVar12);
-                          pvVar7 = _objc_msgSend(pvVar3,sel_countOfAllHyperInterfaces);
-                          if (pvVar7 != (id)0x0) {
-                            puVar12 = &DAT_003620c8;
-                            pvVar7 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003620c8);
-                            pcVar13 = sel_canMoveVertically;
-                            goto LAB_000291ac;
-                          }
-                          goto LAB_00027533;
-                        }
-                      }
-                      goto LAB_0002993f;
-                    }
-                    pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                    puVar9 = _objc_msgSend(pvVar3,sel_currentTool);
-                    pvVar3 = _objc_msgSend(self,sel_class);
-                    puVar12 = puVar9;
-                    pvVar3 = _objc_msgSend(pvVar3,sel_isValidSelectionTool_,puVar9);
-                    local_24 = (char)pvVar3;
-                    if (local_24 == '\0') {
-                      pvVar3 = _objc_msgSend(cls_HSToolManager,sel_toolIdentifierForTag_,1);
-                      puVar12 = _objc_msgSend(puVar9,sel_toolIdentifier);
-                      pvVar3 = _objc_msgSend(pvVar3,sel_isEqualToString_,puVar12);
-                      if ((char)pvVar3 == '\0') goto LAB_00028e0f;
-                      puVar9 = _objc_msgSend(self,sel_selectedUserObject,puVar12);
-                      pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-                      pvVar3 = _objc_msgSend(pvVar3,sel_nodesCount);
-                      if (pvVar3 != (id)0x1) goto LAB_00028e0f;
-                      pvVar3 = _objc_msgSend(puVar9,sel_queryHyperInterface_,&DAT_003612cc);
-                      pvVar3 = _objc_msgSend(pvVar3,sel_isLocked);
-                      puVar12 = &DAT_00361a24;
-                      local_24 = (char)pvVar3 == '\0';
-                      pvVar3 = _objc_msgSend(puVar9,sel_implementsHyperInterface_,&DAT_00361a24);
-                      bVar15 = (char)pvVar3 != '\0';
-                      if ((bVar15) && ((bool)local_24)) {
-                        bVar15 = true;
-                        pvVar3 = _objc_msgSend(cls_HSImageObjectsOptimizer,sel_canConsolidateObject_
-                                               ,puVar9);
-                        local_24 = (char)pvVar3;
-                        puVar12 = puVar9;
-                      }
-                    }
-                    else {
-LAB_00028e0f:
-                      bVar15 = false;
-                    }
-                    puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class,puVar12);
-                    pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-                    if ((char)pvVar3 != '\0') {
-                      local_2c = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,
-                                               puVar12);
-                      if (!bVar15) {
-                        pcVar5 = &cfstr_HSConvertToGraphicObjectMenuTitle;
-                        goto LAB_00028feb;
-                      }
-                      puVar12 = _objc_msgSend(local_2c,sel_localizedStringForKey_value_table_,
-                                              &cfstr_HSConsolidateGraphicObjectMenuTitle,
-                                              &cfstr_empty,&cfstr_Editor);
-                      _objc_msgSend(validateUserInterfaceItem,sel_setTitle_,puVar12);
-                    }
-                    goto LAB_0002993f;
-                  }
-                  pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                  validateUserInterfaceItem = _objc_msgSend(pvVar3,sel_currentTool);
-                  pHVar6 = _objc_msgSend(self,sel_class);
-                  pcVar13 = sel_isValidSelectionTool_;
-                }
-LAB_00029937:
-                puVar12 = validateUserInterfaceItem;
-                pvVar3 = _objc_msgSend(pHVar6,pcVar13,puVar12);
-                local_24 = (char)pvVar3;
-                goto LAB_0002993f;
-              }
-              puVar12 = _objc_msgSend(cls_NSMenuItem,sel_class);
-              pvVar3 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,puVar12);
-              if ((((char)pvVar3 == '\0') ||
-                  (pvVar3 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager,puVar12),
-                  pvVar3 == (id)0x0)) ||
-                 ((pvVar7 = _objc_msgSend(pvVar3,sel_selectedToolTag,puVar12), 3 < (int)pvVar7 - 10U
-                  && ((pvVar7 != (id)0x2b && (2 < (int)pvVar7 - 0x2cU)))))) goto LAB_00027533;
-              pvVar7 = _objc_msgSend(cls_HSToolManager,sel_toolIdentifierForTag_,pvVar7);
-              pvVar3 = _objc_msgSend(pvVar3,sel_toolSettings);
-              uVar17 = *(undefined4 *)PTR_00336118;
-              pvVar3 = _objc_msgSend(pvVar3,sel_settingForIdentifier_andKey_,pvVar7,uVar17);
-              if (pvVar3 == (id)0x0) goto LAB_00028abe;
-              pvVar3 = _objc_msgSend(pvVar3,sel_unsignedIntegerValue,pvVar7,uVar17);
-              bVar15 = pvVar3 == (id)0x0;
-            }
-            puVar12 = (undefined *)(uint)bVar15;
-            pcVar13 = sel_setState_;
-            goto LAB_00027eeb;
-          }
-        }
-LAB_000290ca:
-        local_24 = '\x01';
-      }
-    }
-  }
-LAB_0002993f:
-  pvVar3 = _objc_msgSend(self,sel_cardView,puVar12);
-  pvVar3 = _objc_msgSend(pvVar3,sel_isOccupiedByTool);
-  if ((char)pvVar3 == '\0') {
-    pvVar3 = _objc_msgSend(self,sel_document,puVar12);
-    pvVar3 = _objc_msgSend(pvVar3,sel_isDocumentClosing);
-    if ((char)pvVar3 == '\0') {
-      pvVar3 = _objc_msgSend(self,sel_document);
-      pvVar3 = _objc_msgSend(pvVar3,sel_isModalSessionPresent);
-      if ((char)pvVar3 == '\0') goto LAB_00029d33;
-    }
-  }
-  if (((((((((((puVar2 == sel_createObjectFromSelection_) || (puVar2 == sel_convertToGraphicObject_)
-              ) || (puVar2 == sel_scaleAndRotate_)) ||
-            ((puVar2 == sel_draw3DShapes_ || (puVar2 == sel_addWebCamObject_)))) ||
-           (puVar2 == sel_addLiveVideoObject_)) ||
-          ((puVar2 == sel_addMediaObject_ || (puVar2 == sel_addTextObject_)))) ||
-         ((puVar2 == sel_importText_ ||
-          (((puVar2 == sel_addWebObject_ || (puVar2 == sel_addGraphic_)) ||
-           (puVar2 == sel_addGraphicObject_)))))) ||
-        ((((puVar2 == sel_addButtonObject_ || (puVar2 == sel_toggleObjectAssistantInspectorMode_))
-          || (puVar2 == sel_toggleObjectAssistant_)) ||
-         ((puVar2 == sel_sameBackground_ || (puVar2 == sel_makeGroupCard_)))))) ||
-       ((((puVar2 == sel_textFieldTamer_ ||
-          (((puVar2 == sel_titleCard_ || (puVar2 == sel_editFeatures_)) ||
-           (puVar2 == sel_editActions_)))) ||
-         ((puVar2 == sel_editAppearance_ || (puVar2 == sel_showStackOptionsDialog_)))) ||
-        ((puVar2 == sel_hyperShowGuessPanel_ ||
-         (((puVar2 == sel_performHyperFindPanelAction_ || (puVar2 == sel_toolPaletteSwitchTool_)) ||
-          ((puVar2 == sel_toggleAuxiliaryIcons_ ||
-           ((((puVar2 == sel_changeObjectsVisibility_ || (puVar2 == sel_snapToObjects_)) ||
-             (puVar2 == sel_snapToGrid_)) ||
-            ((puVar2 == sel_showGridOptionsDialog_ || (puVar2 == sel_flatSelection_)))))))))))))) ||
-      (((puVar2 == sel_flatSelectionToImage_ ||
-        ((puVar2 == sel_mergeSelectionToImage_ || (puVar2 == sel_switchTool_)))) ||
-       ((((puVar2 == sel_switchToolTypes_ ||
-          (((puVar2 == sel_runHypertextLinksDialog_ || (puVar2 == sel_runVideoRecordingPanel_)) ||
-           (puVar2 == sel_captureImage_)))) ||
-         (((puVar2 == sel_runSoundRecordingPanel_ || (puVar2 == sel_addQuickShotGraphicObject_)) ||
-          (puVar2 == sel_addQuickShotBackground_)))) ||
-        ((((puVar2 == sel_lockGeometry_ || (puVar2 == sel_unlockGeometry_)) ||
-          ((puVar2 == sel_toggleLockGeometry_ ||
-           (((puVar2 == sel_goToSpecificCard_ || (puVar2 == sel_goBack_)) ||
-            (puVar2 == sel_goForward_)))))) ||
-         ((puVar2 == sel_goToNextCard_ || (puVar2 == sel_goToPreviousCard_)))))))))) ||
-     (((((puVar2 == sel_goToNextCardWithoutLeaveActions_ ||
-         ((((puVar2 == sel_goToPreviousCardWithoutLeaveActions_ ||
-            (puVar2 == sel_goToLastCardWithoutLeaveActions_)) ||
-           ((puVar2 == sel_goToFirstCardWithoutLeaveActions_ ||
-            ((((puVar2 == sel_goBackWithoutLeaveActions_ ||
-               (puVar2 == sel_goForwardWithoutLeaveActions_)) ||
-              (puVar2 == sel_goToSpecificCardWithoutLeaveActions_)) ||
-             ((puVar2 == sel_goToHomeWithoutLeaveActions_ || (puVar2 == sel_goToLastCard_)))))))) ||
-          (puVar2 == sel_goToFirstCard_)))) ||
-        (((puVar2 == sel_sendBackward_ || (puVar2 == sel_sendToBack_)) ||
-         (((((puVar2 == sel_bringForward_ ||
-             (((puVar2 == sel_bringToFront_ || (puVar2 == sel_goToHome_)) ||
-              (puVar2 == sel_removeCurrentObject_)))) ||
-            (((puVar2 == sel_paste_ || (puVar2 == sel_copy_)) || (puVar2 == sel_delete_)))) ||
-           ((puVar2 == sel_cut_ || (puVar2 == sel_selectAll_)))) ||
-          ((puVar2 == sel_runEasyLinkDialog_ ||
-           (((puVar2 == sel_runMakeEveryCardNextCardExtra_ || (puVar2 == sel_importBackground_)) ||
-            (puVar2 == sel_eraseBackground_)))))))))) ||
-       ((puVar2 == sel_addSoundObject_ || (puVar2 == sel_addMovieComboObject_)))) ||
-      (puVar2 == sel_addSoundComboObject_)))) {
-    local_24 = '\0';
-  }
-LAB_00029d33:
-  pvVar3 = _objc_msgSend(self->_cardView,sel_selection);
-  pvVar3 = _objc_msgSend(pvVar3,sel_selectedObject);
-  pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612cc);
-  pvVar3 = _objc_msgSend(pvVar3,sel_isLocked);
-  cVar1 = local_24;
-  if ((char)pvVar3 != '\0') {
-    if (((puVar2 == sel_editAppearance_) || (puVar2 == sel_editActions_)) ||
-       (puVar2 == sel_editFeatures_)) {
-      cVar1 = '\0';
-    }
-    else {
-      cVar1 = '\0';
-      if (puVar2 != sel_scaleAndRotate_) {
-        cVar1 = local_24;
-      }
-    }
-  }
-  return cVar1;
-}
-
-*/
 - (BOOL)validateUserInterfaceItem:(id)aItem
 {
     SEL action = [aItem action];
@@ -11137,58 +3797,6 @@ LAB_00029d33:
     return pvVar1_2;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001584f @ 0001584f, 526 bytes * /
-
-void FUN_0001584f(HSEditorWindowController *self,SEL _cmd,id webcamWorkshopSheetDidEnd,
-                 int returnCode,void *contextInfo,BOOL invalidWebCamsWasPresent)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  int iVar4;
-  
-  if (returnCode == 1) {
-    pvVar1 = _objc_msgSend(contextInfo,sel_count);
-    if (0 < (int)pvVar1) {
-      pvVar2 = _objc_msgSend(self,sel_document);
-      pvVar2 = _objc_msgSend(pvVar2,
-                             sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-      if ((char)pvVar2 != '\0') {
-        iVar4 = 0;
-        do {
-          pvVar2 = _objc_msgSend(contextInfo,sel_objectAtIndex_,iVar4);
-          pvVar3 = _objc_msgSend(self,sel_cardView);
-          _objc_msgSend(pvVar3,sel_addObjectToCenter_useDragPreferences_,pvVar2,0);
-          _objc_msgSend(self,sel_didAddNewObject);
-          iVar4 = iVar4 + 1;
-        } while (iVar4 < (int)pvVar1);
-      }
-    }
-    self_00 = cls_NSAlert;
-    if (invalidWebCamsWasPresent != '\0') {
-      pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                             &cfstr_Some_of_imported_Web_Cams_are_invalid_and_will_b,&cfstr_empty,
-                             &cfstr_Alerts);
-      pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_OK,&cfstr_empty,
-                             &cfstr_Alerts);
-      pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                             &cfstr_Cannot_perform_action,&cfstr_empty,&cfstr_Alerts);
-      pvVar1 = _objc_msgSend(self_00,
-                             sel_alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_
-                             ,pvVar3,pvVar2,0,0,pvVar1);
-      _objc_msgSend(pvVar1,sel_runModal);
-    }
-  }
-  return;
-}
-
-*/
 - (void)webcamWorkshopSheetDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo invalidWebCamsWasPresent:(BOOL)aPresent
 {
     if (aCode == 1) {
@@ -11217,146 +3825,6 @@ void FUN_0001584f(HSEditorWindowController *self,SEL _cmd,id webcamWorkshopSheet
     [self videoRecordingDidEndWithCode:aCode];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00029e4a @ 00029e4a, 1670 bytes * /
-
-void FUN_00029e4a(HSEditorWindowController *self,SEL _cmd,int videoRecordingDidEndWithCode)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  bool bVar7;
-  longdouble lVar8;
-  longdouble lVar9;
-  SEL op;
-  undefined8 in_stack_ffffffbc;
-  undefined4 uVar12;
-  undefined8 uVar10;
-  cfstringStruct *pcVar13;
-  ulonglong uVar11;
-  undefined8 in_stack_ffffffc4;
-  uint uVar15;
-  longlong lVar14;
-  
-  uVar15 = (uint)((ulonglong)in_stack_ffffffc4 >> 0x20);
-  uVar12 = (undefined4)((ulonglong)in_stack_ffffffbc >> 0x20);
-  pvVar1 = _objc_msgSend(self->_videoRecordingController,sel_fileName);
-  pvVar2 = _objc_msgSend(cls_NSFileManager,sel_defaultManager);
-  uVar10 = CONCAT44(uVar12,pvVar1);
-  pvVar2 = _objc_msgSend(pvVar2,sel_fileExistsAtPath_,pvVar1);
-  if (videoRecordingDidEndWithCode == 1) {
-    bVar7 = true;
-  }
-  else {
-    pvVar5 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,uVar10);
-    uVar12 = *(undefined4 *)PTR_0033609c;
-    uVar10 = CONCAT44((int)((ulonglong)uVar10 >> 0x20),uVar12);
-    pvVar5 = _objc_msgSend(pvVar5,sel_objectForKey_,uVar12);
-    pvVar5 = _objc_msgSend(pvVar5,sel_intValue);
-    if (((char)pvVar2 == '\0') || (pvVar5 != (id)0x0)) {
-      bVar7 = false;
-    }
-    else {
-      pvVar5 = _objc_msgSend(cls_HSAlert,sel_new,uVar10);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,
-                             &cfstr_Add_recorded_video_to_the_card_,&cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar5,sel_setMessageText_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,
-                             &cfstr_If_you_do_not_add_your_recorded_video_to_the_car,&cfstr_empty,
-                             &cfstr_Alerts);
-      _objc_msgSend(pvVar5,sel_setInformativeText_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,&cfstr_Add_to_Card,
-                             &cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar5,sel_addButtonWithTitle_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,&cfstr_Discard_Video,
-                             &cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar5,sel_addButtonWithTitle_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_NSButton,sel_alloc);
-      uVar10 = *(undefined8 *)(PTR_00336078 + 8);
-      pvVar6 = _objc_msgSend(pvVar6,sel_initWithFrame_,*(undefined8 *)PTR_00336078,uVar10);
-      uVar15 = (uint)((ulonglong)uVar10 >> 0x20);
-      _objc_msgSend(pvVar6,sel_setButtonType_,3);
-      pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pcVar13 = &cfstr_empty;
-      pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                             &cfstr_Don_t_show_this_message_again,&cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar6,sel_setTitle_,pvVar3);
-      uVar10 = CONCAT44(pcVar13,pvVar6);
-      _objc_msgSend(pvVar5,sel_setCustomView_,pvVar6);
-      pvVar3 = _objc_msgSend(pvVar5,sel_runModal);
-      bVar7 = pvVar3 == (id)0x3e8;
-      pvVar3 = _objc_msgSend(pvVar6,sel_state);
-      if (pvVar3 == (id)0x1) {
-        pvVar3 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,uVar10);
-        pvVar4 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,1);
-        uVar10 = CONCAT44(uVar12,pvVar4);
-        _objc_msgSend(pvVar3,sel_setObject_forKey_,pvVar4,uVar12);
-      }
-      _objc_msgSend(pvVar6,sel_release,uVar10);
-      _objc_msgSend(pvVar5,sel_release);
-    }
-  }
-  self_00 = cls_HSNewMedia;
-  if ((char)pvVar2 != '\0') {
-    if (bVar7) {
-      pvVar2 = _objc_msgSend(self,sel_generateUniqueVideoRecordName,uVar10);
-      pvVar1 = _objc_msgSend(self_00,sel_mediaWithPath_name_removeWhenDone_,pvVar1,pvVar2,1);
-      pvVar1 = _objc_msgSend(cls_HSDocument,sel_userObjectWithMedia_,pvVar1);
-      pvVar2 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003619d4);
-      pvVar2 = _objc_msgSend(pvVar2,sel_queryGeometryBehaviorApplier);
-      _objc_msgSend(pvVar2,sel_resizeToWidth_maintainAspectRatio_withLayoutGuidingContext_,
-                    0x43960000,3,0);
-      pvVar5 = _objc_msgSend(self,sel_document);
-      pvVar5 = _objc_msgSend(pvVar5,sel_stack);
-      pvVar5 = _objc_msgSend(pvVar5,sel_hyperCardSize);
-      pvVar6 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003617a4);
-      pvVar6 = _objc_msgSend(pvVar6,sel_size);
-      lVar8 = (longdouble)_ceilf((extraout_EDX - extraout_EDX_00) * 0.5);
-      lVar9 = (longdouble)_ceilf(((float)pvVar5 - (float)pvVar6) * 0.5);
-      uVar10 = CONCAT44((float)lVar8,(float)lVar9);
-      lVar14 = (ulonglong)uVar15 << 0x20;
-      _objc_msgSend(pvVar2,sel_moveFrameBoundingRectOriginTo_withLayoutGuidingContext_,(float)lVar9,
-                    (float)lVar8,0);
-      pvVar2 = _objc_msgSend(self,sel_document);
-      pvVar2 = _objc_msgSend(pvVar2,
-                             sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-      if ((char)pvVar2 == '\0') {
-        return;
-      }
-      pvVar2 = _objc_msgSend(self,sel_document,uVar10,lVar14);
-      uVar12 = (undefined4)((ulonglong)uVar10 >> 0x20);
-      pvVar2 = _objc_msgSend(pvVar2,sel_currentCard);
-      uVar11 = CONCAT44(uVar12,pvVar1);
-      op = sel_addHyperChild_;
-    }
-    else {
-      pvVar2 = _objc_msgSend(cls_NSFileManager,sel_defaultManager,uVar10);
-      uVar10 = CONCAT44((int)((ulonglong)uVar10 >> 0x20),pvVar1);
-      pvVar2 = _objc_msgSend(pvVar2,sel_isDeletableFileAtPath_,pvVar1);
-      if ((char)pvVar2 == '\0') {
-        return;
-      }
-      pvVar2 = _objc_msgSend(cls_NSFileManager,sel_defaultManager,uVar10);
-      uVar11 = ZEXT48(pvVar1);
-      op = sel_removeFileAtPath_handler_;
-    }
-    _objc_msgSend(pvVar2,op,uVar11);
-  }
-  return;
-}
-
-*/
 - (void)videoRecordingDidEndWithCode:(NSInteger)aCode
 {
     NSString *fileName = [_videoRecordingController fileName];
@@ -11397,147 +3865,6 @@ void FUN_00029e4a(HSEditorWindowController *self,SEL _cmd,int videoRecordingDidE
     [self soundRecordingDidEndWithCode:aCode];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00015150 @ 00015150, 1701 bytes * /
-
-void FUN_00015150(HSEditorWindowController *self,SEL _cmd,int soundRecordingDidEndWithCode)
-
-{
-  undefined *puVar1;
-  char cVar2;
-  id pvVar3;
-  HSEditorWindowController *self_00;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  id pvVar7;
-  int extraout_EDX;
-  SEL op;
-  bool bVar8;
-  undefined8 in_stack_ffffffbc;
-  undefined4 uVar11;
-  undefined8 uVar9;
-  undefined4 uVar12;
-  cfstringStruct *pcVar13;
-  ulonglong uVar10;
-  
-  uVar11 = (undefined4)((ulonglong)in_stack_ffffffbc >> 0x20);
-  pvVar3 = _objc_msgSend(self->_soundRecordingController,sel_fileName);
-  self_00 = _objc_msgSend(cls_NSFileManager,sel_defaultManager);
-  uVar9 = CONCAT44(uVar11,pvVar3);
-  pvVar4 = _objc_msgSend(self_00,sel_fileExistsAtPath_,pvVar3);
-  cVar2 = (char)pvVar4;
-  if (soundRecordingDidEndWithCode == 1) {
-    bVar8 = true;
-LAB_000155ad:
-    if ((bVar8) && (cVar2 != '\0')) {
-      pvVar4 = _objc_msgSend(self,sel_document,uVar9);
-      uVar11 = (undefined4)((ulonglong)uVar9 >> 0x20);
-      pvVar4 = _objc_msgSend(pvVar4,
-                             sel_prepareForHandlingActionThatRequiresConditionalSwitchToEditMode);
-      if ((char)pvVar4 == '\0') {
-        return;
-      }
-      pvVar4 = _objc_msgSend(self->_soundRecordingController,sel_fileName);
-      uVar9 = CONCAT44(uVar11,pvVar4);
-      pvVar4 = _objc_msgSend(self_00,sel_fileExistsAtPath_,pvVar4);
-      puVar1 = cls_NSString;
-      if ((char)pvVar4 == '\0') {
-        return;
-      }
-      pvVar4 = _objc_msgSend(pvVar3,sel_pathExtension,uVar9);
-      pvVar6 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-      pvVar6 = _objc_msgSend(pvVar6,sel_temporaryFolder);
-      pvVar7 = _objc_msgSend(cls_HSUID,sel_UID);
-      pvVar7 = _objc_msgSend(pvVar7,sel_stringValue);
-      pvVar6 = _objc_msgSend(pvVar6,sel_stringByAppendingPathComponent_,pvVar7);
-      pvVar4 = _objc_msgSend(puVar1,sel_extraCreateUniqueFilename_extension_,pvVar6,pvVar4);
-      _objc_msgSend(self_00,sel_copyPath_toPath_handler_,pvVar3,pvVar4,0);
-      pvVar6 = _objc_msgSend(self,sel_document);
-      puVar1 = cls_HSNewMedia;
-      pvVar3 = _objc_msgSend(self,sel_generateUniqueSoundRecordName);
-      pvVar4 = _objc_msgSend(puVar1,sel_mediaWithPath_name_removeWhenDone_,pvVar4,pvVar3,1);
-      pvVar4 = _objc_msgSend(pvVar6,sel_userActionWithMedia_,pvVar4);
-      op = sel_addActionToActorOfActiveCard_;
-      if (self->_playSoundActionEvent != (id)0x0) {
-        op = sel_addActionToActorOfActiveCard_ofEvent_;
-        pvVar3 = self->_playSoundActionEvent;
-      }
-      uVar10 = CONCAT44(pvVar3,pvVar4);
-      self_00 = self;
-      goto LAB_000157cf;
-    }
-  }
-  else {
-    pvVar4 = _objc_msgSend(cls_NSFileManager,sel_defaultManager,uVar9);
-    uVar12 = 0;
-    pvVar4 = _objc_msgSend(pvVar4,sel_fileAttributesAtPath_traverseLink_,pvVar3,0);
-    pvVar4 = _objc_msgSend(pvVar4,sel_objectForKey_,*(undefined4 *)PTR_0033614c);
-    pvVar6 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    uVar11 = *(undefined4 *)PTR_00336098;
-    uVar9 = CONCAT44(uVar12,uVar11);
-    pvVar6 = _objc_msgSend(pvVar6,sel_objectForKey_,uVar11);
-    pvVar6 = _objc_msgSend(pvVar6,sel_intValue);
-    if (((pvVar6 == (id)0x0) && (cVar2 != '\0')) &&
-       (pvVar4 = _objc_msgSend(pvVar4,sel_unsignedLongLongValue,uVar9),
-       extraout_EDX != 0 || pvVar4 != (id)0x0)) {
-      pvVar4 = _objc_msgSend(cls_HSAlert,sel_new,uVar9);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,
-                             &cfstr_Add_recorded_sound_to_the_card_,&cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar4,sel_setMessageText_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,
-                             &cfstr_If_you_do_not_add_your_recorded_sound_to_the_car,&cfstr_empty,
-                             &cfstr_Alerts);
-      _objc_msgSend(pvVar4,sel_setInformativeText_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,&cfstr_Add_to_Card,
-                             &cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar4,sel_addButtonWithTitle_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar6 = _objc_msgSend(pvVar6,sel_localizedStringForKey_value_table_,&cfstr_Discard_Sound,
-                             &cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar4,sel_addButtonWithTitle_,pvVar6);
-      pvVar6 = _objc_msgSend(cls_NSButton,sel_alloc);
-      pvVar6 = _objc_msgSend(pvVar6,sel_initWithFrame_,*(undefined8 *)PTR_00336078,
-                             *(undefined8 *)(PTR_00336078 + 8));
-      _objc_msgSend(pvVar6,sel_setButtonType_,3);
-      pvVar7 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pcVar13 = &cfstr_empty;
-      pvVar7 = _objc_msgSend(pvVar7,sel_localizedStringForKey_value_table_,
-                             &cfstr_Don_t_show_this_message_again,&cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pvVar6,sel_setTitle_,pvVar7);
-      uVar9 = CONCAT44(pcVar13,pvVar6);
-      _objc_msgSend(pvVar4,sel_setCustomView_,pvVar6);
-      pvVar7 = _objc_msgSend(pvVar4,sel_runModal);
-      bVar8 = pvVar7 == (id)0x3e8;
-      pvVar7 = _objc_msgSend(pvVar6,sel_state);
-      if (pvVar7 == (id)0x1) {
-        pvVar7 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,uVar9);
-        pvVar5 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,1);
-        uVar9 = CONCAT44(uVar11,pvVar5);
-        _objc_msgSend(pvVar7,sel_setObject_forKey_,pvVar5,uVar11);
-      }
-      _objc_msgSend(pvVar6,sel_release,uVar9);
-      _objc_msgSend(pvVar4,sel_release);
-      goto LAB_000155ad;
-    }
-  }
-  if (cVar2 == '\0') {
-    return;
-  }
-  op = sel_removeFileAtPath_handler_;
-  if (949.0 < *(double *)PTR_0033605c || *(double *)PTR_0033605c == 949.0) {
-    op = sel_removeItemAtPath_error_;
-  }
-  uVar10 = ZEXT48(pvVar3);
-LAB_000157cf:
-  _objc_msgSend(self_00,op,uVar10);
-  return;
-}
-
-*/
 - (void)soundRecordingDidEndWithCode:(NSInteger)aCode
 {
     NSString *fileName = [_soundRecordingController fileName];
@@ -11607,51 +3934,6 @@ LAB_000157cf:
     return pvVar1_3;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00014e1e @ 00014e1e, 314 bytes * /
-
-id FUN_00014e1e(HSEditorWindowController *self,SEL _cmd,id generateUniqueRecordNameForMediaObjects)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  int iVar4;
-  undefined *puVar5;
-  id pvVar6;
-  
-  pvVar1 = _objc_msgSend(generateUniqueRecordNameForMediaObjects,sel_lastObject);
-  puVar5 = &DAT_003614e8;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003614e8);
-  if (pvVar1 == (id)0x0) {
-    pvVar2 = (id)0x0;
-  }
-  else {
-    pvVar1 = _objc_msgSend(generateUniqueRecordNameForMediaObjects,sel_lastObject,puVar5);
-    pvVar1 = _objc_msgSend(pvVar1,sel_defaultRecordName);
-    pvVar2 = _objc_msgSend(pvVar1,sel_stringByAppendingFormat_,&cfstr___d,1);
-    pvVar1 = generateUniqueRecordNameForMediaObjects;
-    pvVar6 = pvVar2;
-    pvVar3 = _objc_msgSend(self,sel_mediaObjects_containsObjectWithName_,
-                           generateUniqueRecordNameForMediaObjects,pvVar2);
-    if ((char)pvVar3 != '\0') {
-      iVar4 = 2;
-      do {
-        pvVar1 = _objc_msgSend(generateUniqueRecordNameForMediaObjects,sel_lastObject,pvVar1,pvVar6)
-        ;
-        pvVar1 = _objc_msgSend(pvVar1,sel_defaultRecordName);
-        pvVar2 = _objc_msgSend(pvVar1,sel_stringByAppendingFormat_,&cfstr___d,iVar4);
-        iVar4 = iVar4 + 1;
-        pvVar1 = generateUniqueRecordNameForMediaObjects;
-        pvVar6 = pvVar2;
-        pvVar3 = _objc_msgSend(self,sel_mediaObjects_containsObjectWithName_);
-      } while ((char)pvVar3 != '\0');
-    }
-  }
-  return pvVar2;
-}
-
-*/
 - (id)generateUniqueRecordNameForMediaObjects:(id)aObjects
 {
     if ([[aObjects lastObject] queryHyperInterface:@protocol(HSRecordAttributes)] == nil) {
@@ -11730,26 +4012,6 @@ id FUN_00014e1e(HSEditorWindowController *self,SEL _cmd,id generateUniqueRecordN
     return _soundRecordingController;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00014b5d @ 00014b5d, 208 bytes * /
-
-void FUN_00014b5d(HSEditorWindowController *self,SEL _cmd,id windowDidBecomeKey)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSToolPaletteController,sel_sharedInstance);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_validateUserInterfaceWithView_,pvVar2);
-  pvVar1 = _objc_msgSend(cls_HSCommentsAndAttributionsPaletteController,sel_sharedInstance);
-  _objc_msgSend(pvVar1,sel_setDataProvider_,self);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_performSelector_withObject_afterDelay_,sel_updateCursor,0,0,0);
-  return;
-}
-
-*/
 - (void)windowDidBecomeKey:(id)aKey
 {
     [[HSToolPaletteController sharedInstance] validateUserInterfaceWithView:[self cardView]];
@@ -11762,25 +4024,6 @@ void FUN_00014b5d(HSEditorWindowController *self,SEL _cmd,id windowDidBecomeKey)
     return (BOOL)[[[[self document] stack] guidelinesSettings] isSnapToObjectsEnabled];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00014aa3 @ 00014aa3, 89 bytes * /
-
-void FUN_00014aa3(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id self_00;
-  SEL op;
-  
-  self_00 = _objc_msgSend(self,sel_stackView);
-  op = sel_hideStripAndEnable_;
-  if (self->_wasMediaStripVisible != '\0') {
-    op = sel_showStripAndEnable_;
-  }
-  _objc_msgSend(self_00,op,1);
-  return;
-}
-
-*/
 - (void)restoreMediaStripState
 {
     if (_wasMediaStripVisible) {
@@ -11815,43 +4058,6 @@ void FUN_00014aa3(HSEditorWindowController *self,SEL _cmd)
     [self deleteSelectedObjectInSelectionHolder:aHolder showAlert:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000148c6 @ 000148c6, 223 bytes * /
-
-void FUN_000148c6(HSEditorWindowController *self,SEL _cmd,id deleteSelectedObjectInSelectionHolder,
-                 BOOL showAlert)
-
-{
-  id self_00;
-  id pvVar1;
-  undefined *puVar2;
-  HSEditorWindowController *self_01;
-  SEL op;
-  
-  self_01 = self;
-  if (deleteSelectedObjectInSelectionHolder != (id)0x0) {
-    self_01 = deleteSelectedObjectInSelectionHolder;
-  }
-  self_00 = _objc_msgSend(self_01,sel_selectedHyperObject);
-  _objc_msgSend(self_00,sel_retain);
-  puVar2 = &DAT_003613d0;
-  pvVar1 = _objc_msgSend(self_00,sel_implementsHyperInterface_,&DAT_003613d0);
-  if ((char)pvVar1 == '\0') {
-    puVar2 = &DAT_00361218;
-    pvVar1 = _objc_msgSend(self_00,sel_queryHyperInterface_,&DAT_00361218);
-    _objc_msgSend(pvVar1,sel_removeFromHyperParent);
-    op = sel_release;
-  }
-  else {
-    self_00 = _objc_msgSend(self,sel_document,puVar2);
-    puVar2 = (undefined *)(int)showAlert;
-    op = sel_removeSelectedCardsWithAlert_;
-  }
-  _objc_msgSend(self_00,op,puVar2);
-  return;
-}
-
-*/
 - (void)deleteSelectedObjectInSelectionHolder:(id)aHolder showAlert:(BOOL)aAlert
 {
     id object = [(aHolder != nil ? aHolder : self) selectedHyperObject];
@@ -11968,93 +4174,6 @@ void FUN_000148c6(HSEditorWindowController *self,SEL _cmd,id deleteSelectedObjec
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002a566 @ 0002a566, 1452 bytes * /
-
-void FUN_0002a566(HSEditorWindowController *self,SEL _cmd,id windowWillClose)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  id pvVar3;
-  int *piVar4;
-  HSEditorWindowController *local_2c;
-  undefined *local_28;
-  undefined1 local_24 [20];
-  
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_fileURL);
-  pvVar2 = _objc_msgSend(pvVar2,sel_path);
-  piVar4 = (int *)&stack0xffffff84;
-  if ((pvVar2 != (id)0x0) &&
-     (pvVar2 = _objc_msgSend(self,sel_window), piVar4 = (int *)&stack0xffffff84, pvVar2 != (id)0x0))
-  {
-    pvVar2 = _objc_msgSend(self->_cardScrollView,sel_documentView);
-    pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_);
-    if (pvVar2 != (id)0x0) {
-      _objc_msgSend(pvVar2,sel_cardOffset);
-    }
-    pvVar2 = _objc_msgSend(self->_cardScrollView,sel_contentView);
-    _objc_msgSend_stret(local_24,pvVar2,sel_bounds);
-    piVar4 = (int *)&stack0xffffff80;
-    pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isMultiDocument);
-    if ((char)pvVar2 == '\0') {
-      pvVar2 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-      _objc_msgSend(cls_HSUI,sel_sharedUI);
-      _objc_msgSend(pvVar2,sel_removeObserver_name_object_);
-      pvVar2 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-      _objc_msgSend(cls_HSUI,sel_sharedUI);
-      _objc_msgSend(pvVar2,sel_removeObserver_name_object_);
-      pvVar2 = _objc_msgSend(cls_NSDictionary,sel_alloc);
-      _NSStringFromPoint();
-      pvVar3 = _objc_msgSend(self,sel_window);
-      _objc_msgSend(pvVar3,sel_stringWithSavedFrame);
-    }
-    else {
-      pvVar2 = _objc_msgSend(cls_NSDictionary,sel_alloc);
-      _NSStringFromPoint();
-      puVar1 = cls_NSNumber;
-      pvVar3 = _objc_msgSend(self,sel_stackView);
-      _objc_msgSend(pvVar3,sel_isStripVisible);
-      _objc_msgSend(puVar1,sel_numberWithBool_);
-      puVar1 = cls_NSNumber;
-      _objc_msgSend(self,sel_isBottomToolbarVisible);
-      _objc_msgSend(puVar1,sel_numberWithBool_);
-      puVar1 = cls_NSNumber;
-      pvVar3 = _objc_msgSend(self,sel_toolbarController);
-      pvVar3 = _objc_msgSend(pvVar3,sel_toolbar);
-      _objc_msgSend(pvVar3,sel_isVisible);
-      _objc_msgSend(puVar1,sel_numberWithBool_);
-      pvVar3 = _objc_msgSend(self,sel_window);
-      _objc_msgSend(pvVar3,sel_stringWithSavedFrame);
-    }
-    pvVar2 = _objc_msgSend(pvVar2,sel_initWithObjectsAndKeys_);
-    puVar1 = cls_NSMutableDictionary;
-    pvVar3 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    _objc_msgSend(pvVar3,sel_objectForKey_);
-    pvVar3 = _objc_msgSend(puVar1,sel_dictionaryWithDictionary_);
-    if (pvVar3 == (id)0x0) {
-      pvVar3 = _objc_msgSend(cls_NSMutableDictionary,sel_dictionary);
-    }
-    _objc_msgSend(pvVar3,sel_setObject_forKey_);
-    pvVar3 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    _objc_msgSend(pvVar3,sel_setObject_forKey_);
-    pvVar3 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    _objc_msgSend(pvVar3,sel_synchronize);
-    _objc_msgSend(pvVar2,sel_release);
-  }
-  local_2c = self;
-  local_28 = PTR_s_HSMainWindowController_0034dbd0;
-  piVar4[2] = (int)windowWillClose;
-  piVar4[1] = (int)sel_windowWillClose_;
-  *piVar4 = (int)&local_2c;
-  piVar4[-1] = 0x2ab0a;
-  _objc_msgSendSuper((void *)*piVar4,(SEL)piVar4[1]);
-  return;
-}
-
-*/
 - (void)windowWillClose:(id)aClose
 {
     NSString *path = [[[self document] fileURL] path];
@@ -12095,25 +4214,6 @@ void FUN_0002a566(HSEditorWindowController *self,SEL _cmd,id windowWillClose)
     [super notifyDidBecomeMain:aMain];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001440a @ 0001440a, 161 bytes * /
-
-void FUN_0001440a(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_selectedToolTag);
-  pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  _objc_msgSend(pvVar2,sel_selectToolWithTag_,0);
-  pvVar2 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  _objc_msgSend(pvVar2,sel_selectToolWithTag_,pvVar1);
-  return;
-}
-
-*/
 - (void)refreshToolManager
 {
     NSInteger tag = [[HSToolManager sharedToolManager] selectedToolTag];
@@ -12147,41 +4247,6 @@ void FUN_0001440a(HSEditorWindowController *self,SEL _cmd)
     return pvVar1_4;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_000141c5 @ 000141c5, 267 bytes * /
-
-void FUN_000141c5(HSEditorWindowController *self,SEL _cmd)
-
-{
-  float fVar1;
-  float fVar2;
-  id pvVar3;
-  float extraout_EDX;
-  undefined *puVar4;
-  id local_14;
-  float local_10;
-  
-  pvVar3 = _objc_msgSend(self,sel_cardScrollView);
-  pvVar3 = _objc_msgSend(pvVar3,sel_documentView);
-  puVar4 = &DAT_003612b8;
-  pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003612b8);
-  if (pvVar3 == (id)0x0) {
-    local_14 = *(id *)PTR_0033607c;
-    local_10 = *(float *)(PTR_0033607c + 4);
-  }
-  else {
-    local_14 = _objc_msgSend(pvVar3,sel_cardOffset,puVar4);
-    local_10 = extraout_EDX;
-  }
-  fVar1 = (self->_originPositionOnCard).x;
-  fVar2 = (self->_originPositionOnCard).y;
-  pvVar3 = _objc_msgSend(self,sel_cardScrollView,puVar4);
-  pvVar3 = _objc_msgSend(pvVar3,sel_documentView);
-  _objc_msgSend(pvVar3,sel_scrollPoint_,(float)local_14 + fVar1,local_10 + fVar2);
-  return;
-}
-
-*/
 - (void)restoreScrollerPosition
 {
     id host = [[[self cardScrollView] documentView] queryHyperInterface:@protocol(HSEditorCardViewBackgroundHost)];
@@ -12194,39 +4259,6 @@ void FUN_000141c5(HSEditorWindowController *self,SEL _cmd)
     [self useScrollerPositionFrom:[self cardScrollView]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002ab88 @ 0002ab88, 224 bytes * /
-
-void FUN_0002ab88(HSEditorWindowController *self,SEL _cmd,id useScrollerPositionFrom)
-
-{
-  id pvVar1;
-  float extraout_EDX;
-  undefined *puVar2;
-  id local_2c;
-  float local_28;
-  float local_24;
-  float local_20;
-  
-  pvVar1 = _objc_msgSend(useScrollerPositionFrom,sel_documentView);
-  puVar2 = &DAT_003612b8;
-  pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003612b8);
-  if (pvVar1 == (id)0x0) {
-    local_2c = *(id *)PTR_0033607c;
-    local_28 = *(float *)(PTR_0033607c + 4);
-  }
-  else {
-    local_2c = _objc_msgSend(pvVar1,sel_cardOffset,puVar2);
-    local_28 = extraout_EDX;
-  }
-  pvVar1 = _objc_msgSend(useScrollerPositionFrom,sel_contentView,puVar2);
-  _objc_msgSend_stret(&local_24,pvVar1,sel_bounds);
-  (self->_originPositionOnCard).x = local_24 - (float)local_2c;
-  (self->_originPositionOnCard).y = local_20 - local_28;
-  return;
-}
-
-*/
 - (void)useScrollerPositionFrom:(id)aFrom
 {
     id host = [[aFrom documentView] queryHyperInterface:@protocol(HSEditorCardViewBackgroundHost)];
@@ -12241,35 +4273,6 @@ void FUN_0002ab88(HSEditorWindowController *self,SEL _cmd,id useScrollerPosition
     [[self cardView] saveEditingState];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002ac68 @ 0002ac68, 240 bytes * /
-
-NSRect * FUN_0002ac68(NSRect *__return_storage_ptr__,HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  float extraout_EDX;
-  float local_2c;
-  float local_28;
-  float local_24;
-  float local_20;
-  undefined1 local_1c [8];
-  float local_14;
-  float local_10;
-  
-  pvVar1 = _objc_msgSend(self,sel_window);
-  _objc_msgSend_stret(&local_2c,pvVar1,sel_frame);
-  pvVar1 = _objc_msgSend(self->_cardScrollView,sel_documentView);
-  _objc_msgSend_stret(local_1c,pvVar1,sel_frame);
-  pvVar1 = _objc_msgSend(self->_cardScrollView,sel_contentSize);
-  (__return_storage_ptr__->origin).x = local_2c;
-  (__return_storage_ptr__->origin).y = local_28;
-  (__return_storage_ptr__->size).width = (local_14 - (float)pvVar1) + local_24;
-  (__return_storage_ptr__->size).height = (local_10 - extraout_EDX) + local_20;
-  return __return_storage_ptr__;
-}
-
-*/
 - (NSRect)bestWindowFrameForCurrentStack
 {
     NSRect windowFrame = [[self window] frame];
@@ -12278,57 +4281,6 @@ NSRect * FUN_0002ac68(NSRect *__return_storage_ptr__,HSEditorWindowController *s
     return NSMakeRect(windowFrame.origin.x, windowFrame.origin.y, (documentFrame.size.width - contentSize.width) + windowFrame.size.width, (documentFrame.size.height - contentSize.height) + windowFrame.size.height);
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002ad58 @ 0002ad58, 414 bytes * /
-
-void FUN_0002ad58(HSEditorWindowController *self,SEL _cmd)
-
-{
-  char cVar1;
-  id pvVar2;
-  undefined4 local_3c;
-  undefined4 uStack_38;
-  float local_34;
-  float fStack_30;
-  undefined4 local_2c;
-  undefined4 uStack_28;
-  float local_24;
-  float fStack_20;
-  undefined4 local_1c;
-  undefined4 local_18;
-  float local_14;
-  float local_10;
-  
-  pvVar2 = _objc_msgSend(self,sel_window);
-  pvVar2 = _objc_msgSend(pvVar2,sel_screen);
-  _objc_msgSend_stret(&local_1c,pvVar2,sel_visibleFrame);
-  pvVar2 = _objc_msgSend(self,sel_window);
-  _objc_msgSend_stret(&local_2c,pvVar2,sel_frame);
-  local_3c = local_2c;
-  uStack_38 = uStack_28;
-  local_34 = local_24;
-  fStack_30 = fStack_20;
-  if (local_14 < local_24) {
-    local_3c = local_1c;
-  }
-  if (local_10 < fStack_20) {
-    uStack_38 = local_18;
-  }
-  pvVar2 = _objc_msgSend(self,sel_window);
-  pvVar2 = _objc_msgSend(pvVar2,sel_screen);
-  _objc_msgSend_stret(&local_3c,self,sel_constrainSizeOfWindowFrame_forScreen_,
-                      CONCAT44(uStack_38,local_3c),CONCAT44(fStack_30,local_34),pvVar2);
-  cVar1 = _NSEqualRects(CONCAT44(uStack_28,local_2c),CONCAT44(fStack_20,local_24),
-                        CONCAT44(uStack_38,local_3c),CONCAT44(fStack_30,local_34));
-  if (cVar1 == '\0') {
-    pvVar2 = _objc_msgSend(self,sel_window);
-    _objc_msgSend(pvVar2,sel_setFrame_display_,CONCAT44(uStack_38,local_3c),
-                  CONCAT44(fStack_30,local_34),0);
-  }
-  return;
-}
-
-*/
 - (void)adjustWindowFrameAfterToolbarVisibilityValidation
 {
     NSRect visibleFrame = [[[self window] screen] visibleFrame];
@@ -12346,264 +4298,6 @@ void FUN_0002ad58(HSEditorWindowController *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002aef6 @ 0002aef6, 2219 bytes * /
-
-void FUN_0002aef6(HSEditorWindowController *self,SEL _cmd)
-
-{
-  HSEditorCardView *pHVar1;
-  undefined4 uVar2;
-  char cVar3;
-  char cVar4;
-  id pvVar5;
-  id pvVar6;
-  id pvVar7;
-  id pvVar8;
-  HSEditorWindowController *self_00;
-  int extraout_EDX;
-  float extraout_EDX_00;
-  int *piVar9;
-  int *piVar10;
-  NSPoint NVar11;
-  undefined4 auStack_9c [3];
-  SEL pcVar12;
-  undefined4 auStack_84 [11];
-  id local_58;
-  float local_54;
-  float fStack_50;
-  undefined8 local_4c;
-  undefined1 local_24 [8];
-  float local_1c;
-  float local_18;
-  
-  piVar9 = (int *)&stack0xffffff74;
-  pvVar5 = _objc_msgSend(self,sel_document);
-  local_58 = _objc_msgSend(cls_NSDictionary,sel_dictionary);
-  pvVar6 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-  pvVar6 = _objc_msgSend(pvVar6,sel_objectForKey_);
-  pvVar5 = _objc_msgSend(pvVar5,sel_fileURL);
-  pvVar5 = _objc_msgSend(pvVar5,sel_path);
-  if ((pvVar6 != (id)0x0) && (pvVar5 != (id)0x0)) {
-    local_58 = _objc_msgSend(pvVar6,sel_objectForKey_);
-  }
-  pvVar6 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-  pvVar6 = _objc_msgSend(pvVar6,sel_defaultHomeStackPath);
-  pvVar6 = _objc_msgSend(pvVar6,sel_isEqualToString_);
-  pvVar7 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-  pvVar7 = _objc_msgSend(pvVar7,sel_defaultTutorialStackName);
-  pvVar7 = _objc_msgSend(pvVar7,sel_isEqualToString_);
-  pvVar8 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-  pvVar8 = _objc_msgSend(pvVar8,sel_sampleProjectsFolder);
-  _objc_msgSend(pvVar5,sel_stringByDeletingLastPathComponent);
-  pvVar5 = _objc_msgSend(pvVar8,sel_isEqualToString_);
-  if ((char)pvVar5 == '\0' && ((char)pvVar7 == '\0' && (char)pvVar6 == '\0')) {
-    pvVar5 = _objc_msgSend(local_58,sel_objectForKey_);
-  }
-  else {
-    pvVar5 = (id)0x0;
-  }
-  pvVar6 = _objc_msgSend(self,sel_window);
-  _objc_msgSend(pvVar6,sel_setContentMinSize_);
-  pvVar6 = _objc_msgSend(self,sel_toolbarController);
-  pvVar6 = _objc_msgSend(pvVar6,sel_toolbar);
-  _objc_msgSend(pvVar6,sel_setVisible_);
-  pvVar6 = _objc_msgSend(cls_HSUI,sel_sharedUI);
-  pvVar6 = _objc_msgSend(pvVar6,sel_settingsForKey_);
-  pvVar6 = _objc_msgSend(pvVar6,sel_boolValue);
-  cVar4 = (char)pvVar6;
-  pvVar6 = _objc_msgSend(cls_HSUI,sel_sharedUI);
-  pvVar6 = _objc_msgSend(pvVar6,sel_settingsForKey_);
-  pvVar6 = _objc_msgSend(pvVar6,sel_boolValue);
-  cVar3 = (char)pvVar6;
-  pvVar6 = _objc_msgSend(cls_HSUI,sel_sharedUI);
-  pvVar6 = _objc_msgSend(pvVar6,sel_settingsForKey_);
-  _objc_msgSend(pvVar6,sel_boolValue);
-  pvVar6 = _objc_msgSend(local_58,sel_objectForKey_);
-  if (pvVar6 != (id)0x0) {
-    _objc_msgSend(pvVar6,sel_boolValue);
-  }
-  pvVar6 = _objc_msgSend(local_58,sel_objectForKey_);
-  if (pvVar6 != (id)0x0) {
-    pvVar6 = _objc_msgSend(pvVar6,sel_boolValue);
-    cVar4 = (char)pvVar6;
-  }
-  pvVar6 = _objc_msgSend(local_58,sel_objectForKey_);
-  if (pvVar6 != (id)0x0) {
-    pvVar6 = _objc_msgSend(pvVar6,sel_boolValue);
-    cVar3 = (char)pvVar6;
-  }
-  _objc_msgSend(self,sel_setBottomToolbarVisible_animated_moveFrame_);
-  pvVar6 = _objc_msgSend(self,sel_stackView);
-  pcVar12 = sel_showStripAndEnable_;
-  if (cVar4 == '\0') {
-    pcVar12 = sel_hideStripAndEnable_moveFrame_;
-  }
-  _objc_msgSend(pvVar6,pcVar12);
-  if (pvVar5 == (id)0x0) {
-    pvVar5 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    pvVar5 = _objc_msgSend(pvVar5,sel_objectForKey_);
-    if (pvVar5 == (id)0x0) goto LAB_0002b43f;
-    _NSRectFromString();
-    pvVar5 = _objc_msgSend(self,sel_window);
-    _objc_msgSend(pvVar5,sel_setFrame_display_);
-    self_00 = self;
-    pcVar12 = sel_adjustDefaultWindowSize;
-  }
-  else {
-    _NSRectFromString();
-    self_00 = _objc_msgSend(self,sel_window);
-    pcVar12 = sel_setFrame_display_;
-  }
-  piVar9 = (int *)&stack0xffffff70;
-  _objc_msgSend(self_00,pcVar12);
-LAB_0002b43f:
-  piVar9[1] = (int)sel_toolbarController;
-  *piVar9 = (int)self;
-  piVar9[-1] = 0x2b454;
-  pvVar5 = _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[1] = (int)sel_toolbar;
-  *piVar9 = (int)pvVar5;
-  piVar9[-1] = 0x2b466;
-  pvVar5 = _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[2] = (int)cVar3;
-  piVar9[1] = (int)sel_setVisible_;
-  *piVar9 = (int)pvVar5;
-  piVar9[-1] = 0x2b480;
-  _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[2] = (int)&cfstr_HSEditorScrollPointKey;
-  piVar9[1] = (int)sel_objectForKey_;
-  *piVar9 = (int)local_58;
-  piVar9[-1] = 0x2b49f;
-  pvVar5 = _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  if (pvVar5 != (id)0x0) {
-    *piVar9 = (int)pvVar5;
-    piVar9[-1] = 0x2b4ab;
-    NVar11 = (NSPoint)_NSPointFromString();
-    self->_originPositionOnCard = NVar11;
-  }
-  pHVar1 = self->_cardView;
-  piVar9[1] = (int)sel_zoomToActualSize;
-  *piVar9 = (int)pHVar1;
-  piVar9[-1] = 0x2b4d2;
-  _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[1] = (int)sel_window;
-  *piVar9 = (int)self;
-  piVar9[-1] = 0x2b4e7;
-  pvVar5 = _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[1] = (int)sel_contentView;
-  *piVar9 = (int)pvVar5;
-  piVar9[-1] = 0x2b4f9;
-  pvVar5 = _objc_msgSend((id)*piVar9,(SEL)piVar9[1]);
-  piVar9[2] = (int)sel_frame;
-  piVar9[1] = (int)pvVar5;
-  *piVar9 = (int)local_24;
-  piVar9[-1] = 0x2b512;
-  _objc_msgSend_stret((void *)*piVar9,(id)piVar9[1],(SEL)piVar9[2]);
-  piVar10 = piVar9 + -1;
-  *piVar9 = (int)sel_window;
-  piVar9[-1] = (int)self;
-  piVar9[-2] = 0x2b53e;
-  pvVar5 = _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-  *piVar9 = (int)sel_mainWindowMinCardAreaSize;
-  piVar9[-1] = (int)self;
-  piVar9[-2] = 0x2b555;
-  pvVar6 = _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-  piVar9[2] = extraout_EDX;
-  piVar9[1] = (int)pvVar6;
-  *piVar9 = (int)sel_setContentMinSize_;
-  piVar9[-1] = (int)pvVar5;
-  piVar9[-2] = 0x2b56f;
-  _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-  *piVar9 = (int)sel_window;
-  piVar9[-1] = (int)self;
-  piVar9[-2] = 0x2b584;
-  pvVar5 = _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-  *piVar9 = (int)sel_contentMinSize;
-  piVar9[-1] = (int)pvVar5;
-  piVar9[-2] = 0x2b596;
-  pvVar5 = _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-  if ((local_18 < extraout_EDX_00) || (local_1c < (float)pvVar5)) {
-    *piVar9 = (int)sel_window;
-    piVar9[-1] = (int)self;
-    piVar9[-2] = 0x2b5cd;
-    pvVar6 = _objc_msgSend((id)piVar9[-1],(SEL)*piVar9);
-    piVar9[1] = (int)sel_frame;
-    *piVar9 = (int)pvVar6;
-    piVar9[-1] = (int)&local_54;
-    piVar9[-2] = 0x2b5fd;
-    _objc_msgSend_stret((void *)piVar9[-1],(id)*piVar9,(SEL)piVar9[1]);
-    piVar10 = piVar9 + -2;
-    fStack_50 = (extraout_EDX_00 - local_18) * -0.5 + fStack_50;
-    local_54 = ((float)pvVar5 - local_1c) * -0.5 + local_54;
-    piVar9[-1] = (int)sel_window;
-    piVar9[-2] = (int)self;
-    piVar9[-3] = 0x2b642;
-    pvVar5 = _objc_msgSend((id)piVar9[-2],(SEL)piVar9[-1]);
-    *(undefined8 *)(piVar9 + 2) = local_4c;
-    *(ulonglong *)piVar9 = CONCAT44(fStack_50,local_54);
-    piVar9[-1] = (int)sel_setFrame_display_;
-    piVar9[-2] = (int)pvVar5;
-    piVar9[4] = 1;
-    piVar9[-3] = 0x2b672;
-    _objc_msgSend((id)piVar9[-2],(SEL)piVar9[-1]);
-  }
-  piVar10[1] = (int)sel_document;
-  *piVar10 = (int)self;
-  piVar10[-1] = 0x2b687;
-  pvVar5 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-  piVar10[1] = (int)sel_setIsReadyToCreateMinimalWindowApplier;
-  *piVar10 = (int)pvVar5;
-  piVar10[-1] = 0x2b699;
-  _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-  piVar10[1] = (int)sel_sharedDocumentController;
-  *piVar10 = (int)cls_HSEditorController;
-  piVar10[-1] = 0x2b6b1;
-  pvVar5 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-  piVar10[1] = (int)sel_isMultiDocument;
-  *piVar10 = (int)pvVar5;
-  piVar10[-1] = 0x2b6c3;
-  pvVar5 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-  if ((char)pvVar5 == '\0') {
-    piVar10[1] = (int)sel_defaultCenter;
-    *piVar10 = (int)cls_NSNotificationCenter;
-    piVar10[-1] = 0x2b6e3;
-    pvVar5 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-    piVar10[1] = (int)sel_sharedUI;
-    *piVar10 = (int)cls_HSUI;
-    piVar10[-1] = 0x2b6fe;
-    pvVar6 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-    uVar2 = *(undefined4 *)PTR_00336130;
-    piVar10[5] = (int)pvVar6;
-    piVar10[4] = uVar2;
-    piVar10[3] = (int)sel_HSEditorWindowController_HSUIModeSettingsDidChangeNotification_;
-    piVar10[2] = (int)self;
-    piVar10[1] = (int)sel_addObserver_selector_name_object_;
-    *piVar10 = (int)pvVar5;
-    piVar10[-1] = 0x2b734;
-    _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-    piVar10[1] = (int)sel_defaultCenter;
-    *piVar10 = (int)cls_NSNotificationCenter;
-    piVar10[-1] = 0x2b74c;
-    pvVar5 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-    piVar10[1] = (int)sel_sharedUI;
-    *piVar10 = (int)cls_HSUI;
-    piVar10[-1] = 0x2b766;
-    pvVar6 = _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-    uVar2 = *(undefined4 *)PTR_00336120;
-    piVar10[5] = (int)pvVar6;
-    piVar10[4] = uVar2;
-    piVar10[3] = (int)sel_HSEditorWindowController_HSUIModeSettingsDidChangeNotification_;
-    piVar10[2] = (int)self;
-    piVar10[1] = (int)sel_addObserver_selector_name_object_;
-    *piVar10 = (int)pvVar5;
-    piVar10[-1] = 0x2b799;
-    _objc_msgSend((id)*piVar10,(SEL)piVar10[1]);
-  }
-  return;
-}
-
-*/
 - (void)loadWindowSettings
 {
     id document = [self document];
@@ -12675,136 +4369,6 @@ LAB_0002b43f:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002b7a1 @ 0002b7a1, 1209 bytes * /
-
-void FUN_0002b7a1(HSEditorWindowController *self,SEL _cmd)
-
-{
-  bool bVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_00;
-  float extraout_EDX;
-  float extraout_EDX_00;
-  longdouble lVar4;
-  float fVar5;
-  float fVar6;
-  double dVar7;
-  undefined *puVar9;
-  undefined8 uVar8;
-  undefined4 uVar10;
-  float local_68;
-  float local_54;
-  float local_50;
-  float local_44;
-  float fStack_40;
-  float local_3c;
-  float fStack_38;
-  undefined1 local_34 [8];
-  undefined4 local_2c;
-  undefined4 local_28;
-  undefined1 local_24 [8];
-  float local_1c;
-  float local_18;
-  
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend_stret(local_34,pvVar2,sel_bounds);
-  pvVar2 = _objc_msgSend(self,sel_cardView);
-  puVar9 = sel_contentViewingRect;
-  _objc_msgSend_stret(local_24,pvVar2,sel_contentViewingRect);
-  pvVar2 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-  uVar8 = CONCAT44(puVar9,&cfstr_HSCardAreaIdealSizeHorisontalOffset);
-  pvVar2 = _objc_msgSend(pvVar2,sel_objectForKey_,&cfstr_HSCardAreaIdealSizeHorisontalOffset);
-  if (pvVar2 == (id)0x0) {
-    local_68 = 0.0;
-  }
-  else {
-    dVar7 = _objc_msgSend_fpret(pvVar2,sel_floatValue);
-    local_68 = (float)dVar7;
-  }
-  pvVar2 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults,uVar8);
-  uVar8 = CONCAT44((int)((ulonglong)uVar8 >> 0x20),&cfstr_HSCardAreaIdealSizeVerticalOffset);
-  fVar5 = local_1c + local_68;
-  pvVar2 = _objc_msgSend(pvVar2,sel_objectForKey_,&cfstr_HSCardAreaIdealSizeVerticalOffset);
-  if (pvVar2 == (id)0x0) {
-    local_68 = 0.0;
-  }
-  else {
-    dVar7 = _objc_msgSend_fpret(pvVar2,sel_floatValue);
-    local_68 = (float)dVar7;
-  }
-  pvVar2 = _objc_msgSend(self,sel_cardView,uVar8);
-  pvVar2 = _objc_msgSend(pvVar2,sel_convertSize_toView_,local_2c,local_28,0);
-  pvVar3 = _objc_msgSend(self,sel_cardView);
-  uVar8 = CONCAT44(local_18 + local_68,fVar5);
-  uVar10 = 0;
-  pvVar3 = _objc_msgSend(pvVar3,sel_convertSize_toView_,fVar5,local_18 + local_68,0);
-  if (((float)pvVar2 != 0.0) || (NAN((float)pvVar2))) {
-    fVar5 = ABS((float)pvVar2);
-  }
-  else {
-    fVar5 = 1.0;
-  }
-  if (((float)pvVar3 != 0.0) || (NAN((float)pvVar3))) {
-    fVar6 = ABS((float)pvVar3);
-  }
-  else {
-    fVar6 = 1.0;
-  }
-  if (fVar6 <= fVar5) {
-    fVar6 = fVar5;
-  }
-  if (ABS((float)pvVar2 - (float)pvVar3) <= fVar6 * 0.0005) {
-    if ((extraout_EDX != 0.0) || (NAN(extraout_EDX))) {
-      fVar5 = ABS(extraout_EDX);
-    }
-    else {
-      fVar5 = 1.0;
-    }
-    if ((extraout_EDX_00 != 0.0) || (NAN(extraout_EDX_00))) {
-      fVar6 = ABS(extraout_EDX_00);
-    }
-    else {
-      fVar6 = 1.0;
-    }
-    if (fVar6 <= fVar5) {
-      fVar6 = fVar5;
-    }
-    bVar1 = fVar6 * 0.0005 < ABS(extraout_EDX - extraout_EDX_00);
-  }
-  else {
-    bVar1 = true;
-  }
-  if (((bVar1) && (0.0 < extraout_EDX_00)) && (0.0 < (float)pvVar3)) {
-    self_00 = _objc_msgSend(self,sel_window,uVar8,uVar10);
-    _objc_msgSend_stret(&local_44,self_00,sel_frame);
-    local_3c = local_3c + ((float)pvVar3 - (float)pvVar2);
-    fStack_38 = (extraout_EDX_00 - extraout_EDX) + fStack_38;
-    fStack_40 = (extraout_EDX_00 - extraout_EDX) * -0.5 + fStack_40;
-    local_44 = ((float)pvVar3 - (float)pvVar2) * -0.5 + local_44;
-    pvVar2 = _objc_msgSend(self,sel_window);
-    pvVar2 = _objc_msgSend(pvVar2,sel_screen);
-    _objc_msgSend_stret(&local_54,pvVar2,sel_visibleFrame);
-    if (local_44 < local_54) {
-      local_44 = local_54;
-    }
-    if (fStack_40 < local_50) {
-      fStack_40 = local_50;
-    }
-    fVar5 = fStack_40;
-    lVar4 = (longdouble)_roundf(local_44);
-    local_44 = (float)lVar4;
-    lVar4 = (longdouble)_roundf(fVar5);
-    fStack_40 = (float)lVar4;
-    pvVar2 = _objc_msgSend(self,sel_window);
-    _objc_msgSend(pvVar2,sel_setFrame_display_,CONCAT44(fStack_40,local_44),
-                  CONCAT44(fStack_38,local_3c),1);
-  }
-  return;
-}
-
-*/
 - (void)adjustDefaultWindowSize
 {
     NSRect cardBounds = [[self cardView] bounds];
@@ -12842,81 +4406,6 @@ void FUN_0002b7a1(HSEditorWindowController *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002bc5a @ 0002bc5a, 473 bytes * /
-
-BOOL FUN_0002bc5a(HSEditorWindowController *self,SEL _cmd,id windowFrameFitsToScreen)
-
-{
-  float fVar1;
-  id pvVar2;
-  id pvVar3;
-  float fVar4;
-  float fVar5;
-  float fVar6;
-  double dVar7;
-  cfstringStruct *pcVar8;
-  float local_1c;
-  float local_18;
-  float local_14;
-  float local_10;
-  
-  pvVar2 = _objc_msgSend(windowFrameFitsToScreen,sel_length);
-  if (pvVar2 != (id)0x0) {
-    pcVar8 = &cfstr__;
-    pvVar2 = _objc_msgSend(windowFrameFitsToScreen,sel_componentsSeparatedByString_,&cfstr__);
-    pvVar3 = _objc_msgSend(pvVar2,sel_count);
-    if (pvVar3 < (id)0x8) {
-      return '\0';
-    }
-    pvVar3 = _objc_msgSend(cls_NSScreen,sel_mainScreen,pcVar8);
-    _objc_msgSend_stret(&local_1c,pvVar3,sel_visibleFrame);
-    pvVar3 = _objc_msgSend(pvVar2,sel_objectAtIndex_,7);
-    dVar7 = _objc_msgSend_fpret(pvVar3,sel_floatValue);
-    pvVar2 = _objc_msgSend(pvVar2,sel_objectAtIndex_,6);
-    fVar1 = (float)dVar7;
-    dVar7 = _objc_msgSend_fpret(pvVar2,sel_floatValue);
-    fVar4 = (float)dVar7;
-    local_1c = local_1c + local_14;
-    if ((local_1c != 0.0) || (NAN(local_1c))) {
-      fVar5 = ABS(local_1c);
-    }
-    else {
-      fVar5 = 1.0;
-    }
-    if ((fVar4 != 0.0) || (NAN(fVar4))) {
-      fVar6 = ABS(fVar4);
-    }
-    else {
-      fVar6 = 1.0;
-    }
-    if (fVar6 <= fVar5) {
-      fVar6 = fVar5;
-    }
-    if (fVar4 + fVar6 * -0.0005 <= local_1c) {
-      local_18 = local_18 + local_10;
-      if ((local_18 != 0.0) || (NAN(local_18))) {
-        fVar4 = ABS(local_18);
-      }
-      else {
-        fVar4 = 1.0;
-      }
-      if ((fVar1 != 0.0) || (NAN(fVar1))) {
-        fVar5 = ABS(fVar1);
-      }
-      else {
-        fVar5 = 1.0;
-      }
-      if (fVar5 <= fVar4) {
-        fVar5 = fVar4;
-      }
-      return local_18 < fVar1 + fVar5 * -0.0005;
-    }
-  }
-  return '\x01';
-}
-
-*/
 - (BOOL)windowFrameFitsToScreen:(id)aScreen
 {
     if ([aScreen length] != 0) {
@@ -12938,72 +4427,6 @@ BOOL FUN_0002bc5a(HSEditorWindowController *self,SEL _cmd,id windowFrameFitsToSc
     return YES;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00013ebe @ 00013ebe, 653 bytes * /
-
-void FUN_00013ebe(HSEditorWindowController *self,SEL _cmd,id cardUndoableAttributeDidChange)
-
-{
-  char cVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_00;
-  id pvVar4;
-  char cVar5;
-  cfstringStruct *pcVar6;
-  
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isInPlayerMode);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(self,sel_document);
-    pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-    pvVar3 = _objc_msgSend(pvVar2,sel_isUndoing);
-    if (((char)pvVar3 == '\0') &&
-       (pvVar2 = _objc_msgSend(pvVar2,sel_isRedoing), (char)pvVar2 == '\0')) {
-      return;
-    }
-    pvVar2 = _objc_msgSend(cardUndoableAttributeDidChange,sel_userInfo);
-    pvVar2 = _objc_msgSend(pvVar2,sel_objectForKey_,&cfstr_HSUnderlyingAttributeNotification);
-    pvVar2 = _objc_msgSend(pvVar2,sel_object);
-    pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_003611f0);
-    pvVar2 = _objc_msgSend(pvVar2,sel_isGroupObject);
-    pvVar3 = _objc_msgSend(cardUndoableAttributeDidChange,sel_userInfo);
-    pcVar6 = &cfstr_HSVisualSubobjectChangeDescriptions;
-    pvVar3 = _objc_msgSend(pvVar3,sel_objectForKey_,&cfstr_HSVisualSubobjectChangeDescriptions);
-    self_00 = _objc_msgSend(pvVar3,sel_objectEnumerator);
-    if (((char)pvVar2 == '\0') && (pvVar3 != (id)0x0)) {
-      cVar5 = '\0';
-      cVar1 = '\0';
-      while ((cVar1 == '\0' && cVar5 == '\0' &&
-             (pvVar3 = _objc_msgSend(self_00,sel_nextObject,pcVar6), pvVar3 != (id)0x0))) {
-        pvVar3 = _objc_msgSend(pvVar3,sel_objectForKey_,&cfstr_HSVisualSubobject);
-        pvVar4 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003611f0);
-        pvVar4 = _objc_msgSend(pvVar4,sel_isGroupObject);
-        cVar5 = (char)pvVar4;
-        pcVar6 = (cfstringStruct *)&DAT_00361218;
-        pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_00361218);
-        pvVar3 = _objc_msgSend(pvVar3,sel_isTemporary);
-        cVar1 = (char)pvVar3;
-      }
-    }
-    else {
-      cVar5 = '\0';
-      cVar1 = '\0';
-    }
-    pvVar3 = _objc_msgSend(cardUndoableAttributeDidChange,sel_object,pcVar6);
-    if (((pvVar3 != (id)0x0) && ((char)pvVar2 == '\0')) && (cVar1 == '\0' && cVar5 == '\0')) {
-      pvVar2 = _objc_msgSend(self,sel_stackView,pcVar6);
-      pvVar2 = _objc_msgSend(pvVar2,sel_selectedHyperObject);
-      if (pvVar2 != pvVar3) {
-        pvVar2 = _objc_msgSend(self,sel_stackView);
-        _objc_msgSend(pvVar2,sel_selectHyperObject_,pvVar3);
-      }
-    }
-  }
-  return;
-}
-
-*/
 - (void)cardUndoableAttributeDidChange:(id)aChange
 {
     if ([[self document] isInPlayerMode]) {
@@ -13035,59 +4458,6 @@ void FUN_00013ebe(HSEditorWindowController *self,SEL _cmd,id cardUndoableAttribu
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002be33 @ 0002be33, 439 bytes * /
-
-void FUN_0002be33(HSEditorWindowController *self,SEL _cmd,id navigationOperationStageDidChange)
-
-{
-  id pvVar1;
-  id pvVar2;
-  char cVar3;
-  float fVar4;
-  double dVar5;
-  
-  pvVar1 = _objc_msgSend(navigationOperationStageDidChange,sel_object);
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isInStandardMode);
-  if ((char)pvVar2 == '\0') {
-    return;
-  }
-  pvVar2 = _objc_msgSend(pvVar1,sel_stage);
-  if (pvVar2 == (id)0x2) {
-    pvVar1 = _objc_msgSend(self,sel_document);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isInAnimationMode);
-    if ((char)pvVar1 != '\0') {
-      fVar4 = 1.0;
-      cVar3 = '\x01';
-      goto LAB_0002bf72;
-    }
-  }
-  else {
-    pvVar2 = _objc_msgSend(pvVar1,sel_stage);
-    if ((pvVar2 == (id)0xd) || (pvVar1 = _objc_msgSend(pvVar1,sel_stage), pvVar1 == (id)0xe)) {
-      pvVar1 = _objc_msgSend(self,sel_document);
-      pvVar1 = _objc_msgSend(pvVar1,sel_isInPlayerMode);
-      if ((char)pvVar1 == '\0') {
-        pvVar1 = _objc_msgSend(self,sel_cardView);
-        dVar5 = _objc_msgSend_fpret(pvVar1,sel_zoomFactor);
-        fVar4 = (float)dVar5;
-        cVar3 = '\x01';
-        goto LAB_0002bf72;
-      }
-    }
-  }
-  fVar4 = 1.0;
-  cVar3 = '\0';
-LAB_0002bf72:
-  _objc_msgSend(self->_statusbarController,sel_setZoomFactor_,fVar4);
-  _objc_msgSend(self->_statusbarController,sel_validateUI);
-  _objc_msgSend(self->_statusbarController,sel_updateScalePopUpButtonTarget);
-  _objc_msgSend(self->_statusbarController,sel_setZoomControlsEnabled_,(int)cVar3);
-  return;
-}
-
-*/
 - (void)navigationOperationStageDidChange:(id)aChange
 {
     id operation = [aChange object];
@@ -13119,50 +4489,6 @@ LAB_0002bf72:
     [[self cardView] setNeedsDisplayWorkAreaBackground];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00013c72 @ 00013c72, 484 bytes * /
-
-void FUN_00013c72(HSEditorWindowController *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  undefined4 uVar5;
-  
-  pvVar1 = _objc_msgSend(self,sel_isThereButtonStylesToUpdate);
-  if ((char)pvVar1 != '\0') {
-    pvVar1 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSUpdateAllButtonStylesAlertMessageText,&cfstr_empty,&cfstr_Alerts
-                          );
-    pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSUpdateAllButtonStylesAlertInformativeText,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSUpdateAllButtonStylesAlertUpdateButtonTitle,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSUpdateAllButtonStylesAlertDontUpdateButtonTitl,&cfstr_empty,
-                           &cfstr_Alerts);
-    uVar5 = 0;
-    pvVar1 = _objc_msgSend(cls_HSAlert,
-                           sel_alertWithMessageText_defaultButton_alternateButton_otherButton_informativeText_
-                           ,pvVar1,pvVar3,pvVar4,0,pvVar2);
-    _objc_msgSend(pvVar1,sel_setAlertStyle_,1);
-    pvVar1 = _objc_msgSend(pvVar1,sel_runModal);
-    if (pvVar1 == (id)0x3e8) {
-      _objc_msgSend(self,sel_updateAllButtonStyles_,self,pvVar3,pvVar4,uVar5,pvVar2);
-    }
-  }
-  return;
-}
-
-*/
 - (void)showAlertAboutOldButtonStylesIfNeeded
 {
     if ([self isThereButtonStylesToUpdate]) {
@@ -13179,75 +4505,6 @@ void FUN_00013c72(HSEditorWindowController *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002bfea @ 0002bfea, 483 bytes * /
-
-void FUN_0002bfea(HSEditorWindowController *self,SEL _cmd)
-
-{
-  int iVar1;
-  id pvVar2;
-  id self_00;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  undefined1 *puVar6;
-  undefined4 uVar7;
-  id local_7c;
-  undefined4 local_74;
-  int local_70;
-  int *local_6c;
-  undefined4 local_68;
-  undefined4 local_64;
-  undefined4 local_60;
-  undefined4 local_5c;
-  undefined4 local_58;
-  undefined1 local_50 [64];
-  
-  pvVar2 = _objc_msgSend(self,sel_document);
-  pvVar2 = _objc_msgSend(pvVar2,sel_stack);
-  pvVar2 = _objc_msgSend(pvVar2,sel_hyperDeepEnumerator);
-  while (pvVar4 = _objc_msgSend(pvVar2,sel_nextObject), pvVar4 != (id)0x0) {
-    pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_,&DAT_00361d6c);
-    pvVar4 = _objc_msgSend(pvVar4,sel_hyperActions);
-    local_74 = 0;
-    local_70 = 0;
-    local_6c = (int *)0x0;
-    local_68 = 0;
-    local_64 = 0;
-    local_60 = 0;
-    local_5c = 0;
-    local_58 = 0;
-    puVar6 = local_50;
-    uVar7 = 0x10;
-    local_7c = _objc_msgSend(pvVar4,sel_countByEnumeratingWithState_objects_count_,&local_74,puVar6,
-                             0x10);
-    if (local_7c != (id)0x0) {
-      iVar1 = *local_6c;
-      do {
-        pvVar5 = (id)0x0;
-        do {
-          if (iVar1 != *local_6c) {
-            _objc_enumerationMutation(pvVar4);
-          }
-          pvVar3 = *(id *)(local_70 + (int)pvVar5 * 4);
-          self_00 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_00362348,puVar6,uVar7);
-          _objc_msgSend(self_00,sel_updateURL);
-          pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_00362410);
-          _objc_msgSend(pvVar3,sel_updateURL);
-          pvVar5 = (id)((int)pvVar5 + 1);
-        } while (pvVar5 < local_7c);
-        puVar6 = local_50;
-        uVar7 = 0x10;
-        local_7c = _objc_msgSend(pvVar4,sel_countByEnumeratingWithState_objects_count_,&local_74,
-                                 puVar6,0x10);
-      } while (local_7c != (id)0x0);
-    }
-  }
-  return;
-}
-
-*/
 - (void)didBindToModelOnLoad
 {
     id pvVar1;
@@ -13336,60 +4593,6 @@ void FUN_0002bfea(HSEditorWindowController *self,SEL _cmd)
     [[self stackView] setStack:[[self document] stack]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002c9d4 @ 0002c9d4, 339 bytes * /
-
-void FUN_0002c9d4(HSEditorWindowController *self,SEL _cmd)
-
-{
-  HSEditorCardView *pHVar1;
-  id pvVar2;
-  undefined4 *puVar3;
-  HSEditorWindowController *local_2c;
-  undefined *local_28;
-  undefined1 local_24 [20];
-  
-  local_2c = self;
-  local_28 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_2c,sel_willBindToModelOnLoad);
-  pvVar2 = self->_workAreaView;
-  puVar3 = (undefined4 *)&stack0xffffffb4;
-  if ((pvVar2 != (id)0x0) &&
-     (puVar3 = (undefined4 *)&stack0xffffffb4, self->_workAreaContainerView != (id)0x0)) {
-    _objc_msgSend_stret(local_24,self->_workAreaContainerView,sel_bounds);
-    puVar3 = (undefined4 *)&stack0xffffffb0;
-    _objc_msgSend(pvVar2,sel_setFrame_);
-    _objc_msgSend(self->_workAreaView,sel_setAutoresizingMask_);
-    _objc_msgSend(self->_workAreaContainerView,sel_addSubview_);
-  }
-  pvVar2 = self->_workAreaContainerView;
-  puVar3[1] = sel_retain;
-  *puVar3 = pvVar2;
-  puVar3[-1] = 0x2cab8;
-  _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-  pHVar1 = self->_cardView;
-  puVar3[1] = sel_retain;
-  *puVar3 = pHVar1;
-  puVar3[-1] = 0x2cacd;
-  _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-  if (self->_stackController != (HSStackController *)0x0) {
-    puVar3[1] = sel_defaultCenter;
-    *puVar3 = cls_NSNotificationCenter;
-    puVar3[-1] = 0x2caeb;
-    pvVar2 = _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-    puVar3[5] = self->_stackController;
-    puVar3[4] = &cfstr_HSStackViewDidChangeActiveCardNotification;
-    puVar3[3] = sel_activeCardDidChange_;
-    puVar3[2] = self;
-    puVar3[1] = sel_addObserver_selector_name_object_;
-    *puVar3 = pvVar2;
-    puVar3[-1] = 0x2cb1f;
-    _objc_msgSend((id)*puVar3,(SEL)puVar3[1]);
-  }
-  return;
-}
-
-*/
 - (void)willBindToModelOnLoad
 {
     [super willBindToModelOnLoad];
@@ -13446,74 +4649,6 @@ void FUN_0002c9d4(HSEditorWindowController *self,SEL _cmd)
     [[self selectionController] setStackController:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002ccfd @ 0002ccfd, 608 bytes * /
-
-void FUN_0002ccfd(HSEditorWindowController *self,SEL _cmd,id nodeContainer,id didRemoveChildren)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  undefined *puVar5;
-  undefined *puVar6;
-  HSEditorWindowController *local_1c;
-  undefined *local_18;
-  
-  pvVar1 = _objc_msgSend(self,sel_selectionController);
-  pvVar3 = nodeContainer;
-  pvVar4 = didRemoveChildren;
-  _objc_msgSend(pvVar1,sel_noteNodeContainer_didRemoveChildren_,nodeContainer,didRemoveChildren);
-  pvVar1 = _objc_msgSend(didRemoveChildren,sel_extraFirstObject);
-  pvVar2 = _objc_msgSend(didRemoveChildren,sel_count);
-  if (pvVar2 == (id)0x1) {
-    pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,pvVar3,
-                           pvVar4);
-    pvVar3 = _objc_msgSend(pvVar3,sel_objectAssistant);
-    pvVar4 = _objc_msgSend(pvVar3,sel_object);
-    pvVar3 = pvVar1;
-    pvVar4 = _objc_msgSend(pvVar4,sel_isEqual_,pvVar1);
-    if ((char)pvVar4 != '\0') {
-      pvVar4 = _objc_msgSend(pvVar1,sel_isTemporary,pvVar3);
-      if ((char)pvVar4 == '\0') {
-        pvVar4 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,pvVar3)
-        ;
-        pvVar4 = _objc_msgSend(pvVar4,sel_isLocked);
-        if ((char)pvVar4 == '\0') {
-          pvVar3 = _objc_msgSend(self,sel_selectionController,pvVar3);
-          pvVar3 = _objc_msgSend(pvVar3,sel_selectedHyperObject);
-          puVar6 = &DAT_003611f0;
-          puVar5 = puVar6;
-          pvVar4 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003611f0);
-          pvVar4 = _objc_msgSend(pvVar4,sel_isGroupObject);
-          if ((char)pvVar4 != '\0') {
-            pvVar4 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003611f0);
-            pvVar4 = _objc_msgSend(pvVar4,sel_isGroupObject);
-            puVar5 = puVar6;
-            if ((char)pvVar4 != '\0') {
-              pvVar4 = _objc_msgSend(pvVar1,sel_nodeData,puVar6);
-              puVar5 = _objc_msgSend(pvVar3,sel_nodeData);
-              pvVar3 = _objc_msgSend(pvVar4,sel_isEqual_,puVar5);
-              if ((char)pvVar3 != '\0') goto LAB_0002cf23;
-            }
-          }
-          pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,
-                                 puVar5);
-          _objc_msgSend(pvVar3,sel_setActive_explicitlyByUser_,0,0);
-        }
-      }
-    }
-  }
-LAB_0002cf23:
-  local_1c = self;
-  local_18 = PTR_s_HSMainWindowController_0034dbd0;
-  _objc_msgSendSuper(&local_1c,sel_nodeContainer_didRemoveChildren_,nodeContainer,didRemoveChildren)
-  ;
-  return;
-}
-
-*/
 - (void)nodeContainer:(id)aContainer didRemoveChildren:(id)aChildren
 {
     [[self selectionController] noteNodeContainer:aContainer didRemoveChildren:aChildren];
@@ -13591,54 +4726,6 @@ LAB_0002cf23:
     _alertHaveShowedForThisGroup = NO;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0001341b @ 0001341b, 533 bytes * /
-
-void FUN_0001341b(HSEditorWindowController *self,SEL _cmd)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  undefined4 uVar6;
-  
-  pvVar1 = _objc_msgSend(self,sel_document);
-  pvVar1 = _objc_msgSend(pvVar1,sel_stack);
-  pvVar1 = _objc_msgSend(pvVar1,sel_cardObjectsVisibility);
-  self_00 = cls_NSAlert;
-  if (pvVar1 == (id)0x1) {
-    pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSHideOrShowObjectsAlertInformativeText,&cfstr_empty,&cfstr_Alerts
-                          );
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSHideOrShowObjectsAlertAlternateButton,&cfstr_empty,&cfstr_Alerts
-                          );
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSHideOrShowObjectsAlertDefaultButton,&cfstr_empty,&cfstr_Alerts);
-    pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSHideOrShowObjectsAlertMessageText,&cfstr_empty,&cfstr_Alerts);
-    uVar6 = 0;
-    pvVar5 = _objc_msgSend(self_00,
-                           sel_alertWithMessageText_defaultButton_alternateButton_otherButton_informativeTextWithFormat_
-                           ,pvVar4,pvVar3,pvVar2,0,pvVar1);
-    pvVar5 = _objc_msgSend(pvVar5,sel_runModal);
-    if (pvVar5 == (id)0x1) {
-      pvVar1 = _objc_msgSend(self,sel_document,pvVar4,pvVar3,pvVar2,uVar6,pvVar1);
-      pvVar1 = _objc_msgSend(pvVar1,sel_stack);
-      _objc_msgSend(pvVar1,sel_setCardObjectsVisibility_,0);
-    }
-  }
-  return;
-}
-
-*/
 - (void)showAlertAboutHiddenObjectsIfNeeded
 {
     if ([[[self document] stack] cardObjectsVisibility] == 1) {
@@ -13674,22 +4761,6 @@ void FUN_0001341b(HSEditorWindowController *self,SEL _cmd)
     [self synchronizeWindowTitleWithDocumentName];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0002d067 @ 0002d067, 83 bytes * /
-
-void FUN_0002d067(HSEditorWindowController *self,SEL _cmd,id cardViewDidChangedZoomFactor)
-
-{
-  id self_00;
-  double dVar1;
-  
-  self_00 = _objc_msgSend(cardViewDidChangedZoomFactor,sel_object);
-  dVar1 = _objc_msgSend_fpret(self_00,sel_zoomFactor);
-  _objc_msgSend(self,sel_activeCardViewDidChangeZoomFactor_,(float)dVar1);
-  return;
-}
-
-*/
 - (void)cardViewDidChangedZoomFactor:(id)aFactor
 {
     [self activeCardViewDidChangeZoomFactor:[[aFactor object] zoomFactor]];
@@ -13741,22 +4812,6 @@ void FUN_0002d067(HSEditorWindowController *self,SEL _cmd,id cardViewDidChangedZ
     [self switchToToolWithTag:uVar2];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00012fe6 @ 00012fe6, 107 bytes * /
-
-void FUN_00012fe6(HSEditorWindowController *self,SEL _cmd,id mouseMoved)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  _objc_msgSend(pvVar1,sel_handleMouseMoved_,mouseMoved);
-  pvVar1 = _objc_msgSend(cls_HSAEditorApplication,sel_sharedHyperApplication);
-  _objc_msgSend(pvVar1,sel_noteMainWindowDidHandleMouseMovedEvent);
-  return;
-}
-
-*/
 - (void)mouseMoved:(id)aMoved
 {
     [[self cardView] handleMouseMoved:aMoved];
@@ -13922,6 +4977,516 @@ void FUN_00012fe6(HSEditorWindowController *self,SEL _cmd,id mouseMoved)
         [self setShouldCloseDocument:YES];
     }
     return self;
+}
+
+- (void)addSoundComboDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode == 1) {
+        [NSApp sendAction:[aDialog action] to:nil from:nil];
+    }
+    [aDialog autorelease];
+}
+
+- (void)captureDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [self importBackgroundDialogDidEnd:_importDialogControllerActiveLast returnCode:aCode contextInfo:aDialog];
+    [aDialog autorelease];
+}
+
+- (void)cardViewOccupiedByToolDidChange:(id)aChange
+{
+    [[self statusbarController] validateUI];
+}
+
+- (void)easyLinkDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aDialog autorelease];
+}
+
+- (void)textFieldTamerDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aDialog autorelease];
+}
+
+- (void)importMovieDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode == 1) {
+        [NSApp sendAction:[aDialog action] to:nil from:nil];
+    }
+    [aDialog autorelease];
+}
+
+- (void)openEffectsDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+}
+
+- (void)soundAddingOptionsDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aDialog orderOut:nil];
+    id delegate = [aDialog delegate];
+    if (aCode == 1) {
+        _playSoundActionEvent = [[delegate selectedActionEvent] retain];
+    }
+    [delegate autorelease];
+    if (_playSoundActionEvent != nil) {
+        HSAddSoundComboDialog *dialog = [HSAddSoundComboDialog new];
+        if ([dialog runModal] == 1) {
+            [NSApp sendAction:[dialog action] to:nil from:nil];
+        }
+        [dialog release];
+    }
+}
+
+- (void)importSoundObjectDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    NSString *fileName = [_importSoundObjectDialogController fileName];
+    if (fileName == nil) {
+        return;
+    }
+    NSString *path = [self checkFileExistenceAtPath:fileName expectedType:kHSSoundFileType];
+    if (aCode != 1 || path == nil) {
+        return;
+    }
+    if (_playSoundActionEvent == nil) {
+        _playSoundActionEvent = [[HSActionEvent actionEventOfType:kHSArriveActionEventType] retain];
+    }
+    id actor = [[[self document] currentCard] queryHyperInterface:@protocol(HSActor)];
+    HSMovie *movie = nil;
+    id item = nil;
+    id action = nil;
+    if (actor != nil) {
+        id media = [self reusableMediaForPath:path contentFilter:[[HSLibraryManager sharedLibraryManager] soundsContentFilter]];
+        if (media != nil) {
+            movie = [[HSMovie alloc] initWithURL:[NSURL fileURLWithPath:path] error:nil];
+            if (movie != nil) {
+                item = [[HSSoundItem alloc] initWithMediaUID:[media mediaUID] andApplyOptionsFromSound:movie];
+                if (item != nil) {
+                    action = [HSPlaySoundAction new];
+                    id existing = [actor hyperActionsOfType:[HSPlaySoundAction actionType] forEvent:_playSoundActionEvent];
+                    [action addSound:item];
+                    if ([existing count] == 0) {
+                        [actor addHyperAction:action forEvent:_playSoundActionEvent];
+                    } else {
+                        [actor replaceHyperAction:[existing extraFirstObject] withAction:action forEvents:[NSArray arrayWithObject:_playSoundActionEvent]];
+                    }
+                    [self didAddNewObject];
+                }
+            }
+        }
+    }
+    [movie release];
+    [item release];
+    [action release];
+}
+
+- (void)importMediaObjectDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode != 1) {
+        return;
+    }
+    id arriveEvent = [HSActionEvent actionEventOfType:kHSArriveActionEventType];
+    id playable = [[_importMoviesObjectDialogController dialogUserOptions] valueForKey:HSImportDialogMoviesInUseOptionKeyPlayableObject];
+    NSString *path = [self checkFileExistenceAtPath:[_importMoviesObjectDialogController fileName] expectedType:kHSMovieFileType];
+    id object = nil;
+    if (![playable implementsHyperInterface:@protocol(HSMovieObjectAttributes)] && path == nil) {
+        if ([playable implementsHyperInterface:@protocol(HSLiveObjectAttributes)]) {
+            object = [playable copy];
+            [[self cardView] addObjectToCenter:object useDragPreferences:NO];
+            [object release];
+        }
+    } else if (path != nil) {
+        NSString *fileType = [[NSFileManager defaultManager] hyperFileTypeAtPath:path];
+        if ([HSMovieObject isMediaTypeSupported:fileType] && [[HSEditorController sharedDocumentController] canImportFileAtPath:path showAlert:YES]) {
+            id card = [[self document] currentCard];
+            id media = [self reusableMediaForPath:path contentFilter:[[HSLibraryManager sharedLibraryManager] moviesContentFilter]];
+            NSError *error = nil;
+            BOOL copied = NO;
+            if (playable == nil) {
+                object = [[HSMovieObject alloc] initWithMedia:media error:&error];
+                if (object != nil) {
+                    NSArray *verified = [self verifyObjects:[NSArray arrayWithObject:object] beforeAddToCard:card];
+                    if ([verified count] != 0) {
+                        [object release];
+                        object = [[verified lastObject] retain];
+                    }
+                }
+            } else {
+                object = [playable copy];
+                [object setHyperUID:[HSUID UID]];
+                id actor = [object queryHyperInterface:@protocol(HSActor)];
+                id actions = [actor hyperActions];
+                if ([actions count] != 0) {
+                    [actor removeActions:actions];
+                }
+                copied = object != nil;
+            }
+            if (object == nil) {
+                if (error != nil) {
+                    [[HSErrorManager sharedErrorManager] presentError:error inWindow:[self window]];
+                } else {
+                    HSMovie *movie = [HSMovie movieWithURL:[NSURL fileURLWithPath:path] error:&error];
+                    if (error == nil && movie != nil && [movie isGifMovie] && ![movie hasMultiplySamples]) {
+                        object = [[HSImageObject alloc] initWithMedia:media error:&error];
+                        if ([[self document] prepareForHandlingActionThatRequiresConditionalSwitchToEditMode]) {
+                            [[self cardView] addObjectToCenter:object useDragPreferences:NO];
+                        }
+                        [object release];
+                    }
+                }
+            } else {
+                if ([[self document] prepareForHandlingActionThatRequiresConditionalSwitchToEditMode]) {
+                    id nodeChild = [object queryHyperInterface:@protocol(HSNodeChild)];
+                    if (nodeChild != nil && !copied) {
+                        [nodeChild setSupport:[card support]];
+                        NSSize cardSize = [[card queryHyperInterface:@protocol(HSSizeAttributes)] size];
+                        id sizeAttributes = [object queryHyperInterface:@protocol(HSMutableSizeAttributes)];
+                        NSSize objectSize = [sizeAttributes size];
+                        if (sizeAttributes != nil && (cardSize.width < objectSize.width || cardSize.height < objectSize.height || cardSize.width * cardSize.height * 0.9 < objectSize.width * objectSize.height)) {
+                            [[card undoManager] disableUndoRegistration];
+                            CGFloat ratio = objectSize.width / objectSize.height;
+                            NSSize newSize;
+                            if (ratio <= cardSize.width / cardSize.height) {
+                                newSize = NSMakeSize(ratio * cardSize.height, cardSize.height);
+                            } else {
+                                newSize = NSMakeSize(cardSize.width, cardSize.width / ratio);
+                            }
+                            [sizeAttributes setSize:newSize];
+                            [[card undoManager] enableUndoRegistration];
+                        }
+                        [nodeChild setSupport:nil];
+                    }
+                    [[object queryHyperInterface:@protocol(HSAutoplayAttributes)] setAutoPlayActionEvent:arriveEvent];
+                    NSString *comments = [HSEditorCardViewDragHelper commentsForDroppedObjectWithURL:[NSURL fileURLWithPath:path]];
+                    if (comments != nil && [comments length] != 0) {
+                        [[object queryHyperInterface:@protocol(HSCommentsAttributes)] setHyperComments:[[comments copy] autorelease]];
+                    }
+                    [[self cardView] addObjectToCenter:object useDragPreferences:NO];
+                }
+                [object release];
+            }
+        }
+    }
+    [self didAddNewObject];
+}
+
+- (void)hideFixedToolbars
+{
+    BOOL toolbarVisible = [[[self toolbarController] toolbar] isVisible];
+    _wasToolbarVisible = toolbarVisible;
+    if (toolbarVisible) {
+        [[[self toolbarController] toolbar] setVisible:NO];
+    }
+    BOOL bottomVisible = [self isBottomToolbarVisible];
+    _wasBottomToolbarVisible = bottomVisible;
+    if (bottomVisible) {
+        [[[self document] playerInEditorWindowController] setBottomToolbarVisible:NO];
+        [self setBottomToolbarVisible:NO];
+    }
+    BOOL stripVisible = [[self stackController] isStripVisible];
+    _wasCardIndexVisible = stripVisible;
+    if (stripVisible) {
+        id stackController = [self stackController];
+        if ([stackController respondsToSelector:@selector(hideCardIndexWithoutAnimation)]) {
+            [stackController hideCardIndexWithoutAnimation];
+        }
+    }
+}
+
+- (void)hideFloatingPalettes
+{
+    _wasToolPaletteVisible = [[HSToolPaletteController sharedInstance] isPaletteVisible];
+    if (_wasToolPaletteVisible) {
+        [[HSToolPaletteController sharedInstance] hidePalette];
+    }
+    _wasLibraryPaletteVisible = [[HSLibraryController sharedLibraryController] isLibraryVisible];
+    if (_wasLibraryPaletteVisible) {
+        [[HSLibraryController sharedLibraryController] hideLibrary];
+    }
+    _wasLayoutPaletteVisible = [[HSLayoutPaletteController sharedInstance] isPaletteVisible];
+    if (_wasLayoutPaletteVisible) {
+        [[HSLayoutPaletteController sharedInstance] hidePalette];
+    }
+    _wasObjectListPaletteVisible = [[HSObjectListPaletteController sharedInstance] isPaletteVisible];
+    if (_wasObjectListPaletteVisible) {
+        [[HSObjectListPaletteController sharedInstance] hidePalette];
+    }
+    _wasCommentsAndAttributionsPaletteVisible = [[HSCommentsAndAttributionsPaletteController sharedInstance] isPaletteVisible];
+    if (_wasCommentsAndAttributionsPaletteVisible) {
+        [[HSCommentsAndAttributionsPaletteController sharedInstance] hidePalette];
+    }
+    _wasShortcutsPaletteVisible = [[HSShortcutsPaletteController sharedInstance] isPaletteVisible];
+    if (_wasShortcutsPaletteVisible) {
+        [[HSShortcutsPaletteController sharedInstance] hidePalette];
+    }
+    _wasObjectAssistantVisible = [[[HSObjectAssistantController sharedAssistantController] objectAssistant] isActive];
+    if (_wasObjectAssistantVisible) {
+        [[[[HSObjectAssistantController sharedAssistantController] objectAssistant] window] setAlphaValue:0];
+    }
+}
+
+- (void)restoreFixedToolbars
+{
+    if (_wasToolbarVisible) {
+        [[[self toolbarController] toolbar] setVisible:YES];
+    }
+    if (_wasBottomToolbarVisible) {
+        [[[self document] playerInEditorWindowController] setBottomToolbarVisible:YES];
+        [self setBottomToolbarVisible:YES];
+    }
+    if (_wasCardIndexVisible) {
+        id stackController = [self stackController];
+        if ([stackController respondsToSelector:@selector(showCardIndexWithoutAnimation)]) {
+            [stackController showCardIndexWithoutAnimation];
+        }
+    }
+}
+
+- (void)restoreFloatingPalettes
+{
+    if (_wasToolPaletteVisible) {
+        [[HSToolPaletteController sharedInstance] showPalette];
+    }
+    if (_wasLibraryPaletteVisible) {
+        [[HSLibraryController sharedLibraryController] showLibrary];
+    }
+    if (_wasLayoutPaletteVisible) {
+        [[HSLayoutPaletteController sharedInstance] showPalette];
+    }
+    if (_wasObjectListPaletteVisible) {
+        [[HSObjectListPaletteController sharedInstance] showPalette];
+    }
+    if (_wasCommentsAndAttributionsPaletteVisible) {
+        [[HSCommentsAndAttributionsPaletteController sharedInstance] showPalette];
+    }
+    if (_wasShortcutsPaletteVisible) {
+        [[HSShortcutsPaletteController sharedInstance] showPalette];
+    }
+    if (_wasObjectAssistantVisible) {
+        [[[[HSObjectAssistantController sharedAssistantController] objectAssistant] window] setAlphaValue:1];
+    }
+}
+
+- (void)inspectorsRestoration
+{
+    if (![[HSEditorController sharedDocumentController] isInViewingMode]) {
+        return;
+    }
+    if (_wasToolPaletteVisible) {
+        [[HSToolPaletteController sharedInstance] showPalette];
+    }
+    if (_wasLibraryPaletteVisible) {
+        [[HSLibraryController sharedLibraryController] showLibrary];
+    }
+    if (_wasLayoutPaletteVisible) {
+        [[HSLayoutPaletteController sharedInstance] showPalette];
+    }
+    if (_wasObjectListPaletteVisible) {
+        [[HSObjectListPaletteController sharedInstance] showPalette];
+    }
+    if (_wasCommentsAndAttributionsPaletteVisible) {
+        [[HSCommentsAndAttributionsPaletteController sharedInstance] showPalette];
+    }
+    if (_wasShortcutsPaletteVisible) {
+        [[HSShortcutsPaletteController sharedInstance] showPalette];
+    }
+    BOOL toolbarVisible = [[[self toolbarController] toolbar] isVisible];
+    if (_wasToolbarVisible != toolbarVisible) {
+        [self hideShowToolbar:self];
+    }
+    id stackController = [self stackController];
+    SEL indexSelector = _wasCardIndexVisible ? @selector(showCardIndex:) : @selector(hideCardIndex:);
+    if ([stackController respondsToSelector:indexSelector]) {
+        [stackController performSelector:indexSelector];
+    }
+    [self setBottomToolbarVisible:_wasBottomToolbarVisible];
+    [_statusbarController validateUI];
+    if (_wasMenuVisible) {
+        [[HSSystemUI sharedSystemUI] setupWithMode:0 options:0];
+    }
+    if (_wasObjectAssistantVisible) {
+        [[HSObjectAssistantController sharedAssistantController] setActive:YES explicitlyByUser:YES];
+    }
+}
+
+- (BOOL)isCurrentCardNotTitle
+{
+    return [[[[self document] currentCard] queryHyperInterface:@protocol(HSNodeChild)] hyperIndex] != 0;
+}
+
+- (void)mediaStripSwitcherDidShowMediaStrip
+{
+    if (_isNibLoaded) {
+        id state = [self documentWindowStateDictionary];
+        [state setObject:[NSNumber numberWithBool:YES] forKey:@"HSCardBrowserVisibleKey"];
+        [self commitToDocumentWindowStatesDictionary:state];
+    }
+}
+
+- (void)mediaStripSwitcherWillHideMediaStrip
+{
+    if (_isNibLoaded) {
+        id state = [self documentWindowStateDictionary];
+        [state setObject:[NSNumber numberWithBool:NO] forKey:@"HSCardBrowserVisibleKey"];
+        [self commitToDocumentWindowStatesDictionary:state];
+    }
+}
+
+- (Class)navigationControllerClass
+{
+    return [HSEditorNavigationController class];
+}
+
+- (void)navigationControllerDidFinishNavigationOperation:(id)aOperation
+{
+    [_statusbarController validateUI];
+}
+
+- (void)nodeContainer:(id)aContainer didLoadChildren:(id)aChildren
+{
+    if (![[self document] isInPlayerMode] && [[self document] isInStandardMode]) {
+        return;
+    }
+    if ([aContainer implementsHyperInterface:@protocol(HSCardAttributes)]) {
+        [[aContainer animationController] presentationIsStarting];
+    }
+}
+
+- (void)notifyDidEnterVersionBrowser:(id)aBrowser
+{
+    [[HSEditorController sharedDocumentController] setViewingMode:YES];
+    if (_wasBottomToolbarVisible) {
+        [_statusbarController validateUI];
+    }
+    [super notifyDidEnterVersionBrowser:aBrowser];
+}
+
+- (void)notifyDidExitVersionBrowser:(id)aBrowser
+{
+    [self inspectorsRestoration];
+    [[HSEditorController sharedDocumentController] setViewingMode:NO];
+    [_statusbarController validateUI];
+    [super notifyDidExitVersionBrowser:aBrowser];
+}
+
+- (void)notifyWillEnterVersionBrowser:(id)aBrowser
+{
+    _wasToolPaletteVisible = [[HSToolPaletteController sharedInstance] isPaletteVisible];
+    if (_wasToolPaletteVisible) {
+        [[HSToolPaletteController sharedInstance] hidePalette];
+    }
+    _wasLibraryPaletteVisible = [[HSLibraryController sharedLibraryController] isLibraryVisible];
+    if (_wasLibraryPaletteVisible) {
+        [[HSLibraryController sharedLibraryController] hideLibrary];
+    }
+    _wasLayoutPaletteVisible = [[HSLayoutPaletteController sharedInstance] isPaletteVisible];
+    if (_wasLayoutPaletteVisible) {
+        [[HSLayoutPaletteController sharedInstance] hidePalette];
+    }
+    _wasObjectListPaletteVisible = [[HSObjectListPaletteController sharedInstance] isPaletteVisible];
+    if (_wasObjectListPaletteVisible) {
+        [[HSObjectListPaletteController sharedInstance] hidePalette];
+    }
+    _wasCommentsAndAttributionsPaletteVisible = [[HSCommentsAndAttributionsPaletteController sharedInstance] isPaletteVisible];
+    if (_wasCommentsAndAttributionsPaletteVisible) {
+        [[HSCommentsAndAttributionsPaletteController sharedInstance] hidePalette];
+    }
+    _wasShortcutsPaletteVisible = [[HSShortcutsPaletteController sharedInstance] isPaletteVisible];
+    if (_wasShortcutsPaletteVisible) {
+        [[HSShortcutsPaletteController sharedInstance] hidePalette];
+    }
+    _wasToolbarVisible = [[[self toolbarController] toolbar] isVisible];
+    if (_wasToolbarVisible) {
+        [self hideShowToolbar:self];
+    }
+    _wasCardIndexVisible = [[self stackController] isStripVisible];
+    if (!_wasCardIndexVisible) {
+        id stackController = [self stackController];
+        if ([stackController respondsToSelector:@selector(showCardIndex:)]) {
+            [stackController showCardIndex:self];
+        }
+    }
+    _wasBottomToolbarVisible = [self isBottomToolbarVisible];
+    if (_wasBottomToolbarVisible) {
+        [[[self document] playerInEditorWindowController] setBottomToolbarVisible:NO];
+        [self setBottomToolbarVisible:NO];
+    }
+    _wasMenuVisible = [[[self document] stack] isPresentationMenuVisible];
+    if (_wasMenuVisible) {
+        [[HSSystemUI sharedSystemUI] setupWithMode:3 options:1];
+    }
+    _wasObjectAssistantVisible = [[[HSObjectAssistantController sharedAssistantController] objectAssistant] isActive];
+    if (_wasObjectAssistantVisible) {
+        [[HSObjectAssistantController sharedAssistantController] setActive:NO explicitlyByUser:YES];
+    }
+    [super notifyWillEnterVersionBrowser:aBrowser];
+}
+
+- (void)objectAssistantLockStateDidChange:(id)aChange
+{
+    [[self statusbarController] validateUI];
+}
+
+- (void)refreshObjectsAssistant
+{
+    if (_selectedObjectForAssistantRefresh != nil) {
+        if (![[self document] isModalSessionPresent]) {
+            [[HSObjectAssistantController sharedAssistantController] performSelector:@selector(openDefaultEditingPaneForObject:) withObject:_selectedObjectForAssistantRefresh afterDelay:0];
+        }
+        _selectedObjectForAssistantRefresh = nil;
+    }
+}
+
+- (void)setSelectedObjectForAssistantRefresh:(id)aRefresh
+{
+    _selectedObjectForAssistantRefresh = aRefresh;
+}
+
+- (void)storeDocumentWindowState:(id)aState
+{
+    [super storeDocumentWindowState:aState];
+    id hyperCardView = [[_cardScrollView documentView] queryHyperInterface:@protocol(HSCardViewOffset)];
+    NSSize offset = NSZeroSize;
+    if (hyperCardView != nil) {
+        offset = [hyperCardView cardOffset];
+    }
+    NSRect bounds = NSZeroRect;
+    if ([_cardScrollView contentView] != nil) {
+        bounds = [[_cardScrollView contentView] bounds];
+    }
+    NSPoint scrollPoint = NSMakePoint(bounds.origin.x - offset.width, bounds.origin.y - offset.height);
+    [aState setObject:NSStringFromPoint(scrollPoint) forKey:@"HSEditorScrollPointKey"];
+    if (![[self document] isInPresentationMode]) {
+        [aState setObject:[NSNumber numberWithBool:[[self stackView] isStripVisible]] forKey:@"HSCardBrowserVisibleKey"];
+    } else {
+        [aState setValue:[NSNumber numberWithBool:_wasToolbarVisible] forKey:@"HSToolbarVisibleKey"];
+        [aState setValue:[NSNumber numberWithBool:_wasBottomToolbarVisible] forKey:@"HSBottomToolbarVisibleKey"];
+        [aState setObject:[NSNumber numberWithBool:_wasCardIndexVisible] forKey:@"HSCardBrowserVisibleKey"];
+    }
+}
+
+- (id)swipeTracker
+{
+    if (_swipeTracker == nil) {
+        _swipeTracker = [HSFluidSwipeTracker new];
+    }
+    return _swipeTracker;
+}
+
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
+    if ([[self document] isTutorialStack]) {
+        [[self window] setLevel:CGWindowLevelForKey(kCGFloatingWindowLevelKey)];
+        [[self window] setCollectionBehavior:0];
+    }
+    [[self swipeTracker] setNextResponder:[_cardScrollView nextResponder]];
+    [_cardScrollView setNextResponder:[self swipeTracker]];
+    _selectedObjectForAssistantRefresh = nil;
+}
+
+- (BOOL)windowShouldClose:(id)aClose
+{
+    return ![[self document] isModalSessionPresent];
 }
 
 @end
