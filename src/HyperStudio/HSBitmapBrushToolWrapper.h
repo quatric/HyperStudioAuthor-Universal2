@@ -14,5 +14,6 @@
 - (void)dealloc;
 - (void)deactivateBitmapTool;
 - (BOOL)activateBitmapTool;
+- (BOOL)tool:(id)aTool didFinalizeStage:(id)aStage withEvent:(id)aEvent nextStage:(id)aNextStage;
 @end
 

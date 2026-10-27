@@ -71,4 +71,34 @@
     return activated;
 }
 
+- (BOOL)tool:(id)aTool didFinalizeStage:(id)aStage withEvent:(id)aEvent nextStage:(id)aNextStage
+{
+    id bitmapTool = [self bitmapTool];
+    if (bitmapTool == aTool && aNextStage == nil && [_touchStorage numberOfTouches] != 0) {
+        [bitmapTool stopRecordTouchesWithConsumer:_touchStorage];
+        // A gradient brush is drawn once over the whole stroke when the stage ends.
+        if ([bitmapTool image] == nil && CGEColorIsGradient([[bitmapTool color] pointer])) {
+            id workImage = [bitmapTool workImage];
+            CGSize imageSize = workImage != nil ? [workImage imageSize] : CGSizeZero;
+            CGRect dirtyRect = CGRectIntersection(_brushBounds, CGRectMake(CGPointZero.x, CGPointZero.y, imageSize.width, imageSize.height));
+            if (!CGRectIsEmpty(dirtyRect)) {
+                [bitmapTool preEditWorkImage:workImage inRect:dirtyRect];
+                [workImage beginCGEditing];
+                CGContextRef context = [workImage imageCGContext];
+                if (context != NULL)
+                    [_touchStorage drawWithTouchProvider:_touchStorage inContext:context withBounds:dirtyRect];
+                [workImage endCGEditing];
+                [bitmapTool postEditWorkImageInRect:dirtyRect];
+            }
+        }
+        [_touchStorage setDelegate:nil];
+        [_touchStorage release];
+        _touchStorage = [HSBrushTouchesStorage new];
+        [_touchStorage setDelegate:self];
+        [bitmapTool startRecordTouchesWithConsumer:_touchStorage];
+        _brushBounds = CGRectZero;
+    }
+    return [super tool:aTool didFinalizeStage:aStage withEvent:aEvent nextStage:aNextStage];
+}
+
 @end

@@ -83,5 +83,6 @@
 - (void)paneDialogWillCancel;
 - (void)awakeFromNib;
 - (void)dealloc;
+- (void)cropImageDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 @end
 

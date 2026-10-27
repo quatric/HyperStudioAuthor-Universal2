@@ -273,4 +273,34 @@
         [commentsAttributes appendHyperComments:comments];
 }
 
+- (void)importDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [[aDialog window] orderOut:nil];
+    if (aCode != 1)
+        return;
+    id options = [_importGraphicDialogController dialogUserOptions];
+    id media;
+    if ([[options valueForKey:HSCaptureImageKey] boolValue]) {
+        id capture = [[HSCaptureImageController alloc] init];
+        NSInteger code = [capture runModal];
+        [self imageCaptureDialogDidEnd:capture returnedCode:code contextInfo:NULL];
+        return;
+    }
+    NSString *path = [_importGraphicDialogController fileName];
+    if ([[options valueForKey:HSImportDialogGraphicsOptionKeyIsImageCropped] boolValue]) {
+        media = [HSNewMedia mediaWithImage:[options valueForKey:HSImportDialogGraphicsOptionKeyCroppedImage]];
+    } else {
+        if (path == nil) {
+            [self anotherImageObjectWithMedia:nil];
+            return;
+        }
+        id UIDString = [[[HSLibraryManager sharedLibraryManager] mediaContentFilter] globalUIDStringForMediaItem:path];
+        id UID = UIDString != nil ? [HSUID UIDWithString:UIDString] : nil;
+        media = UID != nil ? [[HSNewMediaAccessor sharedMediaAccessor] mediaForUID:UID] : nil;
+        if (media == nil)
+            media = [HSNewMedia mediaWithPath:path mediaUID:UID];
+    }
+    [self anotherImageObjectWithMedia:media];
+}
+
 @end

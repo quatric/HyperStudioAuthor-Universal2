@@ -1841,5 +1841,34 @@ void FUN_001b048b(HSImportDialogGraphicsPaneViewController *self,SEL _cmd)
     [super dealloc];
 }
 
+- (void)cropImageDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    id delegate = [aDialog delegate];
+    if (aCode == 1 && [delegate croppedImage] != nil) {
+        [_croppedImage release];
+        _croppedImage = [[delegate croppedImage] retain];
+        id modificationDate = [[[NSFileManager defaultManager] attributesOfItemAtPath:[self paneFilePath] error:NULL] objectForKey:NSFileModificationDate];
+        [_croppedImageSourceInfo release];
+        _croppedImageSourceInfo = [[NSDictionary alloc] initWithObjectsAndKeys:[self paneFilePath], @"croppedImageSourceFilePath", modificationDate, @"croppedImageSourceFileModDate", nil];
+        [_cardPreview setImageSize:[_croppedImage size]];
+        [_cardPreview setImage:_croppedImage];
+        if ([[self dialogType] isEqualToString:HSImportDialogControllerTypeGraphicObject] && [self isObjectOptionsDisabled]) {
+            NSSize cardSize = [[[[self paneHyperDocument] stack] queryHyperInterface:@protocol(HSStackAttributes)] hyperCardSize];
+            NSSize imageSize = [_croppedImage size];
+            if (cardSize.width < imageSize.width || cardSize.height < imageSize.height)
+                [_objectOptionsMatrix selectCellWithTag:1];
+            else
+                [_objectOptionsMatrix selectCellWithTag:_defaultObjectLayoutTag];
+            [self layoutChanged:_objectOptionsMatrix];
+        } else {
+            [_cardPreview setNeedsDisplay:YES];
+        }
+        if (_cropPaths == nil)
+            _cropPaths = [[NSMutableArray arrayWithCapacity:1] retain];
+        [_cropPaths addObject:[delegate borderPath]];
+    }
+    [delegate autorelease];
+}
+
 @end
 
