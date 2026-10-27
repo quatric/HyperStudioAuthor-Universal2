@@ -98,5 +98,7 @@
 - (BOOL)isTextObject:(id)aObject;
 - (id)context;
 - (void)dealloc;
+- (BOOL)canActivateNonScalableObjects;
+- (BOOL)canActivateTextObjects;
 @end
 

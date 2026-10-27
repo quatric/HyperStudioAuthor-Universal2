@@ -114,6 +114,40 @@
 {
     [_dropOffRewardSoundMedia release];
     [_dropOffTargetUID release];
+    [_temporaryDropOffTarget release];
     [super dealloc];
 }
+- (BOOL)isEqualTo:(id)aObject
+{
+    if (![aObject isMemberOfClass:[self class]])
+        return NO;
+    if (_playDropOffRewardSound != [aObject playDropOffRewardSound]
+        || (_isDropOffSnappingEnabled ? YES : NO) != [aObject isDropOffSnappingEnabled]
+        || _isDropOffTarget != [aObject isDropOffTarget]
+        || _dropOffSnappingRange != [aObject dropOffSnappingRange])
+        return NO;
+    NSString *name = [_dropOffRewardSoundMedia mediaName];
+    NSString *otherName = [[aObject dropOffRewardSoundMedia] mediaName];
+    if (name == nil && otherName != nil)
+        return NO;
+    if (name != nil && otherName == nil)
+        return NO;
+    if (name != nil && ![name isEqualToString:otherName])
+        return NO;
+    return YES;
+}
+
+- (id)temporaryDropOffTarget
+{
+    return _temporaryDropOffTarget;
+}
+
+- (void)setTemporaryDropOffTarget:(id)aTarget
+{
+    if (_temporaryDropOffTarget != aTarget) {
+        [_temporaryDropOffTarget release];
+        _temporaryDropOffTarget = [aTarget retain];
+    }
+}
+
 @end

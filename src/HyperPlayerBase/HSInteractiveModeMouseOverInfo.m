@@ -924,4 +924,14 @@ done:
     [super dealloc];
 }
 
+- (BOOL)canActivateNonScalableObjects
+{
+    return [[[self renderingView] queryHyperInterface:@protocol(HSInteractiveCanvasLayerContext)] canActivateNonScalableObjects];
+}
+
+- (BOOL)canActivateTextObjects
+{
+    return [self canActivateNonScalableObjects];
+}
+
 @end

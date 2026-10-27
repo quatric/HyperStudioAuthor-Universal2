@@ -39,6 +39,7 @@
 - (void)mergeInSequencerAction:(id)aAction replacingObjectUIDs:(id)aDs sortedByPriority:(id)aPriority withImageObjectUID:(id)aUID;
 - (id)copyReplacingObjectUIDs:(id)aDs sortedByPriority:(id)aPriority withImageObjectUID:(id)aUID;
 - (void)dealloc;
+- (BOOL)ignoreHyperActionDelay;
 @end
 
 @interface HSSequenceItem : NSObject <EXKeyValueCoding, NSCopying>

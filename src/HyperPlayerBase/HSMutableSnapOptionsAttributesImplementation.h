@@ -29,5 +29,9 @@
 - (id)node;
 - (void)dealloc;
 - (id)initWithNodeUnit:(id)aUnit node:(id)aNode;
+- (BOOL)isEqualTo:(id)aObject;
+- (id)nodeUnit;
+- (id)temporaryDropOffTarget;
+- (void)setTemporaryDropOffTarget:(id)aTarget;
 @end
 

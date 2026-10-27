@@ -7,6 +7,7 @@
     HSActionEvent *_autoPlayActionEvent;
     BOOL _animatedObject;
     BOOL _interactiveInAnimation;
+    BOOL _temporaryObjectForAction;
 }
 + (Class)nodeDataClass;
 - (void)importGeometryFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
@@ -122,6 +123,8 @@
 - (id)initUserObject;
 - (void)dealloc;
 - (void)verifyUnsupportedFeatures;
+- (BOOL)isTemporaryObjectForAction;
+- (void)setTemporaryObjectForAction:(BOOL)aFlag;
 @end
 
 @interface HSConcreteCardObject (HSPlayableObjectAttributesPrivate)

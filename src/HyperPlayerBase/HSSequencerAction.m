@@ -294,6 +294,11 @@
     [super dealloc];
 }
 
+- (BOOL)ignoreHyperActionDelay
+{
+    return NO;
+}
+
 @end
 
 // An object of the sequence and the delay before its actions run.

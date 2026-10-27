@@ -119,4 +119,30 @@
     [_node associateImplementation:self withInterface:@protocol(HSMutableSnappingTargetUIDIdentification)];
     return self;
 }
+- (BOOL)isEqualTo:(id)aObject
+{
+    if (![aObject isMemberOfClass:[self class]])
+        return NO;
+    if (![_nodeUnit isEqualTo:[aObject nodeUnit]])
+        return NO;
+    NSRect frame = [[_node queryHyperInterface:@protocol(HSGeometryAttributes)] frameBoundingRect];
+    NSRect otherFrame = [[[aObject node] queryHyperInterface:@protocol(HSGeometryAttributes)] frameBoundingRect];
+    return NSEqualRects(frame, otherFrame);
+}
+
+- (id)nodeUnit
+{
+    return _nodeUnit;
+}
+
+- (id)temporaryDropOffTarget
+{
+    return [_nodeUnit temporaryDropOffTarget];
+}
+
+- (void)setTemporaryDropOffTarget:(id)aTarget
+{
+    [_nodeUnit setTemporaryDropOffTarget:aTarget];
+}
+
 @end

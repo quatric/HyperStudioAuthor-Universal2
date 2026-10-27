@@ -10,6 +10,7 @@
     unsigned int _dropOffSnappingRange;
     HSNewMedia *_dropOffRewardSoundMedia;
     HSUID *_dropOffTargetUID;
+    id _temporaryDropOffTarget;
 }
 + (id)keysForStoring;
 - (void)setIsDropOffSnappingEnabled:(BOOL)aEnabled;
@@ -34,5 +35,8 @@
 - (id)attributes;
 - (id)copyWithZone:(NSZone *)aZone;
 - (void)dealloc;
+- (BOOL)isEqualTo:(id)aObject;
+- (id)temporaryDropOffTarget;
+- (void)setTemporaryDropOffTarget:(id)aTarget;
 @end
 

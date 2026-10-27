@@ -943,6 +943,16 @@ static NSString *HSConcreteCardObjectUnsupportedFeature(NSString *aKey)
         [attributes setHyperCursor:nil];
 }
 
+- (BOOL)isTemporaryObjectForAction
+{
+    return _temporaryObjectForAction;
+}
+
+- (void)setTemporaryObjectForAction:(BOOL)aFlag
+{
+    _temporaryObjectForAction = aFlag;
+}
+
 @end
 
 @implementation HSConcreteCardObject (HSPlayableObjectAttributesPrivate)
