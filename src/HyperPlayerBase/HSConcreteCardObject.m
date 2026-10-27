@@ -171,9 +171,10 @@ static NSString *HSConcreteCardObjectUnsupportedFeature(NSString *aKey)
 }
 - (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
 {
-    if ([super hasUnsupportedHTML5FeaturesForDocumentType:aType] || [self isRotatable] || [self isResizable])
+    id cursor = [[self queryHyperInterface:@protocol(HSCursorAttributes)] cursor];
+    if ([super hasUnsupportedHTML5FeaturesForDocumentType:aType] || [self isRotatable] || [self isResizable] || [self isNoClick])
         return YES;
-    return [self isNoClick] && [aType isEqualToString:@"HSiBooksAuthorDocumentType"];
+    return [cursor imageMedia] != nil;
 }
 - (id)HTML5DictionaryRepresentationInContext:(id)aContext
 {

@@ -57,17 +57,29 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 
 - (void)autosizePreservingVisibleCenter
 {
+    float zoom = _zoomFactor;
+    float offset = _cardOffset.width;
     [self HSCardView_autosizePreservingVisibleArea:YES orCenteringAtUserPoint:NSZeroPoint respectingLastVisibleContent:NO];
+    if (_zoomFactor < zoom - 0.001953125f || zoom + 0.001953125f < _zoomFactor || _cardOffset.width < offset - 0.001953125f || offset + 0.001953125f < _cardOffset.width)
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
 }
 
 - (void)autosizePreservingVisibleArea
 {
+    float zoom = _zoomFactor;
+    float offset = _cardOffset.width;
     [self HSCardView_autosizePreservingVisibleArea:YES orCenteringAtUserPoint:NSZeroPoint respectingLastVisibleContent:YES];
+    if (_zoomFactor < zoom - 0.001953125f || zoom + 0.001953125f < _zoomFactor || _cardOffset.width < offset - 0.001953125f || offset + 0.001953125f < _cardOffset.width)
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
 }
 
 - (void)autosizeCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
 {
+    float zoom = _zoomFactor;
+    float offset = _cardOffset.width;
     [self HSCardView_autosizePreservingVisibleArea:NO orCenteringAtUserPoint:aPoint respectingLastVisibleContent:aContent];
+    if (_zoomFactor < zoom - 0.001953125f || zoom + 0.001953125f < _zoomFactor || _cardOffset.width < offset - 0.001953125f || offset + 0.001953125f < _cardOffset.width)
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
 }
 
 - (void)HSCardView_autosizePreservingVisibleArea:(BOOL)aArea orCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
