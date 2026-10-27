@@ -40,6 +40,7 @@
 #import "HSApplicationLicensor.h"
 #import "HSANetworkUploader.h"
 #import "HSANetworkConnection.h"
+#import "HSAFTPConnection.h"
 #import "HSAExportPanelController.h"
 #import "HSPublishComboDialog.h"
 #import "HSHypertextLinksInspectorController.h"

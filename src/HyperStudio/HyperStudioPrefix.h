@@ -208,6 +208,7 @@
 @class HSApplicationLicensor;
 @class HSANetworkUploader;
 @class HSANetworkConnection;
+@class HSAFTPConnection;
 @class HSAExportPanelController;
 @class HSPublishComboDialog;
 @class HSHypertextLinksInspectorController;
