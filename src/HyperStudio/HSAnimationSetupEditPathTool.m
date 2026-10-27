@@ -923,5 +923,10 @@ void FUN_000cd561(HSAnimationSetupEditPathTool *self,SEL _cmd,
     return self;
 }
 
+- (BOOL)shouldResetToolOnSelectObjects
+{
+    return NO;
+}
+
 @end
 

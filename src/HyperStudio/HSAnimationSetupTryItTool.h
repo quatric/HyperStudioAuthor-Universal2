@@ -16,5 +16,6 @@
 - (id)delegate;
 - (BOOL)shouldResetToolOnAddObjects;
 - (void)dealloc;
+- (BOOL)shouldResetToolOnSelectObjects;
 @end
 

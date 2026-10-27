@@ -28,5 +28,6 @@
 - (void)viewWillAppear:(BOOL)aAppear;
 - (void)viewDidLoad;
 - (id)newBackgroundImage;
+- (id)assistantPaneUndoManager;
 @end
 

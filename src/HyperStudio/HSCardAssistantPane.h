@@ -56,5 +56,6 @@
 - (void)viewWillAppear:(BOOL)aAppear;
 - (void)openPaneWithIdentifier:(id)aIdentifier;
 - (id)init;
+- (id)assistantPaneUndoManager;
 @end
 

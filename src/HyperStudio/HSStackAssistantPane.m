@@ -795,5 +795,10 @@ id FUN_0011d3ad(HSStackAssistantPane *self,SEL _cmd)
     return [self initWithNibName:@"StackAssistantPane"];
 }
 
+- (id)assistantPaneUndoManager
+{
+    return [[self modalViewController] assistantPaneUndoManager];
+}
+
 @end
 

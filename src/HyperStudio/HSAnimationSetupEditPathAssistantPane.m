@@ -37,4 +37,9 @@
     [super dealloc];
 }
 
+- (id)assistantPaneUndoManager
+{
+    return [_delegate undoManagerForAnimationSetupEditPathAssistantPane:self];
+}
+
 @end

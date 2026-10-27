@@ -46,10 +46,13 @@
 - (Class)applierClass;
 - (void)dealloc;
 - (id)init;
+- (BOOL)shouldRewindToPreviousHubPane;
+- (void)toggleOpenInSeparateWindow:(id)aSender;
 @end
 
 @interface HSAnotherCardActionAssistantApplier : HSActionAssistantSettingsApplier
 {
+    BOOL _shouldOpenInSeparateWindow;
     NSURL *_initialURL;
     HSUID *_initialCardUID;
     int _initialCardIDOldFileFormat;
@@ -68,6 +71,7 @@
 - (void)setUpInitialSettings;
 - (id)otherCardActionAttributes;
 - (void)dealloc;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
 @end
 
 @interface HSAnotherCardActionAssistantPane (HSDropImageViewDelegate)

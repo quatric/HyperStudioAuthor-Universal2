@@ -104,4 +104,11 @@
     [super viewWillDisappear:aDisappear];
 }
 
+- (id)assistantPaneUndoManager
+{
+    if (![_delegate respondsToSelector:@selector(undoManagerForImagePartPane:)])
+        return nil;
+    return [_delegate undoManagerForImagePartPane:self];
+}
+
 @end

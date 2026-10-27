@@ -54,4 +54,9 @@
     return [HSObjectAssistantNavigationPaneSwitcher new];
 }
 
+- (id)assistantPaneUndoManager
+{
+    return [_delegate undoManagerForAnimationSetupCoachingAssistantPane:self];
+}
+
 @end

@@ -59,4 +59,9 @@
     [super dealloc];
 }
 
+- (BOOL)shouldResetToolOnSelectObjects
+{
+    return NO;
+}
+
 @end

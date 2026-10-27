@@ -499,6 +499,17 @@ LAB_0010710e:
     return self;
 }
 
+- (BOOL)shouldRewindToPreviousHubPane
+{
+    return [[self actionAttributes] shouldOpenInSeparateWindow];
+}
+
+- (void)toggleOpenInSeparateWindow:(id)aSender
+{
+    [[self openStackActionAssistantApplier] setShouldOpenInSeparateWindow:[aSender state] == NSControlStateValueOn];
+    [[self navigationPaneSwitcher] validateUserInterface];
+}
+
 @end
 
 @implementation HSOpenStackActionAssistantApplier
@@ -571,6 +582,14 @@ LAB_0010710e:
 - (id)openStackActionAttributes
 {
     return [[self actionAttributes] queryHyperInterface:@protocol(HSOpenStackActionAttributes)];
+}
+
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen
+{
+    if (_shouldOpenInSeparateWindow != aOpen) {
+        _shouldOpenInSeparateWindow = aOpen;
+        [[self openStackActionAttributes] setShouldOpenInSeparateWindow:aOpen];
+    }
 }
 
 @end

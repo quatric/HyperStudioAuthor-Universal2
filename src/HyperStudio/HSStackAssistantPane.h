@@ -59,5 +59,6 @@
 - (id)windowTitle;
 - (id)stackAttributes;
 - (id)init;
+- (id)assistantPaneUndoManager;
 @end
 

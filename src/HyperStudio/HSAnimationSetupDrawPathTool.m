@@ -597,5 +597,10 @@ void FUN_000cadb9(HSAnimationSetupDrawPathTool *self,SEL _cmd)
     [super dealloc];
 }
 
+- (BOOL)shouldResetToolOnSelectObjects
+{
+    return NO;
+}
+
 @end
 

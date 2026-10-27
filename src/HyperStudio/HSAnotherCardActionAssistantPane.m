@@ -705,6 +705,17 @@ LAB_000e4d8a:
     return self;
 }
 
+- (BOOL)shouldRewindToPreviousHubPane
+{
+    return [[self actionAttributes] shouldOpenInSeparateWindow];
+}
+
+- (void)toggleOpenInSeparateWindow:(id)aSender
+{
+    [[self anotherCardActionAsssistantApplier] setShouldOpenInSeparateWindow:[aSender state] == NSControlStateValueOn];
+    [[self navigationPaneSwitcher] validateUserInterface];
+}
+
 @end
 
 @implementation HSAnotherCardActionAssistantApplier
@@ -817,6 +828,14 @@ LAB_000e4d8a:
     [_URL release];
     [_cardUID release];
     [super dealloc];
+}
+
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen
+{
+    if (_shouldOpenInSeparateWindow != aOpen) {
+        _shouldOpenInSeparateWindow = aOpen;
+        [[self otherCardActionAttributes] setShouldOpenInSeparateWindow:aOpen];
+    }
 }
 
 @end

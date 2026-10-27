@@ -12,5 +12,6 @@
 - (void)setDelegate:(id)aDelegate;
 - (id)delegate;
 - (void)dealloc;
+- (id)assistantPaneUndoManager;
 @end
 

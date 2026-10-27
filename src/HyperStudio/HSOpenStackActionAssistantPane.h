@@ -39,10 +39,13 @@
 - (id)paneMultiApplier;
 - (void)dealloc;
 - (id)init;
+- (BOOL)shouldRewindToPreviousHubPane;
+- (void)toggleOpenInSeparateWindow:(id)aSender;
 @end
 
 @interface HSOpenStackActionAssistantApplier : HSActionAssistantSettingsApplier
 {
+    BOOL _shouldOpenInSeparateWindow;
     NSURL *_initialURL;
     NSURL *_URL;
 }
@@ -54,6 +57,7 @@
 - (void)setCurrentSettingsToObject;
 - (void)setUpInitialSettings;
 - (id)openStackActionAttributes;
+- (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
 @end
 
 @interface HSOpenStackActionAssistantPane (HSDropImageViewDelegate)

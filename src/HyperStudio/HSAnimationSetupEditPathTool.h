@@ -53,5 +53,6 @@
 - (BOOL)shouldResetToolOnAddObjects;
 - (void)dealloc;
 - (id)init;
+- (BOOL)shouldResetToolOnSelectObjects;
 @end
 

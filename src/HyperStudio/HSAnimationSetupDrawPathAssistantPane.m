@@ -96,4 +96,9 @@
     return _currentNavigationPaneSwitcher;
 }
 
+- (id)assistantPaneUndoManager
+{
+    return [_delegate undoManagerForDrawPathAssistantPane:self];
+}
+
 @end

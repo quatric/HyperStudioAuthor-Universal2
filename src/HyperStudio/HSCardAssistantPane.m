@@ -807,5 +807,10 @@ void FUN_000ea5f5(HSCardAssistantPane *self,SEL _cmd,id openPaneWithIdentifier)
     return [self initWithNibName:@"CardAssistantPane"];
 }
 
+- (id)assistantPaneUndoManager
+{
+    return [[self modalViewController] assistantPaneUndoManager];
+}
+
 @end
 

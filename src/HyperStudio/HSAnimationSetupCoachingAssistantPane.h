@@ -16,5 +16,6 @@
 - (BOOL)assistantShouldBeKeyWindow;
 - (BOOL)shouldDismissWhenDisappearedByDefault;
 - (id)newBackgroundImage;
+- (id)assistantPaneUndoManager;
 @end
 

@@ -24,5 +24,6 @@
 - (id)delegate;
 - (id)modeToolTags;
 - (void)viewWillDisappear:(BOOL)aDisappear;
+- (id)assistantPaneUndoManager;
 @end
 
