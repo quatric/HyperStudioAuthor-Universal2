@@ -38,6 +38,7 @@
 #import "HSAnimationSetupView.h"
 #import "HSAnotherCardActionAssistantPane.h"
 #import "HSApplicationLicensor.h"
+#import "HSHypertextLinksInspectorController.h"
 #import "HSAFTPServerFinishWindowController.h"
 #import "HSAFinishWindowController.h"
 #import "HSATemplateImageBrowserCell.h"

@@ -206,6 +206,7 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSHypertextLinksInspectorController;
 @class HSAFTPServerFinishWindowController;
 @class HSAFinishWindowController;
 @class HSATemplateImageBrowserCell;
