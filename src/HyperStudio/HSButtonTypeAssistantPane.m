@@ -789,5 +789,11 @@ void FUN_0020d8cf(HSButtonTypeAssistantPane *self,SEL _cmd,id setInformativeText
     return nil;
 }
 
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [super viewWillAppear:aAppear];
+    [[self object] setSupport:self];
+}
+
 @end
 

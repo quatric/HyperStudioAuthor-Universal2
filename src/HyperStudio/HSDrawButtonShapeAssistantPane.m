@@ -485,5 +485,11 @@ void FUN_001961ad(HSDrawButtonShapeAssistantPane *self,SEL _cmd,id buttonShapeCr
     return [[[self stack] document] cardView];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
+
 @end
 

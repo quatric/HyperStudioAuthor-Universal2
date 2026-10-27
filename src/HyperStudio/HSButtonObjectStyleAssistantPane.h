@@ -19,5 +19,6 @@
 - (void)viewWillAppear:(BOOL)aAppear;
 - (void)dealloc;
 - (id)init;
+- (id)assistantObjectBackgroundType;
 @end
 

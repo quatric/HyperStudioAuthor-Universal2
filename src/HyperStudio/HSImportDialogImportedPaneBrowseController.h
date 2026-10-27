@@ -45,5 +45,6 @@
 - (id)delegate;
 - (id)initWithPredefinedLocations:(id)aLocations userLocationsDefaultsKey:(id)aKey fileTypes:(id)aTypes;
 - (void)dealloc;
+- (id)customImageLocationBookmarkData;
 @end
 

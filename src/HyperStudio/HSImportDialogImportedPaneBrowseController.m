@@ -1173,5 +1173,12 @@ LAB_001ddb5b:
     [super dealloc];
 }
 
+- (id)customImageLocationBookmarkData
+{
+    if (_defaultsKey == nil)
+        return nil;
+    return [[NSUserDefaults standardUserDefaults] objectForKey:[_defaultsKey stringByAppendingString:@"_bookmarkData"]];
+}
+
 @end
 

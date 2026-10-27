@@ -20,5 +20,6 @@
 - (void)processMouseDown:(id)aDown inView:(id)aView;
 - (void)mouseUp:(id)aUp inView:(id)aView;
 - (void)preprocessMouseDown:(id)aDown inView:(id)aView;
+- (id)HSFrameResizeSelection_undoManager;
 @end
 

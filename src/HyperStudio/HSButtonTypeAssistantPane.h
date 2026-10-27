@@ -46,5 +46,6 @@
 - (id)delegate;
 - (BOOL)isAttributesNotificationPostingDisabled;
 - (id)scriptController;
+- (void)viewWillAppear:(BOOL)aAppear;
 @end
 

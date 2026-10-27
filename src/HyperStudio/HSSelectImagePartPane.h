@@ -25,5 +25,6 @@
 - (id)modeToolTags;
 - (void)viewWillDisappear:(BOOL)aDisappear;
 - (id)assistantPaneUndoManager;
+- (void)dealloc;
 @end
 

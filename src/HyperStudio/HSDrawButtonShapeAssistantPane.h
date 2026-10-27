@@ -34,5 +34,6 @@
 - (void)viewWillDisappear:(BOOL)aDisappear;
 - (BOOL)shouldDismissWhenDisappearedByDefault;
 - (id)cardView;
+- (void)dealloc;
 @end
 

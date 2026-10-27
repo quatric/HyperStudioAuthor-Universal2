@@ -44,4 +44,11 @@
     return [super bitmapTool];
 }
 
+- (void)dealloc
+{
+    [_touchStorage setDelegate:nil];
+    [_touchStorage release];
+    [super dealloc];
+}
+
 @end

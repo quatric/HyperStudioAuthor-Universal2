@@ -86,4 +86,9 @@
     return self;
 }
 
+- (id)assistantObjectBackgroundType
+{
+    return [(id<HSButtonObjectSystemStyleBackgroundAttributes>)[[[self assistant] object] queryHyperInterface:@protocol(HSButtonObjectSystemStyleBackgroundAttributes)] systemButtonType];
+}
+
 @end

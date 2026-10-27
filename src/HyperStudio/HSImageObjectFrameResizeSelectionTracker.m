@@ -140,4 +140,12 @@
     _startRelativeImageRect = [[self mutableImageRectAttributes] relativeImageRect];
 }
 
+- (id)HSFrameResizeSelection_undoManager
+{
+    id object = [[self mutableClipPathsAttributes] hyperObject];
+    if (![object conformsToProtocol:@protocol(HSNodeSupport)])
+        return nil;
+    return [object undoManager];
+}
+
 @end
