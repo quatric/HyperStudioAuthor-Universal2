@@ -76,7 +76,6 @@ BOOL HSLayoutRuleIsEqual(id aRule, id anotherRule)
     return equal;
 }
 
-#if 0
 
 // Not carried over as C functions (block copy/dispose helpers, block and
 // comparator bodies inlined into the translated callers, QuickTime 7 track
