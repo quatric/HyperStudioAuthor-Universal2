@@ -29,5 +29,6 @@
 - (void)viewDidLoad;
 - (id)newBackgroundImage;
 - (id)assistantPaneUndoManager;
+- (void)HSAnimationSetupDrawPathAssistantPane_windowDidResignMain:(id)aResign;
 @end
 

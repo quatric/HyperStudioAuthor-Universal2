@@ -17,7 +17,11 @@
 
     if (valid && [self maximumLengthAllowed] != 0 && [*aValid length] > [self maximumLengthAllowed]) {
         NSBeep();
-        valid = NO;
+        return NO;
+    }
+    if (![[self evalutePredicate] evaluateWithObject:*aValid]) {
+        NSBeep();
+        return NO;
     }
     return valid;
 }
@@ -48,6 +52,19 @@
 - (void)setMaximumLengthAllowed:(NSUInteger)aAllowed
 {
     _maximumLengthAllowed = (unsigned int)aAllowed;
+}
+
+- (id)evalutePredicate
+{
+    if (_evalutePredicate == nil)
+        _evalutePredicate = [[NSPredicate predicateWithFormat:@"SELF MATCHES '[\\\\w \\\\s ! # $ % & \\' ( ) \\\\\\\\  * + , \\\\- . \\/ : ; < = > ? @ \\\\[ \\\\] \\^ _ ` { } | ~ ±]*'"] retain];
+    return _evalutePredicate;
+}
+
+- (void)dealloc
+{
+    [_evalutePredicate release];
+    [super dealloc];
 }
 
 @end

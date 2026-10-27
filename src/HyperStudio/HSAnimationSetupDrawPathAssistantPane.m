@@ -101,4 +101,21 @@
     return [_delegate undoManagerForDrawPathAssistantPane:self];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
+
+- (void)viewWillDisappear:(BOOL)aDisappear
+{
+    [super viewWillDisappear:aDisappear];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:[[[[self stack] document] cardView] window]];
+}
+
+- (void)HSAnimationSetupDrawPathAssistantPane_windowDidResignMain:(id)aResign
+{
+    [_delegate prepareToolAndCardViewAfterSwitchForDrawPathAssistantPane:self];
+}
+
 @end
