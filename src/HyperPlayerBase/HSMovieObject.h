@@ -181,5 +181,6 @@
 + (id)movieObjectRecorderWithMovieObject:(id)aObject;
 - (id)movieDataWithVideoAtFilePath:(id)aPath soundMovie:(id)aSoundMovie forHTML5ExportContext:(id)aContext;
 + (id)streamDrawableWithMovieObject:(id)aObject;
+- (id)PNGMapsInContext:(id)aContext frameSize:(NSSize *)aFrameSize;
 @end
 

@@ -1635,4 +1635,108 @@ done:
     return drawable;
 }
 
+- (id)PNGMapsInContext:(id)aContext frameSize:(NSSize *)aFrameSize
+{
+    NSMutableArray *maps = [NSMutableArray array];
+    HSMovieObject *copy = [self copy];
+    if ([copy hyperMovie] != nil) {
+        [copy setHasController:NO];
+        [copy setHiddenInPlayer:NO];
+        id geometry = [copy queryHyperInterface:@protocol(HSGeometryAttributes)];
+        QTMovie *qtMovie = [QTMovie movieWithQuickTimeMovie:[[copy hyperMovie] quickTimeMovie] disposeWhenDone:NO error:NULL];
+        id renderer = [[copy queryHyperInterface:@protocol(HSVisualization)] queryRenderer];
+        NSRect frame = NSIntegralRect([[renderer boundingRegion] boundingRect]);
+        QTTime start = QTMakeTime(0, 15);
+        QTTime duration = qtMovie != nil ? [qtMovie duration] : QTZeroTime;
+        QTTime scaledDuration = QTMakeTimeScaled(duration, 15);
+        id sessionKey = QTMovieFrameImageSessionMode;
+        [qtMovie setAttribute:[NSNumber numberWithBool:YES] forKey:sessionKey];
+
+        // A strip holds up to 1600/w frames per row and 1200/h rows.
+        NSUInteger frameWidth = (NSUInteger)frame.size.width, frameHeight = (NSUInteger)frame.size.height;
+        NSUInteger maxRows = frameHeight != 0 ? 0x4b0 / frameHeight : 1;
+        NSUInteger columns = frameWidth != 0 ? 0x640 / frameWidth : 1;
+        if (columns == 0)
+            columns = 1;
+        long long total = scaledDuration.timeValue + 1;
+        long long current = start.timeValue;
+        NSAutoreleasePool *pool = nil;
+        if (current < total) {
+            NSUInteger remainingRows = (NSUInteger)(total / columns) + 1 - ((total % columns) == 0 ? 1 : 0);
+            float stripWidth = columns * frame.size.width;
+            do {
+                [pool release];
+                pool = [NSAutoreleasePool new];
+                if ([aContext shouldTerminateExport])
+                    break;
+                NSUInteger rows = MIN(remainingRows, maxRows);
+                long long stripStart = current;
+                long long limit = MIN((long long)(rows * columns) + current, total);
+                float stripHeight = rows * frame.size.height;
+                NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(stripWidth, stripHeight)];
+                [image lockFocus];
+                NSAffineTransform *origin = [NSAffineTransform transform];
+                [origin translateXBy:-frame.origin.x yBy:(stripHeight - frame.size.height) - frame.origin.y];
+                [origin concat];
+                while (current < limit) {
+                    [copy setHyperCurrentTime:(double)current / (double)start.timeScale];
+                    if ([aContext shouldTerminateExport])
+                        break;
+                    // The strip is drawn flipped about the frame's centre unless the object is flipped itself.
+                    float a = 1, b = 0, c = 0, d = -1, tx = 0, ty = 2 * frame.origin.y + frame.size.height;
+                    if ([geometry isFlippedVertically]) {
+                        d = 1;
+                        ty = 0;
+                    }
+                    if ([geometry isFlippedHorizontally]) {
+                        tx += a * (2 * frame.origin.x + frame.size.width);
+                        ty += b * (2 * frame.origin.x + frame.size.width);
+                        a = -a;
+                        b = -b;
+                    }
+                    CGAffineTransform flip = CGAffineTransformMake(a, b, c, d, tx, ty);
+                    [[NSAffineTransform transformWithHyperCGAffineTransform:flip] concat];
+                    [renderer drawRegion:[HSRegion regionWithRect:frame] withDelegate:nil];
+                    float dx, dy;
+                    if (columns == 1) {
+                        dx = 0;
+                        dy = -frame.size.height;
+                    } else if ((current + 2) % (long long)columns == 1) {
+                        dx = frame.size.width - stripWidth;
+                        dy = -frame.size.height;
+                    } else {
+                        dx = frame.size.width;
+                        dy = 0;
+                    }
+                    current++;
+                    flip.tx += a * dx + c * dy;
+                    flip.ty += b * dx + d * dy;
+                    [[NSAffineTransform transformWithHyperCGAffineTransform:flip] concat];
+                }
+                [image unlockFocus];
+                NSSize size = [image size];
+                NSInteger wide = size.width > 0 ? lroundf(ceilf(size.width)) : 0;
+                NSInteger high = size.height > 0 ? lroundf(ceilf(size.height)) : 0;
+                id media = [HSNewMedia mediaWithData:[image hyperPNGRepresentationWithWide:wide high:high] name:@"frame" type:@"png"];
+                [aContext addMedia:media];
+                [image release];
+                NSString *source = [@"Resources" stringByAppendingPathComponent:[HSHTML5ExporterHelper JSonCorrectFilenameForMedia:media]];
+                [maps addObject:[NSDictionary dictionaryWithObjectsAndKeys:source, @"src", [NSString stringWithFormat:@"%.1f", stripWidth], @"xSize", [NSString stringWithFormat:@"%.1f", stripHeight], @"ySize", [NSString stringWithFormat:@"%qi", stripStart], @"start", [NSString stringWithFormat:@"%qi", current - stripStart], @"length", nil]];
+                remainingRows -= rows;
+            } while (current < total);
+        }
+        [pool release];
+        if (aFrameSize != NULL)
+            *aFrameSize = frame.size;
+        [qtMovie setAttribute:[NSNumber numberWithBool:NO] forKey:sessionKey];
+    }
+    [copy release];
+    return maps;
+}
+
+- (id)PNGMapsInContext:(id)aContext
+{
+    return [self PNGMapsInContext:aContext frameSize:NULL];
+}
+
 @end
