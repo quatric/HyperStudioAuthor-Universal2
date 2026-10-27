@@ -6,8 +6,11 @@
 
 - (void)paneDidOK:(id)aOK
 {
+    if (_needRemoveObserving) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSGlobalSelectionSyncDidChangeSelectedObjectNotification" object:[HSGlobalSelectionSync globalSelectionSync]];
+    }
+    [[_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)] editingFinishedForTransparentAssistantPane:self apply:YES];
     [super paneDidOK:aOK];
-    [[_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)] editingFinishedForTransparentAssistantPane:self];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -206,15 +209,22 @@ void FUN_002853ea(HSTransparentColorAssistantPane *self,SEL _cmd,id changeHueSen
     [pvVar2 removeObserver:self selector:@selector(HSTransparentColorAssistantPane_transparentColorLightnessToleranceWasUndoneOrRedone:) ofChanges:0x200 ofAttribute:@protocol(HSTransparentColorLightnessToleranceAttribute)];
     [_transparentColorAttributes release];
     _transparentColorAttributes = nil;
-    pvVar2 = [[[self stack] document] cardView];
-    if ([pvVar2 isColorPickingModeActive]) {
-        [pvVar2 cancelColorPicking];
-        pvVar2 = [pvVar2 rootCanvasLayer];
-        pHVar4 = nil;
-        [pvVar2 setEnabledSublayerIdentifiers:nil];
+    [[self HSTransparentColorAssistantPane_applier] setDelegate:nil];
+    [[self transparentColorDelegate] releaseTryItAnimationForTransparentColorAssistantPane:self];
+    id stack = [self stack];
+    id cardView = [[[stack document] editorWindowController] cardView];
+    if ([cardView isColorPickingModeActive]) {
+        [cardView cancelColorPicking];
+        [[cardView rootCanvasLayer] setEnabledSublayerIdentifiers:nil];
     }
-    pvVar2 = [self stack];
-    [pvVar2 removeObserver:self selector:@selector(HSTransparentColorAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    [stack removeObserver:self selector:@selector(HSTransparentColorAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    if (_needRemoveObserving) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self name:@"HSActiveToolWillChangeNotification" object:[HSToolManager sharedToolManager]];
+        [center removeObserver:self name:NSWindowDidResignMainNotification object:[cardView window]];
+        [center removeObserver:self name:@"HSGlobalSelectionSyncDidChangeSelectedObjectNotification" object:[HSGlobalSelectionSync globalSelectionSync]];
+        [stack removeObserver:self selector:@selector(HSTransparentColorAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    }
     [super viewWillDisappear:aDisappear];
 }
 
@@ -334,7 +344,19 @@ void FUN_002858cc(HSTransparentColorAssistantPane *self,SEL _cmd,BOOL viewWillAp
     [self HSTransparentColorAssistantPane_validateSensitivitySlider:_hueSensitivitySlider withTolerance:[_transparentColorAttributes hueTolerance]];
     [self HSTransparentColorAssistantPane_validateSensitivitySlider:_chromaSensitivitySlider withTolerance:[_transparentColorAttributes chromaTolerance]];
     [self HSTransparentColorAssistantPane_validateSensitivitySlider:_lightnessSensitivitySlider withTolerance:[_transparentColorAttributes lightnessTolerance]];
-    [[self stack] addObserver:self selector:@selector(HSTransparentColorAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    id stack = [self stack];
+    [stack addObserver:self selector:@selector(HSTransparentColorAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    if ([self transparentColorDelegate] == nil) {
+        _needRemoveObserving = NO;
+    } else {
+        _needRemoveObserving = YES;
+        id cardView = [[stack document] cardView];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self selector:@selector(HSTransparentColorAssistantPane_toolWillChange:) name:@"HSActiveToolWillChangeNotification" object:[HSToolManager sharedToolManager]];
+        [center addObserver:self selector:@selector(HSTransparentColorAssistantPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[cardView window]];
+        [center addObserver:self selector:@selector(HSTransparentColorAssistantPane_selectionDidChange:) name:@"HSGlobalSelectionSyncDidChangeSelectedObjectNotification" object:[HSGlobalSelectionSync globalSelectionSync]];
+        [stack addObserver:self selector:@selector(HSTransparentColorAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    }
 }
 
 - (id)transparentColorAttributes

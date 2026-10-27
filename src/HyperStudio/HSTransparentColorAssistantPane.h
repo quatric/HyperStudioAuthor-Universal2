@@ -14,6 +14,7 @@
     HSCheckBox *_linkSlidersSwitch;
     HSObjectAssistantNavigationPaneSwitcher *_paneSwitcher;
     id<HSTransparentColorAttributes> _transparentColorAttributes;
+    BOOL _needRemoveObserving;
     unsigned int _isTransparentColorBeingUndoneOrRedone:1;
     unsigned int _isTransparentColorHueToleranceBeingUndoneOrRedone:1;
     unsigned int _isTransparentColorChromaToleranceBeingUndoneOrRedone:1;
