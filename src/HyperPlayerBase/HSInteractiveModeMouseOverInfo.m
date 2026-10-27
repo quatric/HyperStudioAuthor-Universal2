@@ -448,26 +448,20 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
     [self setActiveItem:nil];
 }
 
-// The microphone while recording; draggable items get the draggable cursor;
-// otherwise the cursor of the parent item.
+// Draggable items get the draggable cursor, items with click actions the
+// action cursor; otherwise the cursor of the parent item.
 - (id)cursorAtPoint:(NSPoint)aPoint modifierFlags:(NSUInteger)aFlags inHitItem:(id)aItem
 {
-    id cursor = nil;
-    if ([[self actionExecutionContext] isRecording])
-        cursor = [HSCursor microphoneCursor];
-    if (cursor == nil)
-        cursor = [super cursorAtPoint:aPoint modifierFlags:aFlags inHitItem:aItem];
-    if (cursor == nil && [self itemIsDraggable:aItem])
-        cursor = [HSCursor draggableCursor];
-    if (cursor == nil) {
-        id parent = [[[aItem queryHyperInterface:@protocol(HSNodeChild)] hyperParent] queryHyperInterface:@protocol(HSNodeAttributes)];
-        if (parent != nil) {
-            id parentItem = [self canvasItemForNode:parent];
-            if (parentItem != nil)
-                cursor = [self cursorAtPoint:aPoint modifierFlags:aFlags inHitItem:parentItem];
-        }
-    }
-    return cursor;
+    id cursor = [super cursorAtPoint:aPoint modifierFlags:aFlags inHitItem:aItem];
+    if (cursor != nil)
+        return cursor;
+    if ([self itemIsDraggable:aItem] && (cursor = [HSCursor draggableCursor]) != nil)
+        return cursor;
+    if ([self itemHasClickActions:aItem] && (cursor = [HSCursor actionCursor]) != nil)
+        return cursor;
+    id parent = [[[aItem queryHyperInterface:@protocol(HSNodeChild)] hyperParent] queryHyperInterface:@protocol(HSNodeAttributes)];
+    id parentItem = parent != nil ? [self canvasItemForNode:parent] : nil;
+    return parentItem != nil ? [self cursorAtPoint:aPoint modifierFlags:aFlags inHitItem:parentItem] : nil;
 }
 
 - (id)cursorForPoint:(NSPoint)aPoint insideView:(BOOL)aView modifierFlags:(NSUInteger)aFlags hitTestInfo:(id)aInfo event:(id)aEvent
