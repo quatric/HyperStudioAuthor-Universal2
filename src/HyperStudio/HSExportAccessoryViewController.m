@@ -76,4 +76,9 @@
     return self;
 }
 
+- (id)publishToMobileMeDescription
+{
+    return [self descriptionForKey:[[NSBundle mainBundle] localizedStringForKey:@"informativeTextForPublishingToMobileMe" value:@"empty" table:@"Export"]];
+}
+
 @end

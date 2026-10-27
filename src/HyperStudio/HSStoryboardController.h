@@ -57,5 +57,6 @@
 - (void)dealloc;
 - (Class)navigationControllerClass;
 - (void)storyboardViewDidChangedZoomFactor:(id)aFactor;
+- (void)windowControllerDidBindToWindowInModeSwitcher:(id)aSwitcher;
 @end
 

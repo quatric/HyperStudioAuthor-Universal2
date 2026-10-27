@@ -558,5 +558,14 @@ BOOL FUN_000a0114(HSNodeSelection *self,SEL _cmd,id shouldIncludeNode)
     return self;
 }
 
+- (void)toggleNodesInEnumerator:(id)aEnumerator
+{
+    [self beginSelectionChanging];
+    id node;
+    while ((node = [aEnumerator nextObject]) != nil)
+        [self toggleNode:node];
+    [self endSelectionChanging];
+}
+
 @end
 

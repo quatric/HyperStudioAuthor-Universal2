@@ -21,5 +21,6 @@
 - (void)awakeFromNib;
 - (void)dealloc;
 - (id)initWithExporter:(id)aExporter publishType:(NSInteger)aType;
+- (id)publishToMobileMeDescription;
 @end
 

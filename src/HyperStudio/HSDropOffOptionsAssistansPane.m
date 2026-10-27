@@ -2176,5 +2176,11 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
     [self deleteDropOffTargetActionWithObject:[self dropOffTarget]];
 }
 
+- (void)registerUndoWithTarget:(id)aTarget selector:(SEL)aSelector object:(id)aObject actionName:(id)aName
+{
+    [[self undoManager] registerUndoWithTarget:self selector:aSelector object:aObject];
+    [[self undoManager] setActionName:aName];
+}
+
 @end
 

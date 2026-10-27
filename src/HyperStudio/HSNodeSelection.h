@@ -54,5 +54,6 @@
 - (id)owner;
 - (void)dealloc;
 - (id)init;
+- (void)toggleNodesInEnumerator:(id)aEnumerator;
 @end
 

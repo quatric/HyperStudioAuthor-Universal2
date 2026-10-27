@@ -647,5 +647,11 @@ void FUN_0015ecd2(HSStoryboardController *self,SEL _cmd)
     [_statusbarController setZoomFactor:[[aFactor object] cardScaleFactor]];
 }
 
+- (void)windowControllerDidBindToWindowInModeSwitcher:(id)aSwitcher
+{
+    [_statusbarController setDelegate:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(storyboardViewDidChangedZoomFactor:) name:HSStoryboardViewDidChangeZoomFactorNotification object:_storyboardView];
+}
+
 @end
 

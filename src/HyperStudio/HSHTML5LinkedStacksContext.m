@@ -40,9 +40,7 @@
 
 - (BOOL)shouldAddLinkedStacks
 {
-    if (![[NSUserDefaults standardUserDefaults] boolForKey:HSHTML5ExportAreLinkedStacksInDocument])
-        return NO;
-    return (NSInteger)_currentLinkedStackLevel < [[NSUserDefaults standardUserDefaults] integerForKey:HSHTML5ExportLinkedStacksDepth];
+    return _areLinkedStacksAllowed && _currentLinkedStackLevel < _maxAllowedLinkedStackLevel;
 }
 
 - (void)setStackLevel:(NSUInteger)aLevel
@@ -78,6 +76,23 @@
         }
     }
     return NO;
+}
+
+- (id)initWithLinkedStacksLevel:(NSUInteger)aLevel andDocument:(id)aDocument areLinkedStacksAllowed:(BOOL)aAllowed maxAllowedLinkedStackLevel:(NSUInteger)aMax
+{
+    if ((self = [super init]) != nil) {
+        _parentDocument = [aDocument retain];
+        _currentLinkedStackLevel = (unsigned int)aLevel;
+        _maxAllowedLinkedStackLevel = (unsigned int)aMax;
+        _areLinkedStacksAllowed = aAllowed;
+    }
+    return self;
+}
+
+- (id)initWithLinkedStacksLevel:(NSUInteger)aLevel andDocument:(id)aDocument
+{
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    return [self initWithLinkedStacksLevel:aLevel andDocument:aDocument areLinkedStacksAllowed:[defaults boolForKey:HSHTML5ExportAreLinkedStacksInDocument] maxAllowedLinkedStackLevel:[defaults integerForKey:HSHTML5ExportLinkedStacksDepth]];
 }
 
 @end

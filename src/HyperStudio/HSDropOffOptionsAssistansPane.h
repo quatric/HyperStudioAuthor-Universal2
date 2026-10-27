@@ -145,5 +145,6 @@
 - (void)dealloc;
 - (id)init;
 - (void)deleteDropOffTargetAction:(id)aAction;
+- (void)registerUndoWithTarget:(id)aTarget selector:(SEL)aSelector object:(id)aObject actionName:(id)aName;
 @end
 
