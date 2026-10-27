@@ -2136,22 +2136,18 @@ chain:
 
 - (void)showWindows
 {
-    if ([[HSEditorController sharedDocumentController] replacingDocument]) {
+    id controller = [HSEditorController sharedDocumentController];
+    if ([controller replacingDocument]) {
         return;
-    }
-    if ([self fileURL] != nil && ![[HSEditorController sharedDocumentController] shouldBeDocumentOpenedInEditorMode]) {
-        if ([self isStackProtected]) {
-            [self enterPurePlayerModeWithAnimation:NO];
-            return;
-        }
-        [self testCardWithUID:[[self currentCard] hyperUID] animate:NO];
     }
     if ([self isStackProtected]) {
         [self enterPurePlayerModeWithAnimation:NO];
-        return;
+    } else if (![self isTutorialStack] && ([controller isDuplicationInProgress] || [self isNewAndNotChanged] || [controller shouldBeDocumentOpenedInEditorMode])) {
+        [controller setDocumentInEditor:YES];
+        [[self stackSelectionHolder] makeCurrent];
+    } else {
+        [self testCardWithUID:[[self currentCard] hyperUID] animate:NO];
     }
-    [[HSEditorController sharedDocumentController] setDocumentInEditor:YES];
-    [[self stackSelectionHolder] makeCurrent];
     [super showWindows];
 }
 

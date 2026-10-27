@@ -1940,18 +1940,13 @@ LAB_000991b6:
         HSSelectionOperationVerifier *verifier = [[[HSSelectionOperationVerifier alloc] initWithSelection:[self selection]] autorelease];
         NSArray *nodes = nil;
         BOOL canProceed = YES;
-        if (([aDown modifierFlags] & NSEventModifierFlagOption) != 0) {
-            [verifier getSelectedNodesArrayForDragOperation:&nodes canProceed:&canProceed modifySelectionIfNeeded:NO];
-        } else {
-            [verifier getSelectedNodesArrayForMoveOperation:&nodes canProceed:&canProceed modifySelectionIfNeeded:NO];
-        }
+        [verifier getSelectedNodesArrayForMoveOperation:&nodes canProceed:&canProceed modifySelectionIfNeeded:NO];
         if (nodes == nil) {
             ignoreHitNode = !canProceed;
         } else if ([self isMouseStillDown]) {
             [self trackMouseInNodes:nodes withEvent:aDown];
         }
-    } else if (!(([aDown modifierFlags] & 0xffff0000) == 0x120000 && [HSImageObjectRestorer canRestoreNode:aNode])) {
-        /* Command-Shift on a restorable image keeps it selected. */
+    } else {
         [(HSNodeSelection *)selection removeNode:aNode];
     }
     if (aNode2 != NULL) {

@@ -4779,6 +4779,7 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
         [[[self document] actionExecutionManager] setLeaveActionsDisabled:NO];
     }
     [_statusbarController refreshStatusbarText];
+    [_statusbarController validateUI];
 }
 
 - (void)stackDidChangeAttributes:(id)aAttributes
