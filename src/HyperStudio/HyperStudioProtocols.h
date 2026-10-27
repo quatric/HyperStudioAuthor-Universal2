@@ -781,8 +781,7 @@
 - (void)activateCurrentItem;
 - (void)activateInspectorOfCurrentItem;
 - (void)deactivateCurrentItem;
-- (id)hyperNameForCurrentItem;
-- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRanges:(id)aRanges;
+- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRange:(NSRange)aRange;
 - (NSInteger)hyperSpellDocumentTag;
 - (id)hyperTextForCurrentItem;
 - (BOOL)moveToNext;

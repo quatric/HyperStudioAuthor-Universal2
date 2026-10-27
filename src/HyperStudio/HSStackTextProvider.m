@@ -858,17 +858,7 @@ LAB_000c58d7:
 {
     BOOL bVar2;
 
-    if ([aItem queryHyperInterface:@protocol(HSGenericObjectStringAttribute)] == nil) {
-        if (_includeObjectNames == NO) {
-            bVar2 = NO;
-        }
-        else {
-            bVar2 = [[aItem queryHyperInterface:@protocol(HSObjectNaming)] objectName] != nil;
-        }
-    }
-    else {
-        bVar2 = YES;
-    }
+    bVar2 = YES;
     return bVar2;
 }
 
@@ -878,7 +868,6 @@ LAB_000c58d7:
         [_currentItem release];
         _currentItem = [aItem retain];
         [self selectCurrentItemStringWithRange:NSMakeRange(0, 0)];
-        [self selectCurrentItemNameWithRange:NSMakeRange(0, 0)];
     }
 }
 
@@ -928,8 +917,11 @@ LAB_000c58d7:
     self = [super init];
     if (self != nil) {
         _windowController = aController;
-        _direction = 1;
-        [self setSelectionController:aController2];
+        _stack = [[[aController2 stackController] stack] retain];
+        [self setCurrentCard:[[[aController2 stackController] activeCard] queryHyperInterface:@protocol(HSCardAttributes)]];
+        _selectionController = [aController2 retain];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(selectionChanged:) name:@"HSSelectionHolderDidChangeSelectionNotification" object:_selectionController];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(activeCardDidChange:) name:@"HSStackViewDidChangeActiveCardNotification" object:[aController2 stackController]];
     }
     return self;
 }

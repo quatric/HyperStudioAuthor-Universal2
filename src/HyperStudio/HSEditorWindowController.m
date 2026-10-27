@@ -4897,7 +4897,6 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     uVar1 = HSActualDidAttributeChanges;
     [pvVar2_2 removeObserver:self selector:@selector(cardUndoableAttributeDidChange:) ofChanges:uVar1 ofChildrenAttribute:@protocol(HSUndoableAttribute)];
     [super setDocument:aDocument];
-    [_stackTextProvider setSelectionController:[self selectionController]];
     [[[self stackController] stack] addObserver:self selector:@selector(cardUndoableAttributeDidChange:) ofChanges:uVar1 ofChildrenAttribute:@protocol(HSUndoableAttribute) withPriority:-0.25];
     [_cardView setEditObjectDialogContext:[[self document] editObjectDialogContext]];
     [_importGraphicDialogController setHyperDocument:nil];

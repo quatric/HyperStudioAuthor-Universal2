@@ -322,30 +322,40 @@ LAB_000c27e9:
     _lastFindWasSuccessful = NO;
     BOOL ignoreCase = [self ignoreCaseSearch];
     BOOL wrapsAround = [self wrapsAround];
-    [(id<HSTextObjectDataSource>)[self textFinderDataSource] setDirection:aFind];
-    [[self textFinderDataSource] setWrapsAround:wrapsAround];
-    [[self textFinderDataSource] setIncludeObjectNames:[self includeObjectNames]];
-    NSUInteger options = (ignoreCase ? NSCaseInsensitiveSearch : 0) + (aFind == 0 ? NSBackwardsSearch : 0);
-    [self checkCurrentItemWithOptions:options ignoreSelectedRange:NO];
-    if (!_lastFindWasSuccessful) {
-        [[self textFinderDataSource] startEnumeration];
-        BOOL moved;
-        do {
-            if (_lastFindWasSuccessful) {
-                break;
-            }
-            moved = [[self textFinderDataSource] moveToNext];
+    id dataSource = [self textFinderDataSource];
+    [dataSource setDirection:aFind];
+    [dataSource setWrapsAround:wrapsAround];
+    id text = [dataSource hyperTextForCurrentItem];
+    NSRange selected = [dataSource selectedRangeForCurrentItem];
+    NSUInteger options = (ignoreCase ? NSCaseInsensitiveSearch : 0) | (aFind == 0 ? NSBackwardsSearch : 0);
+    NSRange found = [self rangeOfFindStringInHyperText:text searchOptions:options startFromSelectedRange:selected];
+    if (found.location == NSNotFound) {
+        [dataSource startEnumeration];
+        BOOL moved = YES;
+        while (moved && found.location == NSNotFound) {
+            moved = [dataSource moveToNext];
             if (moved || wrapsAround) {
-                [self checkCurrentItemWithOptions:options ignoreSelectedRange:YES];
+                [dataSource selectCurrentItemStringWithRange:NSMakeRange(0, 0)];
+                text = [dataSource hyperTextForCurrentItem];
+                selected = [dataSource selectedRangeForCurrentItem];
+                found = [self rangeOfFindStringInHyperText:text searchOptions:options startFromSelectedRange:selected];
             }
-        } while (moved);
-    }
-    if (!_lastFindWasSuccessful) {
-        NSBeep();
-        [_statusField setStringValue:[[NSBundle mainBundle] localizedStringForKey:@"Not found" value:@"" table:@"FindPanel"]];
+        }
+        if (found.location == NSNotFound) {
+            NSBeep();
+            [_statusField setStringValue:[[NSBundle mainBundle] localizedStringForKey:@"Not found" value:@"" table:@"FindPanel"]];
+        }
+        else {
+            [dataSource activateCurrentItem];
+            [dataSource selectCurrentItemStringWithRange:found];
+            _lastFindWasSuccessful = YES;
+            [_statusField setStringValue:@""];
+        }
     }
     else {
-        [_statusField setStringValue:@""];
+        [dataSource activateCurrentItem];
+        [dataSource selectCurrentItemStringWithRange:found];
+        _lastFindWasSuccessful = YES;
     }
     return _lastFindWasSuccessful;
 }
@@ -671,49 +681,31 @@ void FUN_000c2cb9(HSTextFinder *self,SEL _cmd,id replaceAll)
         [self setFindString:[_findTextField stringValue]];
     }
     BOOL ignoreCase = [self ignoreCaseSearch];
-    [(id<HSTextObjectDataSource>)[self textFinderDataSource] setDirection:1];
-    [[self textFinderDataSource] setWrapsAround:YES];
-    [[self textFinderDataSource] setIncludeObjectNames:[self includeObjectNames]];
+    id dataSource = [self textFinderDataSource];
+    [dataSource setDirection:1];
+    [dataSource setWrapsAround:YES];
     NSUInteger findLength = [[_findTextField stringValue] length];
     NSUInteger replaceLength = [[_replaceTextField stringValue] length];
-    [[self textFinderDataSource] startEnumeration];
+    [dataSource startEnumeration];
     NSUInteger options = ignoreCase ? NSCaseInsensitiveSearch : 0;
     NSInteger replacedCount = 0;
-    NSString *replacement = [_replaceTextField stringValue];
     BOOL moved;
     do {
-        moved = [[self textFinderDataSource] moveToNext];
-        NSString *name = [[self textFinderDataSource] hyperNameForCurrentItem];
-        NSMutableString *string = (name != nil) ? [NSMutableString stringWithString:name] : nil;
-        if ([string length] != 0) {
-            NSRange found = [string rangeOfString:[self findString] options:options range:NSMakeRange(0, [string length])];
-            NSInteger count = 0;
-            while (found.location != NSNotFound) {
-                [string replaceCharactersInRange:found withString:replacement];
-                NSUInteger next = found.location + replaceLength + (found.length - findLength);
-                count++;
-                found = [string rangeOfString:[self findString] options:options range:NSMakeRange(next, [string length] - next)];
+        moved = [dataSource moveToNext];
+        NSString *text = [dataSource hyperTextForCurrentItem];
+        if (text == nil || [text length] == 0)
+            continue;
+        NSString *replacement = [_replaceTextField stringValue];
+        NSRange found = [text rangeOfString:[self findString] options:options range:NSMakeRange(0, [text length])];
+        while (found.location != NSNotFound) {
+            BOOL replaced = [dataSource hyperReplaceTextForCurrentItem:replacement inRange:found];
+            text = [dataSource hyperTextForCurrentItem];
+            NSUInteger next = found.location + found.length;
+            if (replaced) {
+                next = found.location + (replaceLength - findLength) + found.length;
+                replacedCount++;
             }
-            if ([[self textFinderDataSource] setHyperNameForCurrentItem:string]) {
-                replacedCount += count;
-            }
-        }
-        NSString *text = [[self textFinderDataSource] hyperTextForCurrentItem];
-        string = (text != nil) ? [NSMutableString stringWithString:text] : nil;
-        if ([string length] != 0) {
-            NSRange found = [string rangeOfString:[self findString] options:options range:NSMakeRange(0, [string length])];
-            NSMutableArray *ranges = [NSMutableArray array];
-            NSInteger count = 0;
-            while (found.location != NSNotFound) {
-                [string replaceCharactersInRange:found withString:replacement];
-                [ranges addObject:[NSValue valueWithRange:found]];
-                NSUInteger next = found.location + replaceLength + (found.length - findLength);
-                count++;
-                found = [string rangeOfString:[self findString] options:options range:NSMakeRange(next, [string length] - next)];
-            }
-            if ([[self textFinderDataSource] hyperReplaceTextForCurrentItem:replacement inRanges:ranges]) {
-                replacedCount += count;
-            }
+            found = [text rangeOfString:[self findString] options:options range:NSMakeRange(next, [text length] - next)];
         }
     } while (moved);
     if (replacedCount == 0) {
@@ -797,26 +789,16 @@ LAB_000c3668:
 */
 - (void)replace:(id)aReplace
 {
-    NSString *name = [[self textFinderDataSource] hyperNameForCurrentItem];
-    NSMutableString *string = (name != nil) ? [NSMutableString stringWithString:name] : nil;
-    NSRange nameRange = [[self textFinderDataSource] selectedRangeForCurrentItemName];
-    if (string == nil || nameRange.location == NSNotFound) {
-        NSString *text = [[self textFinderDataSource] hyperTextForCurrentItem];
-        NSRange textRange = [[self textFinderDataSource] selectedRangeForCurrentItem];
-        if (text == nil || textRange.location == NSNotFound) {
-            NSBeep();
-        }
-        else {
-            NSString *replacement = [_replaceTextField stringValue];
-            [[self textFinderDataSource] hyperReplaceTextForCurrentItem:replacement inRanges:[NSArray arrayWithObject:[NSValue valueWithRange:textRange]]];
-            [[self textFinderDataSource] selectCurrentItemStringWithRange:NSMakeRange(textRange.location + [replacement length], 0)];
-        }
+    id dataSource = [self textFinderDataSource];
+    NSString *text = [dataSource hyperTextForCurrentItem];
+    NSRange range = [dataSource selectedRangeForCurrentItem];
+    if (text == nil || range.location == NSNotFound) {
+        NSBeep();
     }
     else {
         NSString *replacement = [_replaceTextField stringValue];
-        [string replaceCharactersInRange:nameRange withString:replacement];
-        [[self textFinderDataSource] setHyperNameForCurrentItem:string];
-        [[self textFinderDataSource] selectCurrentItemNameWithRange:NSMakeRange(nameRange.location + [replacement length], 0)];
+        [dataSource hyperReplaceTextForCurrentItem:replacement inRange:range];
+        [dataSource selectCurrentItemStringWithRange:NSMakeRange(range.location + [replacement length], 0)];
     }
     [_statusField setStringValue:@""];
 }
