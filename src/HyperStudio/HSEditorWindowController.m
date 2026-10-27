@@ -4624,7 +4624,8 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
 
 - (void)detachFromStack
 {
-    [[HSToolPaletteController sharedInstance] validateUserInterfaceWithView:nil];
+    if ([[HSEditorController sharedDocumentController] currentDocument] == [self document])
+        [[HSToolPaletteController sharedInstance] validateUserInterfaceWithView:nil];
     [[self stackView] setStack:nil];
     [[self cardView] setCard:nil];
     [super detachFromStack];
@@ -4636,7 +4637,7 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     [[HSToolPaletteController sharedInstance] validateUserInterfaceWithView:[self cardView]];
     [[[self toolbarController] toolbar] validateVisibleItems];
     [[self selectionController] setStackController:[self stackView]];
-    [_statusbarController refreshStatusbarText];
+    [_statusbarController setDelegate:self];
 }
 
 - (void)willDetachFromMainWindow
