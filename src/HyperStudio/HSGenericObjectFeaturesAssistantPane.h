@@ -13,6 +13,7 @@
     NSButton *_draggableSwitch;
     NSButton *_groupObjectSwitch;
     NSObjectController *_cardObjectController;
+    NSSize _draggableSwitchSize;
 }
 - (void)editCursor:(id)aCursor;
 - (void)setDraggableOptions:(id)aOptions;

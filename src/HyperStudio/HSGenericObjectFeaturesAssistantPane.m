@@ -254,20 +254,21 @@ void FUN_000efb97(HSGenericObjectFeaturesAssistantPane *self,SEL _cmd,id textDid
 
 - (void)validateDraggableOptionsButton
 {
-    BOOL pvVar2;
-    NSString *pcVar3;
-    id pvVar1_2;
-
-    pvVar2 = [[self cardObjectAttributes] isDraggable];
-    [_draggableButton setHidden:((unsigned int)(!pvVar2))];
-    pvVar1_2 = _draggableSwitch;
-    if (!pvVar2) {
-        pcVar3 = [_draggableButton title];
+    BOOL draggable = [[self cardObjectAttributes] isDraggable];
+    [_draggableButton setHidden:!draggable];
+    [_draggableSwitch setTitle:draggable ? @"" : [_draggableButton title]];
+    BOOL sizeIsZero = NSEqualSizes(_draggableSwitchSize, NSZeroSize);
+    if (!draggable) {
+        if (sizeIsZero) {
+            return;
+        }
+        [_draggableSwitch setFrameSize:_draggableSwitchSize];
+    } else {
+        if (sizeIsZero) {
+            _draggableSwitchSize = [_draggableSwitch frame].size;
+        }
+        [_draggableSwitch setFrameSize:NSMakeSize(NSMinX([_draggableButton frame]) - NSMinX([_draggableSwitch frame]), _draggableSwitchSize.height)];
     }
-    else {
-        pcVar3 = @"";
-    }
-    [pvVar1_2 setTitle:pcVar3];
 }
 
 /* --- i386 decompilation (Ghidra) ---

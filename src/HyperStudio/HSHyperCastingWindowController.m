@@ -469,6 +469,8 @@ ulonglong FUN_002408ce(HSHyperCastingWindowController *self,SEL _cmd)
     }
     [[[self document] actionExecutionContext] decreaseHyperCastingMode];
     [[[self window] toolbar] setAllowsUserCustomization:YES];
+    [[self statusbarController] setZoomControlsEnabled:YES];
+    [[self cardView] setZoomFactor:_previousUserZoomFactor];
     [[[self document] navigationController] setDelegate:0];
     [_hyperCastingModePane setRecordingProvider:nil];
     [_hyperCastingModePane setHyperCastingModePaneDelegate:nil];
@@ -491,9 +493,6 @@ ulonglong FUN_002408ce(HSHyperCastingWindowController *self,SEL _cmd)
 
     [super didBecomeWorkingInModeSwitcher:aSwitcher];
     [[[self document] actionExecutionContext] increaseHyperCastingMode];
-    [[[self document] undoManager] disableUndoRegistration];
-    [[[self document] stack] removeAllTemporaryObjects];
-    [[[self document] undoManager] enableUndoRegistration];
     [[[self window] toolbar] setAllowsUserCustomization:NO];
     [[[self document] navigationController] setDelegate:self];
     pvVar1_13 = [HSObjectAssistantController sharedAssistantController];
@@ -502,6 +501,9 @@ ulonglong FUN_002408ce(HSHyperCastingWindowController *self,SEL _cmd)
     [pvVar1_13 setLocked:YES delegate:nil];
     self_00 = [HSHyperCastingModePane new];
     _hyperCastingModePane = self_00;
+    [[self statusbarController] setZoomControlsEnabled:NO];
+    _previousUserZoomFactor = (float)[[self cardView] zoomFactor];
+    [[self cardView] setZoomFactor:1.0];
     [self_00 setRecordingProvider:self];
     [_hyperCastingModePane setHyperCastingModePaneDelegate:self];
     pvVar2_4 = [[HSObjectAssistantNavigationController alloc] initWithRootViewController:_hyperCastingModePane identifier:nil];

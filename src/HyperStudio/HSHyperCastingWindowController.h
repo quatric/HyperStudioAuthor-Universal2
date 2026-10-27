@@ -5,6 +5,7 @@
 @interface HSHyperCastingWindowController : HSDependentPlayerWindowController <HSHyperCastingModePaneRecordingProvider, NSObject>
 {
     HSRecorder *_stackRecorder;
+    float _previousUserZoomFactor;
     BOOL _isRecording;
     NSString *_recordingPath;
     int _recordedMovieFormat;
