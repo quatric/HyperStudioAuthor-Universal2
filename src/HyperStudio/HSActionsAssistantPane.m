@@ -1639,6 +1639,17 @@ id FUN_000e1c92(HSActionsAssistantPane *self,SEL _cmd,id initWithActionEvent,
     return nil;
 }
 
+- (id)enabledActionsWithoutHomeStackAllowedActionsForActionType:(id)aType
+{
+    NSMutableArray *actions = [NSMutableArray arrayWithArray:[[self actor] hyperActionsOfType:aType forEvent:[self actionEvent]]];
+    // The original enumerated the array it was removing from; this walks a copy.
+    for (id action in [NSArray arrayWithArray:actions]) {
+        if ([[HSAvailableActionsProvider allowediBooksHomeStackActionTypes] containsObject:[[action class] actionType]])
+            [actions removeObject:action];
+    }
+    return actions;
+}
+
 @end
 
 @implementation HSActionsTableView

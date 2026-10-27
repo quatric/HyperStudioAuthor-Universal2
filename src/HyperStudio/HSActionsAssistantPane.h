@@ -53,6 +53,7 @@
 - (id)initWithActionEvent:(id)aEvent;
 - (id)initWithNibName:(id)aName;
 - (id)init;
+- (id)enabledActionsWithoutHomeStackAllowedActionsForActionType:(id)aType;
 @end
 
 @interface HSActionsTableView : NSTableView

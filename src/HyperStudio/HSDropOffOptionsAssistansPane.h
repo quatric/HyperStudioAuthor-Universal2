@@ -147,5 +147,8 @@
 - (void)deleteDropOffTargetAction:(id)aAction;
 - (void)registerUndoWithTarget:(id)aTarget selector:(SEL)aSelector object:(id)aObject actionName:(id)aName;
 - (void)restoreSelection;
+- (void)deleteDropOffTargetActionWithObject:(id)aObject;
+- (void)draggableAttributeDidChanged:(id)aChange;
+- (void)replaceDropOffObjectWithNewObject:(id)aObject;
 @end
 

@@ -2195,5 +2195,45 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
     [target selectObject:object];
 }
 
+- (void)deleteDropOffTargetActionWithObject:(id)aObject
+{
+    if (aObject != nil) {
+        [self registerUndoWithTarget:self selector:@selector(addDropOffObjectToCard:) object:aObject actionName:[[NSBundle mainBundle] localizedStringForKey:@"Remove Item" value:@"empty" table:@"UndoManager"]];
+        [self invalidatePreviewSoundObject];
+        [[[self card] undoManager] disableUndoRegistration];
+        [_cardView performDeleteOperationWithNodesInArray:[NSArray arrayWithObject:aObject]];
+        [[aObject queryHyperInterface:@protocol(HSNodeChild)] removeFromHyperParent];
+        [[[self card] undoManager] enableUndoRegistration];
+    }
+    [self updateUI];
+}
+
+- (void)draggableAttributeDidChanged:(id)aChange
+{
+    id object = [aChange object];
+    if (object == [self object] && ![object isDraggable]) {
+        if ([[_navigationController viewControllers] count] == 1)
+            [[_navigationController topViewController] dismissModalViewControllerAnimated:NO];
+        [self resetToolToDefault];
+        [self unlockAssistantIfNeeded];
+        [[self card] removeObserver:self selector:@selector(draggableAttributeDidChanged:) ofChanges:HSActualDidAttributeChanges ofChildrenAttribute:@protocol(HSCardObjectDraggableAttribute)];
+    }
+}
+
+- (void)replaceDropOffObjectWithNewObject:(id)aObject
+{
+    id oldTarget = [self dropOffTarget];
+    [[[[self document] undoManager] prepareWithInvocationTarget:self] replaceDropOffObjectWithNewObject:oldTarget];
+    [[[self card] undoManager] disableUndoRegistration];
+    if ([self dropOffTarget] != nil)
+        [[[self dropOffTarget] queryHyperInterface:@protocol(HSNodeChild)] removeFromHyperParent];
+    [self invalidatePreviewSoundObject];
+    if (aObject != nil)
+        [[self card] addHyperChild:aObject];
+    [[[self object] queryHyperInterface:@protocol(HSMutableSnappingTargetUIDIdentification)] setDropOffTargetUID:[aObject hyperUID]];
+    [self restoreSelection];
+    [[[self card] undoManager] enableUndoRegistration];
+}
+
 @end
 
