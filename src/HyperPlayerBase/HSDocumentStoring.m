@@ -488,6 +488,25 @@
     return self;
 }
 
+// An imported document counts as edited until it has been autosaved.
+- (BOOL)hasUnautosavedChanges
+{
+    return [super hasUnautosavedChanges] || _wasImportedAndNotAutosaved;
+}
+
+- (BOOL)isDocumentEdited
+{
+    return [super isDocumentEdited] || _wasImportedAndNotAutosaved;
+}
+
+- (void)invalidateCardsPreview
+{
+    for (id card in [[self stack] children]) {
+        [self setThumbnailImage:nil forCard:card];
+        [self setPreviewImage:nil forCard:card];
+    }
+}
+
 @end
 
 // The Quick Look folder of a saved stack: card thumbnails and previews as

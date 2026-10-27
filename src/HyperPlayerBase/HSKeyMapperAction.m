@@ -284,4 +284,16 @@
     [_keyMappings release];
     [super dealloc];
 }
+- (id)buttonWithTitle:(id)aTitle
+{
+    NSEnumerator *enumerator = [[[self stack] queryHyperInterface:@protocol(HSNodeContainer)] hyperDeepEnumerator];
+    id object;
+    while ((object = [enumerator nextObject]) != nil) {
+        id button = [object queryHyperInterface:@protocol(HSSystemButtonAttributes)];
+        if ([[button title] isEqualToString:aTitle])
+            return button;
+    }
+    return nil;
+}
+
 @end

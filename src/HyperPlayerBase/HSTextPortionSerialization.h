@@ -98,5 +98,6 @@
 - (id)initWithCoder:(id)aCoder;
 - (void)encodeWithCoder:(id)aCoder;
 - (id)initWithFrame:(NSRect)aFrame textContainer:(id)aContainer;
++ (id)defaultMenu;
 @end
 

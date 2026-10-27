@@ -49,4 +49,9 @@
     [_targets release];
     [super dealloc];
 }
+- (id)supportedClasses
+{
+    return [NSSet setWithObjects:@"HSEditModeUndoHelper", @"HSDropOffOptionsAssistansPane", nil];
+}
+
 @end

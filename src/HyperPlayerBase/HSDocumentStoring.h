@@ -14,6 +14,7 @@
     BOOL _isAutosavingDisabled;
     BOOL _isWritingDisabled;
     BOOL _shouldStorePreviewImages;
+    BOOL _wasImportedAndNotAutosaved;
 }
 - (id)previewImageToStoreForCard:(id)aCard;
 - (id)thumbnailImageToStoreForCard:(id)aCard;
@@ -59,6 +60,9 @@
 - (id)contentsWrapper;
 - (void)dealloc;
 - (id)init;
+- (BOOL)hasUnautosavedChanges;
+- (BOOL)isDocumentEdited;
+- (void)invalidateCardsPreview;
 @end
 
 @interface HSCardPreviewsFileWrapper : HSZipDirectoryWrapper

@@ -10,5 +10,6 @@
 - (id)targets;
 - (void)setUndoManager:(id)aManager;
 - (void)dealloc;
+- (id)supportedClasses;
 @end
 

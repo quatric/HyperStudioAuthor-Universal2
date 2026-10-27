@@ -12,5 +12,6 @@
 + (id)JSonCorrectFilenameForMedia:(id)aMedia andDocumentType:(id)aType;
 + (id)JSonCorrectFilenameForMedia:(id)aMedia;
 + (id)JSonCorrectFilenameWithString:(id)aString;
++ (id)HTML5TemplateResourcesURLs;
 @end
 

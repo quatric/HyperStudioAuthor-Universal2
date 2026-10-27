@@ -787,4 +787,18 @@ static BOOL HSNonOpaqueTextViewValuesDiffer(float a, float b)
     return self;
 }
 
+// The text view's menu without the Outline font item.
++ (id)defaultMenu
+{
+    static NSMenu *sDefaultMenu;
+    if (sDefaultMenu == nil) {
+        sDefaultMenu = [[NSTextView defaultMenu] copy];
+        NSMenu *fontMenu = [[sDefaultMenu itemWithTitle:@"Font"] submenu];
+        NSMenuItem *outline = [fontMenu itemWithTitle:@"Outline"];
+        if (outline != nil)
+            [fontMenu removeItem:outline];
+    }
+    return sDefaultMenu;
+}
+
 @end

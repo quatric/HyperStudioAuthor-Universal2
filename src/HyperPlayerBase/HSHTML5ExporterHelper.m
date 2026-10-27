@@ -120,4 +120,15 @@
     [allowed invert];
     return [[aString lowercaseString] hyperStringByRemovingCharactersInSet:allowed];
 }
+// The relative paths of everything in the HTML5Template resources folder.
++ (id)HTML5TemplateResourcesURLs
+{
+    static NSSet *sResourcesURLs;
+    if (sResourcesURLs == nil) {
+        NSString *path = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"HTML5Template"];
+        sResourcesURLs = [[NSSet alloc] initWithArray:[[NSFileManager defaultManager] subpathsOfDirectoryAtPath:path error:NULL]];
+    }
+    return sResourcesURLs;
+}
+
 @end

@@ -23,5 +23,6 @@
 - (BOOL)isSynchronous;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
+- (id)buttonWithTitle:(id)aTitle;
 @end
 

@@ -193,4 +193,15 @@
     return representation;
 }
 
+- (id)xmlTransitionElement
+{
+    NSXMLElement *element = [NSXMLElement elementWithName:@"transition"];
+    if (_slideTransition == nil)
+        return nil;
+    [element addAttribute:[NSXMLNode attributeWithName:@"uid" stringValue:[[HSUID UID] stringValue]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"name" stringValue:[_slideTransition transitionName]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"duration" stringValue:[NSString stringWithFormat:@"%.1f", [_slideTransition duration]]]];
+    return element;
+}
+
 @end

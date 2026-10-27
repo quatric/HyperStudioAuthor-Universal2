@@ -35,5 +35,6 @@
 - (BOOL)supportedInIPad;
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
 - (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (id)xmlTransitionElement;
 @end
 
