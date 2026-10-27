@@ -144,4 +144,9 @@
     [super dealloc];
 }
 
+- (void)makeStripVisibleWithoutAnimation:(BOOL)aVisible
+{
+    [self makeStripVisible:aVisible animate:NO];
+}
+
 @end

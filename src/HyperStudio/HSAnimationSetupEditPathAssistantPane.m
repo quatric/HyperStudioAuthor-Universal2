@@ -42,4 +42,19 @@
     return [_delegate undoManagerForAnimationSetupEditPathAssistantPane:self];
 }
 
+- (id)document
+{
+    return [_delegate documentForAnimationSetupEditPathAssistantPane:self];
+}
+
+- (id)mainWindow
+{
+    return [_delegate mainWindowForAnimationSetupEditPathAssistantPane:self];
+}
+
+- (void)HSAnimationSetupEditPathAssistantPane_windowDidResignMain:(id)aResign
+{
+    [_delegate unprepareToolAndCardViewForAnimationSetupEditPathAssistantPane:self];
+}
+
 @end

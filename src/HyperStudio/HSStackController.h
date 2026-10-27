@@ -131,6 +131,8 @@
 - (id)init;
 - (void)onceInit;
 - (void)onceInitIfNeeded;
+- (void)hideCardIndexWithoutAnimation;
+- (void)showCardIndexWithoutAnimation;
 @end
 
 @interface HSAttributeNotification (HSStackController_IncludeUnderlyingInfo)

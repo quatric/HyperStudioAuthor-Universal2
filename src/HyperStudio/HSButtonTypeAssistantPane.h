@@ -42,5 +42,9 @@
 - (id)navigationPaneSwitcher;
 - (void)dealloc;
 - (id)init;
+- (id)cardGroupController;
+- (id)delegate;
+- (BOOL)isAttributesNotificationPostingDisabled;
+- (id)scriptController;
 @end
 

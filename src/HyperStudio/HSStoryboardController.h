@@ -55,5 +55,6 @@
 - (id)windowNibName;
 - (void)loadNibIfNeeded;
 - (void)dealloc;
+- (Class)navigationControllerClass;
 @end
 

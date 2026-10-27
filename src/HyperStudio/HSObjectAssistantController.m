@@ -2674,6 +2674,11 @@ id FUN_00101c26(HSObjectAssistantController *self,SEL _cmd,id boundingFramePathI
     return pHVar1;
 }
 
+- (BOOL)canSupportSettingsOnTheSpot
+{
+    return [self canSupportSettingsOnTheSpotForObject:_selectedInModelObject];
+}
+
 @end
 
 @implementation HSObjectAssistantController (HSObjectAssistantDelegate)

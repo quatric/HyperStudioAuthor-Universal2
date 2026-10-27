@@ -29,5 +29,6 @@
 - (id)navigationPaneSwitcher;
 - (void)viewDidAppear:(BOOL)aAppear;
 - (void)viewDidLoad;
+- (id)temporaryObject;
 @end
 

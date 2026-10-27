@@ -2018,6 +2018,16 @@ void FUN_0005d8a3(HSStackController *self,SEL _cmd,BOOL setNeedsToUpdateImages)
     }
 }
 
+- (void)hideCardIndexWithoutAnimation
+{
+    [_stripSwitcher makeStripVisibleWithoutAnimation:NO];
+}
+
+- (void)showCardIndexWithoutAnimation
+{
+    [_stripSwitcher makeStripVisibleWithoutAnimation:YES];
+}
+
 @end
 
 @implementation HSAttributeNotification (HSStackController_IncludeUnderlyingInfo)

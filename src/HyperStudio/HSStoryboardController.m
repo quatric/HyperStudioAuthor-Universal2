@@ -637,5 +637,10 @@ void FUN_0015ecd2(HSStoryboardController *self,SEL _cmd)
     [super dealloc];
 }
 
+- (Class)navigationControllerClass
+{
+    return [[HSEditorNavigationController class] class];
+}
+
 @end
 

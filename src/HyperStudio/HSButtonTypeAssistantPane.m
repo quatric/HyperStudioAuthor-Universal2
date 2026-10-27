@@ -769,5 +769,25 @@ void FUN_0020d8cf(HSButtonTypeAssistantPane *self,SEL _cmd,id setInformativeText
     return self;
 }
 
+- (id)cardGroupController
+{
+    return nil;
+}
+
+- (id)delegate
+{
+    return nil;
+}
+
+- (BOOL)isAttributesNotificationPostingDisabled
+{
+    return NO;
+}
+
+- (id)scriptController
+{
+    return nil;
+}
+
 @end
 

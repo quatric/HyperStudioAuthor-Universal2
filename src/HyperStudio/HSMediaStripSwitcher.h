@@ -30,5 +30,6 @@
 - (void)setDelegate:(id)aDelegate;
 - (id)delegate;
 - (void)dealloc;
+- (void)makeStripVisibleWithoutAnimation:(BOOL)aVisible;
 @end
 

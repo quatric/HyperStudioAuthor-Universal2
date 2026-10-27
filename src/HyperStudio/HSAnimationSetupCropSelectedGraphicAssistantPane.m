@@ -105,4 +105,9 @@
     [[_selectCardPartUsingLassoButton cell] setBackgroundRenderer:renderer];
 }
 
+- (id)temporaryObject
+{
+    return _temporaryObject;
+}
+
 @end

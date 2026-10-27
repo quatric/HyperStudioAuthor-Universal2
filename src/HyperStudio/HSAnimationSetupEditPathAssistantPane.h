@@ -13,5 +13,8 @@
 - (id)delegate;
 - (void)dealloc;
 - (id)assistantPaneUndoManager;
+- (id)document;
+- (id)mainWindow;
+- (void)HSAnimationSetupEditPathAssistantPane_windowDidResignMain:(id)aResign;
 @end
 
