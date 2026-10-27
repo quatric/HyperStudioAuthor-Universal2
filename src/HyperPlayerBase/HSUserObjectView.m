@@ -321,6 +321,9 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
 - (void)drawViewLayerContentRect:(NSRect)aRect
 {
     BOOL hasConsumers = [self HSUserObjectView_hasConsumers];
+    if (hasConsumers) {
+        aRect = NSUnionRect(aRect, _dirtyRect);
+    }
     NSArray *renderers = [self HSUserObjectView_viewLayerUserObjectRenderers];
     CVPixelBufferRef frame = [self HSUserObjectView_drawRenderers:renderers inRect:aRect createPixeBuffer:hasConsumers needsToDrawPixelBuffer:YES];
     if (hasConsumers) {
@@ -336,6 +339,7 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
     }
     [_previousViewLayerUserObjectRenderers release];
     _previousViewLayerUserObjectRenderers = nil;
+    _dirtyRect = NSZeroRect;
 }
 
 // Renderers without a stream drawable draw straight into the current context.
@@ -1159,6 +1163,7 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
 {
     NSSize margin = [self convertSize:NSMakeSize(1.05, 1.05) fromView:nil];
     NSRect rect = NSIntegralRect(NSInsetRect(aRect, -margin.width, -margin.height));
+    _dirtyRect = NSUnionRect(_dirtyRect, rect);
     if (aLayer)
         [self setNeedsDisplayInViewLayerRect:rect];
     else

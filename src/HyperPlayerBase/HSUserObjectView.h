@@ -32,6 +32,7 @@
     unsigned int _isWindowLayerRendererValid:1;
     unsigned int _isHibernating:1;
     unsigned int _isWaitingForInteractiveSubview:1;
+    NSRect _dirtyRect;
     HSPresentationContext *_presentationContext;
 }
 + (id)visualizationProtocol;
