@@ -22,6 +22,7 @@
     BOOL _areBadgedIconsVisible;
     BOOL _mediaStripUpdateDisabled;
     NSTimer *_mediaStripUpdateTimer;
+    BOOL _isAuxiliaryIconRendering;
 }
 - (id)previewImageToStoreForCard:(id)aCard;
 - (id)thumbnailImageToStoreForCard:(id)aCard;

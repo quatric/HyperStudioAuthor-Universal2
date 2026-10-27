@@ -1178,10 +1178,17 @@ LAB_0005f080:
             if (pvVar3 != nil) {
                 return pvVar3;
             }
-            pvVar4_4 = [[[HSAuxiliaryUserObjectTraits alloc] init] autorelease];
-            [pvVar4_4 setUserObject:pvVar1_2];
-            [[self badgedIconRenderersByUID] setObject:pvVar4_4 forKey:pvVar2];
-            return pvVar4_4;
+            if (!_isAuxiliaryIconRendering) {
+                _isAuxiliaryIconRendering = YES;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    id traits = [[[HSAuxiliaryUserObjectTraits alloc] init] autorelease];
+                    [traits setUserObject:pvVar1_2];
+                    [[self badgedIconRenderersByUID] setObject:traits forKey:pvVar2];
+                    [[self mediaStripView] setNeedsDisplayForItemAtIndex:aIndex];
+                    _isAuxiliaryIconRendering = NO;
+                    [self performSelector:@selector(badgetIconRendererForCardIndex:) withObject:[NSNumber numberWithUnsignedInt:(unsigned int)(aIndex + 1)] afterDelay:0.1];
+                });
+            }
         }
     }
     return nil;
