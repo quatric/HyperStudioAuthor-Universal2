@@ -1,7 +1,7 @@
 #import "HyperStudioPrefix.h"
 
 
-@interface HSEditorApplication : HSApplication
+@interface HSAEditorApplication : HSApplication
 {
     int _colorPickerMode;
     id<HSKeyEventsConsumer> _keyEventsConsumer;
