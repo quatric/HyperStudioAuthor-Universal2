@@ -358,4 +358,17 @@ static BOOL HSOpacityValuesDiffer(float a, float b)
     return self;
 }
 
+- (void)hyperPause
+{
+    _pauseStarter = [_starter retain];
+    [self hyperStop];
+}
+
+- (void)hyperResume
+{
+    [self hyperStart:_pauseStarter];
+    [_pauseStarter release];
+    _pauseStarter = nil;
+}
+
 @end

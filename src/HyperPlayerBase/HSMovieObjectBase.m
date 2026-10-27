@@ -654,4 +654,14 @@ static BOOL HSMovieObjectBaseFloatsAreEqual(float aValue1, float aValue2)
     return [super nodeData];
 }
 
+- (void)hyperPause
+{
+    [[self movie] pause];
+}
+
+- (void)hyperResume
+{
+    [[self movie] resume];
+}
+
 @end

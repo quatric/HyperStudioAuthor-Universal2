@@ -206,4 +206,16 @@
     return self;
 }
 
+- (void)hyperPause
+{
+    _wasMoviePlaying = [self isHyperPlaying];
+    [self hyperStop];
+}
+
+- (void)hyperResume
+{
+    if (_wasMoviePlaying)
+        [self hyperStart:[self hyperStarter]];
+}
+
 @end

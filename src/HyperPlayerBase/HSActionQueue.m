@@ -167,8 +167,13 @@ next_group:
 
 - (void)stop:(id)aStop
 {
-    if ([_actionSynchronizer isRunning])
+    if ([self useDelay] && [_delayTimer isValid]) {
+        [self invalidateDelayTimer];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"HSActionQueueDidFinishNotification" object:self];
+        [self decreaseContextLimitedModeIfNeeded];
+    } else if ([_actionSynchronizer isRunning]) {
         [(HSActionSynchronizer *)_actionSynchronizer stop:self];
+    }
 }
 
 - (void)actionSynchronizer:(id)aSynchronizer didFinishAction:(id)aAction
@@ -193,7 +198,10 @@ next_group:
     [[NSNotificationCenter defaultCenter] postNotificationName:@"HSActionQueueWillStartNotification" object:self];
     _context = [aContext retain];
     [self increaseContextLimitedModeIfNeeded];
-    [self startSynchronizer];
+    if ([self useDelay])
+        [self startDelayTimer];
+    else
+        [self startSynchronizer];
 }
 
 - (void)startSynchronizer
@@ -220,6 +228,8 @@ next_group:
 
 - (void)dealloc
 {
+    [_delayTimer invalidate];
+    [_delayTimer release];
     if ([_actionSynchronizer isRunning])
         [(HSActionSynchronizer *)_actionSynchronizer stop:self];
     [_actionSynchronizer setDelegate:nil];
@@ -344,6 +354,59 @@ next_group:
     [self release];
     [self doesNotRecognizeSelector:_cmd];
     return nil;
+}
+
+- (BOOL)useDelay
+{
+    return _useDelay;
+}
+
+- (void)setUseDelay:(BOOL)aUse
+{
+    if (_useDelay != (aUse != NO) && [[self actor] delay] != 0.0)
+        _useDelay = aUse != NO;
+}
+
+- (void)startDelayTimer
+{
+    _delayTimer = [[NSTimer timerWithTimeInterval:[[self actor] delay] target:[[self NSE_newWeakProxy] autorelease] selector:@selector(readyToStartSynchronizerAfterDelay:) userInfo:nil repeats:NO] retain];
+    [[NSRunLoop currentRunLoop] addTimer:_delayTimer forMode:NSDefaultRunLoopMode];
+    [_context actionQueue:self didSetupDelayTimer:_delayTimer];
+}
+
+- (void)invalidateDelayTimer
+{
+    [_delayTimer invalidate];
+    [_delayTimer release];
+    _delayTimer = nil;
+}
+
+- (void)conserveDelayTimer
+{
+    _remainingDelay = [[_delayTimer fireDate] timeIntervalSinceDate:[NSDate date]];
+    [self invalidateDelayTimer];
+}
+
+- (void)restoreDelayTimer
+{
+    _delayTimer = [[NSTimer timerWithTimeInterval:_remainingDelay target:[[self NSE_newWeakProxy] autorelease] selector:@selector(readyToStartSynchronizerAfterDelay:) userInfo:nil repeats:NO] retain];
+    [[NSRunLoop currentRunLoop] addTimer:_delayTimer forMode:NSDefaultRunLoopMode];
+}
+
+- (void)pause
+{
+    if ([self useDelay] && [_delayTimer isValid])
+        [self conserveDelayTimer];
+    else if ([_actionSynchronizer isRunning])
+        [_actionSynchronizer pause];
+}
+
+- (void)resume
+{
+    if ([self useDelay])
+        [self restoreDelayTimer];
+    else if ([_actionSynchronizer isRunning])
+        [_actionSynchronizer resume];
 }
 
 @end

@@ -98,5 +98,7 @@
 - (void)dealloc;
 - (id)init;
 - (id)movieObjectBaseNodeData;
+- (void)hyperPause;
+- (void)hyperResume;
 @end
 

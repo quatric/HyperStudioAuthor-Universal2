@@ -8,6 +8,7 @@
     HSCelMovieNodeUnit *_nodeUnit;
     HSCelMovieObjectFramesCache *_framesCache;
     BOOL _isMovieStarted;
+    BOOL _wasMoviePlaying;
 }
 + (id)hyperImplementationWithNode:(id)aNode unit:(id)aUnit;
 - (void)HSCelMovieAttributesImplementation_recacheFrames;
@@ -42,5 +43,7 @@
 - (id)node;
 - (void)dealloc;
 - (id)initWithNodeUnit:(id)aUnit node:(id)aNode;
+- (void)hyperPause;
+- (void)hyperResume;
 @end
 

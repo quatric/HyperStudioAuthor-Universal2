@@ -47,6 +47,8 @@
 - (void)setDelegate:(id)aDelegate;
 - (id)delegate;
 - (void)dealloc;
+- (void)pause;
+- (void)resume;
 @end
 
 @interface HSDocumentClosingInfo : NSObject

@@ -8,6 +8,9 @@
     HSActor *_actor;
     NSMutableArray *_groups;
     HSActionExecutionContext *_context;
+    BOOL _useDelay;
+    NSTimer *_delayTimer;
+    double _remainingDelay;
     HSActionSynchronizer *_actionSynchronizer;
     BOOL _shouldDecreaseContextLimitedMode;
 }
@@ -38,5 +41,13 @@
 - (void)HSActionQueue_addSynchronousGroupWithAction:(id)aAction callingObject:(id)aObject;
 - (id)initWithActionEvent:(id)aEvent andActor:(id)aActor callingObject:(id)aObject;
 - (id)init;
+- (BOOL)useDelay;
+- (void)setUseDelay:(BOOL)aUse;
+- (void)startDelayTimer;
+- (void)invalidateDelayTimer;
+- (void)conserveDelayTimer;
+- (void)restoreDelayTimer;
+- (void)pause;
+- (void)resume;
 @end
 

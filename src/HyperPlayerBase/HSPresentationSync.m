@@ -306,6 +306,28 @@
     [super dealloc];
 }
 
+- (void)pause
+{
+    id dataSource = [self dataSource];
+    [[dataSource actionExecutionManagerForPresentationSync:self] pauseAllActionQueues];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] pauseAllSoundsForStackUID:[[dataSource currentStackForPresentationSync:self] hyperUID]];
+    [[[dataSource actionExecutionManagerForPresentationSync:self] automaticTimerManager] pauseAutomaticTimer];
+    id card = [dataSource currentCardForPresentationSync:self];
+    [[[card hyperChildren] queryAnyHyperInterfaces:@protocol(HSPlayableObjectAttributes)] makeObjectsPerformSelector:@selector(hyperPause)];
+    [[card animationController] pauseAllPlayingAnimations];
+}
+
+- (void)resume
+{
+    id dataSource = [self dataSource];
+    id card = [dataSource currentCardForPresentationSync:self];
+    [[[card hyperChildren] queryAnyHyperInterfaces:@protocol(HSPlayableObjectAttributes)] makeObjectsPerformSelector:@selector(hyperResume)];
+    [[card animationController] resumeAllPlayingAnimations];
+    [[[dataSource actionExecutionManagerForPresentationSync:self] automaticTimerManager] resumeAutomaticTimer];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] resumeAllSoundsForStackUID:[[dataSource currentStackForPresentationSync:self] hyperUID]];
+    [[dataSource actionExecutionManagerForPresentationSync:self] resumeAllActionQueues];
+}
+
 @end
 
 // What to tell once the document may close.

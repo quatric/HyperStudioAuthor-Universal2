@@ -5,6 +5,7 @@
 @interface HSLiveObject : HSShadowedObject <HSDefaultSizeSubattributes, HSAttributes, HyperInterface, NSObject, HSLiveObjectAttributes, HSPlayableObjectAttributes, HSPlayableObjectUIDAttribute, HSAttribute, HSPlayableObjectNameAttribute, HSPlayableObjectDurationAttribute, HSPlayableObjectStartTimeAttribute, HSPlayableObjectPlayRangeAttribute, HSPlayableObjectHyperPlayingAttribute, HSLiveObjectDeviceIndexAttribute, HSMutableOpacityAttributes, HSOpacityAttributes, HSOpacityAttribute, HSVisualAttribute, HSUndoableAttribute, HSEffectPerObjectAttributes, HSGeometryBehaviorSubattributes, HSVideoStreamAttributes, HSVideoRectAttribute, HSPlayingVideoStateAttribute, HSVideoFrameAttribute, HSLiveVideoAttributes, HSLiveVideoDeviceAttribute>
 {
     id _starter;
+    id _pauseStarter;
 }
 + (Class)nodeDataClass;
 + (id)defaultUnitClassNames;
@@ -62,5 +63,7 @@
 - (id)keysForExtraLoadingWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (void)hyperPause;
+- (void)hyperResume;
 @end
 

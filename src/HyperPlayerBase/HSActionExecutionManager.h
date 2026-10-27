@@ -26,5 +26,7 @@
 - (id)objectsToRequestorsMap;
 - (id)objectsToEventsMap;
 - (void)dealloc;
+- (void)pauseAllActionQueues;
+- (void)resumeAllActionQueues;
 @end
 

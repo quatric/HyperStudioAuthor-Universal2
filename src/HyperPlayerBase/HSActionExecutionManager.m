@@ -191,4 +191,24 @@
     [_automaticTimerManager release];
     [super dealloc];
 }
+- (void)pauseAllActionQueues
+{
+    NSMapEnumerator enumerator = NSEnumerateMapTable([self objectsToEventsMap]);
+    void *key = NULL;
+    id events = nil;
+    while (NSNextMapEnumeratorPair(&enumerator, &key, (void **)&events))
+        [[events allValues] makeObjectsPerformSelector:@selector(pause)];
+    NSEndMapTableEnumeration(&enumerator);
+}
+
+- (void)resumeAllActionQueues
+{
+    NSMapEnumerator enumerator = NSEnumerateMapTable([self objectsToEventsMap]);
+    void *key = NULL;
+    id events = nil;
+    while (NSNextMapEnumeratorPair(&enumerator, &key, (void **)&events))
+        [[events allValues] makeObjectsPerformSelector:@selector(resume)];
+    NSEndMapTableEnumeration(&enumerator);
+}
+
 @end

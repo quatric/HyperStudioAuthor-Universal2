@@ -182,4 +182,14 @@
     [self doesNotRecognizeSelector:_cmd];
     return nil;
 }
+- (void)pause
+{
+    [[self currentlyRunningActions] makeObjectsPerformSelector:@selector(pause)];
+}
+
+- (void)resume
+{
+    [[self currentlyRunningActions] makeObjectsPerformSelector:@selector(resume)];
+}
+
 @end

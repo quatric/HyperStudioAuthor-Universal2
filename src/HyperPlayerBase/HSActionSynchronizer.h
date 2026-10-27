@@ -34,5 +34,7 @@
 - (void)dealloc;
 - (id)initWithActions:(id)aActions;
 - (id)init;
+- (void)pause;
+- (void)resume;
 @end
 
