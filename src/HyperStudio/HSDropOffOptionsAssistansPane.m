@@ -2171,5 +2171,10 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
     return self;
 }
 
+- (void)deleteDropOffTargetAction:(id)aAction
+{
+    [self deleteDropOffTargetActionWithObject:[self dropOffTarget]];
+}
+
 @end
 

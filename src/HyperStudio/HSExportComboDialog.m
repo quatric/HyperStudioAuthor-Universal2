@@ -115,4 +115,30 @@
     [super dealloc];
 }
 
+- (IBAction)goBack:(id)aBack
+{
+    [self mountView:_exportChoicesView animate:YES];
+}
+
+- (IBAction)exportForiBooksAuthor:(id)aSender
+{
+    _exportFormat = 10;
+    _publishType = 4;
+    [self finishDialog:YES];
+}
+
+- (IBAction)exportToFTPServer:(id)aSender
+{
+    _exportFormat = 11;
+    _publishType = 5;
+    [self finishDialog:YES];
+}
+
+- (IBAction)exportToHTML5:(id)aSender
+{
+    _exportFormat = 7;
+    _publishType = 1;
+    [self finishDialog:YES];
+}
+
 @end

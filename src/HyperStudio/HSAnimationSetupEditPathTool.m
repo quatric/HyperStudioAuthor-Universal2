@@ -928,5 +928,10 @@ void FUN_000cd561(HSAnimationSetupEditPathTool *self,SEL _cmd,
     return NO;
 }
 
+- (void)userSelectAnotherObject:(id)aObject withEditPathCanvasLayer:(id)aLayer
+{
+    [_delegate userSelectAnotherObject:aObject withEditPathTool:self];
+}
+
 @end
 

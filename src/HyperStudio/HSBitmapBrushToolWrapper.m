@@ -39,4 +39,9 @@
     return [[super settingsIdentifiers] arrayByAddingObjectsFromArray:[NSArray arrayWithObjects:HSToolDrawColorAttributeKey, HSToolEraserColorAttributeKey, HSToolSizeRatioAttributeKey, kToolPaddingKey, HSToolCursorContourAttributeKey, nil]];
 }
 
+- (id)bitmapTool
+{
+    return [super bitmapTool];
+}
+
 @end

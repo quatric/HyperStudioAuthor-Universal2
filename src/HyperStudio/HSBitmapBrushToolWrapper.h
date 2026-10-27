@@ -8,5 +8,6 @@
 + (Class)settingsSerializationClass;
 - (void)tool:(id)aTool didUpdateOutputForKey:(id)aKey;
 - (id)settingsIdentifiers;
+- (id)bitmapTool;
 @end
 

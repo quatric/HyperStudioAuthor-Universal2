@@ -2028,6 +2028,11 @@ void FUN_0005d8a3(HSStackController *self,SEL _cmd,BOOL setNeedsToUpdateImages)
     [_stripSwitcher makeStripVisibleWithoutAnimation:YES];
 }
 
+- (id)badgetIconRendererForCardIndex:(id)aIndex
+{
+    return [self badgedIconRendererForCardAtIndex:[aIndex unsignedIntValue]];
+}
+
 @end
 
 @implementation HSAttributeNotification (HSStackController_IncludeUnderlyingInfo)

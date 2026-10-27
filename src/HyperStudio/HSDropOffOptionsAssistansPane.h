@@ -144,5 +144,6 @@
 - (id)undoHelper;
 - (void)dealloc;
 - (id)init;
+- (void)deleteDropOffTargetAction:(id)aAction;
 @end
 

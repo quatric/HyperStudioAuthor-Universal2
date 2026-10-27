@@ -21,6 +21,7 @@
 - (id)objectAssistant;
 - (void)dealloc;
 - (id)initWithContentView:(id)aView objectAssistant:(id)aAssistant;
+- (void)hideContent;
 @end
 
 @interface HSObjectAssistant (HSObjectAssistantDrawerSupport)

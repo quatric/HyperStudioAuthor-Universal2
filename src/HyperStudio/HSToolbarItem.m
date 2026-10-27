@@ -23,6 +23,7 @@
         return;
     [super validate];
     [self validateView:[self view]];
+    [self setDisplayMode:[[self toolbar] displayMode]];
 }
 
 // Validates controls through the responder chain; actionless matrices are
@@ -66,6 +67,52 @@
         else if ([target respondsToSelector:@selector(validateUserInterfaceItem:)])
             enabled = [target validateUserInterfaceItem:cell];
         [cell setEnabled:enabled];
+    }
+}
+
+- (BOOL)isTextOnlyMode
+{
+    return _isTextOnlyMode;
+}
+
+- (void)setTextOnlyMode:(BOOL)aMode
+{
+    if (_isTextOnlyMode != aMode) {
+        _isTextOnlyMode = aMode;
+        [self setImagesToSubMenuItems:!aMode];
+    }
+}
+
+- (void)setDisplayMode:(NSToolbarDisplayMode)aMode
+{
+    [self setTextOnlyMode:aMode == NSToolbarDisplayModeLabelOnly];
+}
+
+- (void)setEnabled:(BOOL)aEnabled
+{
+    [self setEnabled:aEnabled view:[self view]];
+    [super setEnabled:aEnabled];
+    [[self menuFormRepresentation] setEnabled:aEnabled];
+}
+
+- (void)setEnabled:(BOOL)aEnabled view:(id)aView
+{
+    if (![aView isKindOfClass:[NSControl class]]) {
+        NSEnumerator *enumerator = [[aView subviews] objectEnumerator];
+        id subview;
+        while ((subview = [enumerator nextObject]) != nil)
+            [self setEnabled:aEnabled view:subview];
+    } else {
+        [aView setEnabled:aEnabled];
+    }
+}
+
+- (void)setImagesToSubMenuItems:(BOOL)aItems
+{
+    NSMenuItem *menuItem = [self menuFormRepresentation];
+    if ([menuItem hasSubmenu]) {
+        for (NSMenuItem *item in [[menuItem submenu] itemArray])
+            [item setImage:aItems ? [item representedObject] : nil];
     }
 }
 

@@ -54,5 +54,6 @@
 - (void)dealloc;
 - (id)init;
 - (BOOL)shouldResetToolOnSelectObjects;
+- (void)userSelectAnotherObject:(id)aObject withEditPathCanvasLayer:(id)aLayer;
 @end
 

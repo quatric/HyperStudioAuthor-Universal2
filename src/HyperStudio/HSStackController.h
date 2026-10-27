@@ -133,6 +133,7 @@
 - (void)onceInitIfNeeded;
 - (void)hideCardIndexWithoutAnimation;
 - (void)showCardIndexWithoutAnimation;
+- (id)badgetIconRendererForCardIndex:(id)aIndex;
 @end
 
 @interface HSAttributeNotification (HSStackController_IncludeUnderlyingInfo)
