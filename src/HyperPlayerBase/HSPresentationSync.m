@@ -59,7 +59,7 @@
 {
     id manager = [[self dataSource] actionExecutionManagerForPresentationSync:self];
     [manager stopAllActionQueues];
-    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[[self dataSource] currentStackForPresentationSync:self] hyperUID] andSoundAttributes:nil];
     [[[[self dataSource] actionExecutionManagerForPresentationSync:self] automaticTimerManager] stopAllAutomaticActionTimersForAllCards];
     id card = [[self dataSource] currentCardForPresentationSync:self];
     [[[card hyperChildren] queryAnyHyperInterfaces:@protocol(HSPlayableObjectAttributes)] makeObjectsPerformSelector:@selector(hyperStop)];
@@ -113,7 +113,7 @@
 
 - (void)prepareForUserInitiatedNavigationOperation
 {
-    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[[self dataSource] currentStackForPresentationSync:self] hyperUID] andSoundAttributes:nil];
 }
 
 - (void)forceCloseDocument

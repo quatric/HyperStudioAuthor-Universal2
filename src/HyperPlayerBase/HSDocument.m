@@ -245,7 +245,7 @@ static NSString *sPlatformInformation;
 - (void)hyperDocumentWillRemoveFromDocumentController:(id)aController
 {
     if ([[self navigationController] currentNavigationOperation] == nil)
-        [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
+        [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[self stack] hyperUID] andSoundAttributes:nil];
 }
 
 - (void)setSuppressAlerts:(BOOL)aAlerts

@@ -672,7 +672,7 @@ static id sDAT_00342a50;
             }
             [[self modeHistory] addObject:[[self modeSwitcher] activeModeController]];
             if ([[self modeSwitcher] activeModeController] == [self playerInEditorWindowController]) {
-                [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
+                [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[self stack] hyperUID] andSoundAttributes:nil];
             }
             [[self modeSwitcher] switchToModeController:[self storyboardController]];
         }
@@ -908,7 +908,6 @@ static id sDAT_00342a50;
     [[HSEditorController sharedDocumentController] setDocumentInEditor:YES];
     [[self editorWindowController] saveScrollerPosition];
     [[self modeHistory] removeAllObjects];
-    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
     [[self navigationController] interruptAllNavigationOperations];
     NSEnumerator *enumerator = [[self textViewsToResetScrollPosition] objectEnumerator];
     id textView;

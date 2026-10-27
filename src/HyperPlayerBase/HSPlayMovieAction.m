@@ -434,7 +434,7 @@
     if ([allowedMovies count])
         [player stopAllMovies];
     if ([allowedSounds count])
-        [player stopAllSounds];
+        [player stopAllSoundsForStackUID:[[[self stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID] andSoundAttributes:nil];
     [liveVideos makeObjectsPerformSelector:@selector(playInActionExecutionContext:) withObject:aContext];
     [movies makeObjectsPerformSelector:@selector(playInActionExecutionContext:) withObject:aContext];
     for (id playable in allowedMovies)
@@ -713,6 +713,31 @@
     if (self)
         _storeVersion = 520;
     return self;
+}
+
+- (void)removeUnsupportedFeatures
+{
+    for (id item in [self enabledMovies]) {
+        [item setSoundFadeOutTime:0.0];
+        [item setVolume:1.0];
+    }
+}
+
+// Shows the movie objects again, except the temporary ones whose first
+// frame is not shown: those stay hidden and the context remembers them.
+- (void)restoreMovieObjectVisibilityInContext:(id)aContext
+{
+    for (id item in [self playbackItems:[self movies] forEnableState:YES]) {
+        id movieObject = [item movieObjectForCard:nil];
+        if (movieObject == nil)
+            continue;
+        if ([movieObject isTemporary] && ![item showFirstFrame]) {
+            [movieObject setHiddenInPlayer:YES];
+            [aContext addMovieHiddenByPlayMovieAction:movieObject];
+        } else {
+            [movieObject setHiddenInPlayer:[movieObject isHidden]];
+        }
+    }
 }
 
 @end

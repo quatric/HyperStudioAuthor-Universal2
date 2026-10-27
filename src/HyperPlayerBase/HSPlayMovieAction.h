@@ -73,6 +73,8 @@
 - (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (void)removeUnsupportedFeatures;
+- (void)restoreMovieObjectVisibilityInContext:(id)aContext;
 @end
 
 @interface HSPlayMovieAction (HSPlayMovieActionDeprecated)

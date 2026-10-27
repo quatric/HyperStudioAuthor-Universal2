@@ -113,7 +113,7 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 {
     id manager = [[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager];
     [[manager automaticTimerManager] stopAllAutomaticActionTimersForCard:[self card]];
-    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSounds];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[self stack] hyperUID] andSoundAttributes:nil];
     [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllMovies];
 
     // Undo every change the presentation made since the stack was opened.
