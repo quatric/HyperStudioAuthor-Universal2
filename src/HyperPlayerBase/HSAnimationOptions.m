@@ -18,14 +18,14 @@
     return -1.0;
 }
 
-- (void)setHideMode:(BOOL)aMode
+- (void)setHideMode:(NSInteger)aMode
 {
-    [self setOldFormatHideMode:aMode];
+    _hideMode = (unsigned int)aMode;
 }
 
 - (NSInteger)hideMode
 {
-    return [self oldFormatHideMode];
+    return _hideMode;
 }
 
 // floatOverGoing/floatOverReturning are the old keys of the absolute layers;
@@ -393,24 +393,25 @@
     return _loopMode;
 }
 
+// The Author keeps one hide mode: 1 hides on the first frame, 2 on the last, 3 on both.
 - (void)setHideOnLastFrame:(BOOL)aFrame
 {
-    _hideOnLastFrame = aFrame;
+    _hideMode = ([self hideOnFirstFrame] ? 1 : 0) | (aFrame ? 2 : 0);
 }
 
 - (BOOL)hideOnLastFrame
 {
-    return _hideOnLastFrame;
+    return [self hideMode] == 2 || [self hideMode] == 3;
 }
 
 - (void)setHideOnFirstFrame:(BOOL)aFrame
 {
-    _hideOnFirstFrame = aFrame;
+    _hideMode = ([self hideOnLastFrame] ? 2 : 0) | (aFrame ? 1 : 0);
 }
 
 - (BOOL)hideOnFirstFrame
 {
-    return _hideOnFirstFrame;
+    return [self hideMode] == 1 || [self hideMode] == 3;
 }
 
 // 0 never hides, 1 hides on the first frame, 2 on the last, 3 on both;
@@ -491,8 +492,7 @@
         _horizontalFlipAtFinish = NO;
         _verticalFlipAtFinish = NO;
         _usesTransparentColor = NO;
-        _hideOnFirstFrame = NO;
-        _hideOnLastFrame = NO;
+        _hideMode = 0;
     }
     return self;
 }

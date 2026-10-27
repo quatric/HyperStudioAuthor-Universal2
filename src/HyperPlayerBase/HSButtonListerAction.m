@@ -5,7 +5,7 @@
 
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType
 {
-    return ![aType isEqualToString:@"HSiBooksAuthorDocumentType"];
+    return NO;
 }
 
 - (id)HTML5DictionaryRepresentationInContext:(id)aContext

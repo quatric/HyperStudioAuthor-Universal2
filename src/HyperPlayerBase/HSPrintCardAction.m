@@ -11,7 +11,7 @@
 }
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType
 {
-    return ![aType isEqualToString:@"HSiBooksAuthorDocumentType"];
+    return NO;
 }
 - (void)importFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext
 {

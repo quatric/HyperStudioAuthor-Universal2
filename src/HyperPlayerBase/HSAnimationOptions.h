@@ -27,8 +27,7 @@
     BOOL _horizontalFlipAtFinish;
     BOOL _verticalFlipAtFinish;
     BOOL _usesTransparentColor;
-    BOOL _hideOnFirstFrame;
-    BOOL _hideOnLastFrame;
+    unsigned int _hideMode;
     unsigned int _goingAbsoluteLayer:2;
     unsigned int _returningAbsoluteLayer:2;
     unsigned int _isGoingAbsoluteLayerRead:1;
@@ -36,7 +35,7 @@
 }
 + (NSInteger)undefinedTimesPerSecond;
 + (double)undefinedMovieSpeed;
-- (void)setHideMode:(BOOL)aMode;
+- (void)setHideMode:(NSInteger)aMode;
 - (NSInteger)hideMode;
 - (void)setFloatOverReturning:(BOOL)aReturning;
 - (BOOL)floatOverReturning;

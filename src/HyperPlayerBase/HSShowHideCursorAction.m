@@ -8,7 +8,7 @@
 }
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType
 {
-    return ![aType isEqualToString:@"HSiBooksAuthorDocumentType"];
+    return NO;
 }
 - (void)setChangeCursorVisibilityAction:(NSInteger)aAction
 {

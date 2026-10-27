@@ -70,7 +70,7 @@
 }
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType
 {
-    return ![aType isEqualToString:@"HSiBooksAuthorDocumentType"];
+    return NO;
 }
 // Old mappings name buttons by title: add the UID of the first button of
 // that name in the stack (not undoable).

@@ -290,10 +290,13 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 
 - (void)autosizeToReflectEnclosingScrollView
 {
+    [self autosizePreservingVisibleArea];
 }
 
 - (void)autosizeToFitEnclosingScrollView
 {
+    if (![self inLightweightChangeProcessingMode])
+        [self autolayoutPreservingVisibleArea];
 }
 
 - (void)autosizeToFrame:(NSRect)aFrame
@@ -318,6 +321,7 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 
 - (void)autooffsetCardTo:(NSPoint)aTo
 {
+    [self setCardOffset:NSMakeSize(aTo.x, aTo.y)];
 }
 
 - (NSRect)userBoundingRectForViewRect:(NSRect)aRect
@@ -454,22 +458,7 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 
 - (void)drawBackgroundInContentRect:(NSRect)aRect
 {
-    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-    NSRect cardRect = [self viewBoundingRectForUserRect:[self userObjectBounds]];
-    CGAffineTransform ctm = CGContextGetCTM(context);
-    CGContextSetPatternPhase(context, CGSizeMake(ctm.a * cardRect.origin.x + ctm.c * cardRect.origin.y + ctm.tx,
-                                                 ctm.b * cardRect.origin.x + ctm.d * cardRect.origin.y + ctm.ty));
-    [NSBezierPath fillRect:[self bounds]];
-
-    // A thin frame around the card, aligned to device pixels.
-    NSRect frame = [self convertRect:NSInsetRect(cardRect, -1, -1) toView:nil];
-    CGFloat x = roundf(frame.origin.x);
-    CGFloat y = roundf(frame.origin.y);
-    frame = NSMakeRect(x, y, roundf(x - frame.origin.x + frame.size.width), roundf(y - frame.origin.y + frame.size.height));
-    frame = [self convertRect:NSInsetRect(frame, 0.5, 0.5) fromView:nil];
-    CGContextSetRGBStrokeColor(context, 0.095, 0.21, 0.3, 0.5);
-    [self addCardRect:frame toContext:context];
-    CGContextStrokePath(context);
+    [self fillBackground];
 }
 
 - (void)addCardRect:(NSRect)aRect toContext:(struct CGContext *)aContext
