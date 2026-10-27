@@ -202,4 +202,14 @@
     [[self window] setCollectionBehavior:0];
 }
 
+- (void)windowWillClose:(id)aNotification
+{
+    [super windowWillClose:aNotification];
+}
+
+- (NSRect)frameForDisplayingPause
+{
+    return [[[self window] contentView] frame];
+}
+
 @end

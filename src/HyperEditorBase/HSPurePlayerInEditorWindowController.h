@@ -31,5 +31,7 @@
 - (id)windowScreen;
 - (void)dealloc;
 - (void)windowDidLoad;
+- (void)windowWillClose:(id)aNotification;
+- (NSRect)frameForDisplayingPause;
 @end
 

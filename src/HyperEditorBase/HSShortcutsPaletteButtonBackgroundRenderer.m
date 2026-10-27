@@ -685,6 +685,11 @@ static NSMapTable *sSharedRenderers;
     return [NSImage imageNamed:name];
 }
 
+- (CGFloat)segmentHeightForObject:(id)aObject
+{
+    return [super segmentHeightForObject:aObject] - 1.0;
+}
+
 @end
 
 @implementation HSLibraryOptionsButtonBackgroundRenderer

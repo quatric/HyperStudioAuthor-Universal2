@@ -161,6 +161,7 @@
 {
 }
 - (id)loadImageForTag:(NSInteger)aTag;
+- (CGFloat)segmentHeightForObject:(id)aObject;
 @end
 
 @interface HSLibraryOptionsButtonBackgroundRenderer : HSControlBackgroundRenderer
