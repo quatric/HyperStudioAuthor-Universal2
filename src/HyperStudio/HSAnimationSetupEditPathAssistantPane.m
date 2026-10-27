@@ -57,4 +57,10 @@
     [_delegate unprepareToolAndCardViewForAnimationSetupEditPathAssistantPane:self];
 }
 
+- (void)viewWillDisappear:(BOOL)aDisappear
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:[self mainWindow]];
+    [super viewWillDisappear:aDisappear];
+}
+
 @end

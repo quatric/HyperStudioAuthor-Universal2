@@ -1190,23 +1190,25 @@ id FUN_000dd41c(HSLibraryController *self,SEL _cmd,id toolbar,id itemForItemIden
     return BVar1;
 }
 
-- (void)hideLibrary
+- (void)hideLibraryWithSaveToDefaults:(BOOL)aSave
 {
     id pvVar1_2;
-    NSUserDefaults *pvVar1_5;
-    id pvVar2_2;
 
     if ([self isLibraryVisible]) {
         pvVar1_2 = [self window];
         if ([pvVar1_2 makeFirstResponder:nil]) {
             [[self window] orderOut:self];
             [self stopPlaying];
-            pvVar1_5 = [NSUserDefaults standardUserDefaults];
-            pvVar2_2 = [[self class] visibilityKeyForDefaults];
-            [pvVar1_5 setBool:NO forKey:pvVar2_2];
+            if (aSave)
+                [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[[self class] visibilityKeyForDefaults]];
         }
         [[NSNotificationCenter defaultCenter] removeObserver:self name:HSMediaLibraryAccessDidChangeNotification object:0];
     }
+}
+
+- (void)hideLibrary
+{
+    [self hideLibraryWithSaveToDefaults:YES];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -1739,6 +1741,14 @@ id FUN_000dfc8b(HSLibraryController *self,SEL _cmd)
     }
     [_storedVisibilityStates release];
     [super dealloc];
+}
+
+- (void)documentWindowDidBecomeMain:(id)aMain
+{
+    if ([[[[NSDocumentController sharedDocumentController] currentDocument] stack] isStackProtected])
+        [self hideLibraryWithSaveToDefaults:NO];
+    else
+        [self showLibraryIfNeededByDefault:YES];
 }
 
 @end

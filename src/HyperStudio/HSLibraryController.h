@@ -56,6 +56,7 @@
 - (id)toolbar:(id)aToolbar itemForItemIdentifier:(id)aIdentifier willBeInsertedIntoToolbar:(BOOL)aToolbar2;
 - (BOOL)isLibraryVisible;
 - (void)hideLibrary;
+- (void)hideLibraryWithSaveToDefaults:(BOOL)aSave;
 - (void)showLibraryIfNeededByDefault:(BOOL)aDefault;
 - (void)showLibrary;
 - (BOOL)windowShouldClose:(id)aClose;
@@ -69,5 +70,6 @@
 - (id)copyWithZone:(NSZone *)aZone;
 - (id)init;
 - (void)dealloc;
+- (void)documentWindowDidBecomeMain:(id)aMain;
 @end
 

@@ -12,5 +12,6 @@
 - (id)settingsIdentifiers;
 - (id)bitmapTool;
 - (void)dealloc;
+- (void)deactivateBitmapTool;
 @end
 

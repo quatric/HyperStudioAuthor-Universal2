@@ -117,4 +117,12 @@
     [super dealloc];
 }
 
+- (void)HSSelectImagePartPane_windowDidResignMain:(id)aResign
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+
+    if (current != nil && current != [[self stack] document])
+        [self HSSelectImagePartPane_paneDidCancel];
+}
+
 @end

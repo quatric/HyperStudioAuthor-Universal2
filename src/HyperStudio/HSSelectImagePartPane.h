@@ -26,5 +26,6 @@
 - (void)viewWillDisappear:(BOOL)aDisappear;
 - (id)assistantPaneUndoManager;
 - (void)dealloc;
+- (void)HSSelectImagePartPane_windowDidResignMain:(id)aResign;
 @end
 

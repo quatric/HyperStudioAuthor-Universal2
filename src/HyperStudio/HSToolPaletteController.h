@@ -44,5 +44,6 @@
 - (void)validateView:(id)aView;
 - (id)nibName;
 - (void)dealloc;
+- (void)appWillOpenModalWindow:(id)aWindow;
 @end
 

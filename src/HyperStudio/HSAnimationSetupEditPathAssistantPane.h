@@ -16,5 +16,6 @@
 - (id)document;
 - (id)mainWindow;
 - (void)HSAnimationSetupEditPathAssistantPane_windowDidResignMain:(id)aResign;
+- (void)viewWillDisappear:(BOOL)aDisappear;
 @end
 

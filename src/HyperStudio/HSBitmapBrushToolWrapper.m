@@ -51,4 +51,13 @@
     [super dealloc];
 }
 
+- (void)deactivateBitmapTool
+{
+    [[self bitmapTool] stopRecordTouchesWithConsumer:_touchStorage];
+    [_touchStorage setDelegate:nil];
+    [_touchStorage release];
+    _touchStorage = nil;
+    [super deactivateBitmapTool];
+}
+
 @end

@@ -866,5 +866,10 @@ void FUN_000d6d34(HSToolPaletteController *self,SEL _cmd,id validateView)
     [super dealloc];
 }
 
+- (void)appWillOpenModalWindow:(id)aWindow
+{
+    [self performSelector:@selector(validateUserInterfaceForced:) withObject:[NSNumber numberWithBool:YES] afterDelay:0 inModes:[NSArray arrayWithObject:NSRunLoopCommonModes]];
+}
+
 @end
 
