@@ -367,18 +367,9 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
             [self cancelNavigationOperation:aOperation];
             break;
         }
-        id card;
-        if ([aOperation destinationCardUID] != nil) {
-            card = [[[self document] stack] childWithUID:[aOperation destinationCardUID]];
-            if (card == nil)
-                [[self historyStack] removeCardWithUID:[aOperation destinationCardUID] inStack:[[self document] stack]];
-        } else {
-            if ((NSUInteger)[aOperation destinationCardIndex] == (NSUInteger)NSNotFound) {
-                [self cancelNavigationOperation:aOperation];
-                break;
-            }
-            card = [[[self document] stack] hyperChildAtIndex:[aOperation destinationCardIndex]];
-        }
+        id card = [self destinationCardInStack:[[self document] stack] fromNavigationOperation:aOperation];
+        if ([aOperation destinationCardUID] != nil && card == nil)
+            [[self historyStack] removeCardWithUID:[aOperation destinationCardUID] inStack:[[self document] stack]];
         if (card == nil) {
             [self cancelNavigationOperation:aOperation];
             break;
