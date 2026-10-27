@@ -357,10 +357,8 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
 
 - (BOOL)isMultiDocument
 {
-    if (!HSMultiDocumentChecked) {
-        HSMultiDocument = [[NSUserDefaults standardUserDefaults] boolForKey:@"HSMultiDocumentEnabled"];
-        HSMultiDocumentChecked = YES;
-    }
+    HSMultiDocument = YES;
+    HSMultiDocumentChecked = YES;
     return HSMultiDocument;
 }
 

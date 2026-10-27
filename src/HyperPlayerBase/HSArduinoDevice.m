@@ -110,9 +110,7 @@ static void HSArduinoApplyAnalogPinStateChange(const void *aKey, const void *aVa
 
 + (id)defaultDevice
 {
-    if (sArduinoServer == nil && ![self HSArduinoDevice_connectToArduinoServer])
-        return nil;
-    return [HSDistantArduinoDevice defaultDevice];
+    return nil;
 }
 
 + (void)HSArduinoDevice_arduinoServerConnectionDidDie:(id)aDie

@@ -621,7 +621,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 
 - (id)historyStack
 {
-    return [HSHistoryStack sharedHistoryStack];
+    return [[self document] historyStack];
 }
 
 - (void)goToCardWithUID:(id)aUID inStackAtURL:(id)aURL withTransition:(id)aTransition

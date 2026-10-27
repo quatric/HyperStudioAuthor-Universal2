@@ -28,8 +28,6 @@
 
 - (id)cursor
 {
-    if (_cursor != nil && [_cursor imageMedia] == nil)
-        [_cursor setImageMedia:[HSNewMedia mediaWithImage:[_cursor image]]];
     return _cursor;
 }
 

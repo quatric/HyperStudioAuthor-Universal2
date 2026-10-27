@@ -41,7 +41,7 @@ static NSSet *HSTransitionQCTransitionNames = nil;
 
 - (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
 {
-    return [[HSTransitionEffectProvider unsupportedTransitionEffectNames] containsObject:_name];
+    return [self effect] == nil;
 }
 
 - (BOOL)shouldBeExportedAsImage

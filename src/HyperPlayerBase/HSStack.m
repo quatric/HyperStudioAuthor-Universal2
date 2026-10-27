@@ -942,14 +942,7 @@ static NSString *HSStackCommentsSeparator(NSString *aComments)
 // The stack's actions and those of everything in it.
 - (id)allActionsOfType:(id)aType
 {
-    if (aType == nil)
-        return nil;
-    NSMutableSet *actions = [NSMutableSet setWithSet:[super allActionsOfType:aType]];
-    for (id node in [[self hyperDeepEnumerator] allObjects]) {
-        if (node != self)
-            [actions unionSet:[node allActionsOfType:aType]];
-    }
-    return actions;
+    return [self allActionsOfType:aType shouldLoadChildren:YES];
 }
 
 - (BOOL)needsOwnUniqueNameGenerator

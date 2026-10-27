@@ -72,9 +72,6 @@
 // Handles the pending events first (so a Cancel button can be pressed).
 - (BOOL)shouldTerminateExport
 {
-    NSEvent *event;
-    while ((event = [NSApp nextEventMatchingMask:NSEventMaskAny untilDate:nil inMode:NSEventTrackingRunLoopMode dequeue:YES]) != nil)
-        [NSApp sendEvent:event];
     return _shouldTerminateExport;
 }
 - (void)dealloc

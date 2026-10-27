@@ -507,17 +507,6 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 - (void)didBindToModelOnLoad
 {
     [self activateOnLoad];
-    id stack = [[self document] stack];
-    NSMutableArray *nodes = [[NSMutableArray alloc] initWithObjects:stack, nil];
-    NSArray *cards = [[[self document] stack] hyperChildren];
-    [nodes addObjectsFromArray:cards];
-    for (id card in cards)
-        [nodes addObjectsFromArray:[card hyperChildren]];
-    for (id node in nodes) {
-        for (id action in [[node queryHyperInterface:@protocol(HSActor)] hyperActions])
-            [action convertOldVersionAttributesIfNeeded];
-    }
-    [nodes release];
 }
 
 - (void)bindToModelOnLoad

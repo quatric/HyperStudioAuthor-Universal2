@@ -124,11 +124,6 @@ static NSSet *sTextImplementationInterfaces;
 
 - (void)rememberTextStyleAttributes
 {
-    if (!_shouldRememberTextStyleAttributes)
-        return;
-    HSSystemTextViewAttributesSharedProvider *provider = [HSSystemTextViewAttributesSharedProvider systemTextViewAttributesSharedProvider];
-    [provider setSharedSystemTextViewAttributes:[self hyperTextAttributes]];
-    [provider setSpaceBetweenCharacters:[self hyperSpaceBetweenCharacters]];
 }
 
 - (void)setShouldRememberTextStyleAttributes:(BOOL)aAttributes

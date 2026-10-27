@@ -295,7 +295,7 @@
 - (id)autosavingFileType
 {
     [self checkAndSetAutosavedContentsFilePath];
-    return @"HSDocumentType";
+    return @"HSAiBADocumentType";
 }
 
 // Autosaves go next to the document as "<name> (Autosaved).stack", or to
