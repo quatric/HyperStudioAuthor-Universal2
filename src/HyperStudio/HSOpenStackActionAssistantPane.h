@@ -46,6 +46,7 @@
 @interface HSOpenStackActionAssistantApplier : HSActionAssistantSettingsApplier
 {
     BOOL _shouldOpenInSeparateWindow;
+    BOOL _initialShouldOpenInSeparateWindow;
     NSURL *_initialURL;
     NSURL *_URL;
 }

@@ -541,13 +541,14 @@ LAB_0010710e:
         pvVar2 = [_URL isEqual:_initialURL];
         cVar1 = pvVar2;
     }
-    return cVar1 != NO;
+    return cVar1 != NO && _shouldOpenInSeparateWindow == _initialShouldOpenInSeparateWindow;
 }
 
 - (void)makeCurrentEqualToInitial
 {
     [_URL release];
     _URL = [_initialURL retain];
+    _shouldOpenInSeparateWindow = _initialShouldOpenInSeparateWindow;
     [super makeCurrentEqualToInitial];
 }
 
@@ -556,11 +557,13 @@ LAB_0010710e:
     [super makeInitialEqualToCurrent];
     [_initialURL release];
     _initialURL = [_URL retain];
+    _initialShouldOpenInSeparateWindow = _shouldOpenInSeparateWindow;
 }
 
 - (void)setInitialSettingsToObject
 {
     [[self openStackActionAttributes] setURL:_initialURL];
+    [[self openStackActionAttributes] setShouldOpenInSeparateWindow:_initialShouldOpenInSeparateWindow];
     [super setInitialSettingsToObject];
 }
 
@@ -568,6 +571,7 @@ LAB_0010710e:
 {
     [super setCurrentSettingsToObject];
     [[self openStackActionAttributes] setURL:_URL];
+    [[self openStackActionAttributes] setShouldOpenInSeparateWindow:_shouldOpenInSeparateWindow];
 }
 
 - (void)setUpInitialSettings
@@ -577,6 +581,7 @@ LAB_0010710e:
     pvVar1_3 = [[[self openStackActionAttributes] URL] retain];
     _initialURL = pvVar1_3;
     _URL = [pvVar1_3 retain];
+    _initialShouldOpenInSeparateWindow = _shouldOpenInSeparateWindow = [[self openStackActionAttributes] shouldOpenInSeparateWindow];
 }
 
 - (id)openStackActionAttributes
