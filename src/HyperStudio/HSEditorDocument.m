@@ -558,10 +558,12 @@ static id sDAT_00342a50;
 
 - (void)togglePresentationMode:(id)aMode
 {
-    if ([self isInPresentationMode]) {
-        [self exitPurePlayerModeWithAnimation:YES];
-    } else if ([self canTogglePlayEdit]) {
-        [self enterPurePlayerModeWithAnimation:YES withPreferencesSettings:YES];
+    if (![self isPresentationModeSwitching]) {
+        if ([self isInPresentationMode]) {
+            [self exitPresentationMode];
+        } else {
+            [self beginEnteringInPresentationMode];
+        }
     }
 }
 
@@ -2042,7 +2044,7 @@ chain:
 
 - (Class)navigationControllerClass
 {
-    return [HSEditorNavigationController class];
+    return [[self currentWindowController] navigationControllerClass];
 }
 
 - (void)setOpenWarning:(id)aWarning
