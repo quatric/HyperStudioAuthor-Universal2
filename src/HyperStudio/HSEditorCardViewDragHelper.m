@@ -7562,6 +7562,41 @@ uint FUN_001e2a61(HSEditorCardViewDragHelper *self,SEL _cmd,id draggingEntered)
     return ![movie isPanoramaObject] && ![movie isQTVRMovie];
 }
 
+- (BOOL)addObject:(id)aObject intoObject:(id)aObject2 center:(BOOL)aCenter fitCanvas:(BOOL)aCanvas isHyperObject:(BOOL *)aObject3 needOpenHelpPane:(BOOL)aPane isPasting:(BOOL)aPasting useDragPreferences:(BOOL)aPreferences
+{
+    return [self addObject:aObject intoObject:aObject2 center:aCenter fitCanvas:aCanvas isHyperObject:aObject3 needOpenHelpPane:aPane isPasting:aPasting useDragPreferences:aPreferences pastingNotHSObject:NO];
+}
+
+- (BOOL)addObjectsInArray:(id)aArray center:(BOOL)aCenter fitCanvas:(BOOL)aCanvas isPasting:(BOOL)aPasting useDragPreferences:(BOOL)aPreferences
+{
+    return [self addObjectsInArray:aArray center:aCenter fitCanvas:aCanvas isPasting:aPasting useDragPreferences:aPreferences pastingNotHSObject:NO];
+}
+
+- (BOOL)addObjectsInArray:(id)aArray intoObject:(id)aObject center:(BOOL)aCenter fitCanvas:(BOOL)aCanvas needOpenHelpPane:(BOOL)aPane isPasting:(BOOL)aPasting useDragPreferences:(BOOL)aPreferences
+{
+    return [self addObjectsInArray:aArray intoObject:aObject center:aCenter fitCanvas:aCanvas needOpenHelpPane:aPane isPasting:aPasting useDragPreferences:aPreferences pastingNotHSObject:NO];
+}
+
+- (id)objectFromFile:(id)aFile shouldImport:(BOOL)aImport intoAcceptingObject:(id)aObject error:(id *)aError dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences
+{
+    return [self objectFromFile:aFile shouldImport:aImport intoAcceptingObject:aObject runAnimationMode:NULL error:aError dragOperation:aOperation useDragPreferences:aPreferences];
+}
+
+- (BOOL)performDragOperation:(id)aOperation acceptingObject:(id)aObject didAddNewObject:(BOOL *)aObject2
+{
+    return [self performDragOperation:aOperation acceptingObject:aObject runAnimationMode:NULL didAddNewObject:aObject2];
+}
+
+- (BOOL)readFromPasteboard:(id)aPasteboard acceptingObject:(id)aObject createdObjects:(id *)aObjects dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences
+{
+    return [self readFromPasteboard:aPasteboard acceptingObject:aObject createdObjects:aObjects runAnimationMode:NULL dragOperation:aOperation useDragPreferences:aPreferences pastingNotHSObject:NULL];
+}
+
+- (BOOL)tryToReadFromPasteboard:(id)aPasteboard acceptingObject:(id)aObject alignCenter:(BOOL)aCenter orAdjustLocation:(BOOL)aLocation toRect:(NSRect)aRect didAddNewObject:(BOOL *)aObject2 isPasting:(BOOL)aPasting dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences
+{
+    return [self tryToReadFromPasteboard:aPasteboard acceptingObject:aObject alignCenter:aCenter orAdjustLocation:aLocation toRect:aRect runAnimationMode:NULL didAddNewObject:aObject2 isPasting:aPasting dragOperation:aOperation useDragPreferences:aPreferences];
+}
+
 @end
 
 @implementation NSArray (HSNodeSelectionSupport)

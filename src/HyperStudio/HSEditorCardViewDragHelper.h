@@ -88,6 +88,10 @@
 - (void)invalidateDragHost;
 - (id)initWithDragHost:(id)aHost;
 - (BOOL)canReciveMovieMediaFromPath:(id)aPath;
+- (id)objectFromFile:(id)aFile shouldImport:(BOOL)aImport intoAcceptingObject:(id)aObject error:(id *)aError dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences;
+- (BOOL)performDragOperation:(id)aOperation acceptingObject:(id)aObject didAddNewObject:(BOOL *)aObject2;
+- (BOOL)readFromPasteboard:(id)aPasteboard acceptingObject:(id)aObject createdObjects:(id *)aObjects dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences;
+- (BOOL)tryToReadFromPasteboard:(id)aPasteboard acceptingObject:(id)aObject alignCenter:(BOOL)aCenter orAdjustLocation:(BOOL)aLocation toRect:(NSRect)aRect didAddNewObject:(BOOL *)aObject2 isPasting:(BOOL)aPasting dragOperation:(NSUInteger)aOperation useDragPreferences:(BOOL)aPreferences;
 @end
 
 @interface NSArray (HSNodeSelectionSupport)
