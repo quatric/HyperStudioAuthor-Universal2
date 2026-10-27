@@ -1670,7 +1670,6 @@ typedef void (*HSNodeRemoveObserverIMP)(id, SEL, id, SEL, NSUInteger, void *, id
 - (void)hyperRemoveChildrenBeginGrouping
 {
     NSUndoManager *undoManager = [self undoManager];
-    [undoManager setActionName:HSNodeUndoName([undoManager isUndoing] ? @"Add Items" : @"Remove Items")];
     [[undoManager prepareWithInvocationTarget:self] hyperAddChildrenEndGrouping];
     id delegate = [self delegate];
     if ([delegate respondsToSelector:@selector(nodeContainerRemoveChildrenBeginGrouping:)])
@@ -1690,7 +1689,6 @@ typedef void (*HSNodeRemoveObserverIMP)(id, SEL, id, SEL, NSUInteger, void *, id
 - (void)hyperAddChildrenBeginGrouping
 {
     NSUndoManager *undoManager = [self undoManager];
-    [undoManager setActionName:HSNodeUndoName([undoManager isUndoing] ? @"Remove Items" : @"Add Items")];
     [[undoManager prepareWithInvocationTarget:self] hyperRemoveChildrenEndGrouping];
     id delegate = [self delegate];
     if ([delegate respondsToSelector:@selector(nodeContainerAddChildrenBeginGrouping:)])

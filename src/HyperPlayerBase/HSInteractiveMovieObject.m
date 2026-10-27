@@ -26,12 +26,10 @@
 // Fix: the original drops a movie made earlier without releasing it.
 - (id)HSInteractiveMovieObject_movieForView
 {
-    HSMovie *movie = [[self HSInteractiveMovieObject_hyperMovieObjectAttributes] hyperMovie];
-    [_movieForView release];
-    if (![movie isPanoramaObject] && ![movie isQTVRMovie])
+    if (_movieForView == nil) {
+        HSMovie *movie = [[self HSInteractiveMovieObject_hyperMovieObjectAttributes] hyperMovie];
         _movieForView = [[QTMovie alloc] initWithQuickTimeMovie:[movie quickTimeMovie] disposeWhenDone:NO error:NULL];
-    else
-        _movieForView = [movie createQTVRMovie];
+    }
     return _movieForView;
 }
 

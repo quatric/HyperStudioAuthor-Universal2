@@ -325,10 +325,8 @@ static Protocol *HSFirstProtocolNotConformedTo(id aObject, Protocol **aProtocols
 {
     if ([[self mediaUID] isEqual:aUID])
         return;
-    id media = [[HSNewMediaAccessor sharedMediaAccessor] mediaForUID:aUID];
-    id image = [media image];
     [_media release];
-    _media = [(image != nil ? media : nil) retain];
+    _media = [[[HSNewMediaAccessor sharedMediaAccessor] mediaForUID:aUID] retain];
 }
 
 - (id)mediaUID

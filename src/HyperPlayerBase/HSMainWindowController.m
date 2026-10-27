@@ -489,6 +489,7 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 - (void)windowDidLoad
 {
     [super windowDidLoad];
+    [[self window] setCollectionBehavior:0x80];
     [self willBindToModelOnLoad];
     [self bindToModelOnLoad];
     [self didBindToModelOnLoad];

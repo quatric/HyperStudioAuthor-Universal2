@@ -881,8 +881,6 @@ static NSString *sPlatformInformation;
 
 - (void)close
 {
-    id card = [[[self navigationController] historyStack] lastMarkedCard];
-    [card setCardDocumentPath:[[[self fileURL] path] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     [[self navigationController] willBeClosedWithDocument];
     [[[self actionExecutionManager] automaticTimerManager] stopAllAutomaticActionTimers];
     [self cleanupWindowControllers];
