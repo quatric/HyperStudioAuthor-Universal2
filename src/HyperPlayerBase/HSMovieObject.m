@@ -555,29 +555,36 @@ done:
 // panorama), otherwise the movie converted to MPEG-4.
 - (id)movieMediaForHTML5ExportWithContext:(id)aContext
 {
+    if ([self hyperMovie] == nil)
+        return nil;
+    id media = [self movieMediaConvertedForHTML5ExportWithContext:aContext];
+    if (media == nil)
+        media = [self media];
+    return media;
+}
+
+// The movie converted to MPEG-4 as it is (QuickTime export).
+- (id)movieMediaDataConvertedWithoutFramingForHTML5ExportContext:(id)aContext
+{
     HSMovie *movie = [self hyperMovie];
-    if (movie == nil)
-        return nil;
-    id media = [self media];
-    if ([self isHyperPanoramaObject] || [self isHyperQTVR])
-        return media;
-    BOOL iBooks = [@"HSiBooksAuthorDocumentType" isEqualToString:[(id <HSMovieObjectHTML5ExportContext>)aContext documentType]];
-    if (iBooks ? [movie isCompatibleWithIBooksAuthor] : [movie isCompatibleWithIPad])
-        return media;
-    NSString *base = [NSTemporaryDirectory() stringByAppendingPathComponent:@"_HTML5TmpMovie"];
-    if ([base length] == 0)
-        return nil;
-    NSString *extension = iBooks ? @"mp4" : @"m4v";
-    NSString *path = [NSString extraCreateUniqueFilename:base extension:extension];
-    if ([path length] == 0 || [movie quickTimeMovie] == NULL)
+    if ([movie quickTimeMovie] == NULL)
         return nil;
     QTMovie *qtMovie = [QTMovie movieWithQuickTimeMovie:[movie quickTimeMovie] disposeWhenDone:NO error:NULL];
     if (qtMovie == nil)
         return nil;
+    NSString *path = [self movieMediaTemporaryFilePathForHTML5ExportWithContext:aContext];
+    BOOL iBooks = [@"HSiBooksAuthorDocumentType" isEqualToString:[(id <HSMovieObjectHTML5ExportContext>)aContext documentType]];
     NSInteger error = [HSQuickTimeMovieHelper convertMovie:qtMovie frameSize:[self movieRect].size ofType:iBooks ? 'M4VH' : 'M4VP' toFile:path progressCallback:(void *)kHSCancelExportMovieProgressProc sender:aContext];
     if (error != 0)
         return nil;
-    return [HSNewMedia mediaWithData:[NSData dataWithContentsOfFile:path] name:@"video" type:extension];
+    return [NSData dataWithContentsOfFile:path];
+}
+
+// The Author renders the adjusted movie frame by frame; the recorder behind
+// that is not translated yet, so the movie is converted as it is.
+- (id)movieMediaDataConvertedWithFramingForHTML5ExportContext:(id)aContext
+{
+    return [self movieMediaDataConvertedWithoutFramingForHTML5ExportContext:aContext];
 }
 
 - (id)mediaUIDsForOptimization
@@ -1497,6 +1504,57 @@ done:
 - (id)movieObjectNodeData
 {
     return [super nodeData];
+}
+
+// Whether the movie is shown differently from the original one: with an
+// effect, resized or flipped.
+- (BOOL)isMovieAppearanceAdjusted
+{
+    id effect = [self effectPerObject];
+    BOOL adjusted = NO;
+    id geometry = [self queryHyperInterface:@protocol(HSGeometryAttributes)];
+    if (geometry != nil)
+        adjusted = !NSEqualSizes([geometry defaultSize], [geometry size]) || [geometry isFlippedHorizontally] || [geometry isFlippedVertically];
+    return effect != nil || adjusted;
+}
+
+- (BOOL)isMovieCompatibleWithHTML5:(id)aMovie forContext:(id)aContext
+{
+    if ([[aContext documentType] isEqualToString:@"HSiBooksAuthorDocumentType"])
+        return [aMovie isCompatibleWithIBooksAuthor];
+    return [aMovie isCompatibleWithIPad];
+}
+
+- (BOOL)shouldConvertMovieMediaForHTML5ExportWithContext:(id)aContext
+{
+    if ([self isHyperPanoramaObject] || [self isHyperQTVR])
+        return NO;
+    return [self isMovieAppearanceAdjusted] || ![self isMovieCompatibleWithHTML5:[self hyperMovie] forContext:aContext];
+}
+
+- (id)movieMediaTemporaryFilePathForHTML5ExportWithContext:(id)aContext
+{
+    NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:@"_HTML5TmpMovie"];
+    if ([path length] == 0)
+        return nil;
+    return [NSString extraCreateUniqueFilename:path extension:[[aContext documentType] isEqualToString:@"HSiBooksAuthorDocumentType"] ? @"mp4" : @"m4v"];
+}
+
+- (id)movieMediaConvertedForHTML5ExportWithContext:(id)aContext
+{
+    id data = [self isMovieAppearanceAdjusted] ? [self movieMediaDataConvertedWithFramingForHTML5ExportContext:aContext] : [self movieMediaDataConvertedWithoutFramingForHTML5ExportContext:aContext];
+    if (data == nil)
+        return nil;
+    return [HSNewMedia mediaWithData:data name:@"video" type:[[self movieMediaTemporaryFilePathForHTML5ExportWithContext:aContext] pathExtension]];
+}
+
+- (void)verifyUnsupportedFeatures
+{
+    id colors = [self queryHyperInterface:@protocol(HSTransparentColorAttributes)];
+    [colors setTransparentColor:nil];
+    [colors setTransparentColorEnabled:NO];
+    [self setHyperVolume:1.0];
+    [super verifyUnsupportedFeatures];
 }
 
 @end

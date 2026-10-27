@@ -161,5 +161,13 @@
 - (void)dealloc;
 - (id)init;
 - (id)movieObjectNodeData;
+- (BOOL)isMovieAppearanceAdjusted;
+- (BOOL)isMovieCompatibleWithHTML5:(id)aMovie forContext:(id)aContext;
+- (BOOL)shouldConvertMovieMediaForHTML5ExportWithContext:(id)aContext;
+- (id)movieMediaTemporaryFilePathForHTML5ExportWithContext:(id)aContext;
+- (id)movieMediaConvertedForHTML5ExportWithContext:(id)aContext;
+- (id)movieMediaDataConvertedWithoutFramingForHTML5ExportContext:(id)aContext;
+- (id)movieMediaDataConvertedWithFramingForHTML5ExportContext:(id)aContext;
+- (void)verifyUnsupportedFeatures;
 @end
 
