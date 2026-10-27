@@ -1,4 +1,4 @@
-#import "HSEditorApplication.h"
+#import "HSAEditorApplication.h"
 static BOOL sMouseMovedPending;
 static id sValidateActionItem;
 

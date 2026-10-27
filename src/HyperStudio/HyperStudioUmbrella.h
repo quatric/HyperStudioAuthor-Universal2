@@ -176,7 +176,7 @@
 #import "HSEditButtonObjectDialogController.h"
 #import "HSEditObjectDialogContext.h"
 #import "HSEditObjectDialogNodeSupport.h"
-#import "HSEditorApplication.h"
+#import "HSAEditorApplication.h"
 #import "HSEditorCanvasHitTester.h"
 #import "HSEditorCardView.h"
 #import "HSEditorCardViewDragHelper.h"
