@@ -105,10 +105,6 @@
 - (void)didLoadNib
 {
     [_cardNavigationControl setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_toggleCardIndexButton cell] setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_toggleStoryboardButton cell] setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_togglePresentationModeButton cell] setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_goToHomeStackButton cell] setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
     [_zoomSlider setDelegate:self];
     [(SMKEngravedTextFieldCell *)[_stausbarTextField cell] setEngraveOffset:1.0f];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillUpdate:) name:NSApplicationWillUpdateNotification object:NSApp];

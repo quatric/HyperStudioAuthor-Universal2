@@ -146,9 +146,12 @@
 
 - (id)objectInRepresentedObjectsAtIndex:(NSUInteger)aIndex
 {
-    // Note: the original does not shift child indices when the root itself is represented.
-    if ([self hasRepresentationForRootNode] && aIndex == 0)
-        return [self rootRepresentedNode];
+    // When the root itself is represented it takes index 0 and the children follow.
+    if ([self hasRepresentationForRootNode]) {
+        if (aIndex == 0)
+            return [self rootRepresentedNode];
+        return [self rootRepresentedNodeChildAtIndex:aIndex - 1];
+    }
     return [self rootRepresentedNodeChildAtIndex:aIndex];
 }
 
