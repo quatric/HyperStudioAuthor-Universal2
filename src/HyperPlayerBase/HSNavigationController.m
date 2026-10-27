@@ -674,17 +674,29 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 // destination window first.
 - (void)prepareForNavigationToOpenedStack:(id)aStack
 {
-    if ([_document isInPresentationMode]) {
-        [self continueNavigationToDestinationStack];
-        return;
+    NSURL *URL = [aStack destinationStackURL];
+    id destination = [[HSPathsProvider sharedPathsProvider] isTutorialURL:URL] ? [self HSNavigationController_openedTutorialDocumentWithURL:URL] : [[HSApplicationController sharedDocumentController] documentForURL:URL];
+    id stack = [destination stack];
+    id card = nil;
+    NSInteger index = [aStack destinationCardIndex];
+    if ((NSUInteger)index == (NSUInteger)NSNotFound) {
+        if ([aStack destinationCardUID] != nil)
+            card = [stack childWithUID:[aStack destinationCardUID]];
+    } else if (index != (NSInteger)[stack indexOfHyperChild:[destination currentCard]]) {
+        card = [stack hyperChildAtIndex:index];
     }
-    id destination = [[NSDocumentController sharedDocumentController] documentForURL:[aStack destinationStackURL]];
-    NSWindow *destinationWindow = [[destination currentWindowController] window];
-    NSWindow *window = [[_document currentWindowController] window];
-    HSWindowMovingAnimation *animation = [[HSWindowMovingAnimation alloc] initWithWindow:destinationWindow destinationRect:[window frame]];
-    [animation setDelegate:self];
-    [animation startAnimation];
-    [animation release];
+    if ([[self historyStack] isBackGoing])
+        [[destination historyStack] startBackOperation];
+    [[destination historyStack] pushCard:[[self document] currentCard] withTransition:[aStack transition]];
+    if ([[self historyStack] lastMarkedCard] != nil && ![[[self document] currentCard] isMarkedCard])
+        [[destination historyStack] setLastMarkedCard:[[self historyStack] lastMarkedCard]];
+    [aStack setTransition:nil];
+    if ([[destination historyStack] isBackGoing])
+        [[destination historyStack] concludeHistoryOperation:NO];
+    if (card != nil)
+        [destination setCurrentCard:card];
+    [destination showWindows];
+    [self continueNavigationToDestinationStack];
 }
 
 - (void)continueNavigationToDestinationStack
