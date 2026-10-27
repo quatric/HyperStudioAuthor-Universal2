@@ -164,7 +164,7 @@
                 if (playing)
                     [player stopMovie:[self hyperObject]];
                 else
-                    [player playMovie:[self hyperObject] movieOwner:nil];
+                    [player playMovie:[self hyperObject] movieOwner:nil forStackUID:[[[[self hyperObject] stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID]];
             }
         }
     }

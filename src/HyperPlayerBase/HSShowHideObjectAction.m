@@ -471,7 +471,7 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
     [aObject setHiddenInPlayer:NO];
     id movie = [aObject queryHyperInterface:@protocol(HSMovieObjectAttributes)];
     if (movie != nil && ![movie isHyperPlaying])
-        [[HSActionMediaPlayer sharedActionMediaPlayer] playMovie:movie movieOwner:nil];
+        [[HSActionMediaPlayer sharedActionMediaPlayer] playMovie:movie movieOwner:nil forStackUID:[[[self stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID]];
 }
 
 - (void)hideCardObject:(id)aObject

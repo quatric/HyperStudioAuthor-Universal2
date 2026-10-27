@@ -703,7 +703,7 @@ done:
 
 - (void)playForMovieWithController:(id)aController
 {
-    [[HSActionMediaPlayer sharedActionMediaPlayer] playMovie:self movieOwner:nil];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] playMovie:self movieOwner:nil forStackUID:[[[self stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID]];
 }
 
 - (BOOL)isPlayingForMovieWithController:(id)aController

@@ -103,7 +103,7 @@
     NSInteger type = [self audioCueType];
     if (type == 2) {
         if ([self sound])
-            [[HSActionMediaPlayer sharedActionMediaPlayer] stopSoundForObject:aObject];
+            [[HSActionMediaPlayer sharedActionMediaPlayer] stopSoundForObject:aObject forStackUID:[[[self stack] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID]];
     } else if (type == 1) {
         [self cancelPreviousSpeak];
     }

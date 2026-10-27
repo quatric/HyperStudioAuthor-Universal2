@@ -648,7 +648,7 @@ static BOOL HSMoviePlaybackItemFloatsAreEqual(float aValue1, float aValue2)
     if ([_playableMovieObject isHyperQTVR])
         [self hyperPlayableObjectDidStop:_playableMovieObject];
     else
-        [player playMovie:_playableMovieObject movieOwner:self];
+        [player playMovie:_playableMovieObject movieOwner:self forStackUID:[[[[self playbackItemSupport] stackForAction] queryHyperInterface:@protocol(HSObjectUIDAttribute)] hyperUID]];
 }
 
 // Hiding the object stops it; showing it again plays it.
