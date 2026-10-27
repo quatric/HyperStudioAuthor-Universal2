@@ -45,5 +45,6 @@
 - (void)setHasController:(BOOL)aController;
 - (BOOL)hasController;
 - (id)init;
+- (void)setShadowEnabled:(BOOL)aEnabled;
 @end
 

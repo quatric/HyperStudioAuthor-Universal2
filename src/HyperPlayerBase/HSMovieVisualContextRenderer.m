@@ -201,4 +201,16 @@ static void HSMovieVisualContextRendererImageAvailable(QTVisualContextRef aConte
     _isMovieInvalidationPending = 0;
 }
 
+- (BOOL)isSynchronous
+{
+    return _isSynchronous;
+}
+
+- (id)initWithQTMovie:(id)aMovie storage:(id)aStorage synchronous:(BOOL)aSynchronous
+{
+    if ((self = [self initWithQTMovie:aMovie storage:aStorage]) != nil)
+        _isSynchronous = aSynchronous;
+    return self;
+}
+
 @end

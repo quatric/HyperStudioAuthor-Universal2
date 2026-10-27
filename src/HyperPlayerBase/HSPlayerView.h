@@ -166,6 +166,7 @@
 - (void)pauseTransition;
 - (void)resumeTransition;
 - (void)viewDidChangeUserSpaceToViewSpaceTransform:(id)aTransform;
+- (CGFloat)destinationCardZoomFactorForCard:(id)aCard;
 @end
 
 @interface HSPlayerView_HSGraphicCompositionView : HSGraphicCompositionView

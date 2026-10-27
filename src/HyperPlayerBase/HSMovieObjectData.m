@@ -177,4 +177,9 @@ static BOOL HSMovieObjectDataFloatsDiffer(float a, float b)
     return self;
 }
 
+- (void)setShadowEnabled:(BOOL)aEnabled
+{
+    [super setShadowEnabled:aEnabled];
+}
+
 @end

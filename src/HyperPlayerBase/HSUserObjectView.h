@@ -119,5 +119,6 @@
 - (BOOL)acceptsFirstResponder;
 - (id)HSUserObjectView_userObjectViewProxy;
 - (void)dealloc;
+- (NSRect)HSUserObjectView_viewBoundingRectForUserRect:(NSRect)aRect;
 @end
 

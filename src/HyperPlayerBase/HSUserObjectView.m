@@ -1258,4 +1258,11 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
     [super dealloc];
 }
 
+- (NSRect)HSUserObjectView_viewBoundingRectForUserRect:(NSRect)aRect
+{
+    id region = [HSMutableRegion regionWithRect:aRect];
+    [region applyAffineTransform:[self userSpaceToViewSpaceCGAffineTransform]];
+    return [region boundingRect];
+}
+
 @end

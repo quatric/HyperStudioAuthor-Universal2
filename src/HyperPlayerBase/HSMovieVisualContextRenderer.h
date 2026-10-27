@@ -13,6 +13,7 @@
     unsigned int _isMovieOpaque:1;
     unsigned int _isInterestedInFrameChangeNotifications:1;
     unsigned int _isMovieInvalidationPending:1;
+    unsigned int _isSynchronous:1;
 }
 + (BOOL)HSMovieVisualContextRenderer_isAlphaPresentInMovie:(id)aMovie;
 - (void)invalidateCurrentFrame;
@@ -31,5 +32,7 @@
 - (void)HSMovieVisualContextRenderer_installInvalidationTimerIfNeeded;
 - (void)HSMovieVisualContextRenderer_invalidateMovieOnMainThread;
 - (void)HSMovieVisualContextRenderer_invalidateMovie;
+- (BOOL)isSynchronous;
+- (id)initWithQTMovie:(id)aMovie storage:(id)aStorage synchronous:(BOOL)aSynchronous;
 @end
 

@@ -1484,6 +1484,21 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
     [_graphicCompositionView setFrame:(_cardView != nil ? [_cardView cardViewingRect] : NSZeroRect)];
 }
 
+- (CGFloat)destinationCardZoomFactorForCard:(id)aCard
+{
+    CGFloat zoomFactor = [_cardView zoomFactor];
+    if ([_cardView zoomMode] == 1 && aCard != nil) {
+        id sizeAttributes = [aCard queryHyperInterface:@protocol(HSSizeAttributes)];
+        NSSize cardSize = sizeAttributes != nil ? [sizeAttributes size] : NSZeroSize;
+        NSScrollView *scrollView = [_cardView enclosingScrollView];
+        NSSize available = [NSScrollView contentSizeForFrameSize:[scrollView frame].size hasHorizontalScroller:NO hasVerticalScroller:NO borderType:[scrollView borderType]];
+        zoomFactor = MIN(available.width / cardSize.width, available.height / cardSize.height);
+        if (zoomFactor < 0.01)
+            zoomFactor = 0.01;
+    }
+    return zoomFactor;
+}
+
 @end
 
 @implementation HSPlayerView_HSGraphicCompositionView
