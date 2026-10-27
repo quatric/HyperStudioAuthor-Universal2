@@ -188,6 +188,23 @@ static NSDictionary *sSizeModes = nil;
 
 @implementation NSToolbar (EXToolbar)
 
+// Toolbar icons (TBI_ prefix) come as a 32 and a 24 point image; the icon is
+// the 32 one with the 24 representations added.
++ (id)iconImageForName:(id)aName
+{
+    if (![aName hasPrefix:@"TBI_"])
+        return [NSImage imageNamed:aName];
+    NSImage *large = [NSImage imageNamed:[aName stringByAppendingString:@"32"]];
+    NSImage *small = [NSImage imageNamed:[aName stringByAppendingString:@"24"]];
+    if (large == nil)
+        return small;
+    // A copy, so the shared image does not collect the representations again.
+    NSImage *icon = [[large copy] autorelease];
+    for (NSImageRep *rep in [small representations])
+        [icon addRepresentation:rep];
+    return icon;
+}
+
 + (BOOL)extraIsStandardToolbarItemIdentifier:(id)aIdentifier
 {
     return [aIdentifier extraContainsString:@"NSToolbar"];
@@ -291,7 +308,7 @@ static NSDictionary *sSizeModes = nil;
     else if (!isStandard)
         [item setPaletteLabel:[item label]];
     if (imageName != nil) {
-        NSImage *image = [NSImage imageNamed:imageName];
+        NSImage *image = [NSToolbar iconImageForName:imageName];
         NSEnumerator *e = [[image representations] objectEnumerator];
         NSImageRep *rep;
         while ((rep = [e nextObject]) != nil) {

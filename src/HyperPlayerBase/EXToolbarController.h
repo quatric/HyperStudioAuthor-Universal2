@@ -50,6 +50,7 @@
 + (NSInteger)_sizeModeFromString:(id)aString;
 + (NSUInteger)_displayModeFromString:(id)aString;
 + (id)extraToolbarConfigurationNamed:(id)aNamed;
++ (id)iconImageForName:(id)aName;
 - (void)extraSetupToolbarItem:(id)aItem itemInfo:(id)aInfo willBeInsertedIntoToolbar:(BOOL)aToolbar;
 - (void)setSizeModeAsString:(id)aString;
 - (id)sizeModeAsString;
