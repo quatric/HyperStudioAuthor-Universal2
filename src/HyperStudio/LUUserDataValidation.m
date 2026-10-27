@@ -210,10 +210,10 @@ id FUN_0024d55f(LUUserDataValidation *self,SEL _cmd,SLLicense *licenseDescriptio
                 [description setObject:[[[NSDate dateWithTimeIntervalSinceReferenceDate:expirationTime] descriptionWithCalendarFormat:nil timeZone:nil locale:nil] description] forKey:LULicenseInfoExpirationDate];
             }
             uint32_t identifierSize = 0;
-            if (SLLicenseCopyRegistrationInfo(aDescription, NULL, &identifierSize) == 0) {
+            if (SLLicenseGetRegistrationString(aDescription, NULL, &identifierSize) == 0) {
                 char *identifier = NSZoneMalloc(NULL, identifierSize);
                 if (identifier != NULL) {
-                    if (SLLicenseCopyRegistrationInfo(aDescription, identifier, &identifierSize) == 0) {
+                    if (SLLicenseGetRegistrationString(aDescription, identifier, &identifierSize) == 0) {
                         NSString *identifierString = [NSString stringWithUTF8String:identifier];
                         if (identifierString != nil) {
                             [description setObject:identifierString forKey:LULicenseInfoIdentifier];
@@ -222,7 +222,7 @@ id FUN_0024d55f(LUUserDataValidation *self,SEL _cmd,SLLicense *licenseDescriptio
                     NSZoneFree(NULL, identifier);
                 }
             }
-            int copiesCount = SLLicenseGetAllowedCount(aDescription);
+            int copiesCount = (int)SLLicenseGetCodeLimit(aDescription);
             if (copiesCount != -1) {
                 [description setObject:[NSString stringWithFormat:@"%u", copiesCount] forKey:LULicenseInfoCopiesCount];
             }
@@ -417,7 +417,7 @@ LAB_0024d9ef:
 - (NSInteger)license:(struct SLLicense *)aLicense expirationTime:(double *)aTime creationTime:(double *)aTime2 usageTimeFlags:(int *)aFlags type:(int *)aType
 {
     int licenseType = SLLicenseGetType(aLicense);
-    double creationTime = SLLicenseGetExpirationTime(aLicense);
+    double creationTime = SLLicenseGetCreationDate(aLicense);
     if (licenseType == 0 || creationTime == 0.0) {
         return 1;
     }
@@ -437,15 +437,15 @@ LAB_0024d9ef:
         }
         NSInteger error;
         uint32_t primarySize = 0;
-        error = SLLicenseCopyUserData(aLicense, 0, NULL, &primarySize);
+        error = SLLicenseGetUserData(aLicense, NULL, &primarySize);
         if (error == 0) {
             uint32_t secondarySize = 0;
-            error = SLLicenseCopyUserData(aLicense, 1, NULL, &secondarySize);
+            error = SLLicenseGetSerialUserData(aLicense, NULL, &secondarySize);
             if (error == 0) {
                 uint32_t maxSize = MAX(primarySize, secondarySize);
                 void *bytes;
                 if (maxSize != 0 && (bytes = malloc(maxSize)) != NULL) {
-                    if ((secondarySize == 0 || ((error = SLLicenseCopyUserData(aLicense, 1, bytes, &secondarySize)) == 0 && (error = [self LUUserDataValidation_validateUserBytes:bytes bytesSize:secondarySize licenseCreationTime:creationTime expirationTime:&expirationTime usageTimeFlags:&usageFlags]) == 0)) && primarySize != 0 && (error = SLLicenseCopyUserData(aLicense, 0, bytes, &primarySize)) == 0) {
+                    if ((secondarySize == 0 || ((error = SLLicenseGetSerialUserData(aLicense, bytes, &secondarySize)) == 0 && (error = [self LUUserDataValidation_validateUserBytes:bytes bytesSize:secondarySize licenseCreationTime:creationTime expirationTime:&expirationTime usageTimeFlags:&usageFlags]) == 0)) && primarySize != 0 && (error = SLLicenseGetUserData(aLicense, bytes, &primarySize)) == 0) {
                         double otherExpiration = 0.0;
                         error = [self LUUserDataValidation_validateUserBytes:bytes bytesSize:primarySize licenseCreationTime:creationTime expirationTime:&otherExpiration usageTimeFlags:&usageFlags];
                         if (error == 0) {

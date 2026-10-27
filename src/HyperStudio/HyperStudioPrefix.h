@@ -203,6 +203,8 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSApplicationLicensorUtilities;
+@class HSApplicationLicenseDialogsContext;
 @class HSANetworkUploader;
 @class HSANetworkConnection;
 @class HSAFTPConnection;
@@ -1147,4 +1149,4 @@ struct HSFormControls {
 };
 
 #import "HyperStudioProtocols.h"
-#include "SLLicense.h"
+#include "SLLicensor.h"
