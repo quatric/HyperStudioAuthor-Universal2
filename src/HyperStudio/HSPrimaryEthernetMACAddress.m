@@ -2,7 +2,6 @@
 #import <IOKit/IOKitLib.h>
 #import <IOKit/network/IOEthernetInterface.h>
 #import <IOKit/network/IOEthernetController.h>
-#include "SLLicense.h"
 
 /* FUN_0028708d: the hardware address of the primary ethernet interface */
 NSData *HSPrimaryEthernetMACAddress(void)
