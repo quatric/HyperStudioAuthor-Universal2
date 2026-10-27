@@ -211,6 +211,9 @@
 @class HSAFTPConnection;
 @class HSAFTPServerUploader;
 @class HSAHTML5FTPServerUploader;
+@class HSAFTPServerPublisher;
+@class HSAFTPServerExporter;
+@class HSAFTPServerExportPanelController;
 @class HSAExportPanelController;
 @class HSPublishComboDialog;
 @class HSHypertextLinksInspectorController;
