@@ -13,5 +13,6 @@
 - (id)bitmapTool;
 - (void)dealloc;
 - (void)deactivateBitmapTool;
+- (BOOL)activateBitmapTool;
 @end
 

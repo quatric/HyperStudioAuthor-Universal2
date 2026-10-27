@@ -1180,5 +1180,14 @@ LAB_001ddb5b:
     return [[NSUserDefaults standardUserDefaults] objectForKey:[_defaultsKey stringByAppendingString:@"_bookmarkData"]];
 }
 
+- (void)setCustomImageLocationBookmarkData:(id)aData forLocation:(id)aLocation
+{
+    id existing = [self customImageLocationBookmarkData];
+    NSMutableDictionary *bookmarks = existing != nil ? [existing mutableCopy] : [[NSMutableDictionary alloc] init];
+    [bookmarks setObject:aData forKey:aLocation];
+    [[NSUserDefaults standardUserDefaults] setObject:bookmarks forKey:[_defaultsKey stringByAppendingString:@"_bookmarkData"]];
+    [bookmarks release];
+}
+
 @end
 

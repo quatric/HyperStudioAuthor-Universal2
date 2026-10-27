@@ -60,4 +60,15 @@
     [super deactivateBitmapTool];
 }
 
+- (BOOL)activateBitmapTool
+{
+    BOOL activated = [super activateBitmapTool];
+    if (activated && _touchStorage == nil) {
+        _touchStorage = [HSBrushTouchesStorage new];
+        [_touchStorage setDelegate:self];
+        [[self bitmapTool] startRecordTouchesWithConsumer:_touchStorage];
+    }
+    return activated;
+}
+
 @end

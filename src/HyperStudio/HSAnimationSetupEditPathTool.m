@@ -938,5 +938,14 @@ void FUN_000cd561(HSAnimationSetupEditPathTool *self,SEL _cmd,
     [_trackingCanvasLayer handleMouseDownAtPoint:aPoint event:aEvent hitTestInfo:aInfo];
 }
 
+- (id)activeNodesForEditPathCanvasLayer:(id)aLayer
+{
+    id acting = [_delegate actingObjectForEditPathTool:self];
+    id animated = [[self tryItAnimation] animatedObject];
+    if (animated != nil)
+        return [NSArray arrayWithObjects:acting, [[self tryItAnimation] animatedObject], nil];
+    return [NSArray arrayWithObject:acting];
+}
+
 @end
 

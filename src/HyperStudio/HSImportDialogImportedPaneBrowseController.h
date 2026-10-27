@@ -46,5 +46,6 @@
 - (id)initWithPredefinedLocations:(id)aLocations userLocationsDefaultsKey:(id)aKey fileTypes:(id)aTypes;
 - (void)dealloc;
 - (id)customImageLocationBookmarkData;
+- (void)setCustomImageLocationBookmarkData:(id)aData forLocation:(id)aLocation;
 @end
 

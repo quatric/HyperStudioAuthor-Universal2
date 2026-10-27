@@ -2182,5 +2182,18 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
     [[self undoManager] setActionName:aName];
 }
 
+- (void)restoreSelection
+{
+    id object = [self object];
+    id target = [[object queryHyperInterface:@protocol(HSUserObjectSupport)] card];
+    if (target == object) {
+        [_cardView selectObjects:nil];
+        target = [[[self document] selectionController] stackController];
+    } else {
+        target = _cardView;
+    }
+    [target selectObject:object];
+}
+
 @end
 
