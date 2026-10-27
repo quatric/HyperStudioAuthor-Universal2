@@ -39,6 +39,7 @@
 - (void)openAssistantPaneWithoutObject:(id)aObject supportsSettingsOnTheSpotMode:(BOOL)aMode;
 - (id)stackAssistantTitle;
 - (void)setIsRecordingSound:(BOOL)aSound;
+- (BOOL)hasCurrentAssistantPaneUnappliedChanges;
 - (BOOL)isRecordingSound;
 - (void)setIsRecordingMovie:(BOOL)aMovie;
 - (BOOL)isRecordingMovie;

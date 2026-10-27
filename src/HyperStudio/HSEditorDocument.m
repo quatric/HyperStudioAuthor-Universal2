@@ -2116,7 +2116,7 @@ chain:
     BOOL bVar3;
     BOOL pvVar1_2;
 
-    id assistant = [HSObjectAssistantController sharedAssistantController];
+    HSObjectAssistantController *assistant = [HSObjectAssistantController sharedAssistantController];
     BOOL unapplied = [assistant hasCurrentAssistantPaneUnappliedChanges];
     if (unapplied)
         [assistant applyChangesInCurrentAssistantPaneIfNeeded];
