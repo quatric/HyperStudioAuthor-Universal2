@@ -146,4 +146,51 @@
     }
     return self;
 }
+- (id)XMLElementName
+{
+    return @"actSlideShow";
+}
+
+- (BOOL)canBeStoredAsXMLElement
+{
+    return YES;
+}
+
+- (BOOL)supportedInIPad
+{
+    return YES;
+}
+
+- (id)XMLElementRepresentationInContext:(id)aContext
+{
+    NSXMLElement *element = [super XMLElementRepresentationInContext:aContext];
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    id transitionElement = [self xmlTransitionElement];
+    if (transitionElement != nil)
+        [element addChild:transitionElement];
+    [element addAttribute:[NSXMLNode attributeWithName:@"slideDuration" stringValue:[NSString stringWithFormat:@"%.2lf", _slideDuration]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"returnsToOriginalCard" stringValue:_returnsToOriginalCard ? @"1" : @"0"]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"loopSlideShow" stringValue:_loopSlideShow ? @"1" : @"0"]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"useClickOnExitCard" stringValue:_useClickOnExitCard ? @"1" : @"0"]];
+    [pool release];
+    return element;
+}
+
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType
+{
+    return YES;
+}
+
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext
+{
+    id representation = [super HTML5DictionaryRepresentationInContext:aContext];
+    [representation setObject:[_slideTransition transitionName] forKey:@"slideTransitionName"];
+    [representation setObject:[NSString stringWithFormat:@"%.2f", [_slideTransition duration]] forKey:@"slideTransitionDuration"];
+    [representation setObject:[NSString stringWithFormat:@"%.2f", _slideDuration] forKey:@"slideDuration"];
+    [representation setObject:_returnsToOriginalCard ? @"1" : @"0" forKey:@"returnsToOriginalCard"];
+    [representation setObject:_loopSlideShow ? @"1" : @"0" forKey:@"loopSlideShow"];
+    [representation setObject:_useClickOnExitCard ? @"1" : @"0" forKey:@"useClickOnExitCard"];
+    return representation;
+}
+
 @end

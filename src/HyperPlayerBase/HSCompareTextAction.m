@@ -416,6 +416,34 @@
     return self;
 }
 
+- (id)XMLElementName
+{
+    return @"actCompareText";
+}
+
+- (BOOL)canBeStoredAsXMLElement
+{
+    return YES;
+}
+
+- (BOOL)supportedInIPad
+{
+    return YES;
+}
+
+- (id)XMLElementRepresentationInContext:(id)aContext
+{
+    NSXMLElement *element = [super XMLElementRepresentationInContext:aContext];
+    [element addAttribute:[NSXMLNode attributeWithName:@"responseObjectUID" stringValue:[_responseObjectUID stringValue]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"textToMatchObjectUID" stringValue:[_textToMatchObjectUID stringValue]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"definedString" stringValue:_definedString]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"rightAnswerObjectUID" stringValue:[_comparisonMatchObjectUID stringValue]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"wrongAnswerObjectUID" stringValue:[_comparisonMismatchObjectUID stringValue]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"compareSelector" stringValue:NSStringFromSelector(_comparisonSelector)]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"isCaseSensitiveComparison" stringValue:_isCaseSensitiveComparison ? @"1" : @"0"]];
+    return element;
+}
+
 @end
 
 @implementation NSString (HSCompareTextAction)

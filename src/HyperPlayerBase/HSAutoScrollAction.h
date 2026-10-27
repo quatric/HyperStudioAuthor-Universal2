@@ -46,5 +46,9 @@
 - (id)init;
 - (void)stopScrolling;
 - (void)invalidateTimer;
+- (id)XMLElementName;
+- (id)XMLElementRepresentationInContext:(id)aContext;
+- (BOOL)canBeStoredAsXMLElement;
+- (BOOL)supportedInIPad;
 @end
 

@@ -43,4 +43,38 @@
 {
     return [[super keysForExtraStoringWithCodingContext:aContext] arrayByAddingObject:@"volumeLevel"];
 }
+- (id)XMLElementName
+{
+    return @"actSetVolume";
+}
+
+- (BOOL)canBeStoredAsXMLElement
+{
+    return YES;
+}
+
+- (BOOL)supportedInIPad
+{
+    return YES;
+}
+
+- (id)XMLElementRepresentationInContext:(id)aContext
+{
+    NSXMLElement *element = [super XMLElementRepresentationInContext:aContext];
+    [element addAttribute:[NSXMLNode attributeWithName:@"volumeLevel" stringValue:[NSString stringWithFormat:@"%.3f", (double)_volumeLevel]]];
+    return element;
+}
+
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType
+{
+    return NO;
+}
+
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext
+{
+    id representation = [super HTML5DictionaryRepresentationInContext:aContext];
+    [representation setObject:[NSString stringWithFormat:@"%.3f", (double)_volumeLevel] forKey:@"volumeLevel"];
+    return representation;
+}
+
 @end

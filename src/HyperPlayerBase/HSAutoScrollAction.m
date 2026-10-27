@@ -402,4 +402,33 @@ static BOOL HSAutoScrollPositionAtEnd(float aPosition)
     _timerStartDate = nil;
 }
 
+- (id)XMLElementName
+{
+    return @"actAutoScroll";
+}
+
+- (BOOL)canBeStoredAsXMLElement
+{
+    return YES;
+}
+
+- (BOOL)supportedInIPad
+{
+    return YES;
+}
+
+- (id)XMLElementRepresentationInContext:(id)aContext
+{
+    NSXMLElement *element = [super XMLElementRepresentationInContext:aContext];
+    [element addAttribute:[NSXMLNode attributeWithName:@"numberOfSteps" stringValue:[NSString stringWithFormat:@"%d", _numberOfSteps]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"stepsPerSecond" stringValue:[NSString stringWithFormat:@"%d", _stepsPerSecond]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"scrollAmount" stringValue:[NSString stringWithFormat:@"%d", _scrollAmount]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"scrollDirection" stringValue:[NSString stringWithFormat:@"%d", _scrollDirection]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"scrollUnits" stringValue:[NSString stringWithFormat:@"%d", _scrollUnits]]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"ignoreMouseClicks" stringValue:_ignoreMouseClicks ? @"1" : @"0"]];
+    if ([[self textViewUIDs] count] != 0)
+        [element addAttribute:[NSXMLNode attributeWithName:@"textObjectUID" stringValue:[[[self textViewUIDs] objectAtIndex:0] stringValue]]];
+    return element;
+}
+
 @end

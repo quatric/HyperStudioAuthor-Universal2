@@ -54,6 +54,10 @@
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (id)XMLElementName;
+- (id)XMLElementRepresentationInContext:(id)aContext;
+- (BOOL)canBeStoredAsXMLElement;
+- (BOOL)supportedInIPad;
 @end
 
 @interface NSString (HSCompareTextAction)

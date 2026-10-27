@@ -29,5 +29,11 @@
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (id)XMLElementName;
+- (id)XMLElementRepresentationInContext:(id)aContext;
+- (BOOL)canBeStoredAsXMLElement;
+- (BOOL)supportedInIPad;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
 @end
 
