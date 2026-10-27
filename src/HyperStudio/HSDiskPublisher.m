@@ -2,57 +2,6 @@
 
 @implementation HSDiskPublisher
 
-- (void)embedCode:(id)aCode
-{
-    NSAutoreleasePool *pool = [NSAutoreleasePool new];
-    if (_embeddedCode == nil && [[self delegate] respondsToSelector:@selector(embeddedCode:)]) {
-        id code = [[self delegate] embeddedCode:self];
-        if (code != nil) {
-            id iframe = [code elementNamed:@"iframe"];
-            NSString *string = [[NSString alloc] initWithData:[code data] encoding:NSUTF8StringEncoding];
-            if (iframe != nil) {
-                _embeddedCode = string;
-            } else {
-                [string autorelease];
-                NSRange start = [string rangeOfString:@"<!-- Start of Embed Code -->"];
-                NSRange end = [string rangeOfString:@"<!-- End of Embed Code -->"];
-                if (start.length != 0 && end.length != 0) {
-                    NSString *embedded = [string substringWithRange:NSMakeRange(start.location, end.location - start.location + end.length)];
-                    if (embedded != nil)
-                        _embeddedCode = [embedded retain];
-                }
-            }
-        }
-    }
-    if (_embeddedCode != nil) {
-        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
-        [pasteboard declareTypes:[NSArray arrayWithObject:NSPasteboardTypeString] owner:nil];
-        [pasteboard setString:_embeddedCode forType:NSPasteboardTypeString];
-    }
-    [pool release];
-}
-
-- (void)finish:(id)aFinish
-{
-    [NSApp endSheet:[self finishWindow] returnCode:1];
-    [_finishWindow close];
-    // Original quirk kept: the nib-loaded window is dropped without a release.
-    _finishWindow = nil;
-}
-
-- (void)previewSiteNow:(id)aNow
-{
-    [NSApp endSheet:[self finishWindow] returnCode:0];
-    [[NSWorkspace sharedWorkspace] openFile:[_storePath stringByAppendingPathComponent:@"index.html"] withApplication:@"Safari"];
-    [_finishWindow close];
-    _finishWindow = nil;
-}
-
-- (void)finishSheetDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    [self notifyPublishDidEnd];
-}
-
 - (void)publish:(id)aPublish
 {
     NSString *filename = [aPublish preferredFilename];
@@ -120,21 +69,6 @@
     if (error == nil)
         error = [HSError errorWithHSCode:0x5025];
     [self notifyPublishErrorInProgress:error];
-}
-
-- (void)showFinishWindow
-{
-    id window = [self finishWindow];
-    [_filePathTextField setStringValue:[_storePath stringByAppendingString:@"."]];
-    NSDictionary *alertInfo = [NSDictionary dictionaryWithObjectsAndKeys:window, HSExportCustomAlertKey, self, HSExportAlertTargetKey, NSStringFromSelector(@selector(finishSheetDidEnd:returnCode:contextInfo:)), HSExportAlertDidEndSelectorKey, nil];
-    [self notifyPublishAlertInProgress:alertInfo];
-}
-
-- (id)finishWindow
-{
-    if (_finishWindow == nil)
-        [NSBundle loadNibNamed:@"HSDiskPublisherFinishWindow" owner:self];
-    return _finishWindow;
 }
 
 - (id)progressSheetDescription

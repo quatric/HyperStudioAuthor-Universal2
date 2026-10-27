@@ -51,16 +51,6 @@
     [[[[self assistant] object] queryHyperInterface:@protocol(HSTitleAttributes)] setTitle:[aName stringValue]];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (void)viewWillDisappear:(BOOL)aDisappear
 {
     [[[[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextFieldAttributes)] attributeObservingController] removeObserver:self selector:@selector(validateUIWithNotification:) ofChanges:HSActualDidAttributeChanges ofAttributesOfHyperInterface:@protocol(HSSystemTextFieldAttributes)];

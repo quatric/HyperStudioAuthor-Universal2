@@ -177,10 +177,8 @@
 @class HSAddressBookEmailTokenFieldController;
 @class HSAlphaIgnoresColorWell;
 @class HSAnimation;
-@class HSAnimationDropHelpPane;
 @class HSAnimationEditModePathObject;
 @class HSAnimationEditModePathTool;
-@class HSAnimationModeController;
 @class HSAnimationPathCanvasItem;
 @class HSAnimationPathKnobsProvider;
 @class HSAnimationPickObjectCanvasLayer;
@@ -240,8 +238,6 @@
 @class HSAudioDeviceSwapper;
 @class HSAudioRecorder;
 @class HSAuthorizeStackAlert;
-@class HSAutoRecordActionAssistantPane;
-@class HSAutoRecordActionAssistantPaneApplier;
 @class HSAutoScrollActionAssistantPane;
 @class HSAutoScrollActionAssistantPaneApplier;
 @class HSAutoTypeActionAssistantPane;
@@ -449,7 +445,6 @@
 @class HSFolderImagesDataSource;
 @class HSFontComboboxDataSource;
 @class HSForceOpenedHelpPane;
-@class HSFoundObjectsListController;
 @class HSFrameManipulationSelectionKnob;
 @class HSFrameResizeSelectionTracker;
 @class HSFrameRotationSelectionKnob;
@@ -602,10 +597,7 @@
 @class HSMediaStripDraggingInfo;
 @class HSMediaStripFilmCanAnimation;
 @class HSMediaStripFilmCanAnimator;
-@class HSMediaStripHeaderAccessibilityObject;
 @class HSMediaStripItemGeometry;
-@class HSMediaStripScrollView;
-@class HSMediaStripScroller;
 @class HSMediaStripSwitcher;
 @class HSMediaStripView;
 @class HSMinimalWindowApplier;
@@ -985,7 +977,6 @@
 @class HSYouTubeRatingCell;
 @class HSiBooksAuthorExporter;
 @class HSiBooksAuthorFinishWindowController;
-@class HSiBooksAuthorPublisher;
 @class KeynoteAngleGradient;
 @class KeynoteBezierPathsBuilder;
 @class KeynoteBodyPlaceholder;

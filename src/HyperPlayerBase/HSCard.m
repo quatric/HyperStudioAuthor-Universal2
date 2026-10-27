@@ -31,15 +31,6 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
     return [NSDictionary dictionaryWithObjectsAndKeys:@"HSEditableImageNodeUnit", HSEditableBackgroundUnitRole, @"HSSizeNodeUnit", @"Size Unit", nil];
 }
 
-- (void)setObjectName:(id)aName
-{
-}
-
-- (id)objectName
-{
-    return nil;
-}
-
 - (void)importGeometryFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext
 {
     if (aRepresentation == nil)
@@ -818,13 +809,6 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
 }
 
 // Undo registers the opposite draw flag, so undo itself draws nothing.
-- (void)HSCard_setBackgroundImage:(id)aImage inRect:(id)aRect draw:(id)aDraw
-{
-    [[[self undoManager] prepareWithInvocationTarget:self] HSCard_setBackgroundImage:aImage inRect:aRect draw:[NSNumber numberWithBool:![aDraw boolValue]]];
-    if ([aDraw boolValue])
-        [[[self document] cardView] addImageToBackgroundAndSwitchToBitmapSelectionTool:aImage inRect:[aRect rectValue]];
-}
-
 // The first go to and the first NBA style action are copied (re-targeted
 // to the image object), as is the first action of every other class;
 // later actions of the mergeable types are merged into the copied ones.
@@ -1168,26 +1152,6 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
 }
 
 // Image objects whose media lost its image are dropped.
-- (void)loadChildrenFromFileWrapper:(id)aWrapper
-{
-    [super loadChildrenFromFileWrapper:aWrapper];
-    NSMutableArray *brokenObjects = nil;
-    for (id child in [self children]) {
-        id imageObject = [child queryHyperInterface:@protocol(HSImageObjectAttributes)];
-        if (imageObject != nil && [[imageObject media] image] == nil) {
-            if (brokenObjects == nil)
-                brokenObjects = [NSMutableArray new];
-            [brokenObjects addObject:imageObject];
-        }
-    }
-    if (brokenObjects != nil) {
-        [[self undoManager] disableUndoRegistration];
-        [self removeHyperChildren:brokenObjects];
-        [[self undoManager] enableUndoRegistration];
-        [brokenObjects release];
-    }
-}
-
 - (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext
 {
     [super loadExtraDictionaryRepresentation:aRepresentation withCodingContext:aContext];

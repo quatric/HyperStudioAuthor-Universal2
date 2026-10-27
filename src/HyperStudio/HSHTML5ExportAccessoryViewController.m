@@ -32,12 +32,6 @@
     [super viewWillDisappear:aDisappear];
 }
 
-- (void)viewWillAppear:(BOOL)aAppear
-{
-    [super viewWillAppear:aAppear];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_linkedStacksDepthTextField];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

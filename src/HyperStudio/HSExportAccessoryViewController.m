@@ -35,11 +35,6 @@
     return _descriptionDictionary;
 }
 
-- (void)detachFromExporter
-{
-    _exporter = nil;
-}
-
 - (void)refreshDescriptionForPublishType:(NSInteger)aType
 {
     if ((NSUInteger)(aType - 1) < 3) {

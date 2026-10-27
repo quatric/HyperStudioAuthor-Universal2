@@ -4,26 +4,6 @@ static HSHypertextLinksProxyForInspector *HSHypertextLinksProxyShared = nil;
 
 @implementation HSHypertextLinksProxyForInspector
 
-+ (id)allocWithZone:(NSZone *)aZone
-{
-    @synchronized(self) {
-        if (!HSHypertextLinksProxyShared) {
-            HSHypertextLinksProxyShared = [super allocWithZone:aZone];
-            return HSHypertextLinksProxyShared;
-        }
-    }
-    return nil;
-}
-
-+ (id)sharedHypertextLinksProxyForInspector
-{
-    @synchronized(self) {
-        if (!HSHypertextLinksProxyShared)
-            [[self alloc] init];
-    }
-    return HSHypertextLinksProxyShared;
-}
-
 - (id)rootViewController
 {
     id controller = [[HSHypertextLinksRootViewController alloc] initWithRootViewController:[self hypertextLinksAssistantPane]];
@@ -84,30 +64,6 @@ static HSHypertextLinksProxyForInspector *HSHypertextLinksProxyShared = nil;
 {
     [_hypertextLinksAssistantPane release];
     [super dealloc];
-}
-
-- (id)autorelease
-{
-    return self;
-}
-
-- (void)release
-{
-}
-
-- (NSUInteger)retainCount
-{
-    return NSUIntegerMax;
-}
-
-- (id)retain
-{
-    return self;
-}
-
-- (id)copyWithZone:(NSZone *)aZone
-{
-    return self;
 }
 
 @end

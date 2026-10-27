@@ -1,5 +1,4 @@
 #import "HSMovie.h"
-#import "HSMovieOpenGLRenderer.h"
 #import "HSMoviePixelBufferRenderer.h"
 #import "HSSystem.h"
 #import "HSVolumeCurve.h"
@@ -415,11 +414,6 @@ static NSInteger HSMovieSampleCountOfTrack(AVAssetTrack *aTrack, NSInteger aLimi
 {
 }
 
-- (void)invalidateRenderer
-{
-    [(HSMovieVisualContextRenderer *)[self HSMovie_movieRenderer] invalidateCurrentFrame];
-}
-
 - (void)activateMovieRenderer
 {
     if (--_movieRendererDeactivateCounter == 0) {
@@ -464,39 +458,21 @@ static NSInteger HSMovieSampleCountOfTrack(AVAssetTrack *aTrack, NSInteger aLimi
     }
 }
 
-// OpenGL rendering first when enabled, else pixel buffers.
 - (id)HSMovie_movieRenderer
 {
     if (![self hasAnythingVisible])
         return nil;
     if (_movieRenderer != nil)
         return _movieRenderer;
-    if ([[HSSystem sharedSystem] isOpenGLEnabled])
-        _movieRenderer = [[HSMovieOpenGLRenderer alloc] initWithQTMovie:_movie storage:nil];
-    if (_movieRenderer == nil) {
-        _movieRenderer = [[HSMoviePixelBufferRenderer alloc] initWithQTMovie:_movie storage:nil];
-        if (_movieRenderer == nil)
-            return nil;
-    }
+    _movieRenderer = [[HSMoviePixelBufferRenderer alloc] initWithQTMovie:_movie storage:nil];
+    if (_movieRenderer == nil)
+        return nil;
     [self startObservingFromMovieRenderer:_movieRenderer];
     [self redraw];
     return _movieRenderer;
 }
 
 // A +1 copy carrying the view parameters (which only QTVR had).
-- (id)createQTVRMovie
-{
-    if (![self isQTVRMovie] && ![self isPanoramaObject])
-        return nil;
-    QTMovie *movie = [_movie copy];
-    [self setQTVRParametersToQTMovie:movie];
-    return movie;
-}
-
-- (void)setQTVRParametersToQTMovie:(id)aMovie
-{
-}
-
 - (void)showDefaultView
 {
 }

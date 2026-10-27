@@ -7,14 +7,6 @@
     return [aObject implementsHyperInterface:@protocol(HSButtonObjectAttributes)];
 }
 
-- (void)validateUI
-{
-    [super validateUI];
-    id attributes = [[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewFontTraitsAttributes)];
-    if (attributes != nil)
-        [_alignmentMatrix selectCellWithTag:[attributes hyperAlignment]];
-}
-
 - (void)validateAlignmentMatrixState
 {
     [super validateAlignmentMatrixState];

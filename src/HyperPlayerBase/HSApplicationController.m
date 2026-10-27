@@ -8,7 +8,6 @@
 #import "HSTemporaryFilesManager.h"
 #import "HSSystemChecker.h"
 #import "HSSystem.h"
-#import "HSAudioDeviceSwapper.h"
 #import "HSBackgroundWindowController.h"
 #import "HSPathsProvider.h"
 #import "HSDocument.h"
@@ -169,7 +168,6 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
     [[NSSpellChecker sharedSpellChecker] learnWord:@"HyperStudio"];
     [self validateMenuShortcuts];
     [[HSSubmitRequest sharedInstance] submitInformation:nil];
-    [HSAudioDeviceSwapper selectAnotherDeviceIfHSDeviceIsDefault];
 }
 
 - (void)applicationWillFinishLaunching:(id)aLaunching

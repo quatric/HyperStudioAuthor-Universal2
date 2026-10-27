@@ -69,16 +69,6 @@
     return _playCount;
 }
 
-- (void)setLoopMode:(NSInteger)aMode
-{
-    _loopMode = (int)aMode;
-}
-
-- (NSInteger)loopMode
-{
-    return _loopMode;
-}
-
 - (void)setStartTime:(double)aTime
 {
     _startTime = aTime;

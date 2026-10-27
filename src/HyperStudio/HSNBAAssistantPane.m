@@ -7,16 +7,6 @@
     [self hideHelpNeedsRelayout:YES];
 }
 
-- (void)helpViewDidEndLiveResize:(id)aResize
-{
-    NSScrollView *scrollView = [aResize object];
-    if ([scrollView hasVerticalScroller]) {
-        [[scrollView contentView] scrollToPoint:NSZeroPoint];
-        [[scrollView verticalScroller] setFloatValue:0];
-    }
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSPaneScrollViewDidEndLiveResizeNotification" object:scrollView];
-}
-
 - (void)showHelp:(id)aHelp
 {
     [[self assistant] toggleDrawerModeWithDrawerSize:[[self actionHelpView] frame].size];

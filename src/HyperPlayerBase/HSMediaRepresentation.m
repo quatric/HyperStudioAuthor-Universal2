@@ -6,10 +6,6 @@
 // seconds), 'gp\0\1' / 'gp\0\3' their "N"/"S" and "E"/"W" refs (S and W
 // negate), and returned them as a kCGImagePropertyGPS{Latitude,Longitude}
 // (Ref) dictionary.
-+ (id)GPSDictionaryFromGraphicsImporter:(struct ComponentInstanceRecord *)aImporter
-{
-    return nil;
-}
 - (id)GPSDictionary
 {
     return nil;

@@ -880,16 +880,6 @@ void FUN_0018b2ab(HSDrawShapeAppearanceAssistantPane *self,SEL _cmd)
     [super dealloc];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0018b480 @ 0018b480, 113 bytes * /
 

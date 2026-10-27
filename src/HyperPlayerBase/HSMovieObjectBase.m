@@ -598,16 +598,6 @@ static BOOL HSMovieObjectBaseFloatsAreEqual(float aValue1, float aValue2)
     return [[(HSMovieObjectBaseData *)[self movieObjectBaseNodeData] media] mediaUID];
 }
 
-- (void)setLoopMode:(NSInteger)aMode
-{
-    [(HSMovieObjectBaseData *)[self movieObjectBaseNodeData] setLoopMode:aMode];
-}
-
-- (NSInteger)loopMode
-{
-    return [(HSMovieObjectBaseData *)[self movieObjectBaseNodeData] loopMode];
-}
-
 - (void)setPlayRangeAsString:(id)aString
 {
     [(HSMovieObjectBaseData *)[self movieObjectBaseNodeData] setPlayRangeAsString:aString];

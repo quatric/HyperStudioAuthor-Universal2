@@ -9,11 +9,6 @@
     return (BOOL)[aObject implementsHyperInterface:@protocol(HSCardAttributes)];
 }
 
-- (void)openActionsPaneForArriveEvent:(id)aEvent
-{
-    [self openActionsAssistantForActionEvent:[HSActionEvent actionEventOfType:kHSArriveActionEventType] animate:NO];
-}
-
 - (void)openActionsPaneForClickEvent:(id)aEvent
 {
     [self openActionsAssistantForActionEvent:[HSActionEvent actionEventOfType:kHSClickActionEventType] animate:NO];

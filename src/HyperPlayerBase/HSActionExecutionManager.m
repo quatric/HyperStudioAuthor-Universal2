@@ -166,12 +166,6 @@
     }
     [pool release];
 }
-- (id)requestorForObject:(id)aObject
-{
-    if (aObject == nil)
-        return nil;
-    return NSMapGet([self objectsToRequestorsMap], aObject);
-}
 // Objects (not retained) → requestors (retained).
 - (id)objectsToRequestorsMap
 {

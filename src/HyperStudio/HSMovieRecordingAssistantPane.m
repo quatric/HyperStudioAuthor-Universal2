@@ -1462,11 +1462,6 @@ id FUN_00218f0c(HSMovieRecordingAssistantPane *self,SEL _cmd)
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-multiple-method-names"
-- (void)restoreWindowLevel:(id)aLevel
-{
-    [aLevel setLevel:_windowLevel];
-    [aLevel release];
-}
 #pragma clang diagnostic pop
 
 /* --- i386 decompilation (Ghidra) ---
@@ -1497,19 +1492,6 @@ void FUN_00219305(HSMovieRecordingAssistantPane *self,SEL _cmd)
 }
 
 */
-- (void)runMovieRecordingModalSession
-{
-    [[HSObjectAssistantController sharedAssistantController] setIsRecordingMovie:YES];
-    NSWindow *window = [[self window] retain];
-    _windowLevel = (unsigned int)[window level];
-    NSModalSession session = [NSApp beginModalSessionForWindow:window];
-    while ([NSApp runModalSession:session] == NSModalResponseContinue) {
-    }
-    [NSApp endModalSession:session];
-    /* restoreWindowLevel: releases the window. */
-    [self performSelector:@selector(restoreWindowLevel:) withObject:window afterDelay:0.0];
-}
-
 - (void)setRecordedMovieMedia:(id)aMedia
 {
     if (![[_recordedMovieMedia mediaUID] isEqual:[aMedia mediaUID]]) {

@@ -60,3 +60,5 @@ Remaining: HSApplicationLicenseDialogsContext, HSApplicationLicensorUtilities, H
 The HyperStudio 5 only classes still have to be removed, and shared methods whose bodies changed re-checked.
 
 Translated Author-only PlayerBase classes (10 of 10): HSPauseView, HSToolbarPopUpButton, HSFluidSwipe, HSFluidSwipeTracker, HSDocumentLoadingIndicatorController, HSAExternalFilesData, HSAHTML5ExportCompatibilityChecker, HSEditorZoomController, HSRecorder, HSThreadContext.
+
+HS5-only classes removed from the Author targets (13 HyperStudio, 11 PlayerBase). HS5-only methods pruned from shared classes (about 340). HSTextToSpeechAction and HSAutoRecordAction reduced to the Author shape. Remaining: Author-only selectors of shared classes (about 900, see tools/delta.py), the three license/registration classes.

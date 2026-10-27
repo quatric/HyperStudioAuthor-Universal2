@@ -2,22 +2,9 @@
 
 @implementation HSAnimationSetupPickPartOfCardAssistantPane
 
-- (void)paneContinue:(id)aContinue
-{
-    [_delegate cropTemporaryObject:_temporaryObject options:_imageOptions forAssistantPane:self shouldProceedWithMode:3];
-}
-
 - (void)selectCardObject:(id)aObject
 {
     [_delegate pickCardObjectForAssistantPane:self temporaryObject:_temporaryObject];
-}
-
-- (id)windowTitle
-{
-    id object = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectAttributes)];
-    if (object == nil)
-        return [HSPlayAnimationAction localizedNameInInspector];
-    return [NSString stringWithFormat:@"%@ : %@", [HSPlayAnimationAction localizedNameInInspector], [object hyperName]];
 }
 
 - (void)viewDidLoad

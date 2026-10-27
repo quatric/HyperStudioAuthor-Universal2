@@ -857,7 +857,6 @@
 @protocol HyperInterface;
 @protocol HyperObject;
 
-@class AUDevice;
 @class HSRecorder;
 @class HSThreadContext;
 @protocol HSThreadContextDelegate;
@@ -869,9 +868,6 @@
 @class HSFluidSwipeTracker;
 @class HSPauseView;
 @class HSToolbarPopUpButton;
-@class AUInputDevice;
-@class AUInputDeviceFile;
-@class AUOutputDevice;
 @class BTBrushToolSettingsSerialization;
 @class BTBrushTouchStorage;
 @class BTButtonShapeCreationToolSettingsSerialization;
@@ -935,8 +931,6 @@
 @class HSAttributePopUpButton;
 @class HSAttributedStringRenderer;
 @class HSAttributedStringReplacements;
-@class HSAudioDevice;
-@class HSAudioDeviceSwapper;
 @class HSAudioRecorder;
 @class HSAutoOriginedPanel;
 @class HSAutoOriginedWindow;
@@ -959,7 +953,6 @@
 @class HSBaseBitmapTool;
 @class HSBaseBitmapToolCanvasLayer;
 @class HSBevelerEffect;
-@class HSBitmapImageData;
 @class HSBitmapRenderCacheValidnessEvaluator;
 @class HSBorderedBackgroundRenderLayer;
 @class HSBorderlessAttributes;
@@ -1213,7 +1206,6 @@
 @class HSIndexPath;
 @class HSInfoObject;
 @class HSInfoObjectProvider;
-@class HSInputDeviceFile;
 @class HSIntegralScaleBitmapRenderCacheValidnessEvaluator;
 @class HSInteractiveAnimationManager;
 @class HSInteractiveButtonObject;
@@ -1286,7 +1278,6 @@
 @class HSMovieObjectData;
 @class HSMovieObjectGeometryBehaviorAdaptor;
 @class HSMovieObjectVisualization;
-@class HSMovieOpenGLRenderer;
 @class HSMoviePixelBufferRenderer;
 @class HSMoviePlaybackItem;
 @class HSMoviePlaybackLogItem;
@@ -1547,7 +1538,6 @@
 @class HSTextObjectVisualization;
 @class HSTextPortionSerialization;
 @class HSTextPrintingView;
-@class HSTextToMovieConverter;
 @class HSTextToSpeechAction;
 @class HSTextUnderlineRenderingInfo;
 @class HSTextView;
@@ -1660,7 +1650,6 @@
 @class HSiPadExporter;
 @class HSiPadExporterHelper;
 @class HSiPadImportContext;
-@class HSiPadImporter;
 @class HSiPadImporterHelper;
 @class NSEMutableProtocolSet;
 @class NSEOpenGLContext;

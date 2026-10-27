@@ -58,16 +58,6 @@
     [attributes setHyperName:[aName stringValue]];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (void)viewWillDisappear:(BOOL)aDisappear
 {
     [super viewWillDisappear:aDisappear];

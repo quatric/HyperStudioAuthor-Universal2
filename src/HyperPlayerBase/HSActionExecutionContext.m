@@ -157,11 +157,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
         [[[[self document] navigationController] presentationSync] runAutomaticTimersAndArrivingActions];
 }
 
-- (void)HSActionExecutionContext_undoManagerDidRemoveAllUndoActions:(id)aActions
-{
-    _hasPresentationChanges = 0;
-}
-
 - (void)HSActionExecutionContext_undoManagerDidOpenUndoGroup:(id)aGroup
 {
     id undoManager = [_document undoManager];
@@ -169,12 +164,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
         return;
     [[undoManager prepareWithInvocationTarget:self] HSActionExecutionContext_setHasPresentationChanges:NO];
     _hasPresentationChanges = 1;
-}
-
-- (void)HSActionExecutionContext_setHasPresentationChanges:(BOOL)aChanges
-{
-    [[[_document undoManager] prepareWithInvocationTarget:self] HSActionExecutionContext_setHasPresentationChanges:_hasPresentationChanges != 0];
-    _hasPresentationChanges = aChanges ? 1 : 0;
 }
 
 - (void)handleClickInInteractiveLayer
@@ -477,47 +466,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 - (id)currentPauseAction
 {
     return _currentPauseAction;
-}
-
-- (BOOL)shouldIgnoreRecording
-{
-    return _shouldIgnoreRecording;
-}
-
-- (void)setShouldIgnoreRecording:(BOOL)aRecording
-{
-    _shouldIgnoreRecording = aRecording;
-}
-
-- (void)stopRecording
-{
-    [[self currentAutoRecordAction] stop:self];
-}
-
-- (void)setIsRecording:(BOOL)aRecording
-{
-    if (_isRecording == aRecording)
-        return;
-    _isRecording = aRecording;
-    [[self cardView] updateCursor];
-}
-
-- (BOOL)isRecording
-{
-    return _isRecording;
-}
-
-- (void)setCurrentAutoRecordAction:(id)aAction
-{
-    if (_currentAutoRecordAction == aAction)
-        return;
-    [_currentAutoRecordAction release];
-    _currentAutoRecordAction = [aAction retain];
-}
-
-- (id)currentAutoRecordAction
-{
-    return _currentAutoRecordAction;
 }
 
 - (BOOL)stopGhostWriterActions
@@ -910,44 +858,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     return YES;
 }
 
-- (BOOL)HSActionExecutionContext_drawHighlighButtonIfNeeded:(id)aNeeded
-{
-    if (![[aNeeded queryHyperInterface:@protocol(HSButtonObjectAttributes)] hasHighlight])
-        return NO;
-    id button = [aNeeded queryHyperInterface:@protocol(HSSystemButtonInteractiveModeAttributes)];
-    if (button == nil)
-        return NO;
-    [button setHyperHighlightedInInteractiveMode:YES];
-    [self HSActionExecutionContext_waitUntilKeyUp];
-    [button setHyperHighlightedInInteractiveMode:NO];
-    return YES;
-}
-
-- (BOOL)HSActionExecutionContext_drawHighlighImageIfNeeded:(id)aNeeded
-{
-    id image = [aNeeded queryHyperInterface:@protocol(HSHighlightAttributes)];
-    if (![image canBeHighlighted])
-        return NO;
-    [image setHighlightedInInteractiveMode:YES];
-    [self HSActionExecutionContext_waitUntilKeyUp];
-    [image setHighlightedInInteractiveMode:NO];
-    return YES;
-}
-
-- (void)HSActionExecutionContext_waitUntilKeyUp
-{
-    NSWindow *window = [[self cardView] window];
-    NSEvent *event;
-    do
-    {
-        event = [window nextEventMatchingMask:NSEventMaskAny];
-        if (event == nil)
-            return;
-    }
-    while ([event type] != NSEventTypeKeyUp && [event type] != NSEventTypeAppKitDefined);
-    [window discardEventsMatchingMask:NSEventMaskKeyDown beforeEvent:event];
-}
-
 - (void)resumeAutomaticTimer
 {
     [[[[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager] automaticTimerManager] resumeAutomaticTimer];
@@ -978,16 +888,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     [[[[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager] automaticTimerManager] actionQueue:aQueue didSetupDelayTimer:aTimer];
 }
 
-- (void)cancelIfPresentSequencerActionWithObject:(id)aObject
-{
-    id manager = [[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager];
-    id requestor = [manager requestorForObject:aObject];
-    if (![requestor implementsHyperInterface:@protocol(HSSequencerActionAttributes)])
-        return;
-    [[self sequencerRequestorToIgnore] addObject:requestor];
-    [manager stopAllActionsQueuesForRequestor:requestor];
-}
-
 - (void)startSequencerActionForObjects:(id)aObjects delays:(id)aDelays forRequestor:(id)aRequestor
 {
     [[self sequencerRequestorToIgnore] removeObject:aRequestor];
@@ -1013,13 +913,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     id object;
     while ((object = [objects nextObject]) != nil)
         [manager runActionsForObject:object withEvent:aEvent inContext:self forRequestor:aRequestor];
-}
-
-- (id)sequencerRequestorToIgnore
-{
-    if (_sequencerRequestorToIgnore == nil)
-        _sequencerRequestorToIgnore = [NSMutableSet new];
-    return _sequencerRequestorToIgnore;
 }
 
 - (void)runActionsForObject:(id)aObject forRequestor:(id)aRequestor

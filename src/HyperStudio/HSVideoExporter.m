@@ -446,11 +446,6 @@ id FUN_0025fce2(HSVideoExporter *self,SEL _cmd)
     return [[self currentExporter] exportRepresentation];
 }
 
-- (BOOL)canExportWithNarrationOption
-{
-    return (BOOL)[[self dataSource] canExportDocumentAsVideoWithNarration];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0025fb08 @ 0025fb08, 38 bytes * /
 
@@ -472,13 +467,6 @@ void FUN_0025fb08(HSVideoExporter *self,SEL _cmd,BOOL setUseRoundedCorners)
 }
 
 */
-- (void)setUseRoundedCorners:(BOOL)aCorners
-{
-    if ((_useRoundedCorners ? YES : NO) != aCorners) {
-        _useRoundedCorners = aCorners;
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0025faf2 @ 0025faf2, 22 bytes * /
 
@@ -500,29 +488,6 @@ BOOL FUN_0025faf2(HSVideoExporter *self,SEL _cmd)
     return _useRoundedCorners ? YES : NO;
 }
 
-- (void)setSlideDelay:(CGFloat)aDelay
-{
-    _slideDelay = aDelay;
-}
-
-- (CGFloat)slideDelay
-{
-    return _slideDelay;
-}
-
-- (void)setTransitionName:(id)aName
-{
-    if (![_transitionName isEqualToString:aName]) {
-        [_transitionName release];
-        _transitionName = [aName retain];
-    }
-}
-
-- (id)transitionName
-{
-    return _transitionName;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00260a64 @ 00260a64, 88 bytes * /
 
@@ -541,13 +506,6 @@ void FUN_00260a64(HSVideoExporter *self,SEL _cmd,NSSize setMovieFrameSize)
 }
 
 */
-- (void)setMovieFrameSize:(NSSize)aSize
-{
-    if (!NSEqualSizes(_movieFrameSize, aSize)) {
-        _movieFrameSize = aSize;
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00260abc @ 00260abc, 151 bytes * /
 
@@ -576,50 +534,6 @@ ulonglong FUN_00260abc(HSVideoExporter *self,SEL _cmd)
 }
 
 */
-- (NSSize)movieFrameSize
-{
-    if (NSEqualSizes(_movieFrameSize, NSZeroSize)) {
-        _movieFrameSize = [[self dataSource] videoFrameSize];
-    }
-    return _movieFrameSize;
-}
-
-- (void)setVideoExportDevice:(NSInteger)aDevice
-{
-    if (_videoExportDevice != aDevice) {
-        _videoExportDevice = aDevice;
-    }
-}
-
-- (NSInteger)videoExportDevice
-{
-    return _videoExportDevice;
-}
-
-- (void)setVideoExportOption:(NSInteger)aOption
-{
-    if (_videoExportOption != aOption) {
-        _videoExportOption = aOption;
-    }
-}
-
-- (NSInteger)videoExportOption
-{
-    return _videoExportOption;
-}
-
-- (void)setVideoExportFormat:(NSInteger)aFormat
-{
-    if (_videoExportFormat != aFormat) {
-        _videoExportFormat = aFormat;
-    }
-}
-
-- (NSInteger)videoExportFormat
-{
-    return _videoExportFormat;
-}
-
 - (void)setDataSource:(id)aSource
 {
     [super setDataSource:aSource];

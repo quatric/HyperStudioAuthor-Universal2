@@ -330,15 +330,6 @@ static CGAffineTransform HSImageObjectObjectToImageTransform(NSRect aRelativeIma
 }
 
 // Slow caches (over 0.05 s) and new group objects are uncropped first.
-- (BOOL)needDisableBorderForCropping
-{
-    if (_timeForRecache > 0.05)
-        return YES;
-    if (_timeForRecache != 0.0)
-        return NO;
-    return [self isGroupObject];
-}
-
 // The image (without its transparent colour) drawn at the object size with
 // the clip paths stroked as the border, shared with the other objects of the
 // group.

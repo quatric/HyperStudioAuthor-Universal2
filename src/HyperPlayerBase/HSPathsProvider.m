@@ -112,13 +112,6 @@ static NSString *HSPathsProviderDocumentsFolder = nil;
     return [self HSPathsProvider_pathForKey:@"HSPathsProviderTextDocumentsFolder" creationSelector:@selector(documentsFolder)];
 }
 
-- (id)defaultTutorialStackName
-{
-    if (_directoriesCache.defaultTutorialStackPath == nil)
-        _directoriesCache.defaultTutorialStackPath = [[[NSBundle mainBundle] pathForResource:@"Sailing" ofType:@"stack"] retain];
-    return _directoriesCache.defaultTutorialStackPath;
-}
-
 - (id)defaultHomeStackPath
 {
     if (_directoriesCache.defaultHomeStackPath == nil)

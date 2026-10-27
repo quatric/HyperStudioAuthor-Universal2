@@ -9,21 +9,6 @@
     return (BOOL)[aObject implementsHyperInterface:@protocol(HSActor)];
 }
 
-- (void)hideAnimationObjectForAssistantPane:(id)aPane
-{
-    [[aPane animationModeController] hideAnimationObjectForAssistantPane:aPane];
-}
-
-- (void)cancelFromPickImageAssistantPane:(id)aPane
-{
-    [aPane dismiss:YES];
-}
-
-- (void)pickMovie:(id)aMovie name:(id)aName forPickImageAssistantPane:(id)aPane
-{
-    [[aPane animationModeController] pickMovie:aMovie name:aName forPickImageAssistantPane:aPane];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000e1a8a @ 000e1a8a, 281 bytes * /
 
@@ -1281,26 +1266,6 @@ LAB_000e0482:
 }
 
 */
-- (void)openAssistantPaneForActionType:(id)aType forEvents:(id)aEvents animate:(BOOL)aAnimate
-{
-    id pane = [[HSActionSettingsAssistantFactory sharedActionSettingsAssistantFactory] actionAssistantForActionType:aType];
-    HSObjectAssistantNavigationController *navigationController;
-    if (pane == nil) {
-        return;
-    }
-    [pane setActionEvents:aEvents];
-    [pane setObject:[[self actor] hyperActionOfType:aType forEvent:[aEvents extraFirstObject]]];
-    if ([[self parentViewController] modalViewController] == self
-        || ([[self parentViewController] modalViewController] != nil && [[self parentViewController] modalViewController] == [self objectAssistantNavigationController])) {
-        [[self objectAssistantNavigationController] pushViewController:pane animate:aAnimate];
-    }
-    else {
-        navigationController = [[HSObjectAssistantNavigationController alloc] initWithRootViewController:pane];
-        [self presentModalViewController:navigationController animated:aAnimate];
-        [navigationController release];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000e0194 @ 000e0194, 403 bytes * /
 

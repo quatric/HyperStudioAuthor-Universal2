@@ -415,25 +415,6 @@
 
 // 0 never hides, 1 hides on the first frame, 2 on the last, 3 on both;
 // other modes change nothing.
-- (void)setOldFormatHideMode:(NSInteger)aMode
-{
-    if (aMode < 0 || aMode > 3)
-        return;
-    [self setHideOnFirstFrame:(aMode & 1) != 0];
-    [self setHideOnLastFrame:(aMode & 2) != 0];
-}
-
-- (NSInteger)oldFormatHideMode
-{
-    if ([self hideOnFirstFrame] && ![self hideOnLastFrame])
-        return 1;
-    if (![self hideOnFirstFrame] && [self hideOnLastFrame])
-        return 2;
-    if ([self hideOnFirstFrame])
-        return [self hideOnLastFrame] ? 3 : 0;
-    return 0;
-}
-
 - (void)setUseClones:(BOOL)aClones
 {
     if (aClones)

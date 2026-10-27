@@ -6,11 +6,6 @@
 
 @implementation HSSetCursorPositionAssistantPane
 
-- (void)pointSelectionToolDidCancelSelection
-{
-    [_navigationPaneSwitcher assistantGoBack:nil];
-}
-
 // The selected point is in card coordinates with the origin at the top left;
 // the action stores it relative to the card centre with y up.
 - (void)pointSelectionTool:(id)aTool selectedPointChange:(NSPoint)aChange
@@ -86,11 +81,6 @@
 {
     [super viewDidLoad];
     [self setDontShowThisMessageAgainSwitchVisible:NO];
-}
-
-- (BOOL)assistantShouldBeKeyWindow
-{
-    return NO;
 }
 
 - (BOOL)shouldDismissWhenDisappearedByDefault

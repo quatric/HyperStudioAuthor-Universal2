@@ -33,12 +33,6 @@
 }
 
 // Playing once (loop frame repeats 1) ends the animation with the movie.
-- (void)hyperPlayableObjectDidStop:(id)aStop
-{
-    if (_playTimeLoopFrameRepeats == 1)
-        [self stop];
-}
-
 - (void)hyperPlayableObjectDidPlayOnce:(id)aOnce frameCount:(NSInteger)aCount
 {
     if (_playTimeLoopFrameRepeats == aCount)

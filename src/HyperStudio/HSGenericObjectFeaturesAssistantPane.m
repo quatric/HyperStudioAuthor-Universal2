@@ -81,25 +81,6 @@ void FUN_000f0099(HSGenericObjectFeaturesAssistantPane *self,SEL _cmd,
 }
 
 */
-- (void)validateDropOptionsStateForDragableState:(BOOL)aState
-{
-    id cardView = [[[[self stack] document] editorWindowController] cardView];
-    id snapping = [[[self assistant] object] queryHyperInterface:@protocol(HSMutableSnappingTargetUIDIdentification)];
-    id tree = [[[[self assistant] object] card] queryHyperInterface:@protocol(HSUserObjectUIDBasedAccess)];
-    id child = [[tree childInTreeWithUID:[snapping dropOffTargetUID]] queryHyperInterface:@protocol(HSMutableCardObjectAttributes)];
-    if (child != nil) {
-        if (aState) {
-            [child setIsVisibleInEditor:YES];
-            [cardView showCardChildIfHidden:child invalidate:YES];
-        } else {
-            [child setIsVisibleInEditor:NO];
-            [cardView hideCardChildIfNotHidden:child invalidate:YES];
-        }
-        [child setTemporary:!aState];
-    }
-    [cardView setNeedsDisplay:YES];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000efd87 @ 000efd87, 786 bytes * /
 

@@ -81,14 +81,6 @@
     }
     return _sound;
 }
-- (BOOL)canUseObject:(id)aObject
-{
-    return NO;
-}
-- (id)availableButtons
-{
-    return nil;
-}
 - (id)highlightedObject
 {
     return _highlightedObject;

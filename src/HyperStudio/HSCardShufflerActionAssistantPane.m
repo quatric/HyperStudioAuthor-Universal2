@@ -107,24 +107,6 @@ LAB_00282f6a:
 }
 
 */
-- (void)updateRelatedPopUpButton:(id)aButton selectedMenuItem:(id)aItem
-{
-    NSArray *titles = [self cardTitles];
-    NSUInteger count = [titles count];
-    NSMenu *menu = [aButton menu];
-    for (NSUInteger index = 0; index < count; index++) {
-        NSMenuItem *item = [titles objectAtIndex:index];
-        if (count - 1 == index) {
-            [menu addItem:item];
-        } else if (![[[menu itemAtIndex:index] representedObject] isEqual:[item representedObject]]) {
-            /* the original compared the NSNumber pointers; isEqual: is what was meant */
-            [menu insertItem:item atIndex:index];
-            break;
-        }
-    }
-    [menu removeItemAtIndex:[[aItem representedObject] unsignedIntegerValue]];
-}
-
 - (void)chooseEndingCard:(id)aCard
 {
     [[self cardShufflerActionAsssistantApplier] setEndingCardIndex:[[[_endingCardPopUp selectedItem] representedObject] unsignedIntegerValue]];

@@ -121,11 +121,6 @@ void FUN_000cba14(HSAnimationSetupEditPathTool *self,SEL _cmd,id trackingRectCan
     return [[self animation] path];
 }
 
-- (void)editPathCanvasLayer:(id)aLayer didNotHandleMouseDownAtPoint:(NSPoint)aPoint event:(id)aEvent hitTestInfo:(id)aInfo
-{
-    [_trackingCanvasLayer handleMouseDownAtPoint:aPoint event:aEvent hitTestInfo:aInfo];
-}
-
 - (id)canvasItemForEditPathCanvasLayer:(id)aLayer
 {
     return _editPathCanvasItem;

@@ -4,24 +4,6 @@
 // by moving the start date. The owner (not retained) gives the duration (−1
 // for endless) and is told when the time changes, starts and ends.
 @implementation HSAnimationPlaybackState
-- (void)playbackTimerDidFired:(id)aFired
-{
-    if (_paused)
-        return;
-    [self updatePlaybackTime];
-    [_owner playbackTimeDidChangeForAnimationPlaybackState:self];
-    double duration = [_owner playbackDurationForAnimationPlaybackState:self];
-    if (duration != -1.0 && _playbackTime == duration)
-        [self stop];
-}
-- (void)updatePlaybackTime
-{
-    double elapsed = [[NSDate date] timeIntervalSinceDate:_startDate];
-    _playbackTime = elapsed >= 0.0 ? elapsed : 0.0;
-    double duration = [_owner playbackDurationForAnimationPlaybackState:self];
-    if (duration != -1.0 && duration <= _playbackTime)
-        _playbackTime = duration;
-}
 - (double)playbackTime
 {
     return _playbackTime;

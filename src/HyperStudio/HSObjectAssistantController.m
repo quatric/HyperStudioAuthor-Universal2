@@ -103,25 +103,6 @@ void FUN_00101463(HSObjectAssistantController *self,SEL _cmd,NSRange selectObjec
 }
 
 */
-- (void)selectObjectNameWithRange:(NSRange)aRange
-{
-    if ([self isActive]) {
-        [[self objectAssistant] showAssistant:YES];
-    }
-    id pane = [[self objectAssistant] currentPane];
-    if ([pane modalViewController] != nil) {
-        [pane dismissModalViewControllerAnimated:YES];
-    }
-    [[self objectAssistant] openPaneWithIdentifier:HSAppearanceObjectAssistantRootPaneName];
-    if ([pane respondsToSelector:@selector(selectedViewController)]) {
-        NSTextField *nameField = [[pane selectedViewController] nameTextfField];
-        if ([nameField currentEditor] != [[[self objectAssistant] window] firstResponder]) {
-            [[[self objectAssistant] window] makeFirstResponder:nameField];
-        }
-        [[nameField currentEditor] setSelectedRange:aRange];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0010138c @ 0010138c, 215 bytes * /
 
@@ -158,18 +139,6 @@ LAB_00101458:
 }
 
 */
-- (NSRange)selectedObjectNameRange
-{
-    id pane = [[self objectAssistant] currentPane];
-    if ([pane respondsToSelector:@selector(selectedViewController)]) {
-        NSTextField *nameField = [[pane selectedViewController] nameTextfField];
-        if (nameField != nil && [nameField currentEditor] != nil) {
-            return [[nameField currentEditor] selectedRange];
-        }
-    }
-    return NSMakeRange(NSNotFound, 0);
-}
-
 - (void)openHypertextLinksPaneForField:(id)aField selectedObject:(id)aObject initialText:(id)aText stack:(id)aStack
 {
     if (aField == nil) {
@@ -466,14 +435,6 @@ BOOL FUN_00100f34(HSObjectAssistantController *self,SEL _cmd,id shouldOpenCardIn
 }
 
 */
-- (BOOL)shouldOpenCardInfoForObject:(id)aObject
-{
-    if (![aObject implementsHyperInterface:@protocol(HSMutableCardAttributes)]) {
-        return NO;
-    }
-    return _shouldOpenCardInfo;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000fdf34 @ 000fdf34, 36 bytes * /
 
@@ -621,22 +582,6 @@ void FUN_00100d34(HSObjectAssistantController *self,SEL _cmd,id deactivateIfNeed
 }
 
 */
-- (void)deactivateIfNeededForObject:(id)aObject
-{
-    if (![self isActive]) {
-        return;
-    }
-    if ((_wasOpenExplicitlyByUser || _newObjectDidAdd) && [self toolAllowsActivation]) {
-        if (!_wasOpenExplicitlyByUser) {
-            return;
-        }
-        if ([self shouldOpenCardInfoForObject:aObject]) {
-            return;
-        }
-    }
-    [self setActive:NO explicitlyByUser:NO];
-}
-
 - (void)deactivateIfNeeded
 {
     [self deactivateIfNeededForObject:_selectedInModelObject];
@@ -1153,7 +1098,7 @@ void FUN_00100240(HSObjectAssistantController *self,SEL _cmd,id hiddenAttributeC
     id pvVar2_3;
 
     if (![aController isKindOfClass:[HSEditorWindowController class]]) {
-        if (![aController isKindOfClass:[HSAnimationModeController class]]) {
+        if (![aController isKindOfClass:[NSNull class]]) {
             return;
         }
     }
@@ -1173,7 +1118,7 @@ void FUN_00100240(HSObjectAssistantController *self,SEL _cmd,id hiddenAttributeC
     NSView *pvVar2_5;
 
     if (![aController isKindOfClass:[HSEditorWindowController class]]) {
-        if (![aController isKindOfClass:[HSAnimationModeController class]]) {
+        if (![aController isKindOfClass:[NSNull class]]) {
             return;
         }
     }
@@ -1939,26 +1884,6 @@ void FUN_000feff7(HSObjectAssistantController *self,SEL _cmd)
 }
 
 */
-- (void)revalidateObjectSreenFrameUpdateTimer
-{
-    if ([_updateObjectScreenFrameTimer isValid]) {
-        [_updateObjectScreenFrameTimer invalidate];
-        [_updateObjectScreenFrameTimer release];
-        _updateObjectScreenFrameTimer = nil;
-    }
-
-    _updateObjectScreenFrameTimer = [[NSTimer timerWithTimeInterval:0.01 target:[[self NSE_newWeakProxy] autorelease] selector:@selector(updateObjectSreenFrameWithTimer:) userInfo:nil repeats:NO] retain];
-    [[NSRunLoop currentRunLoop] addTimer:_updateObjectScreenFrameTimer forMode:NSDefaultRunLoopMode];
-    [[NSRunLoop currentRunLoop] addTimer:_updateObjectScreenFrameTimer forMode:NSEventTrackingRunLoopMode];
-}
-
-- (void)updateObjectSreenFrameWithTimer:(id)aTimer
-{
-    [[self objectAssistant] updateObjectScreenFrame:NO];
-    [_updateObjectScreenFrameTimer release];
-    _updateObjectScreenFrameTimer = nil;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000fedb6 @ 000fedb6, 481 bytes * /
 
@@ -2564,7 +2489,7 @@ NSRect * FUN_001019cf(NSRect *__return_storage_ptr__,HSObjectAssistantController
     pvVar2 = [self_00 isKindOfClass:[HSEditorWindowController class]];
     pvVar3 = self_00;
     if (!pvVar2) {
-        pvVar1_2 = [self_00 isKindOfClass:[HSAnimationModeController class]];
+        pvVar1_2 = [self_00 isKindOfClass:[NSNull class]];
         pvVar3 = nil;
         if (pvVar1_2) {
             pvVar3 = self_00;

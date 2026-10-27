@@ -699,18 +699,6 @@ void FUN_000c92b0(HSSelectionOperationVerifier *self,SEL _cmd,
 }
 
 */
-- (void)getSelectedNodesArrayForDragOperation:(id *)aOperation canProceed:(BOOL *)aProceed modifySelectionIfNeeded:(BOOL)aNeeded
-{
-    BOOL canProceed = YES;
-    id nodes = [self selectedNodesArrayForOperation:@"Drag" proceedWithOperation:&canProceed neverAskUser:NO modifySelectionIfNeeded:aNeeded];
-    if (aOperation != NULL) {
-        *aOperation = nodes;
-    }
-    if (aProceed != NULL) {
-        *aProceed = canProceed;
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000c9310 @ 000c9310, 96 bytes * /
 

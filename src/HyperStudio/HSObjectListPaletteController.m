@@ -306,11 +306,6 @@ void FUN_000d7315(HSObjectListPaletteController *self,SEL _cmd,BOOL setNeedsData
     }
 }
 
-- (void)windowDidBecomeKey:(id)aKey
-{
-    [NSApp activateIgnoringOtherApps:YES];
-}
-
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-multiple-method-names"
 - (void)applicationWillResignActive:(id)aActive

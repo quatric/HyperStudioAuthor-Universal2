@@ -35,10 +35,6 @@
 // QuickTime Movies no longer exist (the original opened the file with
 // NewMovieFromProperties, not resolving data references and not interacting
 // with the user); nothing can be returned.
-+ (struct MovieType **)movieAtPath:(id)aPath
-{
-    return NULL;
-}
 // Writes the document's medias into aWrapper: each media file the stack's
 // objects own (named after the media, with an extension from MediaTypes.plist
 // when it has none), plus a description property list per media in the

@@ -58,14 +58,4 @@
     [super dealloc];
 }
 
-- (id)initWithLinkedStacksLevel:(NSUInteger)aLevel andDocument:(id)aDocument
-{
-    self = [super init];
-    if (self != nil) {
-        _parentDocument = [aDocument retain];
-        _currentLinkedStackLevel = (unsigned int)aLevel;
-    }
-    return self;
-}
-
 @end

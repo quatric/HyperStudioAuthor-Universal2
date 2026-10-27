@@ -57,14 +57,6 @@
     }
 }
 
-- (void)applicationWillUpdate:(id)aUpdate
-{
-    id document = [_delegate document];
-    if ([document respondsToSelector:@selector(isModalSessionPresent)] && [document isModalSessionPresent])
-        return;
-    [self validateUI];
-}
-
 // Enables each control according to whether the target of its action
 // validates it.
 - (void)validateUI

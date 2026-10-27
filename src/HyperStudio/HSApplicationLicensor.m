@@ -77,14 +77,6 @@ id FUN_00287e11(HSApplicationLicensor *self,SEL _cmd,BOOL showRegistrationDialog
 }
 
 */
-- (id)showRegistrationDialogForceUI:(BOOL)aUI isGoBack:(BOOL *)aBack
-{
-    if (_registrationInfo == nil) {
-        return nil;
-    }
-    return [self HSApplicationLicensor_showRegistrationDialog:HSRegistrationFormControllerTypeCommon registrationString:_registrationInfo forceUI:aUI isGoBack:aBack];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00289de1 @ 00289de1, 1046 bytes * /
 
@@ -173,36 +165,6 @@ void FUN_00289de1(HSApplicationLicensor *self,SEL _cmd,id createRequestWithURLSt
 }
 
 */
-- (void)createRequestWithURLString:(id)aString
-{
-    NSString *escapedInfo = [(NSString *)CFURLCreateStringByAddingPercentEscapes(NULL, (CFStringRef)_registrationInfo, NULL, CFSTR("+?=&"), kCFStringEncodingUTF8) autorelease];
-    if (escapedInfo == nil) {
-        return;
-    }
-    NSString *templatePath = [_applicationBundle pathForResource:@"reg_template" ofType:@"html"];
-    if (templatePath == nil) {
-        return;
-    }
-    NSMutableString *page = [NSMutableString stringWithContentsOfFile:templatePath encoding:NSUTF8StringEncoding error:NULL];
-    if (page == nil) {
-        return;
-    }
-    NSString *urlString = [HSDocument completeURLStringWithString:aString versionString:[HSApplicationController buildVersionString] addPlatformInfo:YES addProductName:YES];
-    if (urlString == nil) {
-        return;
-    }
-    [page replaceOccurrencesOfString:@"window.name = \"" withString:[@"window.name = \"" stringByAppendingString:escapedInfo] options:0 range:NSMakeRange(0, [page length])];
-    [page replaceOccurrencesOfString:@"window.location.href = \"" withString:[@"window.location.href = \"" stringByAppendingString:urlString] options:0 range:NSMakeRange(0, [page length])];
-    NSString *path = [[[HSPathsProvider sharedPathsProvider] temporaryFolder] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.html", [[HSUID UID] stringValue]]];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    if (url != nil && [page writeToURL:url atomically:YES encoding:NSUTF8StringEncoding error:NULL]) {
-        if (![[NSWorkspace sharedWorkspace] openURL:url]) {
-            HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
-            NSRunAlertPanel([provider localizedStringForKey:@"BrowserNotFound_title" value:@"" table:@"Alerts"], @"%@", [provider localizedStringForKey:@"OK" value:@"" table:@"Alerts"], nil, nil, [provider localizedStringForKey:@"BrowserNotFound_message" value:@"" table:@"Alerts"]);
-        }
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002895b8 @ 002895b8, 890 bytes * /
 
@@ -611,29 +573,6 @@ id FUN_0028a1f7(HSApplicationLicensor *self,SEL _cmd,void *initWithLicensorBytes
 }
 
 */
-- (id)initWithLicensorBytes:(void *)aBytes bytesSize:(NSUInteger)aSize bundle:(id)aBundle majorVersion:(id)aVersion minorVersion:(id)aVersion2
-{
-    self = [super init];
-    if (self) {
-        if (aBytes != NULL && aSize != 0) {
-            _majorVersion = [aVersion copy];
-            _minorVersion = [aVersion2 copy];
-            if (SLInitialize(aBytes, aSize, NULL, NULL) == 0) {
-                if (SLSetApplicationInfo("HS500", [[aBundle bundleIdentifier] UTF8String], [_majorVersion UTF8String], [_minorVersion UTF8String]) == 0) {
-                    _applicationBundle = [aBundle retain];
-                    _licenseType = 0;
-                    _licenseUsageTimeInfo = 0;
-                    [[LUUserDataValidation sharedInstance] updateApplicationSessionInfo];
-                    return self;
-                }
-                SLShutdown();
-            }
-        }
-        [self release];
-    }
-    return nil;
-}
-
 - (id)init
 {
     [self release];
@@ -797,55 +736,6 @@ LAB_00289c40:
 }
 
 */
-- (void)HSApplicationLicensor_registerApplicationOnNetworkForLicenseType:(NSInteger)aType
-{
-    uint32_t size = 0;
-    if (SLLicenseCopyNetworkIdentifier(NULL, NULL, &size) != 0 || size == 0) {
-        return;
-    }
-    char *identifierBytes = malloc(size);
-    if (identifierBytes == NULL) {
-        return;
-    }
-    HSNetworkRegistrar *registrar = nil;
-    if (SLLicenseCopyNetworkIdentifier(NULL, identifierBytes, &size) == 0) {
-        NSString *identifier = [NSString stringWithCString:identifierBytes encoding:NSMacOSRomanStringEncoding];
-        if (identifier != nil) {
-            if (_applicationRegistrar != nil) {
-                [[NSNotificationCenter defaultCenter] removeObserver:self name:HSNetworkRegistrarRefusedNotification object:_applicationRegistrar];
-                [_applicationRegistrar release];
-                _applicationRegistrar = nil;
-            }
-            registrar = [[HSNetworkRegistrar alloc] initWithBundleIdentifier:[[NSBundle mainBundle] bundleIdentifier] licenseType:aType];
-            if (registrar != nil) {
-                [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSApplicationLicensor_networkRegistrarRefused:) name:HSNetworkRegistrarRefusedNotification object:registrar];
-                if ([registrar registerWithIdentifier:identifier allowedCount:SLLicenseGetAllowedCount(NULL)] == 0) {
-                    uint32_t blockingSize = 0;
-                    if (SLLicenseCopyBlockingIdentifiers(NULL, NULL, &blockingSize) == 0 && blockingSize != 0) {
-                        uintptr_t *blocking = malloc(blockingSize);
-                        if (blocking != NULL) {
-                            if (SLLicenseCopyBlockingIdentifiers(NULL, blocking, &blockingSize) == 0) {
-                                for (uintptr_t i = 0; i < blocking[0]; i++) {
-                                    NSString *blockingIdentifier = [[NSString alloc] initWithCString:(const char *)blocking[i + 1] encoding:NSMacOSRomanStringEncoding];
-                                    if (blockingIdentifier != nil) {
-                                        [registrar registerBlockingIdentifier:blockingIdentifier];
-                                        [blockingIdentifier release];
-                                    }
-                                }
-                            }
-                            free(blocking);
-                        }
-                    }
-                    _applicationRegistrar = registrar;
-                    registrar = nil;
-                }
-            }
-        }
-    }
-    [registrar release];
-    free(identifierBytes);
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002884a0 @ 002884a0, 654 bytes * /
 
@@ -907,42 +797,6 @@ LAB_00288641:
 }
 
 */
-- (void)HSApplicationLicensor_networkRegistrarRefused:(id)aRefused
-{
-    NSDictionary *userInfo = [aRefused userInfo];
-    NSInteger errorCode = [[userInfo objectForKey:HSNetworkRegistrarRefusedErrorCode] intValue];
-    if (errorCode == 0) {
-        return;
-    }
-    HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
-    NSString *title = nil;
-    NSString *explanation;
-    if (errorCode == 3) {
-        explanation = [provider localizedStringForKey:@"The quota of users that can use the same registration number has been reached. Please contact with your system administrator" value:@"" table:@"Alerts"];
-    }
-    else {
-        NSString *fallbackKey;
-        if (errorCode != 2) {
-            fallbackKey = @"Application network registration is denied";
-        }
-        else {
-            fallbackKey = @"The registration number you have entered has already been used to register another copy of the application. Please contact with your system administrator";
-        }
-        title = [[aRefused userInfo] objectForKey:HSNetworkRegistrarRefusedCutomErrorTitle];
-        explanation = [[aRefused userInfo] objectForKey:HSNetworkRegistrarRefusedCutomErrorExplanation];
-        if (explanation == nil) {
-            explanation = [provider localizedStringForKey:fallbackKey value:@"" table:@"Alerts"];
-        }
-    }
-    if (explanation != nil) {
-        if (title == nil) {
-            title = [provider localizedStringForKey:@"HyperStudio will quit now" value:@"" table:@"Alerts"];
-        }
-        NSRunAlertPanel(title, @"%@", [provider localizedStringForKey:@"Quit" value:@"" table:@"Alerts"], nil, nil, explanation);
-        [NSApp terminate:self];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00288bbe @ 00288bbe, 2519 bytes * /
 
@@ -1304,243 +1158,6 @@ LAB_00289533:
 }
 
 */
-- (NSInteger)HSApplicationLicensor_licenseApplicationWithReason:(NSInteger)aReason currentLicenseType:(NSInteger)aType isCanceled:(BOOL *)aCanceled isLicenseChanged:(BOOL *)aChanged
-{
-    uint32_t serialSize = 0;
-    NSString *dialogType;
-    NSInteger trialState;
-    switch (aReason) {
-    case 1:
-        dialogType = HSSerialNumberDialogControllerTypeTrialFirstExtended;
-        trialState = 1;
-        break;
-    case 2:
-        dialogType = HSSerialNumberDialogControllerTypeTrialLastExtended;
-        trialState = 1;
-        break;
-    case 3:
-        dialogType = HSSerialNumberDialogControllerTypeTrial;
-        trialState = 3;
-        break;
-    case 4:
-        dialogType = HSSerialNumberDialogControllerTypeActivate;
-        trialState = 2;
-        break;
-    default:
-        if (aType != 3) {
-            dialogType = HSSerialNumberDialogControllerTypeCommon;
-            int status = SLLicenseHasPendingSerial();
-            if (status == 0) {
-                status = SLLicenseCopyPendingSerial(NULL, &serialSize);
-            }
-            if (status == 0 && serialSize != 0) {
-                trialState = 1;
-                break;
-            }
-        }
-        dialogType = HSSerialNumberDialogControllerTypeCommonWOTrial;
-        trialState = 3;
-        break;
-    }
-    HSSerialNumberDialogController *dialog = [[HSSerialNumberDialogController alloc] initWithType:dialogType];
-    [dialog setDelegate:self];
-    struct SLLicense *license = NULL;
-    BOOL isCanceled = NO;
-    BOOL isLicenseChanged = NO;
-    BOOL goBack = NO;
-    NSInteger fallbackMode = (aReason != 0) + 2;
-    NSInteger dialogResult = 1;
-    NSInteger result = 1;
-    BOOL runDialog = YES;
-    do {
-        goBack = NO;
-        if (runDialog) {
-            dialogResult = [dialog runModal];
-        }
-        runDialog = YES;
-        result = 1;
-        switch (dialogResult) {
-        case 0:
-            if (aReason == 4) {
-                isCanceled = YES;
-            }
-            break;
-        case 1: {
-            HSSerialValidationContext *context = [dialog validationContext];
-            struct SLLicense *contextLicense = [context license];
-            NSString *info = [self HSApplicationLicensor_registrationInfoForLicense:contextLicense];
-            if (info == nil) {
-                break;
-            }
-            BOOL contextGoBack = NO;
-            NSDictionary *information;
-            if ([[self HSApplicationLicensor_hiddenTrialExtensionSerial] isEqualToString:[context serialString]]) {
-                HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
-                NSString *okTitle = [provider localizedStringForKey:@"OK" value:@"" table:@"Alerts"];
-                NSString *message = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"You now have an additional 10 days to try HyperStudio on a single computer. To continue using the product after the trial period is over, you will need to register it with a non-expiring license." value:@"" table:@"Alerts"];
-                NSString *title = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"The trial period has been extended" value:@"" table:@"Alerts"];
-                NSRunAlertPanel(title, @"%@", okTitle, nil, nil, message);
-                information = nil;
-            }
-            else {
-                NSInteger flags = [context usageTimeFlags];
-                NSString *registrationType = (flags & 4) ? HSRegistrationFormControllerTypeCommonWithForcedResponse : HSRegistrationFormControllerTypeCommon;
-                information = [self HSApplicationLicensor_showRegistrationDialog:registrationType registrationString:info forceUI:NO isGoBack:&contextGoBack];
-                if ((flags & 4) != 0) {
-                    if (contextGoBack) {
-                        break;
-                    }
-                    if ([information count] == 0) {
-                        result = 2;
-                        break;
-                    }
-                    NSData *hardwareAddress = HSPrimaryEthernetMACAddress();
-                    NSUInteger addressLength = [hardwareAddress length];
-                    if (addressLength == 0) {
-                        break;
-                    }
-                    uint32_t identifierSize = 0;
-                    if (SLEncodeHardwareIdentifier(NULL, addressLength & 0xff, NULL, &identifierSize) != 0) {
-                        break;
-                    }
-                    char *identifierBuffer = malloc(identifierSize);
-                    if (identifierBuffer == NULL) {
-                        break;
-                    }
-                    NSString *identifier = nil;
-                    if (SLEncodeHardwareIdentifier([hardwareAddress bytes], addressLength & 0xff, identifierBuffer, &identifierSize) == 0) {
-                        identifier = [NSString stringWithCString:identifierBuffer encoding:NSMacOSRomanStringEncoding];
-                    }
-                    free(identifierBuffer);
-                    if ([identifier length] == 0) {
-                        break;
-                    }
-                    HSSubmitInformationDialogController *submitDialog = [[HSSubmitInformationDialogController alloc] initWithWindowNibName:@"SubmitInformationDialog"];
-                    [submitDialog setTrialLicenseState:trialState];
-                    NSInteger submitResult = [submitDialog runModalWithInformationDictionary:information applicationRegistrationIdentifier:identifier];
-                    if (submitResult == 0) {
-                        result = [context activateLicense];
-                        if (result == 0) {
-                            [_registrationInfo release];
-                            _registrationInfo = [info copy];
-                            isLicenseChanged = YES;
-                        }
-                    }
-                    else if (submitResult == 1) {
-                        if (aReason == 4) {
-                            isCanceled = YES;
-                        }
-                    }
-                    else if (submitResult == 3) {
-                        if (trialState == 1) {
-                            goBack = YES;
-                            runDialog = NO;
-                            dialogResult = fallbackMode;
-                        }
-                        else {
-                            result = 0;
-                        }
-                    }
-                    [submitDialog release];
-                    break;
-                }
-            }
-            if ([information count] != 0) {
-                [[HSSubmitRequest sharedInstance] submitInformationDictionary:information];
-            }
-            result = [context activateLicense];
-            if (result == 0) {
-                [_registrationInfo release];
-                _registrationInfo = [info copy];
-                isLicenseChanged = YES;
-            }
-            break;
-        }
-        case 2: {
-            if (serialSize == 0) {
-                break;
-            }
-            if (license == NULL) {
-                char *serialBuffer = malloc(serialSize);
-                if (serialBuffer == NULL) {
-                    break;
-                }
-                result = SLLicenseCopyPendingSerial(serialBuffer, &serialSize);
-                if (result == 0) {
-                    result = SLLicenseCreateFromSerial(serialBuffer, &license);
-                }
-                free(serialBuffer);
-                if (result != 0) {
-                    break;
-                }
-            }
-            else {
-                result = 1;
-            }
-            NSString *info = [self HSApplicationLicensor_registrationInfoForLicense:license];
-            if (info == nil) {
-                break;
-            }
-            NSDictionary *information = [self HSApplicationLicensor_showRegistrationDialog:HSRegistrationFormControllerTypeTrialReduced registrationString:info forceUI:NO isGoBack:&goBack];
-            if (goBack) {
-                break;
-            }
-            if ([information count] != 0) {
-                [[HSSubmitRequest sharedInstance] submitInformationDictionary:information];
-            }
-            result = SLLicenseActivate(license);
-            if (result == 0) {
-                [_registrationInfo release];
-                _registrationInfo = [info copy];
-                license = NULL;
-                isLicenseChanged = YES;
-            }
-            break;
-        }
-        case 3: {
-            int currentType = SLLicenseGetType(NULL);
-            if (license == NULL) {
-                const char *extensionSerial = (currentType == 3) ? "PJKH8-4TBGB-M3V49-LRG9K-P2DA" : "NJMH9-5UAGB-M3V49-LPF9K-P4CA";
-                result = SLLicenseCreateFromSerial(extensionSerial, &license);
-                if (result != 0) {
-                    break;
-                }
-            }
-            else {
-                result = 1;
-            }
-            NSString *info = [self HSApplicationLicensor_registrationInfoForLicense:license];
-            if (info == nil) {
-                break;
-            }
-            result = SLLicenseActivate(license);
-            if (result != 0) {
-                break;
-            }
-            [_registrationInfo release];
-            _registrationInfo = [info copy];
-            license = NULL;
-            [[HSExtensionAlertController sharedInstance] runModalForMode:currentType != 3];
-            isLicenseChanged = YES;
-            break;
-        }
-        default:
-            break;
-        }
-    } while (goBack);
-    [dialog release];
-    if (license != NULL) {
-        SLLicenseRelease(license);
-    }
-    if (aCanceled != NULL) {
-        *aCanceled = isCanceled;
-    }
-    if (aChanged != NULL) {
-        *aChanged = isLicenseChanged;
-    }
-    return result;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00287ac3 @ 00287ac3, 243 bytes * /
 
@@ -1594,27 +1211,6 @@ id FUN_00287ac3(HSApplicationLicensor *self,SEL _cmd,id HSApplicationLicensor_sh
 }
 
 */
-- (id)HSApplicationLicensor_showRegistrationDialog:(id)aDialog registrationString:(id)aString forceUI:(BOOL)aUI isGoBack:(BOOL *)aBack
-{
-    id registration = [HSRegistrationFormController completeRegistrationDictionaryWithSerial:aString type:aDialog];
-    BOOL goBack = NO;
-    if (registration == nil || aUI) {
-        HSRegistrationFormController *controller = [[HSRegistrationFormController alloc] initWithType:aDialog];
-        NSInteger result = [controller runModal];
-        if (result == 0) {
-            registration = [HSRegistrationFormController completeRegistrationDictionaryWithSerial:aString type:aDialog];
-        }
-        else {
-            goBack = (result == 1);
-        }
-        [controller release];
-    }
-    if (aBack != NULL) {
-        *aBack = goBack;
-    }
-    return registration;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00287a33 @ 00287a33, 144 bytes * /
 
@@ -1889,43 +1485,6 @@ int FUN_0028872e(HSApplicationLicensor *self,SEL _cmd,
 }
 
 */
-- (NSInteger)HSApplicationLicensor_storeApplicationLicenseForBundle:(id)aBundle
-{
-    NSInteger result = SLLicenseStoreToHostFile([[aBundle bundlePath] fileSystemRepresentation]);
-    if (result == 9) {
-        const char *tool = [[aBundle pathForAuxiliaryExecutable:@".authorizationTool"] fileSystemRepresentation];
-        if (tool != NULL) {
-            HSApplicationLicensorRunAuthenticationAlert(self);
-            uint32_t licenseSize = 0;
-            result = SLLicenseCopyData(NULL, NULL, &licenseSize);
-            if (result == 0) {
-                uint32_t environmentSize = 0;
-                result = SLLicenseCopyEnvironment(NULL, &environmentSize);
-                if (result == 0) {
-                    void *buffer = malloc(environmentSize + licenseSize);
-                    if (buffer == NULL) {
-                        result = 1;
-                    }
-                    else {
-                        result = SLLicenseCopyEnvironment(buffer, &environmentSize);
-                        if (result == 0) {
-                            void *licenseBytes = (char *)buffer + environmentSize;
-                            result = SLLicenseCopyData(NULL, licenseBytes, &licenseSize);
-                            if (result == 0) {
-                                while ((result = [self HSApplicationLicensor_storeWithAuthorizatonTool:(char *)tool licenseBytes:licenseBytes licenseBytesSize:licenseSize environment:buffer environmentSize:environmentSize]) == -1) {
-                                    HSApplicationLicensorRunAuthenticationAlert(self);
-                                }
-                            }
-                        }
-                        free(buffer);
-                    }
-                }
-            }
-        }
-    }
-    return result;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00288134 @ 00288134, 876 bytes * /
 
@@ -2056,59 +1615,6 @@ LAB_00288479:
 }
 
 */
-- (NSInteger)HSApplicationLicensor_storeWithAuthorizatonTool:(char *)aTool licenseBytes:(void *)aBytes licenseBytesSize:(NSUInteger)aSize environment:(void *)aEnvironment environmentSize:(NSUInteger)aSize2
-{
-    if (aBytes == NULL || aEnvironment == NULL || aSize2 == 0) {
-        return 1;
-    }
-    const char *arguments[7] = { [[_applicationBundle bundleIdentifier] UTF8String], [[_applicationBundle bundlePath] fileSystemRepresentation], NULL, NULL, NULL, NULL, NULL };
-    if (arguments[1] == NULL) {
-        return 1;
-    }
-    const char *major = [_majorVersion UTF8String];
-    const char *minor = [_minorVersion UTF8String];
-    int count = 2;
-    if (major != NULL) {
-        arguments[count++] = "--short-version";
-        arguments[count++] = major;
-    }
-    if (minor != NULL) {
-        arguments[count++] = "--version";
-        arguments[count++] = minor;
-    }
-    AuthorizationRef authorization = NULL;
-    if (AuthorizationCreate(NULL, NULL, kAuthorizationFlagDefaults, &authorization) != errAuthorizationSuccess) {
-        return 1;
-    }
-    int result = 1;
-    AuthorizationItem item = { "system.privilege.admin", 0, NULL, 0 };
-    AuthorizationRights rights = { 1, &item };
-    AuthorizationRights *grantedRights = NULL;
-    OSStatus status = AuthorizationCopyRights(authorization, &rights, NULL, kAuthorizationFlagInteractionAllowed | kAuthorizationFlagExtendRights | kAuthorizationFlagPreAuthorize, &grantedRights);
-    if (status == errAuthorizationCanceled) {
-        result = -1;
-    }
-    else if (status == errAuthorizationSuccess) {
-        FILE *pipe = NULL;
-        if (AuthorizationExecuteWithPrivileges(authorization, aTool, kAuthorizationFlagDefaults, (char * const *)arguments, &pipe) == errAuthorizationSuccess && pipe != NULL) {
-            uint32_t header[2];
-            memcpy(header, "eash", 4);
-            header[1] = (uint32_t)aSize2;
-            if (fwrite(header, 1, 8, pipe) == 8 && fwrite(aEnvironment, 1, aSize2, pipe) == aSize2) {
-                memcpy(header, "ilsh", 4);
-                header[1] = (uint32_t)aSize;
-                if (fwrite(header, 1, 8, pipe) == 8 && fwrite(aBytes, 1, aSize, pipe) == aSize) {
-                    if (fread(&result, 1, 4, pipe) != 4) {
-                        result = 0;
-                    }
-                }
-            }
-        }
-    }
-    AuthorizationFree(authorization, kAuthorizationFlagDestroyRights);
-    return result;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00288029 @ 00288029, 267 bytes * /
 
@@ -2150,23 +1656,6 @@ int FUN_00288029(HSApplicationLicensor *self,SEL _cmd,id HSApplicationLicensor_l
 }
 
 */
-- (NSInteger)HSApplicationLicensor_loadLicenseForBundle:(id)aBundle licenseType:(int *)aType usageTimeFlags:(int *)aFlags
-{
-    int type = SLLicenseGetType(NULL);
-    if (type == 0) {
-        SLLicenseLoadHostFile([[aBundle bundlePath] fileSystemRepresentation]);
-    }
-    NSInteger result = [[LUUserDataValidation sharedInstance] validateLicenseUserData:NULL usageTimeFlags:aFlags licenseType:&type];
-    if (result == 0) {
-        [_registrationInfo release];
-        _registrationInfo = [[self HSApplicationLicensor_registrationInfoForLicense:NULL] retain];
-    }
-    if ((result == 0 || result == 6) && aType != NULL) {
-        *aType = type;
-    }
-    return result;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00287f4e @ 00287f4e, 219 bytes * /
 
@@ -2199,22 +1688,6 @@ id FUN_00287f4e(HSApplicationLicensor *self,SEL _cmd,
 }
 
 */
-- (id)HSApplicationLicensor_registrationInfoForLicense:(struct SLLicense *)aLicense
-{
-    uint32_t size = 0;
-    if (SLLicenseCopyRegistrationInfo(aLicense, NULL, &size) == 0 && size != 0) {
-        void *buffer = malloc(size);
-        if (buffer) {
-            if (SLLicenseCopyRegistrationInfo(aLicense, buffer, &size) == 0) {
-                NSString *info = [[NSString alloc] initWithBytesNoCopy:buffer length:size - 1 encoding:NSUTF8StringEncoding freeWhenDone:YES];
-                return [info autorelease];
-            }
-            free(buffer);
-        }
-    }
-    return nil;
-}
-
 @end
 
 @implementation HSSerialValidationContext

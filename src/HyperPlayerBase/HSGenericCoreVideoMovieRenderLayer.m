@@ -34,7 +34,7 @@ static const double HSMaximumTolerance = 0.9980392156862745;
     CGContextRef context = [[NSGraphicsContext currentContext] CGContext];
     CGContextConcatCTM(context, CGAffineTransformMake(1, 0, 0, -1, 0,
                                                       (float)(movieRect.origin.y * 2 + movieRect.size.height)));
-    [(HSMovieOpenGLRenderer *)[_movieAttributes movieRenderer]
+    [(HSMoviePixelBufferRenderer *)[_movieAttributes movieRenderer]
         drawCurrentFrameInRect:movieRect
               fromRelativeRect:sourceRect
           withTransparentColor:transparentColor

@@ -127,61 +127,6 @@ LAB_000c4555:
 }
 
 */
-- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRanges:(id)aRanges
-{
-    if ([self currentItem] == nil) {
-        return NO;
-    }
-    id stringAttribute = [[self currentItem] queryHyperInterface:@protocol(HSGenericObjectStringAttribute)];
-    id editor = [[_windowController cardView] selectedHyperObject];
-    if ([editor implementsHyperInterface:@protocol(HSRunTimeEditor)] && [editor implementsHyperInterface:@protocol(HSTextAttributes)] && [editor hyperObject] == [self currentItem]) {
-        NSAttributedString *text = [editor hyperText];
-        for (NSValue *value in aRanges) {
-            NSRange range = [value rangeValue];
-            NSDictionary *attributes = [text attributesAtIndex:range.location effectiveRange:NULL];
-            NSAttributedString *replacement = [[NSAttributedString alloc] initWithString:aItem attributes:attributes];
-            [editor replaceTextInRange:range withAttributedString:replacement];
-            [replacement release];
-        }
-        [[editor queryHyperInterface:@protocol(HSRunTimeEditor)] saveEditing];
-        return YES;
-    }
-    if ([stringAttribute objectString] == nil) {
-        return NO;
-    }
-    if ([[[self currentItem] queryHyperInterface:@protocol(HSCardObjectLockedAttribute)] isLocked]) {
-        return NO;
-    }
-    [stringAttribute replaceObjectString:aItem inRanges:aRanges];
-    id selected = [_selectionController selectedHyperObject];
-    if ([selected respondsToSelector:@selector(updateEmbeddedViewWithEditingObject)]) {
-        [selected updateEmbeddedViewWithEditingObject];
-    }
-    return YES;
-}
-
-- (BOOL)setHyperNameForCurrentItem:(id)aItem
-{
-    BOOL BVar1;
-    NSAccessibilityCustomRotorItemResult *pvVar2;
-    id pvVar2_3;
-
-    if ((_includeObjectNames == NO) || (pvVar2 = [self currentItem], pvVar2 == nil)) {
-        BVar1 = NO;
-    }
-    else {
-        pvVar2_3 = [[self currentItem] queryHyperInterface:@protocol(HSObjectNaming)];
-        if (pvVar2_3 != nil) {
-            if (![[[self currentItem] queryHyperInterface:@protocol(HSCardObjectLockedAttribute)] isLocked]) {
-                [pvVar2_3 setObjectName:aItem];
-                return YES;
-            }
-        }
-        BVar1 = YES;
-    }
-    return BVar1;
-}
-
 - (void)setHyperTextForCurrentItem:(id)aItem
 {
     BOOL pvVar2;
@@ -200,15 +145,6 @@ LAB_000c4555:
             }
         }
     }
-}
-
-- (void)selectCurrentItemNameWithRange:(NSRange)aRange
-{
-    if (_includeObjectNames != NO) {
-        [[HSObjectAssistantController sharedAssistantController] selectObjectNameWithRange:aRange];
-    }
-    (_selectedNameRange).location = aRange.location;
-    (_selectedNameRange).length = aRange.length;
 }
 
 - (void)selectCurrentItemStringWithRange:(NSRange)aRange
@@ -278,28 +214,6 @@ void FUN_000c4853(HSStackTextProvider *self,SEL _cmd)
 }
 
 */
-- (void)activateInspectorOfCurrentItem
-{
-    if (!_includeObjectNames) {
-        return;
-    }
-    id object = [[self currentItem] hyperObject];
-    if ([[object queryHyperInterface:@protocol(HSCardObjectLockedAttribute)] isLocked]) {
-        return;
-    }
-    id selected = [[_selectionController cardView] selectedHyperObject];
-    if (selected == [selected hyperObject] || [selected hyperObject] != object) {
-        id parent = [[object queryHyperInterface:@protocol(HSNodeChild)] hyperParent];
-        if ([[_selectionController stackController] selectedHyperObject] != parent) {
-            [[_selectionController stackController] selectHyperObject:parent];
-        }
-        if (selected != object) {
-            [[_selectionController cardView] selectHyperObject:object];
-        }
-    }
-    [[HSObjectAssistantController sharedAssistantController] setSelectedInModelObjectAndBringAssistantToFront:object];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000c4a2a @ 000c4a2a, 409 bytes * /
 
@@ -413,22 +327,6 @@ LAB_000c4cba:
 }
 
 */
-- (NSRange)selectedRangeForCurrentItemName
-{
-    if (!_includeObjectNames) {
-        return NSMakeRange(0, 0);
-    }
-    id selected = [[_selectionController cardView] selectedHyperObject];
-    if ((id)_currentItem == [selected hyperObject] && selected != [selected hyperObject]) {
-        return NSMakeRange(NSNotFound, 0);
-    }
-    NSRange range = [[HSObjectAssistantController sharedAssistantController] selectedObjectNameRange];
-    if (range.location == NSNotFound) {
-        range = _selectedNameRange;
-    }
-    return range;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000c4cc2 @ 000c4cc2, 175 bytes * /
 
@@ -483,20 +381,6 @@ LAB_000c4d6a:
         return NSMakeRange(0, 0);
     }
     return range;
-}
-
-- (id)hyperNameForCurrentItem
-{
-    NSAccessibilityCustomRotorItemResult *pvVar1;
-    id pvVar1_3;
-
-    if ((_includeObjectNames != NO) && (pvVar1 = [self currentItem], pvVar1 != nil)) {
-        pvVar1_3 = [[self currentItem] queryHyperInterface:@protocol(HSObjectNaming)];
-        if (pvVar1_3 != nil) {
-            return [pvVar1_3 objectName];
-        }
-    }
-    return nil;
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -601,11 +485,6 @@ BOOL FUN_000c4f1f(HSStackTextProvider *self,SEL _cmd)
     return NO;
 }
 
-- (BOOL)shouldEnableIncludeObjectNamesButton
-{
-    return YES;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000c5015 @ 000c5015, 127 bytes * /
 
@@ -633,21 +512,6 @@ void FUN_000c5015(HSStackTextProvider *self,SEL _cmd,BOOL setIncludeObjectNames)
 }
 
 */
-- (void)setIncludeObjectNames:(BOOL)aNames
-{
-    if ((_includeObjectNames && !aNames) || (!_includeObjectNames && aNames)) {
-        _includeObjectNames = aNames;
-        if (!aNames) {
-            if ([self canBecomeCurrentItem:[self currentItem]]) {
-                return;
-            }
-            [self moveToNext];
-            return;
-        }
-        [self refreshCurrentItem];
-    }
-}
-
 - (void)setWrapsAround:(BOOL)aAround
 {
     _wrapping = aAround;
@@ -1044,28 +908,6 @@ LAB_000c58d7:
         pvVar2_2 = [aCard retain];
         _currentCard = pvVar2_2;
         [[pvVar2_2 attributeObservingController] addObserver:self selector:@selector(nodeContainerDidRemoveChild:) ofChanges:uVar1 ofAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
-    }
-}
-
-- (void)setSelectionController:(id)aController
-{
-    NSNotificationCenter *self_00;
-
-    if (_selectionController != aController) {
-        self_00 = [NSNotificationCenter defaultCenter];
-        if (_selectionController != nil) {
-            [self_00 removeObserver:self name:@"HSSelectionHolderDidChangeSelectionNotification" object:_selectionController];
-            [self_00 removeObserver:self name:@"HSStackViewDidChangeActiveCardNotification" object:[_selectionController stackController]];
-            [_selectionController release];
-        }
-        _selectionController = [aController retain];
-        [_stack release];
-        _stack = [[[_selectionController stackController] stack] retain];
-        [self setCurrentCard:[[[_selectionController stackController] activeCard] queryHyperInterface:@protocol(HSCardAttributes)]];
-        if (_selectionController != nil) {
-            [self_00 addObserver:self selector:@selector(selectionChanged:) name:@"HSSelectionHolderDidChangeSelectionNotification" object:_selectionController];
-            [self_00 addObserver:self selector:@selector(activeCardDidChange:) name:@"HSStackViewDidChangeActiveCardNotification" object:[_selectionController stackController]];
-        }
     }
 }
 

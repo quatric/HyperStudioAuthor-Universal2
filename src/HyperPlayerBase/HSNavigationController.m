@@ -41,58 +41,8 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 
 // Opens the home stack, falling back to the default one (after telling the
 // user) when the configured one is missing or unreadable.
-+ (BOOL)goToHomeStack
-{
-    NSString *path = [[[HSHomeStackController sharedHomeStackController] homeStackURL] path];
-    if (path != nil) {
-        NSString *found = [HSNavigationController findFile:path base:[path stringByDeletingLastPathComponent]];
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:found] && [fileManager isReadableFileAtPath:found])
-            return [self goToHomeStackAtURL:[NSURL fileURLWithPath:found]];
-        HSAlert *alert = [HSAlert new];
-        [alert setAlertStyle:5];
-        [alert setMessageText:HSNavigationLocalizedAlertString(@"CannotOpenHomeStackAlertTitle")];
-        [alert setInformativeText:HSNavigationLocalizedAlertString(@"CannotOpenHomeStackAlertMessage")];
-        [alert addButtonWithTitle:HSNavigationLocalizedAlertString(@"CannotOpenHomeStackAlertDefaultButton")];
-        [alert runModal];
-        [alert release];
-        NSURL *defaultURL = [[HSHomeStackController sharedHomeStackController] defaultHomeStackURL];
-        NSString *defaultPath = [defaultURL path];
-        if (defaultURL != nil && defaultPath != nil && [fileManager fileExistsAtPath:defaultPath] && [fileManager isReadableFileAtPath:defaultPath])
-            return [self goToHomeStackAtURL:defaultURL];
-    }
-    HSAlert *alert = [HSAlert new];
-    [alert setAlertStyle:5];
-    [alert setMessageText:HSNavigationLocalizedAlertString(@"CannotGoToHomeStackAlertTitle")];
-    [alert setInformativeText:HSNavigationLocalizedAlertString(@"CannotGoToHomeStackAlertMessage")];
-    [alert addButtonWithTitle:HSNavigationLocalizedAlertString(@"CannotGoToHomeStackAlertDefaultButton")];
-    [alert runModal];
-    [alert release];
-    return NO;
-}
-
 // Navigates the current document there when it may go home, otherwise opens
 // the home stack as a document of its own.
-+ (BOOL)goToHomeStackAtURL:(id)aURL
-{
-    id document = [[NSDocumentController sharedDocumentController] currentDocument];
-    if (document != nil && [[document navigationControllerClass] documentCanGoHome:document]) {
-        HSNavigationController *controller = [document navigationController];
-        NSInteger index = [[HSHomeStackController sharedHomeStackController] defaultCardIndex];
-        if (![controller canGoToCardAtIndex:index inStackAtURL:aURL])
-            return NO;
-        [controller goToCardAtIndex:index inStackAtURL:aURL withTransition:nil];
-        return YES;
-    }
-    NSError *error = nil;
-    [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:aURL display:YES error:&error];
-    if (error != nil) {
-        [[HSErrorManager sharedErrorManager] presentError:error];
-        return NO;
-    }
-    return YES;
-}
-
 + (BOOL)documentCanGoHome:(id)aHome
 {
     return YES;
@@ -622,16 +572,6 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
     [self goToCardAtIndex:index inStackAtURL:nil withTransition:aTransition];
 }
 
-- (void)animationDidEnd:(id)aEnd
-{
-    [self continueNavigationToDestinationStack];
-}
-
-- (void)animationDidStop:(id)aStop
-{
-    [self continueNavigationToDestinationStack];
-}
-
 // Outside presentation mode this window slides onto the already opened
 // destination window first.
 - (void)prepareForNavigationToOpenedStack:(id)aStack
@@ -655,46 +595,8 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
     [self continueNavigationOperation:_currentNavigationOperation];
 }
 
-- (void)destinationDocument:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo
-{
-    if (aSave) {
-        [(id)aInfo setStage:HSNavigationStageMoveToOpenedStack];
-        [self continueNavigationOperation:(id)aInfo];
-    } else {
-        [self cancelNavigationOperation:(id)aInfo];
-    }
-}
-
 // The destination is already open in another window: continue (moving into
 // it), save it first when it has changes, or cancel.
-- (void)notifyUserAboutOpenedStackForNavigationOperation:(id)aOperation
-{
-    NSAlert *alert = [NSAlert new];
-    id destination = [[NSDocumentController sharedDocumentController] documentForURL:[aOperation destinationStackURL]];
-    NSString *name = [[destination displayName] stringByDeletingPathExtension];
-    [alert setMessageText:[NSString stringWithFormat:HSNavigationLocalizedAlertString(@"NavigationToDocumentAlertText"), name]];
-    [alert addButtonWithTitle:HSNavigationLocalizedAlertString(@"Continue")];
-    [alert addButtonWithTitle:HSNavigationLocalizedAlertString(@"Cancel")];
-    if ([destination isDocumentEdited]) {
-        [alert setInformativeText:[NSString stringWithFormat:HSNavigationLocalizedAlertString(@"NavigationToDocumentSaveAlertInformativeText"), name]];
-        [alert addButtonWithTitle:HSNavigationLocalizedAlertString(@"SaveAndContinue")];
-    } else {
-        [alert setInformativeText:HSNavigationLocalizedAlertString(@"NavigationToDocumentAlertInformativeText")];
-    }
-    [aOperation setStage:HSNavigationStageNotifyingDestinationOpened];
-    NSInteger response = [alert runModal];
-    if (response == NSAlertThirdButtonReturn) {
-        if ([[destination fileType] isEqualToString:@"HSDocumentType"])
-            [destination saveDocumentWithDelegate:self didSaveSelector:@selector(destinationDocument:didSave:contextInfo:) contextInfo:aOperation];
-    } else if (response == NSAlertSecondButtonReturn) {
-        [self cancelNavigationOperation:aOperation];
-    } else if (response == NSAlertFirstButtonReturn) {
-        [aOperation setStage:HSNavigationStageMoveToOpenedStack];
-        [self continueNavigationOperation:aOperation];
-    }
-    [alert release];
-}
-
 - (BOOL)isDestinationStackOpened:(id)aOpened
 {
     NSURL *url = [aOpened destinationStackURL];

@@ -27,17 +27,6 @@
     return [[self extraDictionaryRepresentation] isEqualToDictionary:[aEqual extraDictionaryRepresentation]];
 }
 
-- (double)timeOfLastAttributesKeyFrame
-{
-    // The last attribute enumerated wins, as in the original.
-    double time = 0.0;
-    NSEnumerator *enumerator = [_attributes objectEnumerator];
-    id attribute;
-    while ((attribute = [enumerator nextObject]) != nil)
-        time = [attribute timeOfLastKeyFrame];
-    return time;
-}
-
 - (void)setAttributes:(id)aAttributes
 {
     if (_attributes == aAttributes)

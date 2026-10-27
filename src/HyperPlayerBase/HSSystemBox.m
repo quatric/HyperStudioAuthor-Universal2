@@ -37,15 +37,6 @@
     return attributes;
 }
 
-- (void)replaceObjectString:(id)aString inRanges:(id)aRanges
-{
-    NSMutableString *title = [NSMutableString stringWithString:[self title]];
-    NSInteger count = [aRanges count];
-    for (NSInteger i = 0; i < count; i++)
-        [title replaceCharactersInRange:[[aRanges objectAtIndex:i] rangeValue] withString:aString];
-    [self setTitle:title];
-}
-
 - (void)setObjectString:(id)aString
 {
     [self setTitle:aString];

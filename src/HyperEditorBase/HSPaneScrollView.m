@@ -2,11 +2,6 @@
 
 @implementation HSPaneScrollView
 
-- (void)viewDidEndLiveResize
-{
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSPaneScrollViewDidEndLiveResizeNotification" object:self];
-}
-
 // HSPaneScrollers, both arrows at the end, in place of the scrollers.
 - (void)customizeScrollers
 {

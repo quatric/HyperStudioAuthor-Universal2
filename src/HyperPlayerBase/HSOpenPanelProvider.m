@@ -71,15 +71,6 @@
     return types;
 }
 // The delegate gets (nil, its context).
-- (void)sheetDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    if (aCode == NSModalResponseOK && [[aEnd URLs] count] != 0) {
-        NSString *path = [[[aEnd URLs] objectAtIndex:0] path];
-        if (path != nil)
-            [self setTypeToFolderMapValue:[path stringByDeletingLastPathComponent] forKey:(id)aInfo];
-    }
-    [_modalDelegate performSelector:_didEndSelector withObject:nil withObject:(id)_contextInfo];
-}
 static NSOpenPanel *HSOpenPanelForTypes(NSArray *aTypes, NSString *aFolder)
 {
     NSOpenPanel *panel = [NSOpenPanel openPanel];

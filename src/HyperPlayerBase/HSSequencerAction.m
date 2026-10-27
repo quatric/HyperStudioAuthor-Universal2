@@ -159,31 +159,7 @@
 }
 
 // Old documents kept the delays on the objects themselves.
-- (void)convertOldVersionAttributesIfNeeded
-{
-    if (!_oldFormat)
-        return;
-    for (id item in _sequenceItems)
-        [item setDelay:[[[self objectWithUID:[item objectUID]] queryHyperInterface:@protocol(HSActor)] delay]];
-    _oldFormat = NO;
-}
-
 // Old documents only stored the object UIDs.
-- (void)setObjectUIDs:(id)aDs
-{
-    if (_sequenceItems != nil || [aDs count] == 0)
-        return;
-    _oldFormat = YES;
-    NSMutableArray *items = [NSMutableArray new];
-    for (id UID in aDs) {
-        HSSequenceItem *item = [[HSSequenceItem alloc] initWithUID:UID withDelay:0];
-        [items addObject:item];
-        [item release];
-    }
-    _sequenceItems = [[NSArray alloc] initWithArray:items];
-    [items release];
-}
-
 - (void)setSequenceItems:(id)aItems
 {
     if ([[self sequenceItems] isEqualToArray:aItems])
@@ -259,11 +235,6 @@
     [_context release];
     _context = nil;
     [super notifyDidFinish];
-}
-
-- (id)keysForExtraLoadingWithCodingContext:(id)aContext
-{
-    return [[super keysForExtraLoadingWithCodingContext:aContext] arrayByAddingObject:[@"objectUIDs" extraKeyForCollection]];
 }
 
 - (id)keysForExtraStoringWithCodingContext:(id)aContext

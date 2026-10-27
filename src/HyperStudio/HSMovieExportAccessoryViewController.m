@@ -106,9 +106,4 @@
     [_exporter setVideoExportOption:option];
 }
 
-- (BOOL)useRoundedCorners
-{
-    return [[NSUserDefaults standardUserDefaults] boolForKey:HSExportUseRoundedCorners];
-}
-
 @end

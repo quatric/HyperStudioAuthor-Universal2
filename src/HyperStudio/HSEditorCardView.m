@@ -69,30 +69,6 @@ void FUN_00003768(HSEditorCardView *self,SEL _cmd,id magnifyWithEvent)
 }
 
 */
-- (void)magnifyWithEvent:(id)aEvent
-{
-    if ([[self selection] nodesCount] != 0) {
-        [super magnifyWithEvent:aEvent];
-        return;
-    }
-    float current = [self zoomFactor];
-    float target = [aEvent magnification] + current;
-    float minZoom = [HSEditorZoomController minZoomFactor];
-    float maxZoom = [HSEditorZoomController maxZoomFactor];
-    if (target < minZoom) {
-        target = minZoom;
-    }
-    if (target > maxZoom) {
-        target = maxZoom;
-    }
-    float a = (target != 0.0f || isnan(target)) ? fabsf(target) : 1.0f;
-    float b = (current != 0.0f || isnan(current)) ? fabsf(current) : 1.0f;
-    float larger = (b <= a) ? a : b;
-    if (larger * 0.0005f < fabsf(target - current)) {
-        [self zoomToFactor:target aboutPoint:[self convertPoint:[aEvent locationInWindow] fromView:nil]];
-    }
-}
-
 - (void)showInspector:(id)aInspector
 {
     [[HSObjectAssistantController sharedAssistantController] setActive:YES explicitlyByUser:YES];
@@ -2601,30 +2577,6 @@ void FUN_00007d7f(HSEditorCardView *self,SEL _cmd,float zoomToFactor,NSPoint abo
 }
 
 */
-- (void)zoomToFactor:(CGFloat)aFactor aboutPoint:(NSPoint)aPoint
-{
-    float current = [self zoomFactor];
-    float a = (current != 0.0f || isnan(current)) ? fabsf(current) : 1.0f;
-    float b = (aFactor != 0.0f || isnan(aFactor)) ? fabsf(aFactor) : 1.0f;
-    float larger = (b <= a) ? a : b;
-    if (larger * 0.0005f < fabsf(current - aFactor)) {
-        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-        if (_zoomMode != 0) {
-            _zoomMode = 0;
-            [center postNotificationName:@"HSEditorCardViewDidChangeZoomModeNotification" object:self];
-        }
-        if ([self enclosingScrollView] != nil) {
-            NSPoint userPoint = [self convertPointFromViewSpaceToUserSpace:aPoint];
-            [self setZoomFactor:aFactor];
-            [self autosizeCenteringAtUserPoint:userPoint respectingLastVisibleContent:NO];
-        } else {
-            [self setZoomFactor:aFactor];
-        }
-        [center postNotificationName:HSViewDidChangeUserSpaceToViewSpaceTransformNotification object:self];
-        [self setNeedsDisplayOpenGLSurface:YES];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00007f60 @ 00007f60, 181 bytes * /
 
@@ -2652,16 +2604,6 @@ void FUN_00007f60(HSEditorCardView *self,SEL _cmd,NSPoint zoomOutAboutPoint)
 }
 
 */
-- (void)zoomOutAboutPoint:(NSPoint)aPoint
-{
-    float zoomOutFactor = 0.0f;
-    [HSEditorZoomController nextZoomOutFactor:&zoomOutFactor zoomInFactor:NULL forZoomFactor:[self zoomFactor]];
-    if (!isnan(zoomOutFactor)) {
-        [self setZoomMode:0];
-        [self zoomToFactor:zoomOutFactor aboutPoint:aPoint];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00008015 @ 00008015, 181 bytes * /
 
@@ -2688,16 +2630,6 @@ void FUN_00008015(HSEditorCardView *self,SEL _cmd,NSPoint zoomInAboutPoint)
 }
 
 */
-- (void)zoomInAboutPoint:(NSPoint)aPoint
-{
-    float zoomInFactor = 0.0f;
-    [HSEditorZoomController nextZoomOutFactor:NULL zoomInFactor:&zoomInFactor forZoomFactor:[self zoomFactor]];
-    if (!isnan(zoomInFactor)) {
-        [self setZoomMode:0];
-        [self zoomToFactor:zoomInFactor aboutPoint:aPoint];
-    }
-}
-
 - (id)editObjectDialogContext
 {
     return _editObjectDialogContext;
@@ -4863,31 +4795,6 @@ LAB_0000bb14:
 }
 
 */
-- (void)openPlaySoundPaneWithInfo:(id)aInfo
-{
-    id event = [aInfo objectAtIndex:1];
-    NSArray *events = [NSArray arrayWithObject:event];
-    id pane = [[[HSObjectAssistantController sharedAssistantController] objectAssistant] currentPane];
-    if ([pane modalViewController] != nil) {
-        [pane dismissModalViewControllerAnimated:NO];
-    }
-    id target;
-    if ([pane isKindOfClass:[HSCardAssistantPane class]]) {
-        if ([[event eventType] isEqualToString:kHSClickActionEventType]) {
-            [pane openActionsPaneForClickEvent:event];
-        } else {
-            [pane openActionsPaneForArriveEvent:event];
-        }
-        target = [[pane modalViewController] topViewController];
-    } else {
-        if (![[pane identifierForSelectedViewController] isEqualToString:@"HSActionsAssistantPane"]) {
-            [pane openPaneWithIdentifier:@"HSActionsAssistantPane"];
-        }
-        target = [pane selectedViewController];
-    }
-    [target openAssistantPaneForActionType:[HSPlaySoundAction actionType] forEvents:events animate:NO];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000bb5b @ 0000bb5b, 909 bytes * /
 
@@ -5297,15 +5204,6 @@ void FUN_0000c5f2(HSEditorCardView *self,SEL _cmd,id startAnimationModeForObject
 }
 
 */
-- (void)startAnimationModeForObject:(id)aObject actingObject:(id)aObject2
-{
-    if (aObject2 == nil) {
-        aObject2 = [self card];
-    }
-    id eventType = [aObject2 queryHyperInterface:@protocol(HSCardAttributes)] ? kHSArriveActionEventType : kHSClickActionEventType;
-    [self startAnimationModeForObject:aObject byDragAndDrop:YES actingObject:aObject2 actionEvent:[HSActionEvent actionEventOfType:eventType]];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000c69c @ 0000c69c, 226 bytes * /
 
@@ -5335,18 +5233,6 @@ void FUN_0000c69c(HSEditorCardView *self,SEL _cmd,id startAnimationModeForObject
 }
 
 */
-- (void)startAnimationModeForObject:(id)aObject byDragAndDrop:(BOOL)aDrop actingObject:(id)aObject2 actionEvent:(id)aEvent
-{
-    id actor = [aObject2 queryHyperInterface:@protocol(HSActor)];
-    if (actor != nil) {
-        if ([[actor hyperActionsOfType:[HSPlayAnimationAction actionType] forEvent:aEvent] count] != 0) {
-            [self askUserAboutReplacingExistingAnimationForObject:aObject byDragAndDrop:aDrop actingObject:aObject2 actionEvent:aEvent];
-        } else {
-            [self continueReplacingExistingAnimationForObject:aObject byDragAndDrop:aDrop actingObject:aObject2 actionEvent:aEvent];
-        }
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000c77e @ 0000c77e, 296 bytes * /
 
@@ -5375,21 +5261,6 @@ void FUN_0000c77e(HSEditorCardView *self,SEL _cmd,id alertDidEnd,int returnCode,
 }
 
 */
-- (void)alertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    NSDictionary *info = (NSDictionary *)aInfo;
-    [NSApp stopModal];
-    if (aCode == 1000) {
-        id object = [info objectForKey:@"object"];
-        id actionEvent = [info objectForKey:@"actionEvent"];
-        id actingObject = [info objectForKey:@"actingObject"];
-        BOOL dropped = [[info objectForKey:@"objectDropped"] boolValue];
-        [self continueReplacingExistingAnimationForObject:object byDragAndDrop:dropped actingObject:actingObject actionEvent:actionEvent];
-    }
-    [info release];
-    [aEnd release];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000c8a6 @ 0000c8a6, 784 bytes * /
 
@@ -5461,40 +5332,6 @@ void FUN_0000c8a6(HSEditorCardView *self,SEL _cmd,id askUserAboutReplacingExisti
 }
 
 */
-- (void)askUserAboutReplacingExistingAnimationForObject:(id)aObject byDragAndDrop:(BOOL)aDrop actingObject:(id)aObject2 actionEvent:(id)aEvent
-{
-    NSAlert *alert = [NSAlert new];
-    BOOL isCard = [aObject2 implementsHyperInterface:@protocol(HSCardAttributes)];
-    NSString *messageKey = isCard ? @"HSReplaceCardAnimationMessageText" : @"HSReplaceObjectAnimationMessageText";
-    NSString *informativeKey = isCard ? @"HSReplaceCardAnimationInformativeText" : @"HSReplaceObjectAnimationInformativeText";
-    [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:messageKey value:@"" table:@"Alerts"]];
-    [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:informativeKey value:@"" table:@"Alerts"]];
-    [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSReplaceAnimationButtonTitle" value:@"" table:@"Alerts"]];
-    [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"]];
-    NSDictionary *info = nil;
-    if (aObject2 != nil && aObject != nil && aEvent != nil) {
-        info = [[NSDictionary alloc] initWithObjectsAndKeys:aObject, @"object", aObject2, @"actingObject", aEvent, @"actionEvent", [NSNumber numberWithBool:aDrop], @"objectDropped", nil];
-    }
-    [alert beginSheetModalForWindow:[self window] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:info];
-    [NSApp runModalForWindow:[alert window]];
-}
-
-- (void)continueReplacingExistingAnimationForObject:(id)aObject byDragAndDrop:(BOOL)aDrop actingObject:(id)aObject2 actionEvent:(id)aEvent
-{
-    id pvVar1_3;
-    id pvVar2_2;
-
-    pvVar1_3 = [[[self card] document] animationModeController];
-    pvVar2_2 = [[HSObjectAssistantController sharedAssistantController] objectAssistant];
-    [pvVar1_3 createAnimationForActingObject:aObject2 byDragAndDrop:aDrop actionEvents:[NSArray arrayWithObject:aEvent] animatedObject:aObject assistant:pvVar2_2];
-}
-
-- (void)fitInWindow
-{
-    [self setZoomMode:1];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSEditorCardViewDidFitInWindowNotification" object:self];
-}
-
 - (void)zoomToActualSize
 {
     [self setZoomMode:0];
@@ -5620,11 +5457,6 @@ float FUN_0000cf1d(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (CGFloat)zoomFactor
-{
-    return [super zoomFactor];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000cf52 @ 0000cf52, 275 bytes * /
 
@@ -5675,33 +5507,6 @@ void FUN_0000cf52(HSEditorCardView *self,SEL _cmd,float zoomToFactor)
 }
 
 */
-- (void)zoomToFactor:(CGFloat)aFactor
-{
-    NSPoint point = NSZeroPoint;
-    if ([self enclosingScrollView] != nil) {
-        if (aFactor != 1.0f || isnan(aFactor)) {
-            NSRect visible = [[self enclosingScrollView] documentVisibleRect];
-            point = NSMakePoint(NSMinX(visible) + NSWidth(visible) * 0.5f, NSMinY(visible) + NSHeight(visible) * 0.5f);
-        } else {
-            NSSize size = [self cardSize];
-            point = [self convertPointFromUserSpaceToViewSpace:NSMakePoint(size.width, size.height)];
-        }
-    }
-    [self zoomToFactor:aFactor aboutPoint:point];
-}
-
-- (void)setZoomFactor:(CGFloat)aFactor
-{
-    float fVar1;
-
-    fVar1 = 0.01;
-    if (0.01 <= aFactor) {
-        fVar1 = aFactor;
-    }
-    [super setZoomFactor:fVar1];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSEditorCardViewDidChangeZoomFactorNotification" object:self];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000d0e9 @ 0000d0e9, 244 bytes * /
 
@@ -5736,26 +5541,6 @@ void FUN_0000d0e9(HSEditorCardView *self,SEL _cmd,int setZoomMode)
 }
 
 */
-- (void)setZoomMode:(NSInteger)aMode
-{
-    if (_zoomMode != aMode) {
-        _zoomMode = aMode;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"HSEditorCardViewDidChangeZoomModeNotification" object:self];
-        if (_zoomMode == 1) {
-            if ([self enclosingScrollView] != nil) {
-                NSSize size = [self cardSize];
-                [self HSEditorCardView_autolayoutCenteringAtUserPoint:NSMakePoint(size.width * 0.5f, size.height * 0.5f) respectingLastVisibleContent:NO];
-            }
-            [self setNeedsDisplayOpenGLSurface:YES];
-        }
-    }
-}
-
-- (NSInteger)zoomMode
-{
-    return _zoomMode;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000d1dd @ 0000d1dd, 539 bytes * /
 
@@ -6375,27 +6160,6 @@ LAB_0000def3:
 }
 
 */
-- (void)setFrameSize:(NSSize)aSize
-{
-    if (_liveResizeRecacheTimer == nil) {
-        if (_cacheOnlyRendering) {
-            [self HSEditorCardView_setupLiveResizeRecacheTimer];
-        }
-    } else {
-        [_liveResizeRecacheTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-    }
-    [super setFrameSize:aSize];
-}
-
-- (void)HSEditorCardView_liveResizeRecache:(id)aRecache
-{
-    [self acceptDrawingQualityLoss:0];
-    [self display];
-    [self declineDrawingQualityLoss:0];
-    [_liveResizeRecacheTimer release];
-    _liveResizeRecacheTimer = nil;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000dfb2 @ 0000dfb2, 183 bytes * /
 
@@ -6420,27 +6184,6 @@ void FUN_0000dfb2(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)viewDidEndLiveResize
-{
-    if (_cacheOnlyRendering) {
-        [self declineDrawingQualityLoss:0.9999f];
-        [self setNeedsDisplayOpenGLSurface:YES];
-        _cacheOnlyRendering = 0;
-        [_liveResizeRecacheTimer invalidate];
-        [_liveResizeRecacheTimer release];
-        _liveResizeRecacheTimer = nil;
-    }
-    [super viewDidEndLiveResize];
-}
-
-- (void)viewWillStartLiveResize
-{
-    [super viewWillStartLiveResize];
-    if (![self inLightweightChangeProcessingMode]) {
-        [self enterLiveResizeCacheOnlyRenderingModeIfNeeded];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000e0ca @ 0000e0ca, 84 bytes * /
 
@@ -6456,15 +6199,6 @@ void FUN_0000e0ca(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)enterLiveResizeCacheOnlyRenderingModeIfNeeded
-{
-    if (_zoomMode == 1) {
-        [self acceptDrawingQualityLoss:0.9999f];
-        _cacheOnlyRendering = 1;
-        [self HSEditorCardView_setupLiveResizeRecacheTimer];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000e11e @ 0000e11e, 234 bytes * /
 
@@ -6501,14 +6235,6 @@ void FUN_0000e11e(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)HSEditorCardView_setupLiveResizeRecacheTimer
-{
-    _liveResizeRecacheTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:1.0] interval:0 target:self selector:@selector(HSEditorCardView_liveResizeRecache:) userInfo:nil repeats:NO];
-    if (_liveResizeRecacheTimer != nil) {
-        [[NSRunLoop currentRunLoop] addTimer:_liveResizeRecacheTimer forMode:NSEventTrackingRunLoopMode];
-    }
-}
-
 - (BOOL)isOpaque
 {
     return YES;
@@ -6607,59 +6333,6 @@ id FUN_0000e355(HSEditorCardView *self,SEL _cmd)
     return _presentationContext;
 }
 
-- (NSRect)userBoundingRectForViewRect:(NSRect)aRect
-{
-    float fVar1;
-    double dVar3;
-    double dVar4;
-    double dVar5;
-    NSRect result;
-
-    dVar3 = [self zoomFactor];
-    dVar4 = [self zoomFactor];
-    fVar1 = (_cardOffset).height;
-    dVar5 = [self zoomFactor];
-    result.origin.x = (aRect.origin.x - ((_cardOffset).width)) / (float)[self zoomFactor]
-    ;
-    result.origin.y = (aRect.origin.y - fVar1) / (float)dVar5
-    ;
-    result.size.width = aRect.size.width / (float)dVar4;
-    result.size.height = aRect.size.height / (float)dVar3;
-    return result;
-}
-
-- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect
-{
-    float fVar1;
-    double dVar2;
-    double dVar3;
-    double dVar4;
-    double dVar5;
-    NSRect result;
-
-    dVar2 = [self zoomFactor];
-    dVar3 = [self zoomFactor];
-    dVar4 = [self zoomFactor];
-    fVar1 = (_cardOffset).height;
-    dVar5 = [self zoomFactor];
-    result.origin.x =
-    aRect.origin.x * (float)dVar5 + (_cardOffset).width;
-    result.origin.y = aRect.origin.y * (float)dVar4 + fVar1;
-    result.size.width = aRect.size.width * (float)dVar3;
-    result.size.height = aRect.size.height * (float)dVar2;
-    return result;
-}
-
-- (NSPoint)convertPointFromViewSpaceToUserSpace:(NSPoint)aSpace
-{
-    float fVar1;
-    double dVar3;
-
-    fVar1 = (_cardOffset).height;
-    dVar3 = [self zoomFactor];
-    return NSMakePoint( (aSpace.x - ((_cardOffset).width)) / (float)[self zoomFactor], (aSpace.y - fVar1) / (float)dVar3);
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000e61f @ 0000e61f, 120 bytes * /
 
@@ -6679,11 +6352,6 @@ ulonglong FUN_0000e61f(HSEditorCardView *self,SEL _cmd,NSPoint convertPointFromU
 }
 
 */
-- (NSPoint)convertPointFromUserSpaceToViewSpace:(NSPoint)aSpace
-{
-    return NSMakePoint([self zoomFactor] * aSpace.x + _cardOffset.width, [self zoomFactor] * aSpace.y + _cardOffset.height);
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000e697 @ 0000e697, 187 bytes * /
 
@@ -6704,13 +6372,6 @@ id FUN_0000e697(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (id)viewSpaceToUserSpaceTransform
-{
-    CGFloat scale = 1.0 / [self zoomFactor];
-    struct HyperPlayerBase_anon1 transform = {scale, 0, 0, scale, -_cardOffset.width * scale, -_cardOffset.height * scale};
-    return [NSAffineTransform transformWithHyperTransformStruct:transform];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000e752 @ 0000e752, 169 bytes * /
 
@@ -6730,12 +6391,6 @@ id FUN_0000e752(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (id)userSpaceToViewSpaceTransform
-{
-    struct HyperPlayerBase_anon1 transform = {[self zoomFactor], 0, 0, [self zoomFactor], _cardOffset.width, _cardOffset.height};
-    return [NSAffineTransform transformWithHyperTransformStruct:transform];
-}
-
 - (void)onionSkinModeDidChange:(id)aChange
 {
     [self setOnionSkinMode:[[HSEditorController sharedDocumentController] onionSkinMode]];
@@ -6935,11 +6590,6 @@ BOOL FUN_00003662(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (BOOL)inLightweightChangeProcessingMode
-{
-    return _lightweightChangeProcessingModeCounter != 0;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000eeb1 @ 0000eeb1, 151 bytes * /
 
@@ -6966,18 +6616,6 @@ void FUN_0000eeb1(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)endLightweightChangeProcessingMode
-{
-    if (--_lightweightChangeProcessingModeCounter == 0) {
-        [self endContentChangeAccumulation];
-        [self declineDrawingQualityLoss:0.9999f];
-        [self setNeedsDisplayOpenGLSurface:YES];
-        if ([self inLiveResize]) {
-            [self enterLiveResizeCacheOnlyRenderingModeIfNeeded];
-        }
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000ef48 @ 0000ef48, 91 bytes * /
 
@@ -6997,15 +6635,6 @@ void FUN_0000ef48(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)beginLightweightChangeProcessingMode
-{
-    if (_lightweightChangeProcessingModeCounter == 0) {
-        [self beginContentChangeAccumulation];
-        [self acceptDrawingQualityLoss:0.9999f];
-    }
-    _lightweightChangeProcessingModeCounter++;
-}
-
 - (void)nodeContainerAttributeChanged:(id)aChanged
 {
     if ([_poofPointsQueue count] == 0) {
@@ -7183,95 +6812,6 @@ LAB_0000f2b3:
     _isObjectsLayoutReflected = 1;
 }
 
-- (void)autosizeToReflectEnclosingScrollView
-{
-    [self autosizePreservingVisibleArea];
-}
-
-- (void)autosizeToFitEnclosingScrollView
-{
-    if (![self inLightweightChangeProcessingMode]) {
-        [self HSEditorCardView_autolayoutPreservingVisibleArea];
-    }
-}
-
-- (void)autosizeCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
-{
-    float fVar1;
-    float fVar2;
-    float fVar3;
-    float fVar4;
-
-    fVar1 = (_cardOffset).width;
-    fVar2 = (_cardOffset).height;
-    [super autosizeCenteringAtUserPoint:aPoint respectingLastVisibleContent:aContent];
-    fVar3 = (_cardOffset).width;
-    fVar4 = (_cardOffset).height;
-    if ((((fVar3 < fVar1 + -0.001953125) || (fVar1 + 0.001953125 < fVar3)) || (fVar4 < fVar2 + -0.001953125)) || (fVar2 + 0.001953125 < fVar4)) {
-        [self notifyDidChangeUserSpaceToViewSpaceTransform];
-    }
-}
-
-- (void)autosizePreservingVisibleCenter
-{
-    float fVar1;
-    float fVar2;
-    float fVar3;
-    float fVar4;
-
-    fVar1 = (_cardOffset).width;
-    fVar2 = (_cardOffset).height;
-    [super autosizePreservingVisibleCenter];
-    fVar3 = (_cardOffset).width;
-    fVar4 = (_cardOffset).height;
-    if ((((fVar3 < fVar1 + -0.001953125) || (fVar1 + 0.001953125 < fVar3)) || (fVar4 < fVar2 + -0.001953125)) || (fVar2 + 0.001953125 < fVar4)) {
-        [self notifyDidChangeUserSpaceToViewSpaceTransform];
-    }
-}
-
-- (void)autosizePreservingVisibleArea
-{
-    float fVar1;
-    float fVar2;
-    float fVar3;
-    float fVar4;
-
-    fVar1 = (_cardOffset).width;
-    fVar2 = (_cardOffset).height;
-    [super autosizePreservingVisibleArea];
-    fVar3 = (_cardOffset).width;
-    fVar4 = (_cardOffset).height;
-    if ((((fVar3 < fVar1 + -0.001953125) || (fVar1 + 0.001953125 < fVar3)) || (fVar4 < fVar2 + -0.001953125)) || (fVar2 + 0.001953125 < fVar4)) {
-        [self notifyDidChangeUserSpaceToViewSpaceTransform];
-    }
-}
-
-- (void)HSEditorCardView_autolayoutCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
-{
-    float fVar1;
-    float fVar2;
-    float fVar3;
-    float fVar4;
-    double dVar6;
-    double dVar7;
-
-    dVar6 = [self zoomFactor];
-    fVar1 = (_cardOffset).width;
-    fVar2 = (_cardOffset).height;
-    if (_zoomMode == 1) {
-        [self HSEditorCardView_autozoomToFitCardToVisibleArea];
-    }
-    [self autosizeCenteringAtUserPoint:aPoint respectingLastVisibleContent:((int)aContent)];
-    dVar7 = [self zoomFactor];
-    if (((float)dVar7 < (float)dVar6 + -0.0001) || ((float)dVar6 + 0.0001 < (float)dVar7)) {
-        fVar3 = (_cardOffset).width;
-        fVar4 = (_cardOffset).height;
-        if ((fVar1 + -0.001953125 <= fVar3) && (((fVar3 <= fVar1 + 0.001953125 && (fVar2 + -0.001953125 <= fVar4)) && (fVar4 <= fVar2 + 0.001953125)))) {
-            [self notifyDidChangeUserSpaceToViewSpaceTransform];
-        }
-    }
-}
-
 - (void)HSEditorCardView_autosizePreservingVisibleCenter
 {
     float fVar1;
@@ -7288,32 +6828,6 @@ LAB_0000f2b3:
         [self HSEditorCardView_autozoomToFitCardToVisibleArea];
     }
     [self autosizePreservingVisibleCenter];
-    dVar6 = [self zoomFactor];
-    if (((float)dVar6 < (float)dVar5 + -0.0001) || ((float)dVar5 + 0.0001 < (float)dVar6)) {
-        fVar3 = (_cardOffset).width;
-        fVar4 = (_cardOffset).height;
-        if ((fVar1 + -0.001953125 <= fVar3) && (((fVar3 <= fVar1 + 0.001953125 && (fVar2 + -0.001953125 <= fVar4)) && (fVar4 <= fVar2 + 0.001953125)))) {
-            [self notifyDidChangeUserSpaceToViewSpaceTransform];
-        }
-    }
-}
-
-- (void)HSEditorCardView_autolayoutPreservingVisibleArea
-{
-    float fVar1;
-    float fVar2;
-    float fVar3;
-    float fVar4;
-    double dVar5;
-    double dVar6;
-
-    dVar5 = [self zoomFactor];
-    fVar1 = (_cardOffset).width;
-    fVar2 = (_cardOffset).height;
-    if (_zoomMode == 1) {
-        [self HSEditorCardView_autozoomToFitCardToVisibleArea];
-    }
-    [self autosizePreservingVisibleArea];
     dVar6 = [self zoomFactor];
     if (((float)dVar6 < (float)dVar5 + -0.0001) || ((float)dVar5 + 0.0001 < (float)dVar6)) {
         fVar3 = (_cardOffset).width;
@@ -7369,25 +6883,6 @@ void FUN_0000f90e(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (void)HSEditorCardView_autozoomToFitCardToVisibleArea
-{
-    NSSize size = [self cardSize];
-    if (size.width > 0.0f && size.height > 0.0f) {
-        NSScrollView *scrollView = [self enclosingScrollView];
-        NSSize content = [[scrollView class] contentSizeForFrameSize:[scrollView frame].size hasHorizontalScroller:NO hasVerticalScroller:NO borderType:[scrollView borderType]];
-        float factor = content.width / size.width;
-        if (content.height / size.height <= factor) {
-            factor = content.height / size.height;
-        }
-        [self setZoomFactor:(factor >= 0.01f ? factor : 0.01f)];
-    }
-}
-
-- (void)autooffsetCardTo:(NSPoint)aTo
-{
-    [self setCardOffset:NSMakeSize(aTo.x, aTo.y)];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0000fa76 @ 0000fa76, 520 bytes * /
 
@@ -7601,17 +7096,6 @@ ulonglong FUN_0000364e(HSEditorCardView *self,SEL _cmd)
 }
 
 */
-- (NSSize)cardOffset
-{
-    return _cardOffset;
-}
-
-- (void)setCardOffset:(NSSize)aOffset
-{
-    (_cardOffset).width = aOffset.width;
-    (_cardOffset).height = aOffset.height;
-}
-
 - (void)activate
 {
     [self reflectCardObjectsHiddenStateOfObjectsInEnumerator:[[self card] hyperEnumerator] invalidate:YES];

@@ -88,7 +88,6 @@ static HSActionSettingsAssistantFactory *sharedFactory;
             [[HSSlideShowActionAssistantPane new] autorelease], [HSSlideShowAction actionType],
             [[HSPictureShowActionAssistantPane new] autorelease], [HSPictureShowAction actionType],
             [[HSMovieControllerActionAssistantPane new] autorelease], [HSMovieControllerAction actionType],
-            [[HSAutoRecordActionAssistantPane new] autorelease], [HSAutoRecordAction actionType],
             [[HSAutoScrollActionAssistantPane new] autorelease], [HSAutoScrollAction actionType],
             [[HSTextToSpeechActionAssistantPane new] autorelease], [HSTextToSpeechAction actionType],
             [[HSShowMessageActionAssistantPane new] autorelease], [HSShowMessageAction actionType],

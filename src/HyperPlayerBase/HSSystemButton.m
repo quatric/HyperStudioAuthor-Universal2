@@ -33,16 +33,6 @@
     return attributes;
 }
 
-- (void)setObjectName:(id)aName
-{
-    [self setTitle:aName];
-}
-
-- (id)objectName
-{
-    return [self title];
-}
-
 - (void)applyCharacterAttributesWithAttributesConverter:(id)aConverter
 {
     NSDictionary *attributes = [self hyperTextAttributes];

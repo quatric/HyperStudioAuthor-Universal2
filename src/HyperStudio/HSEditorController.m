@@ -1340,14 +1340,6 @@ void FUN_00031b62(HSEditorController *self,SEL _cmd,id newCard)
     [[self defaultNavigationControllerClass] goToHomeStack];
 }
 
-- (void)openTutorial:(id)aTutorial
-{
-    NSString *pvVar1_2;
-
-    pvVar1_2 = [[NSBundle mainBundle] pathForResource:@"HyperStudio 5 Tutorial" ofType:@"pdf"];
-    [[NSWorkspace sharedWorkspace] openFile:pvVar1_2];
-}
-
 - (void)openReferenceGuide:(id)aGuide
 {
     NSString *pvVar1_2;
@@ -1525,12 +1517,6 @@ void FUN_000314e7(HSEditorController *self,SEL _cmd,id togglePresentationModeBut
 }
 
 */
-- (void)togglePresentationModeButton:(id)aButton
-{
-    SEL action = [[NSUserDefaults standardUserDefaults] boolForKey:@"HSPresentationModeButtonSwitchesPlayerMode"] ? @selector(togglePlayerMode:) : @selector(togglePresentationMode:);
-    [NSApp sendAction:action to:nil from:aButton];
-}
-
 - (void)toggleCommentsAndAttributionsPalette:(id)aPalette
 {
     [[HSCommentsAndAttributionsPaletteController sharedInstance] togglePalette];
@@ -2535,23 +2521,6 @@ void FUN_00030b3c(HSEditorController *self,SEL _cmd,uint undoImportingFilesCount
 }
 
 */
-- (void)undoImportingFilesCount:(NSUInteger)aCount lastAddedCardIndex:(NSUInteger)aIndex
-{
-    HSStack *stack = [[self currentDocument] stack];
-    if (aCount > 1) {
-        [stack hyperRemoveChildrenBeginGrouping];
-    }
-    if ([stack hyperCount] == aCount) {
-        [stack addHyperChild:[HSCard defaultObject]];
-    }
-    for (NSUInteger i = aCount; i != 0; i--) {
-        [stack removeHyperChild:[stack hyperChildAtIndex:(1 - aCount) + aIndex]];
-    }
-    if (aCount > 1) {
-        [stack hyperRemoveChildrenEndGrouping];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000355f8 @ 000355f8, 3398 bytes * /
 
@@ -6577,21 +6546,6 @@ void FUN_00039ae4(HSEditorController *self,SEL _cmd,id addDocument)
             [[HSErrorManager sharedErrorManager] presentError:warning];
         }
     }
-}
-
-- (Class)documentClassForType:(id)aType
-{
-    Class pvVar1;
-    id pcVar3;
-
-    pvVar1 = [super documentClassForType:aType];
-    if (pvVar1 == nil) {
-        pcVar3 = @"HSKeynoteDocumentType";
-        if ([aType isEqualToString:@"HSKeynoteDocumentType"]) {
-            pvVar1 = [HSEditorDocument class];
-        }
-    }
-    return pvVar1;
 }
 
 - (void)HSEditorController_HSUIModeSettingsDidChangeNotification:(id)aNotification

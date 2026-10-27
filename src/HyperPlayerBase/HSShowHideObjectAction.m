@@ -215,36 +215,6 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
 }
 
 // With aNames NULL this returns at the first unsupported name.
-- (BOOL)hasUnsupportedTransitionNames:(id *)aNames
-{
-    NSSet *unsupported = [HSTransitionEffectProvider unsupportedTransitionEffectNames];
-    NSMutableSet *names = nil;
-    BOOL found = NO;
-    for (NSDictionary *entry in [_objectUIDsToActionMap allValues]) {
-        int action = [[entry objectForKey:@"HSVisibilityAction"] intValue];
-        NSString *showName = nil;
-        NSString *hideName = nil;
-        if (action == 1 || action == 3)
-            showName = [[entry objectForKey:@"HSShowEffectSettings"] objectForKey:@"HSShowHideTransitionName"];
-        if (action == 2 || action == 3)
-            hideName = [[entry objectForKey:@"HSHideEffectSettings"] objectForKey:@"HSShowHideTransitionName"];
-        NSString *candidates[2] = { showName, hideName };
-        for (int i = 0; i < 2; i++) {
-            if (candidates[i] == nil || ![unsupported containsObject:candidates[i]])
-                continue;
-            if (aNames == NULL)
-                return YES;
-            if (names == nil)
-                names = [NSMutableSet set];
-            [names addObject:candidates[i]];
-            found = YES;
-        }
-    }
-    if (aNames != NULL)
-        *aNames = names;
-    return found;
-}
-
 - (BOOL)isValid
 {
     return [[_objectUIDsToActionMap allValues] count] != 0;

@@ -40,10 +40,4 @@
 }
 
 // Original quirk kept: logs every initialization.
-- (id)initWithBTTool:(id)aTool
-{
-    NSLog(@"initWithBTTool");
-    return [super initWithBTTool:aTool];
-}
-
 @end

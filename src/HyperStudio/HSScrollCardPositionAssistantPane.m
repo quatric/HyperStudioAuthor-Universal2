@@ -2,11 +2,6 @@
 
 @implementation HSScrollCardPositionAssistantPane
 
-- (void)pointSelectionToolDidCancelSelection
-{
-    [_navigationPaneSwitcher assistantGoBack:nil];
-}
-
 - (void)pointSelectionTool:(id)aTool selectedPointChange:(NSPoint)aChange
 {
     _position = aChange;

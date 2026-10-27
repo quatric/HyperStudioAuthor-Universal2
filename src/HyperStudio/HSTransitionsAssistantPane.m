@@ -306,14 +306,6 @@ void FUN_0012395a(HSTransitionsAssistantPane *self,SEL _cmd,id tryIt)
     }
 }
 
-- (void)dismiss:(BOOL)aDismiss
-{
-    if ([_transitionsGrid delegate] == self) {
-        [_transitionsGrid setDelegate:0];
-    }
-    [super dismiss:aDismiss];
-}
-
 - (id)objectAssistantForNavigationPaneSwitcher:(id)aSwitcher
 {
     return [self assistant];
@@ -653,11 +645,6 @@ LAB_001240eb:
 - (id)copyWithZone:(NSZone *)aZone
 {
     return [[[self class] allocWithZone:aZone] initWithActionType:[self actionType] paneMultiApplier:nil];
-}
-
-- (id)initialKeyView
-{
-    return _transitionsGrid;
 }
 
 - (id)initWithActionType:(id)aType paneMultiApplier:(id)aApplier

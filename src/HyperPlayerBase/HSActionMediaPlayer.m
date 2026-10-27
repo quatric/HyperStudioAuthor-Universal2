@@ -32,11 +32,6 @@ static HSActionMediaPlayer *sSharedActionMediaPlayer = nil;
     return sSharedActionMediaPlayer;
 }
 
-- (void)stopSoundForObject:(id)aObject
-{
-    [self setForegroundSound:nil];
-}
-
 // Objects other than cards and stacks are owned by their card.
 static id HSActionMediaPlayerOwnerForObject(id aObject)
 {
@@ -56,38 +51,11 @@ static id HSActionMediaPlayerOwnerForObject(id aObject)
     [(HSMovie *)[self foregroundSound] play];
 }
 
-- (void)stopSound:(id)aSound
-{
-    if (aSound == nil)
-        return;
-    [(HSMovie *)aSound stop];
-    if (_foregroundSound == aSound) {
-        [_foregroundSound release];
-        _foregroundSound = nil;
-    } else {
-        [_backgroundSounds removeObject:aSound];
-    }
-}
-
 - (id)ownersBySound
 {
     if (_ownersBySound == nil)
         _ownersBySound = [NSMutableDictionary new];
     return _ownersBySound;
-}
-
-- (void)setForegroundSound:(id)aSound
-{
-    if (_foregroundSound == aSound)
-        return;
-    [self stopSound:_foregroundSound];
-    _foregroundSound = [aSound retain];
-    [_foregroundSound setDelegate:self];
-}
-
-- (id)foregroundSound
-{
-    return _foregroundSound;
 }
 
 // The sound of the action's first sound item, recorded with its owner.
@@ -165,59 +133,8 @@ static id HSActionMediaPlayerOwnerForObject(id aObject)
 
 // Stops the foreground sounds not owned by aSounds' card or stack; sounds of
 // leave-card actions keep playing unless aSounds2 is set.
-- (void)stopAllForeignSounds:(id)aSounds affectLeavingSounds:(BOOL)aSounds2
-{
-    for (NSValue *key in [[self ownersBySound] allKeys]) {
-        NSDictionary *info = [[self ownersBySound] objectForKey:key];
-        id owner = [info objectForKey:@"owner"];
-        BOOL isOwn = owner == [aSounds card] || owner == [aSounds stack];
-        id sound = [key nonretainedObjectValue];
-        BOOL isLeaving = [[[info objectForKey:@"action"] events] containsObject:[HSActionEvent actionEventOfType:kHSLeaveActionEventType]];
-        if (!isOwn && ![_backgroundSounds containsObject:sound] && (aSounds2 || !isLeaving))
-            [self stopSound:sound];
-    }
-}
-
-- (void)stopAllSounds
-{
-    [self stopAllSoundsForSoundAttributes:nil];
-}
-
 // Fades out every sound and stops any speech.
-- (void)stopAllSoundsForSoundAttributes:(id)aAttributes
-{
-    double fadeOutTime = [aAttributes fadeOutTimeForStopAllSounds];
-    [_foregroundSound setSoundFadeOutStopTime:fadeOutTime];
-    [self setForegroundSound:nil];
-    for (id sound in [[_backgroundSounds copy] autorelease]) {
-        [sound setSoundFadeOutStopTime:fadeOutTime];
-        [self stopSound:sound];
-    }
-    [_backgroundSounds release];
-    _backgroundSounds = nil;
-    [[SMKSpeechManager sharedSpeechManager] stopSpeech];
-}
-
-- (void)startForegroundSoundForSoundAttributes:(id)aAttributes
-{
-    [self setForegroundSound:[self movieWithSoundAttributes:aAttributes]];
-    [(HSMovie *)[self foregroundSound] play];
-}
-
 // Starting a background sound still stops the foreground sound.
-- (void)startBackgroundSoundForSoundAttributes:(id)aAttributes
-{
-    id sound = [self movieWithSoundAttributes:aAttributes];
-    if (sound != nil) {
-        if (_backgroundSounds == nil)
-            _backgroundSounds = [[NSMutableArray allocWithZone:[self zone]] initWithCapacity:0];
-        [sound setDelegate:self];
-        [_backgroundSounds addObject:sound];
-    }
-    [self setForegroundSound:nil];
-    [(HSMovie *)sound play];
-}
-
 - (void)hyperPlayableObjectDidStop:(id)aStop
 {
     NSMapTable *map = [self movieWithAttributesMap];
@@ -239,25 +156,6 @@ static id HSActionMediaPlayerOwnerForObject(id aObject)
 }
 
 // A movie not already playing may stop the other movies and sounds first.
-- (void)playMovie:(id)aMovie movieOwner:(id)aOwner
-{
-    NSMapTable *map = [self movieWithAttributesMap];
-    if (NSMapGet(map, aMovie) != NULL)
-        return;
-    id attributes = [aMovie queryHyperInterface:@protocol(HSStartingPlayableObjectAttributes)];
-    if (attributes != nil) {
-        if (![attributes isHyperAllowPlayingOtherMovies])
-            [self stopAllMovies];
-        if (![attributes isHyperAllowPlayingOtherSounds])
-            [self stopAllSounds];
-    }
-    NSMutableDictionary *movieAttributes = [NSMutableDictionary dictionary];
-    if (aOwner != nil)
-        [movieAttributes setObject:aOwner forKey:@"HSActionMediaPlayerMovieOwner"];
-    NSMapInsert(map, aMovie, movieAttributes);
-    [aMovie hyperStart:self];
-}
-
 - (id)movieWithAttributesMap
 {
     if (_movieWithAttributesMap == nil)

@@ -7,7 +7,7 @@
     HSStack *_originalStackStorage;
     HSUndoManager *_iPadUndoManager;
     HSModeSwitcher *_modeSwitcher;
-    HSAnimationModeController *_animationModeController;
+    id _animationModeController;
     HSExportManager *_exportManager;
     id _documentSharingController; // HSDocumentSharingController: not in this build
     NSString *_commitLogMessage;

@@ -699,20 +699,6 @@ NSRect * FUN_00232357(NSRect *__return_storage_ptr__,HSCropImageDialogController
 }
 
 */
-- (NSRect)croppedImageFrame
-{
-    NSRect frame = NSZeroRect;
-    CGPathRef path = [self cgPath];
-    if (path != NULL) {
-        CGRect bounds = CGPathIsEmpty(path) ? CGRectZero : CGPathGetPathBoundingBox(path);
-        NSRect imageRect;
-        imageRect.origin = NSZeroPoint;
-        imageRect.size = NSSizeFromCGSize([[_imageCropView image] imageSize]);
-        frame = NSIntersectionRect(NSRectFromCGRect(bounds), imageRect);
-    }
-    return frame;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00232515 @ 00232515, 367 bytes * /
 

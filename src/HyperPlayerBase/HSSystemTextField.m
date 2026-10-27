@@ -32,15 +32,6 @@
     return attributes;
 }
 
-- (void)replaceObjectString:(id)aString inRanges:(id)aRanges
-{
-    NSMutableString *string = [NSMutableString stringWithString:[self hyperStringValue]];
-    NSInteger count = [aRanges count];
-    for (NSInteger index = 0; index < count; index++)
-        [string replaceCharactersInRange:[[aRanges objectAtIndex:index] rangeValue] withString:aString];
-    [self setHyperStringValue:string];
-}
-
 - (void)setObjectString:(id)aString
 {
     [self setHyperStringValue:aString];

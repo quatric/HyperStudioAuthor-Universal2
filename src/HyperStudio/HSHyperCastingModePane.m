@@ -455,13 +455,6 @@ void FUN_0023f472(HSHyperCastingModePane *self,SEL _cmd)
 }
 
 */
-- (void)warnUserDeviceNotFound
-{
-    NSString *message = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:[NSString stringWithFormat:@"%@-Description", HSCantFindHSDeviceErrorString] value:@"" table:@"Alerts"];
-    NSString *suggestion = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:[NSString stringWithFormat:@"%@-RecoverySuggestion", HSCantFindHSDeviceErrorString] value:@"" table:@"Alerts"];
-    [[NSAlert alertWithMessageText:message defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"%@", suggestion] runModal];
-}
-
 - (void)addNoneAudioDeviceMenuItem
 {
     NSString *pvVar1_4;

@@ -3360,20 +3360,6 @@ void FUN_00021b65(HSEditorWindowController *self,SEL _cmd,Class removeHelpPaneOv
 }
 
 */
-- (void)removeHelpPaneOverCurrentPaneOfClass:(Class)aClass
-{
-    id pane = [[[HSObjectAssistantController sharedAssistantController] objectAssistant] currentPane];
-    id modalController = [pane modalViewController];
-    if (modalController != nil && [modalController isKindOfClass:[HSObjectAssistantNavigationController class]]) {
-        for (id entry in [modalController viewControllers]) {
-            if (![[entry objectForKey:@"pane"] isCoachingPane]) {
-                return;
-            }
-        }
-        [pane dismissModalViewControllerAnimated:YES];
-    }
-}
-
 - (void)effectDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode
 {
     [aDialog autorelease];
@@ -6273,16 +6259,6 @@ void FUN_00019652(HSEditorWindowController *self,SEL _cmd,id changeFontTrait)
             [target setHyperItalic:![target isHyperItalic]];
         }
     }
-}
-
-- (void)addNewButtonDidCancel:(id)aCancel
-{
-    id self_00;
-
-    self_00 = [aCancel object];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSButtonObjectAssistantPaneDidDoneNotification" object:self_00];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSButtonObjectAssistantPaneDidCancelNotification" object:self_00];
-    [self_00 removeFromHyperParent];
 }
 
 - (void)addNewButtonDidDone:(id)aDone
@@ -13272,18 +13248,6 @@ void FUN_0002bfea(HSEditorWindowController *self,SEL _cmd)
 }
 
 */
-- (void)updateURLInOpenStackAndOtherCardActions
-{
-    NSEnumerator *enumerator = [[[self document] stack] hyperDeepEnumerator];
-    id object;
-    while ((object = [enumerator nextObject]) != nil) {
-        for (id action in [[object queryHyperInterface:@protocol(HSActor)] hyperActions]) {
-            [[action queryHyperInterface:@protocol(HSOpenStackActionAttributes)] updateURL];
-            [[action queryHyperInterface:@protocol(HSOtherCardActionAttributes)] updateURL];
-        }
-    }
-}
-
 - (void)didBindToModelOnLoad
 {
     id pvVar1;

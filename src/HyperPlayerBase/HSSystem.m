@@ -21,19 +21,6 @@ static BOOL HSSystemInitialized = NO;
 
 // The OpenGL back end is off on Lion and later, or when the
 // HSOpenGLBackEndDisabled default is set.
-- (BOOL)isOpenGLEnabled
-{
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HSOpenGLBackEndDisabled"]
-        || CFPreferencesGetAppBooleanValue(CFSTR("HSOpenGLBackEndDisabled"), CFSTR("com.mackiev.hyperplayerbase"), NULL))
-        return NO;
-    return ![self isLionOrGreater];
-}
-
-- (BOOL)isSandboxed
-{
-    return NO;
-}
-
 // Runs the bundled CoreImageAccelerated composition once and reads its
 // output.
 - (BOOL)isCoreImageAccelerated

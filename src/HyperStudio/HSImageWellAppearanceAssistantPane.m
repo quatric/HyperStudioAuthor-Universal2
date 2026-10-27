@@ -53,16 +53,6 @@
     }
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (id)imageAttributes
 {
     return [[[self assistant] object] queryHyperInterface:@protocol(HSSystemImageViewAttributes)];

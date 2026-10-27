@@ -9,11 +9,6 @@
     return [[[[HSEditorController sharedDocumentController] currentDocument] windowForSheet] attachedSheet] == nil;
 }
 
-- (BOOL)assistantShouldBeKeyWindow
-{
-    return NO;
-}
-
 - (BOOL)shouldShowCancelButtonInNavigationPaneSwitcher:(id)aSwitcher
 {
     return YES;

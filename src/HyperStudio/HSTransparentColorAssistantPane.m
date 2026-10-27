@@ -735,22 +735,6 @@ LAB_00284648:
 }
 
 */
-- (id)windowTitle
-{
-    id delegate = [_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)];
-    id attributes = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectAttributes)];
-    if (delegate == nil) {
-        if (attributes == nil) {
-            return nil;
-        }
-        return [NSString stringWithFormat:@"%@ : %@", [attributes hyperKindDisplayName], [attributes hyperName]];
-    }
-    if (attributes == nil) {
-        return [HSPlayAnimationAction localizedNameInInspector];
-    }
-    return [NSString stringWithFormat:@"%@ : %@", [HSPlayAnimationAction localizedNameInInspector], [attributes hyperName]];
-}
-
 - (id)HSTransparentColorAssistantPane_applier
 {
     return [self applier];

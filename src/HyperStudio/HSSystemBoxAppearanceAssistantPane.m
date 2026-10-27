@@ -49,16 +49,6 @@
     [[[[self assistant] object] queryHyperInterface:@protocol(HSMutableObjectAttributes)] setHyperName:[aName stringValue]];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (BOOL)isEditingTextAttribute
 {
     return [_nameTextField currentEditor] != nil || [_titleTextField currentEditor] != nil;

@@ -12,14 +12,6 @@
     _isSegmentedPathCreationModeActive = YES;
 }
 
-- (id)windowTitle
-{
-    id attributes = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectAttributes)];
-    if (attributes)
-        return [NSString stringWithFormat:@"%@ : %@", [HSPlayAnimationAction localizedNameInInspector], [attributes hyperName]];
-    return [HSPlayAnimationAction localizedNameInInspector];
-}
-
 - (id)helpTopicKey
 {
     return @"HSPlayAnimation";
@@ -75,12 +67,6 @@
 - (BOOL)shouldDismissWhenDisappearedByDefault
 {
     return NO;
-}
-
-- (void)paneDidCancel:(id)aCancel
-{
-    if ([_delegate respondsToSelector:@selector(drawPathShouldCancelFromDrawPathAssistantPane:)])
-        [_delegate drawPathShouldCancelFromDrawPathAssistantPane:self];
 }
 
 - (void)viewWillAppear:(BOOL)aAppear

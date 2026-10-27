@@ -383,14 +383,6 @@
 }
 
 // A converted HyperStudio 4 stack (.stk) is replaced by its .stack next to it.
-- (void)updateURL
-{
-    NSString *path = [_URL path];
-    NSString *stackPath = [[path stringByDeletingPathExtension] stringByAppendingPathExtension:@"stack"];
-    if ([[path pathExtension] isEqualToString:@"stk"] && [[NSFileManager defaultManager] fileExistsAtPath:stackPath])
-        [self setURL:[NSURL fileURLWithPath:stackPath]];
-}
-
 - (void)setCardIdOldFileFormat:(NSInteger)aFormat
 {
     _cardIdOldFileFormat = (int)aFormat;

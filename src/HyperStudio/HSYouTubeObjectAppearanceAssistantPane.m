@@ -320,16 +320,6 @@ void FUN_00215114(HSYouTubeObjectAppearanceAssistantPane *self,SEL _cmd,id setSh
     return [[[self assistant] object] queryHyperInterface:@protocol(HSYouTubeObjectAttributes)];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (BOOL)isEditingTextAttribute
 {
     return [_nameTextField currentEditor] != nil;

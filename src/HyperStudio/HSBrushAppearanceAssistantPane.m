@@ -324,16 +324,6 @@ void FUN_00188f2f(HSBrushAppearanceAssistantPane *self,SEL _cmd,id colorChanged)
     [[self objectAttributes] setHyperName:[aName stringValue]];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00189019 @ 00189019, 110 bytes * /
 

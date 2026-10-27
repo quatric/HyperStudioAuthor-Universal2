@@ -2255,7 +2255,7 @@ LAB_0025b789:
             _publisher = [[HSITunesPublisher alloc] init];
             break;
         case 3:
-            _publisher = [HSiBooksAuthorPublisher new];
+            _publisher = nil;
             break;
         default:
             return nil;

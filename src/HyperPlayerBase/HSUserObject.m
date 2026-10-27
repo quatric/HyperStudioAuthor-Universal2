@@ -463,16 +463,6 @@ done:
     return [descriptions count] != 0 ? [NSArray arrayWithArray:descriptions] : nil;
 }
 
-- (void)setObjectName:(id)aName
-{
-    [self setHyperName:aName];
-}
-
-- (id)objectName
-{
-    return [self hyperName];
-}
-
 // The text content is the name and media names; the media types are listed
 // too.
 - (id)valuesForMDAttribute:(id)aAttribute

@@ -1832,17 +1832,6 @@ done:
     }
 }
 
-- (void)NSEView_scheduleNeedsDisplayInRect:(NSRect)aRect
-{
-    NSValue *value = [NSValue valueWithRect:aRect];
-    if (!value)
-        return;
-    NSArray *modes = [NSArray arrayWithObjects:NSDefaultRunLoopMode, NSModalPanelRunLoopMode, NSEventTrackingRunLoopMode, nil];
-    if (modes)
-        [[NSRunLoop currentRunLoop] performSelector:@selector(NSEView_setNeedsDisplayInRectFromValue:) target:self
-                                           argument:value order:599999 modes:modes];
-}
-
 - (void)NSEView_setNeedsDisplayInRectFromValue:(id)aValue
 {
     [self setNeedsDisplayInRect:[aValue rectValue]];

@@ -21,7 +21,7 @@
 
 @interface HSAnimationSetupPickImageAssistantPane : HSObjectAssistantPane
 {
-    HSAnimationModeController *_animationModeController;
+    id _animationModeController;
     id<HSAnimationSetupPickImageAssistantPaneDelegate> _delegate;
     HSButton *_selectPartOfCardButton;
     HSButton *_selectGraphicButton;

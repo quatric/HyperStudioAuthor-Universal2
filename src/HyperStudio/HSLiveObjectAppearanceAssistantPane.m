@@ -416,16 +416,6 @@ void FUN_0016f91e(HSLiveObjectAppearanceAssistantPane *self,SEL _cmd,id playInEd
     return [[[self assistant] object] queryHyperInterface:@protocol(HSLiveObjectAttributes)];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (BOOL)isEditingTextAttribute
 {
     BOOL bVar2;

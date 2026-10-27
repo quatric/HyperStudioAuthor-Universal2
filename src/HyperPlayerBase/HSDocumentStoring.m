@@ -182,19 +182,6 @@
 }
 
 // A save the user cancelled counts as a success.
-- (BOOL)saveToURL:(id)aURL ofType:(id)aType forSaveOperation:(NSUInteger)aOperation error:(id *)aError
-{
-    NSError *error = nil;
-    BOOL result = [super saveToURL:aURL ofType:aType forSaveOperation:aOperation error:&error];
-    if (!result) {
-        if ([[error domain] isEqualToString:NSCocoaErrorDomain] && [error code] == NSUserCancelledError)
-            return YES;
-        if (aError != NULL)
-            *aError = error;
-    }
-    return result;
-}
-
 - (NSUInteger)currentSaveOperationType
 {
     return _currentSaveOperationType;

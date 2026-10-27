@@ -106,16 +106,6 @@
     return _hidden;
 }
 
-- (BOOL)isVisibleInEditor
-{
-    return _isVisibleInEditor;
-}
-
-- (void)setIsVisibleInEditor:(BOOL)aEditor
-{
-    _isVisibleInEditor = aEditor;
-}
-
 - (BOOL)isHiddenInPlayer
 {
     return _isHiddenInPlayer;

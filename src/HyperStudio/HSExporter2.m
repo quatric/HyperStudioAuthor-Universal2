@@ -641,15 +641,5 @@ id FUN_00252e6e(HSExporter2 *self,SEL _cmd)
 }
 
 */
-- (id)init
-{
-    self = [super init];
-    if (self != nil) {
-        _framesPerSecondLimit = 10.0;
-    }
-    return self;
-    return 0;
-}
-
 @end
 

@@ -614,13 +614,6 @@ id FUN_0022c0c5(HSRotatableTextObjectEditor *self,SEL _cmd)
     [self notifyChange:2 ofAttribute:@protocol(HSTextViewTextAttribute) withUserInfo:nil];
 }
 
-- (void)runTimeEditorEmbedderWillChangeSelectionWithoutChangingContent:(id)aContent
-{
-    if ([self isHyperShadowEnabled]) {
-        [[self owner] setNeedsDisplayRunTimeEditor:self];
-    }
-}
-
 - (void)runTimeEditorEmbedderDidChangeSelectionWithoutChangingContent:(id)aContent
 {
     [self notifyChange:2 ofAttribute:@protocol(HSTextAttribute) withUserInfo:nil];

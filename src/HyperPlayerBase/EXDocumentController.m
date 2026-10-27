@@ -10,10 +10,6 @@
     return [[self documents] lastObject];
 }
 // (The original searched the documents itself before 10.7.)
-- (id)documentForURL:(id)aURL
-{
-    return [super documentForURL:aURL];
-}
 - (id)openDocumentWithContentsOfURL:(id)aURL display:(BOOL)aDisplay error:(id *)aError
 {
     if (_waitingForClosingDocuments)

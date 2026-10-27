@@ -63,14 +63,6 @@
     return self;
 }
 
-- (id)windowTitle
-{
-    id attributes = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectAttributes)];
-    if (attributes)
-        return [NSString stringWithFormat:@"%@ : %@", [HSPlayAnimationAction localizedNameInInspector], [attributes hyperName]];
-    return [HSPlayAnimationAction localizedNameInInspector];
-}
-
 - (void)dismiss:(BOOL)aDismiss slide:(BOOL)aSlide
 {
     [_delegate unprepareCroppingForAssistantPane:self temporaryObject:_temporaryObject];

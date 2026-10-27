@@ -136,16 +136,6 @@ id FUN_00073909(HSTextViewEmbedder *self,SEL _cmd,id textView,
 }
 
 */
-- (id)textView:(id)aView willChangeSelectionFromCharacterRanges:(id)aRanges toCharacterRanges:(id)aRanges2
-{
-    if ([aRanges count] == 1) {
-        if ([[aRanges objectAtIndex:0] rangeValue].length == 0) {
-            [[self observer] runTimeEditorEmbedderWillChangeSelectionWithoutChangingContent:self];
-        }
-    }
-    return aRanges2;
-}
-
 - (void)textViewDidChangeSelection:(id)aSelection
 {
     [self rememberAttributesForSelectedRangesForTextView:[aSelection object]];

@@ -31,23 +31,6 @@ static NSInteger HSTransitionEffectProviderCompareNames(id aName1, id aName2, vo
 
 // Exported stacks name transitions without spaces; the unsupported ones
 // become a fade.
-+ (id)exportTransitionNameForTransitionName:(id)aName
-{
-    if ([[self unsupportedTransitionEffectNames] containsObject:aName])
-        return @"Fade";
-    NSMutableString *name = [aName mutableCopy];
-    [name replaceOccurrencesOfString:@" " withString:@"_" options:0 range:NSMakeRange(0, [name length])];
-    return [name autorelease];
-}
-
-+ (id)unsupportedTransitionEffectNames
-{
-    static NSArray *names = nil;
-    if (!names)
-        names = [[NSArray alloc] initWithObjects:@"Explode", @"Implode Circle", @"Ripple", @"LiquidImage", @"Twirl", nil];
-    return names;
-}
-
 + (id)sharedTransitionEffectProvider
 {
     static HSTransitionEffectProvider *provider = nil;

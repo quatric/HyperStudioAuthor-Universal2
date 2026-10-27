@@ -99,12 +99,6 @@ static id sDAT_0034294c;
     return [[HSPlaybackControlImagesProvider sharedPlaybackControlsImagesProvider] playbackImageOfType:@"Play" state:@"N" size:@"M" tint:@"A"];
 }
 
-- (void)updateUI
-{
-    [self updateMainOptionsUI];
-    [self updatePathOptionsUI];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0012d509 @ 0012d509, 124 bytes * /
 
@@ -1883,26 +1877,6 @@ void FUN_0012a67b(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id flipHorizo
     return YES;
 }
 
-- (void)movePopUpButtonSelectItemWithTag:(NSInteger)aTag
-{
-    id pvVar1;
-
-    [_movePopUpButton selectItemWithTag:aTag];
-    pvVar1 = _movePopUpButton;
-    [pvVar1 setToolTip:[[pvVar1 selectedItem] toolTip]];
-    [_moveValueTextField setToolTip:[[_movePopUpButton selectedItem] toolTip]];
-}
-
-- (void)playForPopUpButtonSelectItemWithTag:(NSInteger)aTag
-{
-    id pvVar1;
-
-    [_playForPopUpButton selectItemWithTag:aTag];
-    pvVar1 = _playForPopUpButton;
-    [pvVar1 setToolTip:[[pvVar1 selectedItem] toolTip]];
-    [_playForValueTextField setToolTip:[[_playForPopUpButton selectedItem] toolTip]];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0012a0bd @ 0012a0bd, 406 bytes * /
 
@@ -2272,15 +2246,6 @@ id FUN_00129680(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
 }
 
 */
-- (id)windowTitle
-{
-    id object = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectAttributes)];
-    if (object == nil) {
-        return [HSPlayAnimationAction localizedNameInInspector];
-    }
-    return [NSString stringWithFormat:@"%@ : %@", [object hyperName], [HSPlayAnimationAction localizedNameInInspector]];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00129609 @ 00129609, 119 bytes * /
 
@@ -2415,16 +2380,6 @@ void FUN_00129609(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id controlTex
 - (BOOL)isMovieAnimation
 {
     return _isMovieAnimation;
-}
-
-- (void)setDelegate:(id)aDelegate
-{
-    _delegate = aDelegate;
-}
-
-- (id)delegate
-{
-    return _delegate;
 }
 
 - (BOOL)requiresDarkBottomArea

@@ -81,11 +81,6 @@ void FUN_000c2144(HSTextFinder *self,SEL _cmd)
     }
 }
 
-- (void)windowDidUpdate:(id)aUpdate
-{
-    [_includeObjectNamesButton setEnabled:(unsigned int)([[self textFinderDataSource] shouldEnableIncludeObjectNamesButton])];
-}
-
 - (void)appWillDeactivate:(id)aDeactivate
 {
     [self loadFindStringToPasteboard];
@@ -257,32 +252,6 @@ void FUN_000c244b(HSTextFinder *self,SEL _cmd,uint checkCurrentItemWithOptions,
 }
 
 */
-- (void)checkCurrentItemWithOptions:(NSUInteger)aOptions ignoreSelectedRange:(BOOL)aRange
-{
-    id dataSource = [self textFinderDataSource];
-    NSString *name = [dataSource hyperNameForCurrentItem];
-    NSRange nameRange = aRange ? NSMakeRange(0, 0) : [[self textFinderDataSource] selectedRangeForCurrentItemName];
-    NSRange found = [self rangeOfFindStringInHyperText:name searchOptions:aOptions startFromSelectedRange:nameRange];
-    if (found.location != NSNotFound) {
-        [[self textFinderDataSource] activateInspectorOfCurrentItem];
-        [[self textFinderDataSource] selectCurrentItemNameWithRange:found];
-        _lastFindWasSuccessful = YES;
-        return;
-    }
-    if (_lastFindWasSuccessful) {
-        return;
-    }
-    NSString *text = [[self textFinderDataSource] hyperTextForCurrentItem];
-    NSRange textRange = aRange ? NSMakeRange(0, 0) : [[self textFinderDataSource] selectedRangeForCurrentItem];
-    found = [self rangeOfFindStringInHyperText:text searchOptions:aOptions startFromSelectedRange:textRange];
-    if (found.location == NSNotFound) {
-        return;
-    }
-    [[self textFinderDataSource] activateCurrentItem];
-    [[self textFinderDataSource] selectCurrentItemStringWithRange:found];
-    _lastFindWasSuccessful = YES;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_000c263d @ 000c263d, 577 bytes * /
 
@@ -423,24 +392,6 @@ void FUN_000c292f(HSTextFinder *self,SEL _cmd,id findPanelActionSetFindString)
     [self setFindString:[[[[aString object] textStorage] string] substringWithRange:selectedRange]];
 }
 
-- (void)setIncludeObjectNames:(BOOL)aNames
-{
-    [_includeObjectNamesButton setState:aNames];
-}
-
-- (BOOL)includeObjectNames
-{
-    BOOL bVar2;
-
-    if (_includeObjectNamesButton == nil) {
-        bVar2 = YES;
-    }
-    else {
-        bVar2 = [_includeObjectNamesButton state] == 0x1;
-    }
-    return bVar2;
-}
-
 - (void)setIgnoreCaseSearch:(BOOL)aSearch
 {
     [_ignoreCaseButton setState:aSearch];
@@ -544,11 +495,6 @@ void FUN_000c2bc9(HSTextFinder *self,SEL _cmd,id runFindPanel)
     else if (tag == 3) {
         [self findPrevious:aPanel];
     }
-}
-
-- (void)includeObjectNamesChanged:(id)aChanged
-{
-    [[self textFinderDataSource] setIncludeObjectNames:(unsigned int)([aChanged state] == 0x1)];
 }
 
 /* --- i386 decompilation (Ghidra) ---

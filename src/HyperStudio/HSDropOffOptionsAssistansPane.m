@@ -887,21 +887,6 @@ id FUN_002a6a56(HSDropOffOptionsAssistansPane *self,SEL _cmd)
     return nil;
 }
 
-- (void)deleteDropOffTatrgetAction:(id)aAction
-{
-    if ([self dropOffTarget] != nil) {
-        [self invalidatePreviewSoundObject];
-        [[[self document] undoManager] registerUndoWithTarget:self selector:@selector(addDropOffObjectToCard:) object:_dropOffTarget];
-        [_cardView performDeleteOperationWithNodesInArray:[NSArray arrayWithObject:[self dropOffTarget]]];
-        [[[self card] undoManager] disableUndoRegistration];
-        [[[self dropOffTarget] queryHyperInterface:@protocol(HSNodeChild)] removeFromHyperParent];
-        [[[self card] undoManager] enableUndoRegistration];
-        [_dropOffTarget release];
-        _dropOffTarget = nil;
-    }
-    [self updateUI];
-}
-
 - (void)setTargetAction:(id)aAction
 {
     [self unlockAssistantIfNeeded];
@@ -1421,16 +1406,6 @@ void FUN_002a7db7(HSDropOffOptionsAssistansPane *self,SEL _cmd,NSPoint setObject
     }
 }
 
-- (void)documentUndoManagerDidRemoveAllActions:(id)aActions
-{
-
-}
-
-- (void)documentUndoManagerWillRegisterUndo:(id)aUndo
-{
-
-}
-
 - (void)updateUI
 {
     BOOL bVar1;
@@ -1546,22 +1521,6 @@ void FUN_002a83ea(HSDropOffOptionsAssistansPane *self,SEL _cmd,BOOL enableSnapRa
     [_snapRangeTextField setEnabled:aControls];
     [_snapRangeStepper setEnabled:aControls];
     [_snapLabel setTextColor:aControls ? [NSColor blackColor] : [NSColor disabledControlTextColor]];
-}
-
-- (void)restoreSelectonAfterExit
-{
-    id self_00;
-    id pvVar2;
-    id pvVar1_2;
-
-    self_00 = [self object];
-    pvVar2 = [[self_00 queryHyperInterface:@protocol(HSUserObjectSupport)] card];
-    pvVar1_2 = _cardView;
-    if (pvVar2 == self_00) {
-        [pvVar1_2 selectObjects:nil];
-        pvVar1_2 = [[[self document] selectionController] stackController];
-    }
-    [pvVar1_2 selectObject:self_00];
 }
 
 - (void)addDropOffObjectToCard:(id)aCard
@@ -2036,23 +1995,6 @@ void FUN_002a941b(HSDropOffOptionsAssistansPane *self,SEL _cmd)
 }
 
 */
-- (void)updateDropOffTarget
-{
-    id snapping;
-    id target;
-
-    snapping = [[self object] queryHyperInterface:@protocol(HSMutableSnappingTargetUIDIdentification)];
-    target = [[[[[self object] card] queryHyperInterface:@protocol(HSUserObjectUIDBasedAccess)] childInTreeWithUID:[snapping dropOffTargetUID]] queryHyperInterface:@protocol(HSMutableCardObjectAttributes)];
-    if (target == nil && [[[self card] children] containsObject:_dropOffTarget]) {
-        // The stored UID is stale but the current target is still on the card.
-        [snapping setDropOffTargetUID:[_dropOffTarget hyperUID]];
-    }
-    else {
-        [self setDropOffTarget:target];
-    }
-    [self updateUI];
-}
-
 - (BOOL)shouldEnableOKButtonInNavigationPaneSwitcher:(id)aSwitcher
 {
     return YES;
@@ -2181,14 +2123,6 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
     return pHVar1;
 }
 
-- (void)setDropOffTarget:(id)aTarget
-{
-    if (_dropOffTarget != aTarget) {
-        [_dropOffTarget release];
-        _dropOffTarget = [aTarget retain];
-    }
-}
-
 - (void)setObject:(id)aObject
 {
     id pvVar1;
@@ -2209,11 +2143,6 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
 - (id)assistantPaneUndoManager
 {
     return [self undoManager];
-}
-
-- (id)undoHelper
-{
-    return _undoHelper;
 }
 
 - (void)dealloc

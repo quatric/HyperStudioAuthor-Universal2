@@ -15,16 +15,6 @@ static NSImage *sBoxImages[8];
 }
 
 // No context menu plug-ins while a sheet is up.
-- (id)menuForEvent:(id)aEvent
-{
-    NSMenu *menu = [super menuForEvent:aEvent];
-    if ([[self window] attachedSheet] != nil) {
-        menu = [[menu copy] autorelease];
-        [menu setAllowsContextMenuPlugIns:NO];
-    }
-    return menu;
-}
-
 // Quirk kept: the background cache of the view itself is invalidated too.
 - (void)encodeWithCoder:(id)aCoder
 {

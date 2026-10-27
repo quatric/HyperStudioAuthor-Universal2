@@ -343,14 +343,6 @@
 }
 
 // An empty selection's shadowed caret leaves traces, so the view is redrawn.
-- (id)textView:(id)aView willChangeSelectionFromCharacterRanges:(id)aRanges toCharacterRanges:(id)aRanges2
-{
-    if ([[aView typingAttributes] objectForKey:NSShadowAttributeName] && [aRanges count] == 1
-        && [[aRanges objectAtIndex:0] rangeValue].length == 0)
-        [[[self view] documentView] setNeedsDisplay:YES];
-    return aRanges2;
-}
-
 // Inactive, the system view scrolls and the event is taken while it can
 // scroll further that way.
 - (BOOL)trackMouseWithScrollWheelEvent:(id)aEvent inInteractiveContext:(id)aContext

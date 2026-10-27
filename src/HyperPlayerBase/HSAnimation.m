@@ -302,11 +302,6 @@
     [self stop];
 }
 
-- (double)pathTimeForAnimationMoviePlayback:(id)aPlayback
-{
-    return [self pathTime];
-}
-
 - (BOOL)isPlayingForAnimationMoviePlayback:(id)aPlayback
 {
     return [_playbackState isPlaying];
@@ -450,11 +445,6 @@
 - (double)finishPathTime
 {
     return [_times pathTimeForPlaybackTime:[_times playbackDuration]];
-}
-
-- (double)movieDuration
-{
-    return [_moviePlayback movieDuration];
 }
 
 - (double)playbackDuration
@@ -794,16 +784,6 @@
 - (BOOL)hideOnFirstFrame
 {
     return [(HSAnimationOptions *)[self options] hideOnFirstFrame];
-}
-
-- (void)setOldFormatHideMode:(NSInteger)aMode
-{
-    [(HSAnimationOptions *)[self options] setOldFormatHideMode:aMode];
-}
-
-- (NSInteger)oldFormatHideMode
-{
-    return [(HSAnimationOptions *)[self options] oldFormatHideMode];
 }
 
 - (void)setLoopFrameRepeats:(NSInteger)aRepeats

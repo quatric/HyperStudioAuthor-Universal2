@@ -551,106 +551,6 @@ done:
 // The movie at 15 frames per second drawn into PNG sheets of at most
 // 1600x1200, frames left to right then top to bottom; one dictionary per sheet
 // (its media, size and frame range).
-- (id)PNGMapsInContext:(id)aContext
-{
-    NSMutableArray *maps = [NSMutableArray array];
-    if ([self hyperMovie] == nil)
-        return maps;
-    id geometry = [self queryHyperInterface:@protocol(HSGeometryAttributes)];
-    QTMovie *movie = [QTMovie movieWithQuickTimeMovie:[(HSMovie *)[self hyperMovie] quickTimeMovie] disposeWhenDone:NO error:NULL];
-    id transparency = [self queryHyperInterface:@protocol(HSTransparentColorAttributes)];
-    id color = nil;
-    if (![self isHyperQTVR] && ![self isHyperPanoramaObject] && [transparency isTransparentColorEnabled])
-        color = [transparency transparentColor];
-    if ([(HSMovie *)[self hyperMovie] isAnimatedGifMovie])
-        color = [NSColor whiteColor];
-    id movieRenderer = [self movieRenderer];
-    id renderer = HSMovieObjectPixelBufferRenderer(movieRenderer, movie);
-    NSRect rect = NSIntegralRect([self movieRect]);
-    float width = rect.size.width;
-    float height = rect.size.height;
-    QTTime duration = [movie duration];
-    QTTime time = QTMakeTime(0, 15);
-    unsigned int frameCount = (unsigned int)QTMakeTimeScaled(duration, 15).timeValue + 1;
-    [movie setAttribute:[NSNumber numberWithBool:YES] forKey:QTMovieFrameImageSessionMode];
-    // Fix: a movie narrower or shorter than a pixel gets one column or row
-    // (the original divided by zero).
-    unsigned int columns = 1600 / MAX((unsigned int)(int)width, 1u);
-    unsigned int sheetRows = 1200 / MAX((unsigned int)(int)height, 1u);
-    columns = MAX(columns, 1u);
-    sheetRows = MAX(sheetRows, 1u);
-    unsigned int rowsLeft = frameCount / columns + (frameCount % columns != 0);
-    float sheetWidth = (float)columns * width;
-    NSDictionary *frameAttributes = [NSDictionary dictionaryWithObject:QTMovieFrameImageTypeCVPixelBufferRef forKey:QTMovieFrameImageType];
-    NSAutoreleasePool *pool = nil;
-    BOOL framesFailed = NO;
-    while ((unsigned long long)time.timeValue < frameCount && !framesFailed) {
-        [pool release];
-        pool = [NSAutoreleasePool new];
-        if ([aContext shouldTerminateExport])
-            break;
-        long long sheetStart = time.timeValue;
-        unsigned int rows = MIN(sheetRows, rowsLeft);
-        unsigned int sheetEnd = MIN(rows * columns + (unsigned int)time.timeValue, frameCount);
-        float sheetHeight = (float)rows * height;
-        NSImage *sheet = [[NSImage alloc] initWithSize:NSMakeSize(sheetWidth, sheetHeight)];
-        [sheet lockFocus];
-        NSAffineTransform *transform = [NSAffineTransform transform];
-        [transform translateXBy:0.0 yBy:sheetHeight - height];
-        rowsLeft -= rows;
-        [transform concat];
-        while ((unsigned long long)time.timeValue < sheetEnd) {
-            if ([aContext shouldTerminateExport])
-                break;
-            CGAffineTransform flip = HSMovieObjectFlipTransform(geometry, rect);
-            [[NSAffineTransform transformWithHyperCGAffineTransform:flip] concat];
-            CVPixelBufferRef frame = (CVPixelBufferRef)[movie frameImageAtTime:time withAttributes:frameAttributes error:NULL];
-            if (frame == NULL) {
-                // Fix: the original went on with the same frame forever.
-                framesFailed = YES;
-                break;
-            }
-            HSMovieObjectDrawFrame(self, renderer, frame, rect, color, transparency);
-            // Moves to the next cell: right, or to the start of the next row.
-            CGFloat dx, dy;
-            if (columns == 1) {
-                dx = 0.0;
-                dy = -height;
-            } else if ((time.timeValue + 2) % columns == 1) {
-                dx = width - sheetWidth;
-                dy = -height;
-            } else {
-                dx = width;
-                dy = 0.0;
-            }
-            flip.tx += flip.a * dx + flip.c * dy;
-            flip.ty += flip.b * dx + flip.d * dy;
-            [[NSAffineTransform transformWithHyperCGAffineTransform:flip] concat];
-            time.timeValue++;
-        }
-        [sheet unlockFocus];
-        NSSize size = [sheet size];
-        long high = size.height > 0.0 ? lroundf(ceilf(size.height)) : 0;
-        long wide = size.width > 0.0 ? lroundf(ceilf(size.width)) : 0;
-        id media = [HSNewMedia mediaWithData:[sheet hyperPNGRepresentationWithWide:wide high:high] name:@"frame" type:@"png"];
-        [aContext addMedia:media];
-        [sheet release];
-        NSString *length = [NSString stringWithFormat:@"%qi", time.timeValue - sheetStart];
-        NSString *start = [NSString stringWithFormat:@"%qi", sheetStart];
-        NSString *ySize = [NSString stringWithFormat:@"%.1f", (double)sheetHeight];
-        NSString *xSize = [NSString stringWithFormat:@"%.1f", (double)sheetWidth];
-        NSString *source = [@"Resources" stringByAppendingPathComponent:[HSHTML5ExporterHelper JSonCorrectFilenameForMedia:media]];
-        [maps addObject:[NSDictionary dictionaryWithObjectsAndKeys:source, @"src", xSize, @"xSize", ySize, @"ySize", start, @"start", length, @"length", nil]];
-    }
-    // Fix: the maps were made in the pool released here; keep them alive.
-    [maps retain];
-    [pool release];
-    [maps autorelease];
-    [movie setAttribute:[NSNumber numberWithBool:NO] forKey:QTMovieFrameImageSessionMode];
-    HSMovieObjectReleasePixelBufferRenderer(renderer, movieRenderer);
-    return maps;
-}
-
 // The media itself when the movie plays on the target (or is QTVR or a
 // panorama), otherwise the movie converted to MPEG-4.
 - (id)movieMediaForHTML5ExportWithContext:(id)aContext
@@ -747,13 +647,6 @@ done:
 
 // While playing with a controller, redraws the controller every tick that
 // had no movie image change.
-- (void)HSMovieObject_invalidateMovie
-{
-    if (_needUpdateController)
-        [self notifyChange:2 ofAttribute:@protocol(HSMovieControllerVisualStateAttribute) withUserInfo:nil];
-    _needUpdateController = YES;
-}
-
 - (void)setPrinting:(BOOL)aPrinting
 {
     [(HSMovieObjectData *)[self nodeData] setPrinting:aPrinting];
@@ -1405,15 +1298,6 @@ done:
     if ([self movie] == nil)
         return NO;
     return _canUseMovieController;
-}
-
-- (void)hyperStop
-{
-    [self endContinuousChangeOfAttributeSet:[NSEProtocolSet protocolSetWithProtocols:@protocol(HSMovieFrameContentAttribute), @protocol(HSMovieControllerVisualStateAttribute), nil]];
-    [_invalidationTimerForController invalidate];
-    [_invalidationTimerForController release];
-    _invalidationTimerForController = nil;
-    [super hyperStop];
 }
 
 // Only a normal start (mode 0) starts the movie; with a controller, a timer

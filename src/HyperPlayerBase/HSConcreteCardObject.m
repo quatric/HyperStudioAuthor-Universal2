@@ -755,14 +755,6 @@ static NSString *HSConcreteCardObjectUnsupportedFeature(NSString *aKey)
 {
     return [[self nodeData] isLocked];
 }
-- (BOOL)isVisibleInEditor
-{
-    return [[self nodeData] isVisibleInEditor];
-}
-- (void)setIsVisibleInEditor:(BOOL)aEditor
-{
-    [[self nodeData] setIsVisibleInEditor:aEditor];
-}
 - (BOOL)isHiddenInPlayer
 {
     return [[self nodeData] isHiddenInPlayer];

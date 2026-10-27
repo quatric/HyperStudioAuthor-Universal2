@@ -42,10 +42,6 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
     return @protocol(HSVisualization);
 }
 
-- (void)addImageToBackgroundAndSwitchToBitmapSelectionTool:(id)aTool inRect:(NSRect)aRect
-{
-}
-
 // The card drawn offscreen without its hidden objects (or without any of them
 // when the stack hides card objects).
 - (struct CGImage *)getCardImageForCard:(id)aCard

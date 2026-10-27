@@ -102,10 +102,6 @@
         [(id)[self delegate] doubleClickOnTransitionEffect:[cell representedObject] inTransitionsGrid:self];
     }
 }
-- (BOOL)canBecomeKeyView
-{
-    return YES;
-}
 - (void)drawRect:(NSRect)aRect
 {
     [[NSColor colorWithCalibratedHue:0.605f saturation:0.21f brightness:0.5f alpha:1.0f] set];

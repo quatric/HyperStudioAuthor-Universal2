@@ -649,19 +649,6 @@ id FUN_0014f9fb(HSToolPaletteColorViewController *self,SEL _cmd,id newColorFromC
 }
 
 */
-- (id)newColorFromColor:(id)aColor withAlphaComponent:(CGFloat)aComponent
-{
-    float alpha = (float)aComponent;
-    id color = aColor;
-    if ((float)[aColor alphaComponent] != alpha) {
-        color = [aColor colorWithAlphaComponent:alpha];
-        if (color != nil) {
-            [_workColorWell setColor:color];
-        }
-    }
-    return color != nil ? color : aColor;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0014d9ba @ 0014d9ba, 229 bytes * /
 

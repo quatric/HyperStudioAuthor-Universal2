@@ -333,11 +333,6 @@
         [super mouseDown:aDown];
 }
 
-- (BOOL)isTextObjectSelected
-{
-    return [[[[self rootCanvasLayer] interactiveObjectsLayer] activeItem] implementsHyperInterface:@protocol(HSInteractiveTextObject)];
-}
-
 // Shape buttons show their borders in the player, unless the stack is
 // protected. The change is not undoable.
 - (void)updateShapeButtonsShowBorder:(BOOL)aBorder

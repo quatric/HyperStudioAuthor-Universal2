@@ -21,16 +21,6 @@
     [_hasBackgroundColorButton setEnabled:uVar1];
 }
 
-- (void)validateObjectName
-{
-    id pvVar1_3;
-
-    pvVar1_3 = [[[self assistant] object] queryHyperInterface:@protocol(HSMutableObjectAttributes)];
-    if (pvVar1_3 != nil) {
-        [_nameTextField setStringValue:[pvVar1_3 hyperName]];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0017aa7d @ 0017aa7d, 645 bytes * /
 
@@ -90,38 +80,10 @@ void FUN_0017aa7d(HSTextAppearanceAssistantPane *self,SEL _cmd)
 }
 
 */
-- (void)validateSystemTextViewUI
-{
-    id attributes = [[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)];
-    if (attributes != nil) {
-        [_textTypeMatrix selectCellWithTag:![attributes isRotatableText]];
-        [self validateScrollBoxControls:[attributes isRotatableText]];
-        [_drawFrameButton setState:[attributes borderType]];
-        [_drawScrollBarButton setState:[attributes hasVerticalScroller]];
-        [_readOnlyButton setState:![attributes isEditable]];
-        [_scrollableButton setState:[attributes isScrollable]];
-        [_textColorWell setColor:[attributes textColor]];
-        id backgroundColor = [attributes backgroundColor];
-        if (backgroundColor != nil) {
-            [_backgroundColorWell setColor:backgroundColor];
-        }
-        BOOL transparent = [attributes isTransparent];
-        BOOL hasBackground = !transparent;
-        [_hasBackgroundColorButton setState:hasBackground];
-        [_backgroundColorWell setEnabled:hasBackground];
-        [_backgroundTextField setTextColor:transparent ? [NSColor disabledControlTextColor] : [NSColor blackColor]];
-    }
-}
-
 - (void)validateUI
 {
     [self validateSystemTextViewUI];
     [self validateObjectName];
-}
-
-- (void)validateSystemTextViewUIWithNotification:(id)aNotification
-{
-    [self validateSystemTextViewUI];
 }
 
 - (void)validateUIWithNotification:(id)aNotification
@@ -263,16 +225,6 @@ void FUN_0017b0f4(HSTextAppearanceAssistantPane *self,SEL _cmd,id getFile)
 - (void)setDrawFrame:(id)aFrame
 {
     [[[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)] setBorderType:(unsigned int)([aFrame state] == 0x1) * 2];
-}
-
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
 }
 
 - (BOOL)isEditingTextAttribute

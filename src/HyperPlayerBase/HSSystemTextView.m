@@ -213,19 +213,6 @@ static NSSet *sTextImplementationInterfaces;
     return @"objText";
 }
 
-- (id)imageForHTML5Export
-{
-    // The image is taken with the text scrolled to its origin.
-    CGFloat vertical = [self verticalScrollPosition];
-    CGFloat horizontal = [self horizontalScrollPosition];
-    [self setVerticalScrollPosition:0];
-    [self setHorizontalScrollPosition:0];
-    id image = [super imageForHTML5Export];
-    [self setVerticalScrollPosition:vertical];
-    [self setHorizontalScrollPosition:horizontal];
-    return image;
-}
-
 - (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
 {
     NSMutableSet *features = [NSMutableSet setWithSet:[super HTML5UnsupportedFeaturesForDocumentType:aType]];
@@ -470,14 +457,6 @@ static NSSet *sTextImplementationInterfaces;
 - (BOOL)shouldBeExportedAsImage
 {
     return NO;
-}
-
-- (BOOL)willBeExportedAsImage
-{
-    BOOL solid = [self isRotationAngleZero] ? [self hasNotSolidColorComponentsInString:[self hyperText]] : YES;
-    if ([self isRotatableText] && ![self isRotationAngleZero])
-        return [[self hyperText] length] != 0 || !solid;
-    return !solid;
 }
 
 - (void)performPrimarySetupOnCard:(id)aCard
@@ -1174,16 +1153,6 @@ static NSSet *sTextImplementationInterfaces;
     if (![attributes containsObject:(NSString *)kMDItemTextContent])
         [attributes addObject:(NSString *)kMDItemTextContent];
     return attributes;
-}
-
-- (void)replaceObjectString:(id)aString inRanges:(id)aRanges
-{
-    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[_textObject hyperText]];
-    int count = (int)[aRanges count];
-    for (int index = 0; index < count; index++)
-        [text replaceCharactersInRange:[[aRanges objectAtIndex:index] rangeValue] withString:aString];
-    [_textObject setHyperText:text];
-    [text release];
 }
 
 - (void)setObjectString:(id)aString

@@ -666,11 +666,6 @@ void FUN_001c044a(HSDependentPlayerWindowController *self,SEL _cmd,id textFieldT
     }
 }
 
-- (BOOL)isMenuShown
-{
-    return YES;
-}
-
 - (BOOL)supportsMinimalWindowMode
 {
     return YES;

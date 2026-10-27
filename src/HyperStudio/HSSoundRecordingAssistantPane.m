@@ -179,11 +179,6 @@ void FUN_0022198e(HSSoundRecordingAssistantPane *self,SEL _cmd,id captureOutput,
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-multiple-method-names"
-- (void)restoreWindowLevel:(id)aLevel
-{
-    [aLevel setLevel:_windowLevel];
-    [aLevel release];
-}
 #pragma clang diagnostic pop
 
 /* --- i386 decompilation (Ghidra) ---
@@ -215,22 +210,6 @@ void FUN_002221e7(HSSoundRecordingAssistantPane *self,SEL _cmd)
 }
 
 */
-- (void)runSoundRecordingModalSession
-{
-    NSModalSession session;
-    id window;
-
-    _windowLevel = (unsigned int)[(NSWindow *)[self window] level];
-    [[HSObjectAssistantController sharedAssistantController] setIsRecordingSound:YES];
-    // The window stays retained until restoreWindowLevel: runs.
-    window = [[self window] retain];
-    session = [NSApp beginModalSessionForWindow:window];
-    while ([NSApp runModalSession:session] == NSModalResponseContinue) {
-    }
-    [NSApp endModalSession:session];
-    [self performSelector:@selector(restoreWindowLevel:) withObject:window afterDelay:0.0];
-}
-
 - (void)movieDidStop:(id)aStop
 {
     [self movieDidEnd:aStop];

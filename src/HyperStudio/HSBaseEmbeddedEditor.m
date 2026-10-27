@@ -164,11 +164,6 @@ void FUN_0006ba3e(HSBaseEmbeddedEditor *self,SEL _cmd)
     _boundsInHostView = [self boundsWithOccupiedRect:_occupiedRect];
 }
 
-- (void)runTimeEditorEmbedderWillChangeSelectionWithoutChangingContent:(id)aContent
-{
-
-}
-
 - (void)runTimeEditorEmbedderDidChangeSelectionWithoutChangingContent:(id)aContent
 {
 

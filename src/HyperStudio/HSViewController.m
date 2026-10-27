@@ -4,11 +4,6 @@
 
 /* i386 ivar offsets: _nibName=0x4, _nibBundle=0x8, _title=0xc, _icon=0x10, _originalSize=0x14, _presentationSize=0x1c, _layoutIsValid=0x24, _view=0x28, _parentViewController=0x2c, _modalViewController=0x30, _presentationView=0x34, _headerView=0x38, _footerView=0x3c */
 
-- (id)nameTextfField
-{
-    return nil;
-}
-
 - (id)initialKeyView
 {
     return nil;

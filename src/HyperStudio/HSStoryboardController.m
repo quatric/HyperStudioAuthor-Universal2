@@ -615,25 +615,6 @@ void FUN_0015ecd2(HSStoryboardController *self,SEL _cmd)
 }
 
 */
-- (void)prepareUI
-{
-    [_bottomAreaTintedView setDrawsBorder:NO];
-    [_bottomAreaTintedView setDrawsFill:YES];
-    [_bottomAreaTintedView setTintColor:[NSColor colorWithCalibratedWhite:0.82f alpha:1.0f]];
-    [_bottomAreaTintedView setOpaque:YES];
-    [_bottomAreaTintedView setBackgroundImage:[NSImage imageNamed:@"Bgr line"]];
-    _statusbarController = [HSStoryboardStatusbarController new];
-    id statusbarView = [_statusbarController statusbarView];
-    [_bottomAreaTintedView addSubview:statusbarView];
-    [statusbarView setFrame:[_bottomAreaTintedView bounds]];
-    [_statusbarController setDelegate:self];
-    [_statusbarController setMaxZoomFactor:1.0];
-    [_statusbarController setMinZoomFactor:0.1];
-    [_statusbarController setZoomFactor:(float)[_storyboardView cardScaleFactor]];
-    [_storyboardView setDelegate:self];
-    [[_storyboardView cardBorderRenderer] setCardBorderRendererType:@"nav_Card_"];
-}
-
 - (id)windowNibName
 {
     return @"StoryboardController";

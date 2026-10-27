@@ -1986,17 +1986,6 @@ LAB_00291bf7:
     return [previews autorelease];
 }
 
-- (id)previewIconWrapperForDocument:(id)aDocument
-{
-    id pvVar1_4;
-    id pvVar1_6;
-
-    pvVar1_4 = [[[[aDocument stack] hyperChildren] extraFirstObject] imageForExportOfSize:NSMakeSize(0x43100000, 0x43100000)];
-    pvVar1_6 = [[NSFileWrapper alloc] initRegularFileWithContents:[pvVar1_4 hyperPNGRepresentation]];
-    [pvVar1_6 setPreferredFilename:@"icon.png"];
-    return pvVar1_6;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00291c1a @ 00291c1a, 2133 bytes * /
 
@@ -2640,42 +2629,6 @@ LAB_00292615:
 }
 
 */
-- (BOOL)areLinkedStacksInDocument:(id)aDocument
-{
-    for (id object in [[[aDocument stack] hyperDeepEnumerator] allObjects]) {
-        NSMutableArray *actions = [NSMutableArray array];
-        if (![object implementsHyperInterface:@protocol(HSStackAttributes)]) {
-            [actions addObjectsFromArray:[[object queryHyperInterface:@protocol(HSActor)] hyperActions]];
-        }
-        if (![[object queryHyperInterface:@protocol(HSSystemTextViewExportAttributes)] willBeExportedAsImage]) {
-            for (id link in [[object queryHyperInterface:@protocol(HSHypertextLinkContainerAttributes)] allLinks]) {
-                id linkActions = [[link queryHyperInterface:@protocol(HSActor)] hyperActions];
-                if ([linkActions count] != 0) {
-                    [actions addObjectsFromArray:linkActions];
-                }
-            }
-        }
-        for (id action in actions) {
-            id url;
-            if ([action isKindOfClass:[HSGoToHomeStackAction class]]) {
-                url = [[HSHomeStackController sharedHomeStackController] homeStackURL];
-            }
-            else if ([action implementsHyperInterface:@protocol(HSOtherCardActionAttributes)]
-                || [action implementsHyperInterface:@protocol(HSOpenStackActionAttributes)]
-                || ([action implementsHyperInterface:@protocol(HSOpenLocationActionAttributes)] && [action canBeExportedToHTML5DocumentType:@"HSHTML5DocumentType"])) {
-                url = [[action queryHyperInterface:@protocol(HSURLAttribute)] URL];
-            }
-            else {
-                continue;
-            }
-            if (url != nil && ![url isEqual:[aDocument fileURL]]) {
-                return YES;
-            }
-        }
-    }
-    return NO;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0028e001 @ 0028e001, 185 bytes * /
 

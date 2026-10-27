@@ -96,25 +96,6 @@ void FUN_00271ec7(HSEditorDocument *self,SEL _cmd)
 }
 
 */
-- (void)showHSAuthorNotInstalledAlert
-{
-    NSString *messageText = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorNotInstalledMessageText" value:@"" table:@"Alerts"];
-    NSString *informativeText = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorNotInstalledInformativeText" value:@"" table:@"Alerts"];
-    NSString *downloadTitle = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorNotInstalledDownloadNowButtonTitle" value:@"" table:@"Alerts"];
-    NSString *cancelTitle = [[NSBundle mainBundle] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"];
-    HSAlert *alert = [HSAlert new];
-    [alert setAlertStyle:5];
-    [alert setMessageText:messageText];
-    [alert setInformativeText:informativeText];
-    [alert addButtonWithTitle:downloadTitle];
-    [alert addButtonWithTitle:cancelTitle];
-    NSInteger result = [alert runModal];
-    [alert release];
-    if (result == 1000) {
-        [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:@"http://www.hyperstudio.com/hsa"]];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0027210c @ 0027210c, 154 bytes * /
 
@@ -142,18 +123,6 @@ void FUN_0027210c(HSEditorDocument *self,SEL _cmd,id HSAuthorOpenAlertDidEnd,int
 }
 
 */
-- (void)HSAuthorOpenAlertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    id sender = (id)aInfo;
-    if (aCode == 1000) {
-        [self openInHSAuthor];
-        return;
-    }
-    if (([sender isKindOfClass:[NSMenuItem class]] && [sender action] == @selector(exportTo:)) || sender == self) {
-        [self exportTo:sender];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002721a6 @ 002721a6, 538 bytes * /
 
@@ -194,22 +163,6 @@ void FUN_002721a6(HSEditorDocument *self,SEL _cmd,id showExportToHTML5Alert)
 }
 
 */
-- (void)showExportToHTML5Alert:(id)aAlert
-{
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *messageText = [bundle localizedStringForKey:@"HSExportToHTML5MessageText" value:@"" table:@"Alerts"];
-    NSString *informativeText = [[NSBundle mainBundle] localizedStringForKey:@"HSExportToHTML5InformativeText" value:@"" table:@"Alerts"];
-    NSString *buttonTitle = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorOpenButtonTitle" value:@"" table:@"Alerts"];
-    NSString *cancelTitle = [[NSBundle mainBundle] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"];
-    HSAlert *alert = [[HSAlert new] autorelease];
-    [alert setAlertStyle:5];
-    [alert setMessageText:messageText];
-    [alert setInformativeText:informativeText];
-    [alert addButtonWithTitle:buttonTitle];
-    [alert addButtonWithTitle:cancelTitle];
-    [alert beginSheetModalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:@selector(HSAuthorOpenAlertDidEnd:returnCode:contextInfo:) contextInfo:aAlert];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002723c0 @ 002723c0, 538 bytes * /
 
@@ -250,22 +203,6 @@ void FUN_002723c0(HSEditorDocument *self,SEL _cmd,id showHSAuthorOpenAlert)
 }
 
 */
-- (void)showHSAuthorOpenAlert:(id)aAlert
-{
-    NSBundle *bundle = [NSBundle mainBundle];
-    NSString *messageText = [bundle localizedStringForKey:@"HSAuthorOpenMessageText" value:@"" table:@"Alerts"];
-    NSString *informativeText = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorOpenInformativeText" value:@"" table:@"Alerts"];
-    NSString *buttonTitle = [[NSBundle mainBundle] localizedStringForKey:@"HSAuthorOpenButtonTitle" value:@"" table:@"Alerts"];
-    NSString *cancelTitle = [[NSBundle mainBundle] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"];
-    HSAlert *alert = [[HSAlert new] autorelease];
-    [alert setAlertStyle:5];
-    [alert setMessageText:messageText];
-    [alert setInformativeText:informativeText];
-    [alert addButtonWithTitle:buttonTitle];
-    [alert addButtonWithTitle:cancelTitle];
-    [alert beginSheetModalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:@selector(HSAuthorOpenAlertDidEnd:returnCode:contextInfo:) contextInfo:aAlert];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002725da @ 002725da, 764 bytes * /
 
@@ -341,64 +278,6 @@ LAB_002728b9:
 }
 
 */
-- (void)openInHSAuthor
-{
-    static NSString *sTemporaryFolder = nil;
-    NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
-    NSString *applicationPath = [workspace absolutePathForAppBundleWithIdentifier:@"com.mackiev.hyperstudioauthor"];
-    NSString *path = nil;
-    if (applicationPath != nil) {
-        path = [[self fileURL] path];
-        if (path == nil || [self isDocumentEdited]) {
-            if (sTemporaryFolder == nil) {
-                NSString *uid = [NSString hyperUIDString];
-                if (uid == nil) {
-                    [self showHSAuthorNotInstalledAlert];
-                    return;
-                }
-                NSString *folder = [NSTemporaryDirectory() stringByAppendingPathComponent:uid];
-                if (![[NSFileManager defaultManager] createDirectoryAtPath:folder withIntermediateDirectories:NO attributes:nil error:NULL]) {
-                    [self showHSAuthorNotInstalledAlert];
-                    return;
-                }
-                sTemporaryFolder = [folder retain];
-            }
-            [[self currentWindowController] saveEditingState];
-            [self setResourcesWrapper:nil];
-            id wrapper = [self resourcesWrapper];
-            if (wrapper == nil || ![HSMediaSaver saveMediaForDocument:self resourcesWrapper:wrapper]) {
-                [self showHSAuthorNotInstalledAlert];
-                return;
-            }
-            [self reloadDocumentMedia];
-            NSString *name = [self displayName];
-            if (![[name pathExtension] isEqualToString:@"stack"]) {
-                name = [name stringByAppendingPathExtension:@"stack"];
-            }
-            NSURL *url = [NSURL fileURLWithPath:[sTemporaryFolder stringByAppendingPathComponent:name]];
-            if (![self writeToURL:url ofType:@"HSDocumentType" error:NULL]) {
-                [self showHSAuthorNotInstalledAlert];
-                return;
-            }
-            path = [url path];
-        }
-        if ([workspace openFile:path withApplication:applicationPath andDeactivate:YES]) {
-            return;
-        }
-    }
-    [self showHSAuthorNotInstalledAlert];
-}
-
-- (BOOL)shouldOpenHSAuthorForExport
-{
-    return YES;
-}
-
-- (void)openInHSAuthor:(id)aAuthor
-{
-    [self showHSAuthorOpenAlert:aAuthor];
-}
-
 - (void)exportForiBooksAuthor:(id)aAuthor
 {
     [self exportToDocumentWithType:@"HSiBooksAuthorDocumentType" inPublishType:3 inFormat:8 withRequiredFileType:@"wdgt"];
@@ -426,15 +305,6 @@ void FUN_0027294d(HSEditorDocument *self,SEL _cmd,id exportToHTML5)
 }
 
 */
-- (void)exportToHTML5:(id)a5
-{
-    if ([self shouldOpenHSAuthorForExport]) {
-        [self showExportToHTML5Alert:a5];
-    } else {
-        [self exportToDocumentWithType:@"HSHTML5DocumentType" inPublishType:1 inFormat:7 withRequiredFileType:@""];
-    }
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002729c7 @ 002729c7, 308 bytes * /
 
@@ -2053,63 +1923,6 @@ void FUN_002754b4(HSEditorDocument *self,SEL _cmd,id toggleIpadExportPreview)
 }
 
 */
-- (void)toggleIpadExportPreview:(id)aPreview
-{
-    if (![self isInIpadExportPreviewMode]) {
-        [self invalidateIpadStack];
-        [self updateIPadStack];
-        if (_iPadStack == nil) {
-            return;
-        }
-        if (_originalStackStorage != nil) {
-            [_originalStackStorage release];
-        }
-        _originalStackStorage = [[self stack] retain];
-        [self setStack:_iPadStack notify:YES clearChanges:NO];
-    } else {
-        [self setStack:_originalStackStorage notify:YES clearChanges:NO];
-        [[[self modeSwitcher] activeModeController] didBecomeWorkingInModeSwitcher:[self modeSwitcher]];
-        [_originalStackStorage release];
-        _originalStackStorage = nil;
-        [self invalidateIPadUndoManager];
-    }
-}
-
-- (void)updateIPadStack
-{
-    if (_iPadStack == nil) {
-        [self createIPadStack];
-    }
-}
-
-- (void)invalidateIpadStack
-{
-    [_iPadStack release];
-    _iPadStack = nil;
-}
-
-- (void)createIPadStack
-{
-    HSEditorDocument *pHVar3;
-    id pvVar1_2;
-    id pvVar2_2;
-
-    pvVar1_2 = [[HSiPadImporter alloc] init];
-    pvVar2_2 = [[HSiPadExporter alloc] init];
-    pHVar3 = [pvVar2_2 previewFileWrapperForDocument:self];
-    if (pHVar3 != nil) {
-        [self setResourcesWrapper:nil];
-        [[HSMediaValidator mediaValidatorForDocument:self] validateMedia];
-        [HSMediaSaver saveMediaForDocument:self resourcesWrapper:[self resourcesWrapper]];
-        [self reloadDocumentMedia];
-        [[self undoManager] disableUndoRegistration];
-        _iPadStack = [[pvVar1_2 importIPadStackFromFileWrapper:pHVar3] retain];
-        [[self undoManager] enableUndoRegistration];
-    }
-    [pvVar1_2 release];
-    [pvVar2_2 release];
-}
-
 - (id)modeHistory
 {
     id pvVar1;
@@ -2862,10 +2675,6 @@ void FUN_00277114(HSEditorDocument *self,SEL _cmd)
     _objc_msgSend(self->_playerInEditorWindowController,sel_release);
     self->_playerInEditorWindowController = (id)0x0;
   }
-  if (self->_animationModeController != (HSAnimationModeController *)0x0) {
-    _objc_msgSend(self->_animationModeController,sel_release);
-    self->_animationModeController = (HSAnimationModeController *)0x0;
-  }
   if (self->_storyboardController != (HSStoryboardController *)0x0) {
     _objc_msgSend(self->_storyboardController,sel_release);
     self->_storyboardController = (HSStoryboardController *)0x0;
@@ -3124,18 +2933,6 @@ void FUN_002776ca(HSEditorDocument *self,SEL _cmd,id alertCloseAnimationModeDidE
 }
 
 */
-- (void)alertCloseAnimationModeDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    if (aCode == 1000) {
-        [[self animationModeController] finishAndApplyChanges:NO];
-        [super canCloseDocumentWithDelegate:[(id)aInfo delegate] shouldCloseSelector:[(id)aInfo selector] contextInfo:[(id)aInfo contextInfo]];
-    } else {
-        [(id)aInfo invokeCanCloseCallbackFrom:self shouldClose:NO];
-    }
-    [(id)aInfo release];
-    [aEnd release];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_002777d7 @ 002777d7, 283 bytes * /
 
@@ -3178,15 +2975,6 @@ void FUN_002777d7(HSEditorDocument *self,SEL _cmd,id alertCloseRecordingMovieOrS
         [(id)aInfo invokeCanCloseCallbackFrom:self shouldClose:NO];
     }
     [(id)aInfo release];
-    [aEnd release];
-}
-
-- (void)alertCloseAnimationModeForRevertToSavedDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    if (aCode == 1000) {
-        [[self animationModeController] finishAndApplyChanges:NO];
-        [super revertDocumentToSaved:self];
-    }
     [aEnd release];
 }
 
@@ -3299,16 +3087,6 @@ void FUN_00277979(HSEditorDocument *self,SEL _cmd,id canCloseDocumentWithDelegat
         return;
     }
     [alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:didEnd contextInfo:parameters];
-}
-
-- (void)revertDocumentToSaved:(id)aSaved
-{
-    if (![self isInAnimationMode]) {
-        [super revertDocumentToSaved:aSaved];
-    }
-    else {
-        [[self createCanCloseAnimationModeAlert] beginSheetModalForWindow:[[self currentWindowController] window] modalDelegate:self didEndSelector:@selector(alertCloseAnimationModeForRevertToSavedDidEnd:returnCode:contextInfo:) contextInfo:0];
-    }
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -3510,17 +3288,6 @@ id FUN_002783c6(HSEditorDocument *self,SEL _cmd)
 }
 
 */
-- (id)createCanCloseAnimationModeAlert
-{
-    HSAlert *alert = [HSAlert new];
-    HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
-    [alert setMessageText:[provider localizedStringForKey:@"HSAnimationModeQuitMessageText" value:@"" table:@"Alerts"]];
-    [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSAnimationModeQuitInformativeText" value:@"" table:@"Alerts"]];
-    [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSAnimationModeQuitOKButtonText" value:@"" table:@"Alerts"]];
-    [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSAnimationModeQuitCancelButtonText" value:@"" table:@"Alerts"]];
-    return alert;
-}
-
 - (void)takeDataFromDocument:(id)aDocument
 {
     id pvVar1;
@@ -5635,24 +5402,6 @@ LAB_0027b263:
     return pvVar1_2;
 }
 
-- (id)iPadUndoManager
-{
-    id pvVar1;
-
-    pvVar1 = _iPadUndoManager;
-    if (pvVar1 == nil) {
-        pvVar1 = [HSUndoManager new];
-        _iPadUndoManager = pvVar1;
-    }
-    return pvVar1;
-}
-
-- (void)invalidateIPadUndoManager
-{
-    [_iPadUndoManager release];
-    _iPadUndoManager = nil;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0027b5c4 @ 0027b5c4, 469 bytes * /
 
@@ -5898,23 +5647,6 @@ void FUN_0027bb6c(HSEditorDocument *self,SEL _cmd,id runModalExportPanelWithDele
 }
 
 */
-- (void)runModalExportPanelWithDelegate:(id)aDelegate didSaveSelector:(SEL)aSelector contextInfo:(void *)aInfo needRunExportDialogOnCancel:(BOOL)aCancel
-{
-    id panelController = [[self exportManager] exportPanelController];
-    NSString *fileName = [[[self fileName] lastPathComponent] stringByDeletingPathExtension];
-    if (fileName == nil) {
-        fileName = [self displayName];
-    }
-    if ([(id)aInfo isEqualToString:@"HSiBooksAuthorDocumentType"]) {
-        if ([panelController filename] != nil) {
-            fileName = [panelController filename];
-        }
-        fileName = [[[NSURL fileURLWithPath:fileName isDirectory:NO] relativeString] extraStringByReplacingURLEscapedSymbolsWithUnderscores];
-    }
-    [panelController setNeedRunExportDialog:aCancel];
-    [panelController beginSheetForDirectory:[[HSPathsProvider sharedPathsProvider] hyperStudioDocumentsExportFolder] file:fileName modalForWindow:[self windowForSheet] modalDelegate:aDelegate didEndSelector:aSelector contextInfo:aInfo];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0027bd2e @ 0027bd2e, 1351 bytes * /
 
@@ -6049,79 +5781,6 @@ BOOL FUN_0027bd2e(HSEditorDocument *self,SEL _cmd,id panel,id validateURL,id *er
 }
 
 */
-- (BOOL)panel:(id)aPanel validateURL:(id)aURL error:(id *)aError
-{
-    id exportManager = [self exportManager];
-    id panelController = [exportManager exportPanelController];
-    if (![panelController isWindowLoaded]) {
-        return YES;
-    }
-    if ([panelController window] != aPanel) {
-        return YES;
-    }
-    NSString *name = [[aURL path] lastPathComponent];
-    if (name == nil) {
-        return NO;
-    }
-    NSInteger format = [exportManager exportFormat];
-    if (format == 1) {
-        NSCharacterSet *invalidCharacters = [NSCharacterSet characterSetWithCharactersInString:@"?;/"];
-        if (invalidCharacters == nil) {
-            return NO;
-        }
-        if ([name rangeOfCharacterFromSet:invalidCharacters].location == NSNotFound) {
-            return YES;
-        }
-    NSString *message = [NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSInvalidWebExportPanelFilenameMessageText" value:@"" table:@"Alerts"], name];
-    if (message == nil) {
-        return NO;
-    }
-    NSString *informative = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSInvalidWebExportPanelFilenameInformativeText" value:@"" table:@"Alerts"];
-    if (aError != NULL) {
-        *aError = [NSError errorWithDomain:NSCocoaErrorDomain code:0x102 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, NSLocalizedDescriptionKey, informative, NSLocalizedRecoverySuggestionErrorKey, nil]];
-        return NO;
-    }
-    HSAlert *alert = [HSAlert new];
-    [alert setAlertStyle:0];
-    [alert setMessageText:message];
-    [alert setInformativeText:informative];
-    [alert beginSheetModalForWindow:aPanel modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
-    [alert release];
-    return NO;
-    }
-    if (format != 8) {
-        return YES;
-    }
-    NSString *relativeString = [[NSURL fileURLWithPath:name isDirectory:NO] relativeString];
-    if (relativeString == nil) {
-        return NO;
-    }
-    if ([relativeString isEqualToString:name]) {
-        return YES;
-    }
-    NSString *message = [NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSInvalidIBAExportPanelFilenameMessageText" value:@"" table:@"Alerts"], name];
-    if (message == nil) {
-        return NO;
-    }
-    NSString *informative = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSInvalidIBAExportPanelFilenameInformativeText" value:@"" table:@"Alerts"];
-    if (aError != NULL) {
-        *aError = [NSError errorWithDomain:NSCocoaErrorDomain code:0x102 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, NSLocalizedDescriptionKey, informative, NSLocalizedRecoverySuggestionErrorKey, nil]];
-        return NO;
-    }
-    HSAlert *alert = [HSAlert new];
-    [alert setAlertStyle:0];
-    [alert setMessageText:message];
-    [alert setInformativeText:informative];
-    [alert beginSheetModalForWindow:aPanel modalDelegate:nil didEndSelector:NULL contextInfo:NULL];
-    [alert release];
-    return NO;
-}
-
-- (BOOL)panel:(id)aPanel isValidFilename:(id)aFilename
-{
-    return (BOOL)[self panel:aPanel validateURL:[NSURL fileURLWithPath:aFilename] error:0];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0027c2d2 @ 0027c2d2, 634 bytes * /
 
@@ -6304,19 +5963,6 @@ BOOL FUN_0027c586(HSEditorDocument *self,SEL _cmd)
     return bVar2;
 }
 
-- (BOOL)isInAnimationMode
-{
-    BOOL bVar2;
-
-    if (_modeSwitcher == nil) {
-        bVar2 = NO;
-    }
-    else {
-        bVar2 = [self currentWindowController] == _animationModeController;
-    }
-    return bVar2;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0027c743 @ 0027c743, 126 bytes * /
 
@@ -6353,11 +5999,6 @@ BOOL FUN_0027c743(HSEditorDocument *self,SEL _cmd)
     return [self currentWindowController] == _playerInEditorWindowController || [self currentWindowController] == _purePlayerWindowController || [self currentWindowController] == _presentationWindowController;
 }
 
-- (BOOL)isInIpadExportPreviewMode
-{
-    return [self stack] == _iPadStack;
-}
-
 - (id)playerInEditorWindowController
 {
     id pvVar1;
@@ -6371,21 +6012,6 @@ BOOL FUN_0027c743(HSEditorDocument *self,SEL _cmd)
         pvVar1 = _playerInEditorWindowController;
     }
     return pvVar1;
-}
-
-- (id)animationModeController
-{
-    HSAnimationModeController *pHVar1;
-    HSAnimationModeController *pHVar1_2;
-
-    pHVar1 = _animationModeController;
-    if (pHVar1 == nil) {
-        pHVar1_2 = [HSAnimationModeController new];
-        _animationModeController = pHVar1_2;
-        [self addWindowController:pHVar1_2];
-        pHVar1 = _animationModeController;
-    }
-    return pHVar1;
 }
 
 - (Class)mainWindowControllerClass

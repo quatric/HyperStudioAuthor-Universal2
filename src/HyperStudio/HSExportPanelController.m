@@ -2,76 +2,11 @@
 
 @implementation HSExportPanelController
 
-- (void)cancel:(id)aCancel
-{
-    [self endSheetWithReturnCode:0];
-}
-
-- (void)ok:(id)aOk
-{
-    [self endSheetWithReturnCode:1];
-}
-
-- (void)toggleExtensionHidden:(id)aHidden
-{
-    [self doesNotRecognizeSelector:_cmd];
-}
-
 // Ends the sheet, then calls the modal delegate's did-end selector with the
 // return code filled in.
-- (void)endSheetWithReturnCode:(NSInteger)aCode
-{
-    int returnCode = (int)aCode;
-    [NSApp endSheet:[self window] returnCode:aCode];
-    [[self window] orderOut:self];
-    if (_didEndSheetInvocation) {
-        [_didEndSheetInvocation setArgument:&returnCode atIndex:3];
-        NSInvocation *invocation = [_didEndSheetInvocation autorelease];
-        _didEndSheetInvocation = nil;
-        [invocation invoke];
-    }
-}
-
-- (void)beginSheetForDirectory:(id)aDirectory file:(id)aFile modalForWindow:(id)aWindow modalDelegate:(id)aDelegate didEndSelector:(SEL)aSelector contextInfo:(void *)aInfo
-{
-    id sheet = self;
-    void *contextInfo = aInfo;
-    if (aDelegate && aSelector) {
-        NSMethodSignature *signature = [aDelegate methodSignatureForSelector:aSelector];
-        if (signature) {
-            _didEndSheetInvocation = [[NSInvocation invocationWithMethodSignature:signature] retain];
-            [_didEndSheetInvocation setTarget:aDelegate];
-            [_didEndSheetInvocation setSelector:aSelector];
-            [_didEndSheetInvocation setArgument:&sheet atIndex:2];
-            [_didEndSheetInvocation setArgument:&contextInfo atIndex:4];
-        }
-    }
-    [NSApp beginSheet:[self window] modalForWindow:aWindow modalDelegate:nil didEndSelector:NULL contextInfo:contextInfo];
-}
-
-- (id)directory
-{
-    return nil;
-}
-
-- (id)filename
-{
-    return nil;
-}
-
 - (BOOL)isExpanded
 {
     return YES;
-}
-
-- (BOOL)isNeedRunExportDialog
-{
-    return _needRunExportDialog;
-}
-
-- (void)setNeedRunExportDialog:(BOOL)aDialog
-{
-    _needRunExportDialog = aDialog;
 }
 
 - (void)setRequiredFileType:(id)aType
@@ -126,14 +61,6 @@
     [_requiredFileType release];
     [_accessoryViewController release];
     [super dealloc];
-}
-
-- (id)initWithPublisher:(id)aPublisher
-{
-    self = [self init];
-    if (self)
-        _publisher = aPublisher;
-    return self;
 }
 
 @end

@@ -320,18 +320,6 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
 {
 }
 
-- (void)swipeWithEvent:(id)aEvent
-{
-    SEL action;
-    if ([(NSEvent *)aEvent deltaX] < 0)
-        action = @selector(goToNextCardWithoutLeaveActions:);
-    else if ([(NSEvent *)aEvent deltaX] > 0)
-        action = @selector(goToPreviousCardWithoutLeaveActions:);
-    else
-        return;
-    [[[self userObject] document] performSelector:action withObject:self];
-}
-
 - (NSRect)userBoundingRectForViewRect:(NSRect)aRect
 {
     return NSMakeRect(aRect.origin.x / _zoomFactor, aRect.origin.y / _zoomFactor, aRect.size.width / _zoomFactor, aRect.size.height / _zoomFactor);

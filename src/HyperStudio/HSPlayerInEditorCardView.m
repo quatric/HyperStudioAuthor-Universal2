@@ -620,44 +620,6 @@ ulonglong FUN_001c8b07(HSPlayerInEditorCardView *self,SEL _cmd)
     return NSMakePoint([self bounds].size.width * 0.5f, [self bounds].size.height * 0.5f);
 }
 
-- (NSRect)userBoundingRectForViewRect:(NSRect)aRect
-{
-    float fVar1;
-    NSRect result;
-
-    fVar1 = (_cardOffset).height;
-    result.origin.x =
-    aRect.origin.x - (_cardOffset).width;
-    result.origin.y = aRect.origin.y - fVar1;
-    result.size.width = aRect.size.width;
-    result.size.height = aRect.size.height;
-    return result;
-}
-
-- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect
-{
-    float fVar1;
-    NSRect result;
-
-    fVar1 = (_cardOffset).height;
-    result.origin.x =
-    aRect.origin.x + (_cardOffset).width;
-    result.origin.y = aRect.origin.y + fVar1;
-    result.size.width = aRect.size.width;
-    result.size.height = aRect.size.height;
-    return result;
-}
-
-- (NSPoint)convertPointFromViewSpaceToUserSpace:(NSPoint)aSpace
-{
-    return NSMakePoint( aSpace.x - (_cardOffset).width, aSpace.y - (_cardOffset).height);
-}
-
-- (NSPoint)convertPointFromUserSpaceToViewSpace:(NSPoint)aSpace
-{
-    return NSMakePoint( (_cardOffset).width + aSpace.x, (_cardOffset).height + aSpace.y);
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_001c796c @ 001c796c, 145 bytes * /
 
@@ -672,12 +634,6 @@ id FUN_001c796c(HSPlayerInEditorCardView *self,SEL _cmd)
 }
 
 */
-- (id)viewSpaceToUserSpaceTransform
-{
-    struct HyperPlayerBase_anon1 transform = {1, 0, 0, 1, -_cardOffset.width, -_cardOffset.height};
-    return [NSAffineTransform transformWithHyperTransformStruct:transform];
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_001c78e9 @ 001c78e9, 131 bytes * /
 
@@ -692,12 +648,6 @@ id FUN_001c78e9(HSPlayerInEditorCardView *self,SEL _cmd)
 }
 
 */
-- (id)userSpaceToViewSpaceTransform
-{
-    struct HyperPlayerBase_anon1 transform = {1, 0, 0, 1, _cardOffset.width, _cardOffset.height};
-    return [NSAffineTransform transformWithHyperTransformStruct:transform];
-}
-
 - (void)cardSizeDidChange:(id)aChange
 {
     if ([self enclosingScrollView] != nil) {
@@ -705,16 +655,6 @@ id FUN_001c78e9(HSPlayerInEditorCardView *self,SEL _cmd)
     }
     [self setNeedsDisplayOpenGLSurface:YES];
     [self setNeedsDisplay:YES];
-}
-
-- (void)autosizeToReflectEnclosingScrollView
-{
-    [self autosizePreservingVisibleArea];
-}
-
-- (void)autosizeToFitEnclosingScrollView
-{
-    [self autosizePreservingVisibleArea];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -919,11 +859,6 @@ void FUN_001c8ef5(HSPlayerInEditorCardView *self,SEL _cmd)
         [self notifyDidChangeUserSpaceToViewSpaceTransform];
     }
     [self HSPlayerInEditorCardView_updateRelativeOpenGLSurfaceBounds];
-}
-
-- (void)autooffsetCardTo:(NSPoint)aTo
-{
-    [self setCardOffset:NSMakeSize(aTo.x, aTo.y)];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -1320,17 +1255,6 @@ ulonglong FUN_001c7334(HSPlayerInEditorCardView *self,SEL _cmd)
 }
 
 */
-- (NSSize)cardOffset
-{
-    return _cardOffset;
-}
-
-- (void)setCardOffset:(NSSize)aOffset
-{
-    (_cardOffset).width = aOffset.width;
-    (_cardOffset).height = aOffset.height;
-}
-
 - (id)editorWindowController
 {
     return [[self editorDocument] editorWindowController];

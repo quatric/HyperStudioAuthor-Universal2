@@ -625,17 +625,6 @@ id FUN_000702dd(HSTextViewEditor *self,SEL _cmd,id textView,
 }
 
 */
-- (id)textView:(id)aView willChangeSelectionFromCharacterRanges:(id)aRanges toCharacterRanges:(id)aRanges2
-{
-    if ([self isHyperShadowEnabled] && [aRanges count] == 1) {
-        NSRange range = [[aRanges objectAtIndex:0] rangeValue];
-        if (range.length == 0) {
-            [[self owner] setNeedsDisplayRunTimeEditor:self];
-        }
-    }
-    return aRanges2;
-}
-
 - (void)textViewDidChangeSelection:(id)aSelection
 {
     [self notifyChange:2 ofAttribute:@protocol(HSTextViewTextAttribute) withUserInfo:nil];

@@ -370,16 +370,6 @@ void FUN_00179540(HSGraphicAppearanceAssistantPane *self,SEL _cmd,id setShadow)
     [[self objectAttributes] setHyperName:[_nameTextField stringValue]];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_00179706 @ 00179706, 110 bytes * /
 

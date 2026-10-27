@@ -276,27 +276,6 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 }
 
 // Remembers the window frame for the document.
-- (void)windowDidResize:(id)aResize
-{
-    if (![self activeCard])
-        return;
-    NSString *path = [[[self document] fileURL] path];
-    if (!path)
-        return;
-    NSString *frame = [[self window] stringWithSavedFrame];
-    if (!frame)
-        return;
-    NSMutableDictionary *states = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"HSDocumentWindowStates"]];
-    if (!states)
-        return;
-    NSMutableDictionary *state = [NSMutableDictionary dictionaryWithDictionary:[states objectForKey:path]];
-    if (!state)
-        return;
-    [state setObject:frame forKey:@"HSMainWindowFrameAsStringKey"];
-    [states setObject:state forKey:path];
-    [[NSUserDefaults standardUserDefaults] setObject:states forKey:@"HSDocumentWindowStates"];
-}
-
 // With several documents, the other unprotected documents leave the player
 // and casting modes for the editor.
 - (void)windowDidBecomeMain:(id)aMain

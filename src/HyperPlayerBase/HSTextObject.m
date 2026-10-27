@@ -82,16 +82,6 @@ static BOOL HSTextObjectFloatsAreEqual(float aValue, float aValue2)
 
 // Ranges are replaced front to back without adjusting the later ones
 // (original).
-- (void)replaceObjectString:(id)aString inRanges:(id)aRanges
-{
-    NSMutableAttributedString *string = [[NSMutableAttributedString alloc] initWithAttributedString:[self hyperAttributedStringValue]];
-    NSInteger count = [aRanges count];
-    for (NSInteger i = 0; i < count; i++)
-        [string replaceCharactersInRange:[[aRanges objectAtIndex:i] rangeValue] withString:aString];
-    [self setHyperAttributedStringValue:string];
-    [string release];
-}
-
 - (void)setObjectString:(id)aString
 {
     [self setHyperStringValue:aString];

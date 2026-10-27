@@ -675,16 +675,6 @@ LAB_00177aa4:
     [self setBackgrounStyle:@"HSButtonObjectSystemBackgroundStyle" withButtonType:@"HSRegularSystemButtonType"];
 }
 
-- (id)nameTextfField
-{
-    return _titleTextField;
-}
-
-- (id)initialKeyView
-{
-    return _titleTextField;
-}
-
 - (BOOL)needToRelayoutAssistant
 {
     return _needToRelayoutAssistance;

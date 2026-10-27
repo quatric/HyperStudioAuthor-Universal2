@@ -240,14 +240,6 @@
     return copy;
 }
 // Characters typed with Shift on a US keyboard.
-- (BOOL)isUsedShiftForKey:(unsigned short)aKey
-{
-    static const unichar shifted[] = { '!', '@', '#', '$', '%', '^', '&', '(', ')', '_', '|', '{', '}', ':', '"', '?', '>', '<', '~' };
-    for (int i = 0; i < 19; i++)
-        if (shifted[i] == aKey)
-            return YES;
-    return NO;
-}
 // Hands the context the key → button map (Shift for capitals and shifted
 // symbols).
 - (void)startInContext:(id)aContext

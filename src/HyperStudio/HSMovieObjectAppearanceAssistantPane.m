@@ -1639,16 +1639,6 @@ LAB_0018517a:
     return [[[self assistant] object] queryHyperInterface:@protocol(HSMovieObjectAttributes)];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 /* --- i386 decompilation (Ghidra) ---
 /* FUN_0018203f @ 0018203f, 113 bytes * /
 

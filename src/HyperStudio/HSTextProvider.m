@@ -23,34 +23,14 @@ static id sDAT_003428d0;
     [[self currentTextProvider] deactivateCurrentItem];
 }
 
-- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRanges:(id)aRanges
-{
-    return (BOOL)[[self currentTextProvider] hyperReplaceTextForCurrentItem:aItem inRanges:aRanges];
-}
-
-- (BOOL)setHyperNameForCurrentItem:(id)aItem
-{
-    return (BOOL)[[self currentTextProvider] setHyperNameForCurrentItem:aItem];
-}
-
 - (void)setHyperTextForCurrentItem:(id)aItem
 {
     [[self currentTextProvider] setHyperTextForCurrentItem:aItem];
 }
 
-- (void)selectCurrentItemNameWithRange:(NSRange)aRange
-{
-    [[self currentTextProvider] selectCurrentItemNameWithRange:aRange];
-}
-
 - (void)selectCurrentItemStringWithRange:(NSRange)aRange
 {
     [[self currentTextProvider] selectCurrentItemStringWithRange:aRange];
-}
-
-- (void)activateInspectorOfCurrentItem
-{
-    [[self currentTextProvider] activateInspectorOfCurrentItem];
 }
 
 - (void)activateCurrentItem
@@ -63,19 +43,9 @@ static id sDAT_003428d0;
     return (int)[[self currentTextProvider] hyperSpellDocumentTag];
 }
 
-- (NSRange)selectedRangeForCurrentItemName
-{
-    return [[self currentTextProvider] selectedRangeForCurrentItemName];
-}
-
 - (NSRange)selectedRangeForCurrentItem
 {
     return [[self currentTextProvider] selectedRangeForCurrentItem];
-}
-
-- (id)hyperNameForCurrentItem
-{
-    return [[self currentTextProvider] hyperNameForCurrentItem];
 }
 
 - (id)hyperTextForCurrentItem
@@ -86,16 +56,6 @@ static id sDAT_003428d0;
 - (BOOL)moveToNext
 {
     return (BOOL)[[self currentTextProvider] moveToNext];
-}
-
-- (BOOL)shouldEnableIncludeObjectNamesButton
-{
-    return (BOOL)[[self currentTextProvider] shouldEnableIncludeObjectNamesButton];
-}
-
-- (void)setIncludeObjectNames:(BOOL)aNames
-{
-    [[self currentTextProvider] setIncludeObjectNames:aNames];
 }
 
 - (void)setWrapsAround:(BOOL)aAround

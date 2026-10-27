@@ -7,10 +7,6 @@
     [[_windowController cardView] selectRange:NSMakeRange(0, 0) inNode:[[self currentItem] queryHyperInterface:@protocol(HSNodeAttributes)]];
 }
 
-- (void)selectCurrentItemNameWithRange:(NSRange)aRange
-{
-}
-
 - (void)selectCurrentItemStringWithRange:(NSRange)aRange
 {
     _selectedRange = aRange;
@@ -20,18 +16,9 @@
     }
 }
 
-- (void)activateInspectorOfCurrentItem
-{
-}
-
 - (void)activateCurrentItem
 {
     [[_selectionController stackController] selectHyperObject:[[[self currentItem] queryHyperInterface:@protocol(HSNodeChild)] hyperParent]];
-}
-
-- (NSRange)selectedRangeForCurrentItemName
-{
-    return NSMakeRange(NSNotFound, 0);
 }
 
 - (NSRange)selectedRangeForCurrentItem
@@ -47,11 +34,6 @@
     return range;
 }
 
-- (id)hyperNameForCurrentItem
-{
-    return nil;
-}
-
 - (id)hyperTextForCurrentItem
 {
     if ([self currentItem]) {
@@ -65,10 +47,6 @@
 - (void)selectionChanged:(id)aChanged
 {
     [self setCurrentItem:[[aChanged object] queryHyperInterface:@protocol(HSObjectNaming)]];
-}
-
-- (void)setIncludeObjectNames:(BOOL)aNames
-{
 }
 
 // Follows the selection: a run time editor switches to the select tool, an
@@ -104,11 +82,6 @@
         item = [self nearestTextItemInContainer:[child hyperParent] forItem:child];
     }
     [self setCurrentItem:item];
-}
-
-- (BOOL)shouldEnableIncludeObjectNamesButton
-{
-    return NO;
 }
 
 - (void)setCurrentItem:(id)aItem

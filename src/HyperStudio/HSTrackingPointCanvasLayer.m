@@ -11,16 +11,6 @@ static BOOL HSTrackingPointCoordinatesDiffer(CGFloat aValue, CGFloat anotherValu
 
 @implementation HSTrackingPointCanvasLayer
 
-- (BOOL)handleKeyEventSelector:(SEL)aSelector
-{
-    if (aSelector == @selector(cancel:) || aSelector == @selector(cancelOperation:)) {
-        if ([_delegate respondsToSelector:@selector(trackingPointCanvasLayerDidCancelTracking)])
-            [_delegate trackingPointCanvasLayerDidCancelTracking];
-        return YES;
-    }
-    return NO;
-}
-
 - (void)willResignActiveLayer
 {
 }

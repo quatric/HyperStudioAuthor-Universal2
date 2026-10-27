@@ -331,16 +331,6 @@ void FUN_00171bbe(HSWebcamAppearanceAssistantPane *self,SEL _cmd,id reloadWebPag
     return [[[self assistant] object] queryHyperInterface:@protocol(HSWebPageAttributes)];
 }
 
-- (id)nameTextfField
-{
-    return _nameTextField;
-}
-
-- (id)initialKeyView
-{
-    return _nameTextField;
-}
-
 - (BOOL)isEditingTextAttribute
 {
     return [_nameTextField currentEditor] != nil;

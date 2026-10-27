@@ -2,12 +2,6 @@
 
 @implementation HSPointSelectionTool
 
-- (void)trackingPointCanvasLayerDidCancelTracking
-{
-    if ([_delegate respondsToSelector:@selector(pointSelectionToolDidCancelSelection)])
-        [_delegate pointSelectionToolDidCancelSelection];
-}
-
 - (void)trackingPointCanvasLayer:(id)aLayer didFinishTrackingWithPoint:(NSPoint)aPoint
 {
     if (!NSEqualPoints(_selectedPoint, aPoint)) {

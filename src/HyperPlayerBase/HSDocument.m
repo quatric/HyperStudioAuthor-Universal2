@@ -1309,11 +1309,6 @@ static NSString *sPlatformInformation;
     return [[self stack] isStackProtected];
 }
 
-- (BOOL)isInAnimationMode
-{
-    return NO;
-}
-
 - (BOOL)isInPlayerMode
 {
     return [self cardView] == [self playerCardView];
