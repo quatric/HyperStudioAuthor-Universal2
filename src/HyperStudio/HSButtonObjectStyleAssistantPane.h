@@ -20,5 +20,6 @@
 - (void)dealloc;
 - (id)init;
 - (id)assistantObjectBackgroundType;
+- (void)validateBackgroundColorControls;
 @end
 

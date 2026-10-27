@@ -91,4 +91,15 @@
     return [(id<HSButtonObjectSystemStyleBackgroundAttributes>)[[[self assistant] object] queryHyperInterface:@protocol(HSButtonObjectSystemStyleBackgroundAttributes)] systemButtonType];
 }
 
+- (void)validateBackgroundColorControls
+{
+    [super validateBackgroundColorControls];
+    if ([[self assistantObjectBackgroundType] isEqualToString:@"HSTexturedBackgroundSystemButtonType"]) {
+        [_backgroundColorWell setColor:[NSColor clearColor]];
+        [_backgroundColorWell setEnabled:NO];
+        [_backgroundTextField setTextColor:[NSColor disabledControlTextColor]];
+        [_backgroundTextField setEnabled:NO];
+    }
+}
+
 @end

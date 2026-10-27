@@ -64,4 +64,12 @@
     return (float)(fminf(aSize.width, aSize.height) * 0.17543859649122806);
 }
 
+- (void)editWebAppIcon:(id)aSender
+{
+    id dialog = [[HSWebAppIconEditorDialogController new] autorelease];
+    [dialog setCards:[[self stack] children]];
+    if ([[NSApplication sharedApplication] runModalForWindow:[dialog window]] == NSModalResponseOK)
+        [self updateWebAppIconWithImage:[dialog croppedImageWithHorizontalSelection]];
+}
+
 @end

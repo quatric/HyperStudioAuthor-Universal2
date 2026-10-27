@@ -34,6 +34,7 @@
 - (id)objectWithUID:(id)aUID;
 - (id)menuItemWithRepresentedUID:(id)aUID fromMenu:(id)aMenu;
 - (id)commandsFromAttributedString:(id)aString;
+- (void)setUnvailableColorsToCell:(id)aCell;
 @end
 
 @interface HSGhostWriterActionAssistantPaneApplier : HSActionAssistantSettingsApplier

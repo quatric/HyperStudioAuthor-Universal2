@@ -729,6 +729,14 @@ LAB_0020595a:
     return 0;
 }
 
+- (void)setUnvailableColorsToCell:(id)aCell
+{
+    [aCell setBorderColor:[NSColor redColor]];
+    [aCell setHighlightedBorderColor:[NSColor redColor]];
+    [aCell setHighlightedBackgroundColor:[NSColor colorWithCalibratedRed:1.0 green:0.34 blue:0.35 alpha:1.0]];
+    [aCell setBackgroundColor:[NSColor colorWithCalibratedRed:1.0 green:0.39 blue:0.4 alpha:1.0]];
+}
+
 @end
 
 @implementation HSGhostWriterActionAssistantPaneApplier

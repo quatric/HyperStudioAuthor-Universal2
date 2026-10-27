@@ -19,5 +19,6 @@
 - (id)init;
 - (id)stack;
 + (CGFloat)webAppContentLayerCornerRadiusForLayerSize:(CGSize)aSize;
+- (void)editWebAppIcon:(id)aSender;
 @end
 
