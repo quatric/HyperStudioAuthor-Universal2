@@ -126,4 +126,20 @@
         _shouldClearChanges = YES;
     return self;
 }
+- (void)removeUnsupportedFeatures
+{
+    [super removeUnsupportedFeatures];
+    _shouldClearChanges = NO;
+}
+
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
+{
+    return [NSMutableSet setWithObject:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureClearChangesCardShuffler" value:@"" table:@"Export"]];
+}
+
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType
+{
+    return [self shouldClearChanges];
+}
+
 @end

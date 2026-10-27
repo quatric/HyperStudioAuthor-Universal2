@@ -76,6 +76,7 @@
 - (void)dealloc;
 - (id)initWithName:(id)aName;
 - (id)init;
+- (void)removeUnsupportedFeatures;
 @end
 
 @interface HSQTTransition : HSTransition

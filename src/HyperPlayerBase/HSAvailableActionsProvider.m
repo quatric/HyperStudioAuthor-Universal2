@@ -82,4 +82,20 @@ static id HSAvailableActionsProviderTypesOfType(NSArray *aTypes, id aType)
     }
     return actions;
 }
++ (id)unsupportediBooksActionTypes
+{
+    static NSArray *unsupportediBooksActionTypes;
+    if (unsupportediBooksActionTypes == nil)
+        unsupportediBooksActionTypes = [[NSArray alloc] initWithObjects:[HSOpenLocationAction actionType], [HSRunCommandAction actionType], [HSArduinoSetupAction actionType], [HSArduinoWatcherAction actionType], [HSQuitAction actionType], [HSTextToSpeechAction actionType], [HSPauseAction actionType], [HSRunAppleScriptAction actionType], [HSSetCursorPositionAction actionType], [HSQuitAnotherApplicationAction actionType], [HSAutoRecordAction actionType], [HSSpeechRecognitionAction actionType], [HSClearChangeFlagAction actionType], [HSShowInFinderAction actionType], [HSReadWriteTextAction actionType], [HSPictureShowAction actionType], [HSTestingFunctionsAction actionType], [HSSetVolumeAction actionType], [HSScrollCardAction actionType], [HSButtonListerAction actionType], [HSKeyMapperAction actionType], [HSPrintCardAction actionType], [HSButtonScannerAction actionType], [HSButtonStepperAction actionType], [HSShowHideCursorAction actionType], [HSGoogleEarthAction actionType], nil];
+    return unsupportediBooksActionTypes;
+}
+
++ (id)allowediBooksHomeStackActionTypes
+{
+    static NSArray *allowediBooksHomeStackActionTypes;
+    if (allowediBooksHomeStackActionTypes == nil)
+        allowediBooksHomeStackActionTypes = [[NSArray alloc] initWithObjects:[HSRunCommandAction actionType], nil];
+    return allowediBooksHomeStackActionTypes;
+}
+
 @end

@@ -260,4 +260,9 @@ static int sRunningNavigationCount = 0;
     [super dealloc];
 }
 
+- (void)removeUnsupportedFeatures
+{
+    [[self transition] removeUnsupportedFeatures];
+}
+
 @end

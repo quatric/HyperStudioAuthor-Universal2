@@ -13,5 +13,7 @@
 - (id)allActionsOfType:(id)aType forObject:(id)aObject;
 - (id)allActionsForObject:(id)aObject;
 - (id)availableActionsForObject:(id)aObject forEvent:(id)aEvent;
++ (id)unsupportediBooksActionTypes;
++ (id)allowediBooksHomeStackActionTypes;
 @end
 

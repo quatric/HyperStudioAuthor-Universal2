@@ -39,5 +39,6 @@
 - (id)queryHyperInterface:(id)aInterface;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
+- (void)removeUnsupportedFeatures;
 @end
 

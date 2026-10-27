@@ -4,6 +4,7 @@
 
 @interface HSShowHideObjectAction : HSToDoAction <HSShowHideObjectActionAttributes, HSActionAttributes, HSAttributes, HyperInterface, NSObject, HSAction, HSActionSynchronousAttribute, HSAttribute, HSActionEventsAttribute, HSActionLocalizedNameAttribute, HSShowHideObjectsAttribute>
 {
+    NSMutableArray *_unsupportedTransitions;
     NSMutableDictionary *_objectUIDsToActionMap;
     int _runningCount;
     NSMutableDictionary *_hideOnFinishMap;
@@ -57,5 +58,9 @@
 - (id)objectUIDsToActionMap;
 - (void)dealloc;
 - (id)init;
+- (void)removeUnsupportedFeatures;
+- (void)clearUnsupportedTransitions;
+- (id)unsupportedTransitions;
+- (id)HTML5UnsupportedFunctionalityDescriptionForTransitionName:(id)aName;
 @end
 

@@ -30,5 +30,6 @@
 - (BOOL)wantsSaveAfterRemove;
 - (void)dealloc;
 - (id)init;
+- (void)removeUnsupportedFeatures;
 @end
 

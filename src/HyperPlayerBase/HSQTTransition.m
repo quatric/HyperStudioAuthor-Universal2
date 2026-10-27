@@ -451,6 +451,15 @@ static NSSet *HSTransitionQCTransitionNames = nil;
     return [self initWithName:@"No Transition"];
 }
 
+- (void)removeUnsupportedFeatures
+{
+    if (_effect == nil) {
+        [_name release];
+        _name = [[NSString alloc] initWithString:@"Fade"];
+        _effect = [[[HSTransitionEffectProvider sharedTransitionEffectProvider] transitionEffectWithName:_name] retain];
+    }
+}
+
 @end
 
 // Old archived classes; they unarchive as plain transitions.

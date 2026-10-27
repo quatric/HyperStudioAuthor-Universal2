@@ -504,4 +504,13 @@
     [super dealloc];
 }
 
+- (void)removeUnsupportedFeatures
+{
+    NSUInteger loopMode = [self loopMode];
+    if (loopMode == 3 || loopMode == 4)
+        [self setLoopMode:2];
+    if ([self restartMode] == 2)
+        [self setRestartMode:1];
+}
+
 @end

@@ -845,4 +845,27 @@
     return [[[self class] objectWithExtraDictionary:[self extraDictionaryRepresentation] zone:aZone] retain];
 }
 
+// Drops the actions the HTML5 and iBooks players cannot run (iBooks home
+// stacks only keep their allowed actions), and the clear-changes shuffle option.
+- (void)removeUnsupportedActions
+{
+    NSArray *actions = [[self hyperActions] copy];
+    for (id action in actions) {
+        [action removeUnsupportedFeatures];
+        BOOL remove = [action shouldBeRemoved];
+        if (!remove) {
+            if ([[HSAvailableActionsProvider allowediBooksHomeStackActionTypes] containsObject:NSStringFromClass([action class])])
+                remove = ![action canBeExportedToHTML5DocumentType:@"HSHTML5DocumentType"];
+            if (!remove) {
+                id stack = [[self hyperObject] queryHyperInterface:@protocol(HSMutableStackAttributes)];
+                if (stack != nil && [self hyperActionOfType:[HSClearChangeFlagAction actionType] forEvent:[HSActionEvent actionEventOfType:kHSLeaveActionEventType]] != nil)
+                    [stack setShouldSaveChangesMadeInBrowseMode:NO];
+            }
+        }
+        if (remove)
+            [self removeAction:action];
+    }
+    [actions release];
+}
+
 @end

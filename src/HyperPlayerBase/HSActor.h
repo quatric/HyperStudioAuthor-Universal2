@@ -112,5 +112,6 @@
 - (id)hyperObject;
 - (void)dealloc;
 - (id)copyWithZone:(NSZone *)aZone;
+- (void)removeUnsupportedActions;
 @end
 

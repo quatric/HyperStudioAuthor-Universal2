@@ -26,5 +26,8 @@
 - (BOOL)shouldClearChanges;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (id)init;
+- (void)removeUnsupportedFeatures;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
 @end
 

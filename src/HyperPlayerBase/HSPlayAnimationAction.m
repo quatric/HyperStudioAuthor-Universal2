@@ -252,4 +252,15 @@ static NSString *HSPlayAnimationAction_exportString(NSString *aKey)
         [self setSynchronous:NO];
     return self;
 }
+- (void)removeUnsupportedFeatures
+{
+    [[self animation] removeUnsupportedFeatures];
+    id object = [[self animation] animatedObject];
+    if ([object isKindOfClass:[HSMovieObject class]]) {
+        id colors = [object queryHyperInterface:@protocol(HSTransparentColorAttributes)];
+        if ([colors isTransparentColorEnabled])
+            [colors setTransparentColorEnabled:NO];
+    }
+}
+
 @end

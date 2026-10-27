@@ -117,5 +117,6 @@
 - (double)defaultLoopSeconds;
 - (NSInteger)defaultLoopPathRepeats;
 - (id)init;
+- (void)removeUnsupportedFeatures;
 @end
 

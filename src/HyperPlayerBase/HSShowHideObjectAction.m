@@ -731,4 +731,27 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
     return [super init];
 }
 
+- (void)removeUnsupportedFeatures
+{
+    [self clearUnsupportedTransitions];
+}
+
+- (void)clearUnsupportedTransitions
+{
+    [_unsupportedTransitions release];
+    _unsupportedTransitions = nil;
+}
+
+- (id)unsupportedTransitions
+{
+    if (_unsupportedTransitions == nil)
+        _unsupportedTransitions = [NSMutableArray new];
+    return _unsupportedTransitions;
+}
+
+- (id)HTML5UnsupportedFunctionalityDescriptionForTransitionName:(id)aName
+{
+    return [NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureTransition" value:@"" table:@"Export"], [[HSTransitionEffectProvider sharedTransitionEffectProvider] displayNameForTransitionEffectWithName:aName]];
+}
+
 @end
