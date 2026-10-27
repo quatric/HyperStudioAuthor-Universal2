@@ -46,4 +46,14 @@
     }
     return self;
 }
+- (void)pauseTransition
+{
+    [_nodeUnit pauseTransition];
+}
+
+- (void)resumeTransition
+{
+    [_nodeUnit resumeTransition];
+}
+
 @end

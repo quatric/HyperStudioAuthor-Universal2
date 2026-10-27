@@ -108,4 +108,14 @@
     [_transition release];
     [super dealloc];
 }
+- (void)pauseTransition
+{
+    [_transitionPlayer pause];
+}
+
+- (void)resumeTransition
+{
+    [_transitionPlayer resume];
+}
+
 @end

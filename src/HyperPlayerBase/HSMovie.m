@@ -1413,4 +1413,20 @@ static NSInteger HSMovieSampleCountOfTrack(AVAssetTrack *aTrack, NSInteger aLimi
     return self;
 }
 
+- (void)pause
+{
+    if (_movie != nil && [self isPlaying]) {
+        [_movie stop];
+        _isPaused = YES;
+    }
+}
+
+- (void)resume
+{
+    if (_movie != nil && _isPaused && ![self isPlaying]) {
+        [_movie play];
+        _isPaused = NO;
+    }
+}
+
 @end

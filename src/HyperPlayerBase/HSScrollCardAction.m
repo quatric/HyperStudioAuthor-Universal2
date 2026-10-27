@@ -62,11 +62,13 @@
 }
 - (void)animationDidStop:(id)aStop
 {
-    [self notifyDidFinish];
+    if (!_isPaused)
+        [self notifyDidFinish];
 }
 - (void)startInContext:(id)aContext
 {
-    [(HSActionExecutionContext *)aContext scrollCardToPoint:[self scrollPoint] withAnimationDelegate:self];
+    _context = [aContext retain];
+    [_context scrollCardToPoint:[self scrollPoint] withAnimationDelegate:self];
 }
 - (void)setScrollPointRepresentation:(id)aRepresentation
 {
@@ -88,4 +90,31 @@
 {
     return [[super keysForExtraStoringWithCodingContext:aContext] arrayByAddingObject:@"scrollPointRepresentation"];
 }
+- (void)pause
+{
+    _isPaused = YES;
+    [_context invalidateScrollCardAnimation];
+}
+
+- (void)resume
+{
+    _isPaused = NO;
+    [_context scrollCardToPoint:[self scrollPoint] withAnimationDelegate:self];
+}
+
+- (void)notifyDidFinish
+{
+    [_context invalidateScrollCardAnimation];
+    [_context release];
+    _context = nil;
+    [super notifyDidFinish];
+}
+
+- (void)dealloc
+{
+    [_context invalidateScrollCardAnimation];
+    [_context release];
+    [super dealloc];
+}
+
 @end

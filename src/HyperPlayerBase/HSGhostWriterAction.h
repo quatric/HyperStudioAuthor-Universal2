@@ -35,5 +35,7 @@
 - (void)setContext:(id)aContext;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
+- (void)pause;
+- (void)resume;
 @end
 

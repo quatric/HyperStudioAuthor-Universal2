@@ -118,4 +118,14 @@
     return self;
 }
 
+- (void)pause
+{
+    [_actionSynchronizer pause];
+}
+
+- (void)resume
+{
+    [_actionSynchronizer resume];
+}
+
 @end

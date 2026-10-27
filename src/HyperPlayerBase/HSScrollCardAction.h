@@ -5,6 +5,8 @@
 @interface HSScrollCardAction : HSNBAAction <HSScrollCardActionAttributes, HSActionAttributes, HSAttributes, HyperInterface, NSObject, HSAction, HSActionSynchronousAttribute, HSAttribute, HSActionEventsAttribute, HSActionLocalizedNameAttribute, HSScrollCardActionAttribute, HSPositionAttributes, HSPositionAttribute>
 {
     NSPoint _scrollPoint;
+    HSActionExecutionContext *_context;
+    BOOL _isPaused;
 }
 - (id)XMLElementRepresentationInContext:(id)aContext;
 - (id)XMLElementName;
@@ -24,5 +26,9 @@
 - (BOOL)canChangeSynchronousFlag;
 - (BOOL)isSynchronous;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (void)pause;
+- (void)resume;
+- (void)notifyDidFinish;
+- (void)dealloc;
 @end
 

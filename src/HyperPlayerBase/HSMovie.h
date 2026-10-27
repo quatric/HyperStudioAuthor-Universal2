@@ -14,6 +14,7 @@ struct OpaqueQTVRInstance;
     // QuickTime's time base callbacks became a movie-end observer and a
     // fade-out stop time checked by the playback timer.
     BOOL _isObservingMovieEnd;
+    BOOL _isPaused;
     BOOL _isPlayingBackwards;
     long long _stopSoundFadeOutTime;    // movie time units, -1 when none
     NSInteger _loopMode;                // 0 none, 1 loop, 2 back and forth
@@ -176,5 +177,8 @@ struct OpaqueQTVRInstance;
 - (void)dealloc;
 - (id)initWithURL:(id)aURL error:(id *)aError;
 - (id)initWithMovie:(id)aMovie error:(id *)aError;
+- (void)pause;
+- (void)resume;
+
 @end
 

@@ -315,4 +315,14 @@
     return self;
 }
 
+- (void)pause
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(moveToNextButton) object:nil];
+}
+
+- (void)resume
+{
+    [self performSelector:@selector(moveToNextButton) withObject:nil];
+}
+
 @end

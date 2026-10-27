@@ -23,5 +23,7 @@
 - (id)mutableSubActions;
 - (void)dealloc;
 - (id)initWithCallingObject:(id)aObject;
+- (void)pause;
+- (void)resume;
 @end
 

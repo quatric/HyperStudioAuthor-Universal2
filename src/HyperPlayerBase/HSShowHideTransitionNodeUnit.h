@@ -19,5 +19,7 @@
 - (id)implementedHyperInterfaces;
 - (id)attributes;
 - (void)dealloc;
+- (void)pauseTransition;
+- (void)resumeTransition;
 @end
 

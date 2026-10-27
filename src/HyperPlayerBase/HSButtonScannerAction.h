@@ -50,5 +50,7 @@
 - (CGFloat)scanDelay;
 - (void)dealloc;
 - (id)init;
+- (void)pause;
+- (void)resume;
 @end
 

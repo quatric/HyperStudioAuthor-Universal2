@@ -248,4 +248,14 @@
     [_commands release];
     [super dealloc];
 }
+- (void)pause
+{
+    [[HSGhostWriterActionPerformer sharedGhostWriterActionPerformer] pause];
+}
+
+- (void)resume
+{
+    [[HSGhostWriterActionPerformer sharedGhostWriterActionPerformer] resume];
+}
+
 @end
