@@ -2463,5 +2463,71 @@ void FUN_0025ddeb(HSExportManager *self,SEL _cmd)
     [super dealloc];
 }
 
+- (id)escapeFileNameForExport:(id)aName
+{
+    return [_exporter escapeFileNameForExport:aName];
+}
+
+- (id)finishWindowController
+{
+    if (_finishWindowController == nil) {
+        NSString *location = [[self publisher] publishLocation];
+        NSString *fullPath = [location stringByAppendingPathComponent:[[[self exporter] exportRepresentation] preferredFilename]];
+        id controllerClass = nil;
+        NSString *storePath = fullPath;
+        if (_publishType == 5) {
+            controllerClass = [HSAFTPServerFinishWindowController class];
+            storePath = location;
+        } else if (_publishType == 4) {
+            controllerClass = [HSiBooksAuthorFinishWindowController class];
+        } else if (_publishType == 1 && (unsigned)(_exportFormat - 8) < 2) {
+            controllerClass = [HSAFinishWindowController class];
+        }
+        if (controllerClass != nil) {
+            _finishWindowController = [[controllerClass alloc] initWithStorePath:storePath];
+        }
+    }
+    return _finishWindowController;
+}
+
+- (int)mapExportErrorCodeWithWriteErrorCode:(int)aCode
+{
+    if (aCode == 0x200) {
+        return 0x5025;
+    }
+    if (aCode == 0x280) {
+        return 0x502c;
+    }
+    if (aCode == 0x201) {
+        return 0x502b;
+    }
+    return aCode;
+}
+
+- (void)notifyPublishDidEnd
+{
+    _isPublishing = NO;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSExportManagerDidEndPublishNotification" object:self];
+}
+
+- (void)publishWillEnd:(id)aPublish
+{
+}
+
+- (void)showFinishWindow
+{
+    id window = [[self finishWindowController] window];
+    if (window != nil) {
+        [NSApp beginSheet:window modalForWindow:[_document windowForSheet] modalDelegate:self didEndSelector:@selector(showFinishWindowDidEnd:returnCode:contextInfo:) contextInfo:nil];
+    }
+}
+
+- (void)showFinishWindowDidEnd:(id)aWindow returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aWindow orderOut:nil];
+    [_finishWindowController autorelease];
+    _finishWindowController = nil;
+}
+
 @end
 

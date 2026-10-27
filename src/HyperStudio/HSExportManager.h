@@ -10,6 +10,7 @@
     int _exportFormat;
     int _publishType;
     HSExportProgressSheetController *_progressSheetController;
+    HSAFinishWindowController *_finishWindowController;
     HSError *_exportSessionError;
     NSMapTable *_alertToDidEndInvocationMapTable;
     NSArray *_movieObjectsRunOnArrive;
@@ -88,5 +89,12 @@
 - (void)setExportFormat:(NSInteger)aFormat;
 - (NSInteger)exportFormat;
 - (void)dealloc;
+- (id)escapeFileNameForExport:(id)aName;
+- (id)finishWindowController;
+- (int)mapExportErrorCodeWithWriteErrorCode:(int)aCode;
+- (void)notifyPublishDidEnd;
+- (void)publishWillEnd:(id)aPublish;
+- (void)showFinishWindow;
+- (void)showFinishWindowDidEnd:(id)aWindow returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 @end
 
