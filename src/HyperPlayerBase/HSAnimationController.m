@@ -367,6 +367,13 @@ static CFHashCode HSAnimationKeyHash(const void *aValue)
 // animated object on the card in advance.
 - (void)addAllShowFirstFrameAnimatedObjectsToCard:(BOOL)aCard toPreparedObjects:(BOOL)aObjects playLiveVideo:(BOOL)aVideo
 {
+    [self addAllShowFirstFrameAnimatedObjectsToCard:aCard toPreparedObjects:aObjects playLiveVideo:aVideo addedToCardObjects:nil];
+}
+
+// The objects put on the card are also collected into aAdded, so the caller
+// can take them off again.
+- (void)addAllShowFirstFrameAnimatedObjectsToCard:(BOOL)aCard toPreparedObjects:(BOOL)aObjects playLiveVideo:(BOOL)aVideo addedToCardObjects:(id)aAdded
+{
     if (!aObjects && !aCard)
         return;
     NSEnumerator *enumerator = [[(HSCard *)_owner allPlayAnimationActionsForAnimationController:self] objectEnumerator];
@@ -379,8 +386,10 @@ static CFHashCode HSAnimationKeyHash(const void *aValue)
         [object setHyperUID:[HSUID UID]];
         if (aObjects)
             [_preparedObjects setObject:object forKey:[animation animationUID]];
-        if (aCard)
+        if (aCard) {
             [self addAnimatedObject:object toCardForAnimation:animation forActingObject:[action hyperObject]];
+            [aAdded addObject:object];
+        }
         if (aVideo) {
             id liveObject = [object queryHyperInterface:@protocol(HSLiveObjectAttributes)];
             if (liveObject != nil)
@@ -437,6 +446,43 @@ static CFHashCode HSAnimationKeyHash(const void *aValue)
         [self release];
     }
     return nil;
+}
+
+// While a card is exported to an image its show-first-frame animated objects
+// are put on the card temporarily.
+- (void)exportCardToImageWillStart
+{
+    if (_addedObjectsWhileExportCardToImage == nil)
+        _addedObjectsWhileExportCardToImage = [NSMutableSet new];
+    unsigned int top = _bottomAnimationsCountOnAbsoluteLayerTop;
+    unsigned int bottom = _bottomAnimationsCountOnAbsoluteLayerBottom;
+    [self addAllShowFirstFrameAnimatedObjectsToCard:YES toPreparedObjects:NO playLiveVideo:NO addedToCardObjects:_addedObjectsWhileExportCardToImage];
+    _bottomAnimationsCountOnAbsoluteLayerTopInc = _bottomAnimationsCountOnAbsoluteLayerTop - top;
+    _bottomAnimationsCountOnAbsoluteLayerBottomInc = _bottomAnimationsCountOnAbsoluteLayerBottom - bottom;
+}
+
+- (void)exportCardToImageDidEnd
+{
+    [self removeTemporaryObjects:_addedObjectsWhileExportCardToImage];
+    [_addedObjectsWhileExportCardToImage release];
+    _addedObjectsWhileExportCardToImage = nil;
+    _bottomAnimationsCountOnAbsoluteLayerTop -= _bottomAnimationsCountOnAbsoluteLayerTopInc;
+    _bottomAnimationsCountOnAbsoluteLayerBottom -= _bottomAnimationsCountOnAbsoluteLayerBottomInc;
+    _bottomAnimationsCountOnAbsoluteLayerTopInc = 0;
+    _bottomAnimationsCountOnAbsoluteLayerBottomInc = 0;
+    [self stopAllPlayingAnimations];
+}
+
+// Cards, stacks and hypertext links are not part of the object order.
+- (BOOL)isNonIndexedObject:(id)aObject
+{
+    if (aObject == nil)
+        return YES;
+    if ([aObject implementsHyperInterface:@protocol(HSCardAttributes)])
+        return YES;
+    if ([aObject implementsHyperInterface:@protocol(HSStackAttributes)])
+        return YES;
+    return [aObject queryHyperInterface:@protocol(HSHypertextLink)] != nil;
 }
 
 @end

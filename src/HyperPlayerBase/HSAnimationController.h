@@ -13,6 +13,9 @@
     NSMutableSet *_temporaryAnimationsObjects;
     unsigned int _bottomAnimationsCountOnAbsoluteLayerTop;
     unsigned int _bottomAnimationsCountOnAbsoluteLayerBottom;
+    NSMutableSet *_addedObjectsWhileExportCardToImage;
+    unsigned int _bottomAnimationsCountOnAbsoluteLayerTopInc;
+    unsigned int _bottomAnimationsCountOnAbsoluteLayerBottomInc;
 }
 - (void)removeAllTemporaryButAnimationsObjects;
 - (void)removeAllTemporaryObjects;
@@ -46,6 +49,10 @@
 - (id)owner;
 - (void)dealloc;
 - (id)init;
+- (void)addAllShowFirstFrameAnimatedObjectsToCard:(BOOL)aCard toPreparedObjects:(BOOL)aObjects playLiveVideo:(BOOL)aVideo addedToCardObjects:(id)aAdded;
+- (void)exportCardToImageWillStart;
+- (void)exportCardToImageDidEnd;
+- (BOOL)isNonIndexedObject:(id)aObject;
 @end
 
 @interface HSCard (HSAnimationControllerOwner)
