@@ -41,6 +41,7 @@
 #import "HSANetworkUploader.h"
 #import "HSANetworkConnection.h"
 #import "HSAFTPConnection.h"
+#import "HSAFTPServerUploader.h"
 #import "HSAExportPanelController.h"
 #import "HSPublishComboDialog.h"
 #import "HSHypertextLinksInspectorController.h"
