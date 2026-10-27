@@ -2065,6 +2065,7 @@ static NSSet *sTextImplementationInterfaces;
 
 - (void)dealloc
 {
+    [_rotatedTextCashedAttributes release];
     [_path release];
     [_textObject setOwner:nil];
     [_textObject release];
@@ -2150,6 +2151,59 @@ static NSSet *sTextImplementationInterfaces;
     [text replaceCharactersInRange:aRange withString:aString];
     [_textObject setHyperText:text];
     [text release];
+}
+
+// Scrollable text cannot show gradient colors: the attributes that cannot be
+// shown are stripped, the original text being kept for later.
+- (void)correctTextStyleAccordingToMode
+{
+    if ([self isScrollable]) {
+        id stripped = [self stringWithoutUnsupportedAttributes:[self hyperText]];
+        if (stripped != nil) {
+            [_rotatedTextCashedAttributes release];
+            _rotatedTextCashedAttributes = [[self hyperText] copy];
+            [self setHyperText:stripped];
+        }
+    }
+}
+
+- (void)verifyUnsupportedFeatures
+{
+    NSAttributedString *text = [self hyperText];
+    if ([text length] != 0) {
+        NSMutableAttributedString *copy = [[text mutableCopy] autorelease];
+        NSUInteger length = [text length];
+        [copy removeAttribute:NSStrokeColorAttributeName range:NSMakeRange(0, length)];
+        [copy removeAttribute:NSStrokeWidthAttributeName range:NSMakeRange(0, length)];
+        [self setHyperText:copy];
+    }
+    if (![self hasNotSolidColorComponentsInString:[self hyperText]] && [self isScrollable])
+        [self correctTextStyleAccordingToMode];
+    [super verifyUnsupportedFeatures];
+}
+
+// nil when nothing needs to be removed, else a copy without the foreground
+// colors that are gradients or not RGB convertible.
+- (id)stringWithoutUnsupportedAttributes:(id)aString
+{
+    NSMutableAttributedString *result = nil;
+    NSUInteger length = [aString length];
+    NSUInteger index = 0;
+    while (index < length) {
+        NSRange range;
+        NSDictionary *attributes = [aString attributesAtIndex:index longestEffectiveRange:&range inRange:NSMakeRange(index, length - index)];
+        id color = [attributes valueForKey:NSForegroundColorAttributeName];
+        if (color != nil) {
+            BOOL supported = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace] != nil && ![NSStringFromClass([color class]) isEqualToString:@"HSGradientColor"];
+            if (!supported) {
+                if (result == nil)
+                    result = [[NSMutableAttributedString alloc] initWithAttributedString:aString];
+                [result removeAttribute:NSForegroundColorAttributeName range:range];
+            }
+        }
+        index = NSMaxRange(range);
+    }
+    return [result autorelease];
 }
 
 @end

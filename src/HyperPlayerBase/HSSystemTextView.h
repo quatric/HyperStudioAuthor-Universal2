@@ -8,6 +8,7 @@
     HSScrollView *_scrollView;
     HSScrollView *_placeholderScrollView;
     HSText *_textObject;
+    NSAttributedString *_rotatedTextCashedAttributes;
     NSString *_path;
     BOOL _isTracked;
     NSRect _oldBounds;
@@ -229,5 +230,8 @@
 - (id)initWithExplicitNodeDataProvider:(id)aProvider sharedNodeDataUID:(id)aUID;
 - (id)textObject;
 - (void)replaceObjectString:(id)aString inRange:(NSRange)aRange;
+- (void)correctTextStyleAccordingToMode;
+- (void)verifyUnsupportedFeatures;
+- (id)stringWithoutUnsupportedAttributes:(id)aString;
 @end
 

@@ -1320,6 +1320,15 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
     [super verifyUnsupportedFeatures];
 }
 
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
+{
+    id cursor = [[self queryHyperInterface:@protocol(HSCursorAttributes)] cursor];
+    NSMutableSet *features = [NSMutableSet setWithSet:[super HTML5UnsupportedFeaturesForDocumentType:aType]];
+    if ([cursor imageMedia] != nil)
+        [features addObject:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureCursor" value:@"" table:@"Export"]];
+    return features;
+}
+
 @end
 
 // White placeholder background of a given size.
