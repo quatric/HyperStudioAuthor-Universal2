@@ -35,6 +35,7 @@
 - (void)dealloc;
 - (id)initWithType:(NSInteger)aType;
 - (id)init;
+- (void)setValue:(id)aValue forKeyFrameAtIndex:(NSInteger)aIndex;
 @end
 
 @interface NSArray (HSAnimationKeyFrames)

@@ -315,4 +315,14 @@ static HSCursor *HSCursorWithSystemCursor(NSCursor *systemCursor)
     return self;
 }
 
+// The cursor image as a PNG media.
+- (id)imageMediaForHTML5Export
+{
+    NSImage *image = [[NSImage alloc] initWithData:[[self imageMedia] mediaData]];
+    NSString *name = [image name] != nil ? [image name] : @"image";
+    id media = [HSNewMedia mediaWithData:[image hyperPNGRepresentation] name:name type:@"png"];
+    [image release];
+    return media;
+}
+
 @end

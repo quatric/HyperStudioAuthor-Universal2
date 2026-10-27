@@ -426,6 +426,7 @@ static void HSStreamDrawableCopyOutsideRects(NSRect aRect, const NSRect *aRects,
 }
 - (void)dealloc
 {
+    CGPathRelease(_clipPath);
     [_invalidRectsData release];
     if (_invalidRectsDataArray != NULL)
         CFRelease(_invalidRectsDataArray);
@@ -475,4 +476,12 @@ static void HSStreamDrawableCopyOutsideRects(NSRect aRect, const NSRect *aRects,
     [super release];
     return nil;
 }
+- (void)setClipPath:(CGPathRef)aPath
+{
+    if (_clipPath != aPath) {
+        CGPathRelease(_clipPath);
+        _clipPath = CGPathRetain(aPath);
+    }
+}
+
 @end

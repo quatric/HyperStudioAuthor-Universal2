@@ -51,5 +51,6 @@
 - (void)dealloc;
 - (id)initWithCursor:(id)aCursor;
 - (id)initWithImage:(id)aImage hotSpot:(NSPoint)aSpot;
+- (id)imageMediaForHTML5Export;
 @end
 

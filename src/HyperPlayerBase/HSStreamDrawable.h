@@ -7,6 +7,7 @@
     struct OpaqueCMProfileRef *_colorProfile;
     struct CGColorSpace *_colorSpace;
     struct __CVBuffer *_currentPixelBuffer;
+    CGPathRef _clipPath;
     unsigned int _invalidRectCount;
     struct __CFArray *_invalidRectsDataArray;
     NSData *_invalidRectsData;
@@ -29,5 +30,6 @@
 - (id)initWithPixelBufferPoolAttributes:(id)aAttributes pixelBufferAttributes:(id)aAttributes2;
 - (id)initWithWidth:(NSUInteger)aWidth height:(NSUInteger)aHeight;
 - (id)init;
+- (void)setClipPath:(CGPathRef)aPath;
 @end
 

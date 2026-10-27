@@ -276,6 +276,11 @@ static double HSKeyFrameTolerance(double a, double b)
     return self;
 }
 
+- (void)setValue:(id)aValue forKeyFrameAtIndex:(NSInteger)aIndex
+{
+    [_values replaceObjectAtIndex:aIndex withObject:aValue];
+}
+
 @end
 
 @implementation NSArray (HSAnimationKeyFrames)
