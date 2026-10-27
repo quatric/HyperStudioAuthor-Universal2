@@ -1112,8 +1112,6 @@ static NSString *sPlatformInformation;
                 [self setTypeOfAcceptedFile:aType];
                 [self setResourcesWrapper:nil];
                 [self setFileNameSource:path];
-                if ([aType isEqual:@"HSKeynoteDocumentType"])
-                    [self updateChangeCount:NSChangeDone];
                 result = [super readFromURL:aURL ofType:aType error:aError];
             } else {
                 HSOldFormatDocument *importer = [HSOldFormatDocument new];
