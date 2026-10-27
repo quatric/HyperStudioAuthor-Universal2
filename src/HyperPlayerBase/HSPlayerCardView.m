@@ -572,4 +572,14 @@
     return self;
 }
 
+// Only at the actual size (within a small tolerance).
+- (BOOL)canActivateNonScalableObjects
+{
+    float zoom = (float)[self zoomFactor];
+    float scale = (zoom != 0.0f) ? fabsf(zoom) : 1.0f;
+    if (scale <= 1.0f)
+        scale = 1.0f;
+    return fabsf(1.0f - zoom) <= scale * 0.0005f;
+}
+
 @end

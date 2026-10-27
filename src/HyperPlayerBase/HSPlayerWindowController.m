@@ -869,4 +869,9 @@
     [super dealloc];
 }
 
+- (Class)navigationControllerClass
+{
+    return [HSPlayerNavigationController class];
+}
+
 @end

@@ -1003,6 +1003,26 @@ static size_t HSTransitionViewPixelLength(float aLength)
     [center addObserver:_transitionViewProxy selector:@selector(HSTransitionView_viewDidChangeDeviceSize:) name:NSViewFrameDidChangeNotification object:self];
 }
 
+- (void)pause
+{
+    [_transitionPlayer pause];
+}
+
+- (void)resume
+{
+    [_transitionPlayer resume];
+}
+
+- (void)setTransitionPlaybackController:(id)aController
+{
+    [[self HSTransitionView_transitionPlayer] setTransitionPlaybackController:aController];
+}
+
+- (id)transitionPlaybackController
+{
+    return [[self HSTransitionView_transitionPlayer] transitionPlaybackController];
+}
+
 @end
 
 @implementation NSObject (HSTransitionViewDelegate)

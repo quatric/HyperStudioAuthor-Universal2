@@ -269,4 +269,22 @@ static HSHistoryStack *sSharedHistoryStack = nil;
     return self;
 }
 
+- (BOOL)isBackGoing
+{
+    return _isGoingInStack && _navigationStack == _back;
+}
+
+- (BOOL)isForwardGoing
+{
+    return _isGoingInStack && _navigationStack == _forward;
+}
+
+- (void)setLastMarkedCard:(id)aCard
+{
+    if (_lastMarkedCard != aCard) {
+        [_lastMarkedCard release];
+        _lastMarkedCard = [aCard retain];
+    }
+}
+
 @end

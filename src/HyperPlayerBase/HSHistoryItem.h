@@ -54,5 +54,8 @@
 - (id)copyWithZone:(NSZone *)aZone;
 - (void)dealloc;
 - (id)init;
+- (BOOL)isBackGoing;
+- (BOOL)isForwardGoing;
+- (void)setLastMarkedCard:(id)aCard;
 @end
 

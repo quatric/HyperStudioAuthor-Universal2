@@ -913,4 +913,36 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
     return self;
 }
 
+- (BOOL)shouldGoHomeInNewDocument
+{
+    if ([[self document] fileURL] != nil)
+        return NO;
+    for (id document in [[NSDocumentController sharedDocumentController] documents]) {
+        if ([document isDefaultHomeStack])
+            return YES;
+    }
+    return NO;
+}
+
+- (void)updateLastMarkedCardDocumentPath
+{
+    id card = [[self historyStack] lastMarkedCard];
+    if ([[self document] stack] == [card cardStack])
+        [card setCardDocumentPath:[[[[self document] fileURL] path] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+}
+
+- (void)saveChangesForNavigationOperation:(id)aOperation
+{
+    [[self document] canCloseDocumentWithDelegate:self shouldCloseSelector:@selector(document:didSave:contextInfo:) contextInfo:aOperation];
+}
+
+- (id)destinationCardInStack:(id)aStack fromNavigationOperation:(id)aOperation
+{
+    if ([aOperation destinationCardUID] != nil)
+        return [aStack childWithUID:[aOperation destinationCardUID]];
+    if ([aOperation destinationCardIndex] == 0x7fffffff)
+        return nil;
+    return [aStack hyperChildAtIndex:[aOperation destinationCardIndex]];
+}
+
 @end

@@ -101,6 +101,10 @@
 - (void)dealloc;
 - (void)HSTransitionView_stopDeviceSizeChangesObserving;
 - (void)HSTransitionView_startDeviceSizeChangesObserving;
+- (void)pause;
+- (void)resume;
+- (void)setTransitionPlaybackController:(id)aController;
+- (id)transitionPlaybackController;
 @end
 
 @interface NSObject (HSTransitionViewDelegate)

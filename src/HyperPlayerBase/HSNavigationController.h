@@ -86,5 +86,9 @@
 - (id)document;
 - (void)dealloc;
 - (id)initWithDocument:(id)aDocument;
+- (BOOL)shouldGoHomeInNewDocument;
+- (void)updateLastMarkedCardDocumentPath;
+- (void)saveChangesForNavigationOperation:(id)aOperation;
+- (id)destinationCardInStack:(id)aStack fromNavigationOperation:(id)aOperation;
 @end
 

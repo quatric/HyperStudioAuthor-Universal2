@@ -95,5 +95,6 @@
 - (void)windowDidLoad;
 - (id)windowNibName;
 - (void)dealloc;
+- (Class)navigationControllerClass;
 @end
 

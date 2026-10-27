@@ -72,5 +72,6 @@
 - (id)onceInit;
 - (id)initWithCoder:(id)aCoder;
 - (id)initWithFrame:(NSRect)aFrame;
+- (BOOL)canActivateNonScalableObjects;
 @end
 
