@@ -1,0 +1,105 @@
+#import "HyperStudioPrefix.h"
+#import "HSBaseEmbeddedEditor.h"
+
+
+@interface HSRotatableTextObjectEditor : HSBaseEmbeddedEditor <HSTextAttributes, HSAttributes, HyperInterface, NSObject, HSGenericFontAttributes, HSSystemFontPanelAdaptionInterface, HSGenericFontAttribute, HSVisualAttribute, HSUndoableAttribute, HSAttribute, HSGenericFontAttributesAttribute, HSTextColorAttribute, HSBaseTextAttribute, HSBackgroundColorAttribute, HSTextViewTextAttribute, HSSystemTextViewFontTraitsAttributes, HSRunTimeEditorUndoManagerDelegate, HSEditModeUndoHelperDelegate>
+{
+    HSEditModeUndoHelper *_undoHelper;
+    BOOL _undoApplied;
+    BOOL _saving;
+    BOOL _textDidEndEditing;
+}
+- (void)updateViewScaleFactor;
+- (void)recalculateOccupiedRect;
+- (NSRect)userSpaceObjectBounds;
+- (id)sizingAttributesInterface;
+- (id)geometryAttributes;
+- (id)attributesInterface;
+- (void)applyHyperTextAttributesDictionary:(id)aDictionary;
+- (void)setHyperSpaceBetweenLines:(CGFloat)aLines;
+- (CGFloat)hyperSpaceBetweenLines;
+- (void)setHyperSpaceBetweenCharacters:(CGFloat)aCharacters;
+- (CGFloat)hyperSpaceBetweenCharacters;
+- (void)setHyperShadowBlurRadius:(CGFloat)aRadius;
+- (CGFloat)hyperShadowBlurRadius;
+- (void)setHyperShadowOffset:(NSSize)aOffset;
+- (NSSize)hyperShadowOffset;
+- (void)setHyperShadowDistance:(CGFloat)aDistance;
+- (CGFloat)hyperShadowDistance;
+- (void)setHyperShadowAngle:(CGFloat)aAngle;
+- (CGFloat)hyperShadowAngle;
+- (void)setHyperShadowEnabled:(BOOL)aEnabled;
+- (BOOL)isHyperShadowEnabled;
+- (BOOL)hasMultipleShadowStyles;
+- (void)setHyperAlignment:(NSInteger)aAlignment;
+- (NSInteger)hyperAlignment;
+- (void)finishOutlineMutating:(BOOL)aMutating;
+- (void)startOutlineMutating;
+- (void)setHyperOutlineColor:(id)aColor;
+- (id)hyperOutlineColor;
+- (void)setHyperOutlineWidth:(CGFloat)aWidth;
+- (CGFloat)hyperOutlineWidth;
+- (void)setHyperOutlineEnabled:(BOOL)aEnabled;
+- (BOOL)isHyperOutlineEnabled;
+- (void)setHyperUnderlined:(BOOL)aUnderlined;
+- (BOOL)isHyperUnderlined;
+- (void)applySystemFontPanelDocumentBackgroundColor:(id)aColor;
+- (void)applyCharacterAttributesWithAttributesConverter:(id)aConverter;
+- (void)applyFontWithFontConverter:(id)aConverter;
+- (id)fontForSystemFontPanelIsMultiple:(BOOL *)aMultiple;
+- (id)hyperTextAttributes;
+- (void)setHyperExpanded:(BOOL)aExpanded;
+- (BOOL)isHyperExpanded;
+- (void)setHyperCondensed:(BOOL)aCondensed;
+- (BOOL)isHyperCondensed;
+- (void)setHyperItalic:(BOOL)aItalic;
+- (BOOL)isHyperItalic;
+- (void)setHyperBold:(BOOL)aBold;
+- (BOOL)isHyperBold;
+- (void)setHyperFontSize:(CGFloat)aSize;
+- (CGFloat)hyperFontSize;
+- (void)setHyperFontFamily:(id)aFamily;
+- (id)hyperFontFamily;
+- (void)setHyperFont:(id)aFont;
+- (id)hyperFont;
+- (void)setHyperPlainText:(id)aText;
+- (id)hyperPlainText;
+- (void)replaceTextInRange:(NSRange)aRange withAttributedString:(id)aString;
+- (void)setHyperText:(id)aText;
+- (id)hyperText;
+- (void)setBackgroundColor:(id)aColor;
+- (id)backgroundColor;
+- (void)setTextColor:(id)aColor;
+- (id)textColor;
+- (void)documentUndoManagerDidRemoveAllActions:(id)aActions;
+- (void)documentUndoManagerWillRegisterUndo:(id)aUndo;
+- (id)undoHelper;
+- (void)didRegisterUndoInUndoManager:(id)aManager;
+- (void)willRegisterUndoInUndoManager:(id)aManager;
+- (void)finishUndoDuplicating:(BOOL)aDuplicating;
+- (id)undoManager;
+- (id)document;
+- (void)runTimeEditorEmbedderWantsToResign:(id)aResign;
+- (void)runTimeEditorEmbedderDidChangeContent:(id)aContent;
+- (void)runTimeEditorEmbedderWillChangeSelectionWithoutChangingContent:(id)aContent;
+- (void)runTimeEditorEmbedderDidChangeSelectionWithoutChangingContent:(id)aContent;
+- (BOOL)displaysFocusRing;
+- (NSRect)boundsWithOccupiedRect:(NSRect)aRect;
+- (NSRect)calculateOccupiedRect;
+- (BOOL)calculatedRectIsPrecise;
+- (void)updateEmbeddedViewWithEditingObject;
+- (void)deactivateEditing;
+- (BOOL)activateEditing;
+- (void)hostViewDidChangeUserSpaceToViewSpaceTransform;
+- (BOOL)disablesRenderingEditingObject;
+- (void)saveEditing;
+- (void)HSRotatableTextObjectEditor_textDidChangeText:(id)aText;
+- (void)coreTextDidChangeAttributes:(id)aAttributes;
+- (id)coreTextInterface;
+- (id)queryHyperInterface:(id)aInterface;
+- (id)viewEmbeddingInterface;
+- (id)textEditorEmbedder;
+- (void)dealloc;
+- (id)initWithHyperObject:(id)aObject;
+@end
+

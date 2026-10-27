@@ -1,0 +1,80 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSUserObjectInteractiveView.h"
+
+
+@interface HSCardView : HSUserObjectInteractiveView <HSCardView>
+{
+    BOOL _active;
+    BOOL _supportsCanvasLayersRunning;
+    unsigned int _changeUserSpaceToViewSpaceTransformNotificationsCoalescingCount;
+    BOOL _hasPendingUserSpaceToViewSpaceTransformNotifications;
+    float _zoomFactor;
+    CGRect _lastVisibleContentUserRect;
+    unsigned int _isAutosizing:1;
+    unsigned int _isAutosizingScheduled:1;
+}
++ (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen;
++ (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen forScreen:(id)aScreen2;
+- (void)autosizePreservingVisibleCenter;
+- (void)autosizePreservingVisibleArea;
+- (void)autosizeCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent;
+- (void)HSCardView_autosizePreservingVisibleArea:(BOOL)aArea orCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent;
+- (void)enclosingScrollViewDidScroll;
+- (void)HSCardView_autosizeScheduled;
+- (BOOL)HSCardView_scheduleAutosizing;
+- (void)enclosingScrollViewDidResize;
+- (void)autosizeToReflectEnclosingScrollView;
+- (void)autosizeToFitEnclosingScrollView;
+- (void)autosizeToFrame:(NSRect)aFrame;
+- (void)autooffsetCardTo:(NSPoint)aTo;
+- (void)swipeWithEvent:(id)aEvent;
+- (NSRect)userBoundingRectForViewRect:(NSRect)aRect;
+- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect;
+- (NSPoint)convertPointFromViewSpaceToUserSpace:(NSPoint)aSpace;
+- (NSPoint)convertPointFromUserSpaceToViewSpace:(NSPoint)aSpace;
+- (id)viewSpaceToUserSpaceTransform;
+- (id)userSpaceToViewSpaceTransform;
+- (CGFloat)zoomFactor;
+- (void)setZoomFactor:(CGFloat)aFactor;
+- (void)setHasEdgeShadowView:(BOOL)aView;
+- (BOOL)isSlideshow;
+- (BOOL)canDeactivate;
+- (BOOL)isActive;
+- (void)refreshCanvasLayersRunningInCurrentActiveState;
+- (BOOL)supportsCanvasLayersRunningInCurrentActiveState;
+- (void)deactivate;
+- (void)activate;
+- (void)endChangeUserSpaceToViewSpaceTransformNotificationsCoalescing;
+- (void)beginChangeUserSpaceToViewSpaceTransformNotificationsCoalescing;
+- (void)notifyDidChangeUserSpaceToViewSpaceTransform;
+- (void)flushChangeUserSpaceToViewSpaceTransformNotifications;
+- (void)setSupportsCanvasLayersRunning:(BOOL)aRunning;
+- (BOOL)supportsCanvasLayersRunning;
+- (void)setupRootCanvasLayer:(id)aLayer;
+- (void)drawBackgroundInContentRect:(NSRect)aRect;
+- (void)addCardRect:(NSRect)aRect toContext:(struct CGContext *)aContext;
+- (void)setNeedsDisplayWorkAreaBackground;
+- (BOOL)isFlipped;
+- (NSRect)contentViewingRect;
+- (NSRect)cardViewingRect;
+- (NSRect)userObjectBounds;
+- (NSSize)cardSize;
+- (void)setCard:(id)aCard;
+- (id)card;
+- (void)stackDidChange:(id)aChange;
+- (void)stackWillChange:(id)aChange;
+- (void)cardStackDidChange;
+- (void)cardStackWillChange;
+- (void)cardSizeDidChange:(id)aChange;
+- (void)registerObservingUserObjectAttributesChange;
+- (void)unregisterObservingUserObjectAttributesChange;
+- (void)unregisterStackNotifications;
+- (void)registerStackNotifications;
+- (void)unregisterObservingCardStackAttributesChanges;
+- (void)registerObservingCardStackAttributesChanges;
+- (void)cancelOperation:(id)aOperation;
+- (void)dealloc;
+- (id)initWithCoder:(id)aCoder;
+- (id)initWithFrame:(NSRect)aFrame;
+@end
+

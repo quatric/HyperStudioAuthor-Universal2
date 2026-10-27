@@ -1,0 +1,22 @@
+#import "HyperStudioPrefix.h"
+#import "HSCommentsTextView.h"
+
+
+@interface HSGraphicObjectsAssistantPane : HSObjectAssistantPane
+{
+    HSImportDialogController *_importGraphicDialogController;
+}
+- (id)mediaAttributes;
+- (id)document;
+- (void)runCropDialogButtonClicked:(id)aClicked;
+- (void)scaleToFitCardButtonClicked:(id)aClicked;
+- (void)scaleToFillCardButtonClicked:(id)aClicked;
+- (void)flattenToBackgroundButtonClicked:(id)aClicked;
+- (void)chooseAnotherPicture:(id)aPicture;
+- (void)scaleAndRotateButtonClicked:(id)aClicked;
+- (void)setSettingsForGraphicImportDialogController:(id)aController;
+- (id)selectionToolTolerance;
+- (void)dealloc;
+- (id)init;
+@end
+

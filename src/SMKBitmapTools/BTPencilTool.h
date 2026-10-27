@@ -1,0 +1,102 @@
+#import "SMKBitmapToolsPrefix.h"
+#import "BTTool.h"
+
+
+@interface BTPencilTool : BTTool <BTMouseTracker, NSObject>
+{
+    NSPoint _imageStartPoint;
+    unsigned char _guidingMode;
+    struct CGEColor *_strokeColor;
+    struct CGEColor *_alternateStrokeColor;
+    NSCursor *_willDrawCursor;
+    NSCursor *_doDrawCursor;
+    NSCursor *_willAlternateDrawCursor;
+    NSCursor *_doAlternateDrawCursor;
+    NSCursor *_pickColorCursor;
+    NSMapTable *_strokeConsumers;
+    NSUInteger _colorPickingOption;
+    NSUInteger _alternateColorOption;
+    unsigned int _isTracking:1;
+    unsigned int _isDrawing:1;
+    unsigned int _adjustsStrokeToMatchImagePoints:1;
+    unsigned int _adjustsStrokeToMatchWindowPoints:1;
+    unsigned int _isWillDrawCursorInitialized:1;
+    unsigned int _isDoDrawCursorInitialized:1;
+    unsigned int _isWillAlternateDrawCursorInitialized:1;
+    unsigned int _isDoAlternateDrawCursorInitialized:1;
+    unsigned int _isPickColorCursorInitialized:1;
+    unsigned int _isStrokeColorInitialized:1;
+    unsigned int _isUsingAlternateStrokeColor:1;
+    unsigned int _isColorPicking:1;
+    unsigned int _isColorPicked:1;
+    unsigned int _isStroked:1;
+}
+- (void)trackingView:(id)aView didAutoscroll:(BOOL)aAutoscroll withMouseEvent:(id)aEvent;
+- (BOOL)trackingView:(id)aView shouldAutoscrollWithMouseEvent:(id)aEvent;
+- (void)haltWithMouseUp:(id)aUp inView:(id)aView;
+- (void)trackFlagsChanged:(id)aChanged inView:(id)aView;
+- (void)trackMouseUp:(id)aUp inView:(id)aView;
+- (void)trackMouseDragged:(id)aDragged inView:(id)aView;
+- (void)trackMouseDown:(id)aDown inView:(id)aView;
+- (void)BTPencilTool_beginDrawing;
+- (void)drawWithPointProvider:(id)aProvider inContext:(struct CGContext *)aContext withBounds:(CGRect)aBounds;
+- (void)BTPencilTool_drawLineToPoint:(NSPoint)aPoint withEvent:(id)aEvent;
+- (void)BTPencilTool_recordPencilStrokeFromPoint:(CGPoint)aPoint toPoint:(CGPoint)aPoint2;
+- (struct CGEColor *)BTPencilTool_effectiveStrokeColor;
+- (void)drawRect:(NSRect)aRect ofActiveFeedbackLayersExcludingLayers:(id)aLayers;
+- (void)drawRect:(NSRect)aRect ofActiveFeedbackLayersExcludingLayer:(id)aLayer;
+- (void)drawRect:(NSRect)aRect ofActiveFeedbackLayers:(id)aLayers;
+- (void)drawRect:(NSRect)aRect ofActiveFeedbackLayer:(id)aLayer;
+- (id)activeFeedbackLayersForDrawing;
+- (BOOL)isFeedbackLayerActive:(id)aActive;
+- (id)activeFeedbackLayers;
+- (void)drawRect:(NSRect)aRect;
+- (BOOL)flagsChanged:(id)aChanged;
+- (BOOL)mouseDown:(id)aDown;
+- (BOOL)BTPencilTool_pickColorAtPoint:(NSPoint)aPoint;
+- (id)cursorForPoint:(NSPoint)aPoint modifierFlags:(NSUInteger)aFlags;
+- (BOOL)isTracking;
+- (id)currentStage;
+- (void)performDeactivate;
+- (BOOL)activateWithDelegate:(id)aDelegate inView:(id)aView;
+- (void)stopRecordStrokesWithConsumer:(id)aConsumer;
+- (void)startRecordStrokesWithConsumer:(id)aConsumer;
+- (id)allUndoCategories;
+- (id)outputKeys;
+- (id)inputKeys;
+- (id *)requiredImageProtocols;
+- (void)setStrokeAdjustment:(id)aAdjustment;
+- (id)strokeAdjustment;
+- (id)defaultStrokeAdjustment;
+- (void)setAlternateStrokeColor:(id)aColor;
+- (id)alternateStrokeColor;
+- (void)setStrokeColor:(id)aColor;
+- (id)strokeColor;
+- (struct CGEColor *)BTPencilTool_strokeColor;
+- (id)defaultStrokeColor;
+- (struct CGEColor *)BTPencilTool_createDefaultStrokeColor;
+- (void)setPickColorCursor:(id)aCursor;
+- (id)pickColorCursor;
+- (id)defaultPickColorCursor;
+- (void)setDoAlternateDrawCursor:(id)aCursor;
+- (id)doAlternateDrawCursor;
+- (id)defaultDoAlternateDrawCursor;
+- (void)setWillAlternateDrawCursor:(id)aCursor;
+- (id)willAlternateDrawCursor;
+- (id)defaultWillAlternateDrawCursor;
+- (void)setDoDrawCursor:(id)aCursor;
+- (id)doDrawCursor;
+- (id)defaultDoDrawCursor;
+- (void)setWillDrawCursor:(id)aCursor;
+- (id)willDrawCursor;
+- (id)defaultWillDrawCursor;
+- (void)setAlternateColorOption:(NSUInteger)aOption;
+- (NSUInteger)alternateColorOption;
+- (NSUInteger)defaultAlternateColorOption;
+- (void)setColorPickingOption:(NSUInteger)aOption;
+- (NSUInteger)colorPickingOption;
+- (NSUInteger)defaultColorPickingOption;
+- (void)dealloc;
+- (id)init;
+@end
+

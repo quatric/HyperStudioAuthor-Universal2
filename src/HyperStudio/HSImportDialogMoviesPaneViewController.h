@@ -1,0 +1,103 @@
+#import "HyperStudioPrefix.h"
+#import "HSImportDialogBasePaneViewController.h"
+
+
+@interface HSImportDialogMoviesPaneViewController : HSImportDialogBasePaneViewController <NSTextFieldDelegate, NSControlTextEditingDelegate, NSObject>
+{
+    NSView *_paneView;
+    NSView *_paneAccessoryView;
+    NSSearchField *_searchField;
+    SMKGridControl *_imageGrid;
+    NSImage *_playButtonImage;
+    NSImage *_playButtonAquaImage;
+    NSImage *_playButtonGraphiteImage;
+    NSImage *_stopButtonImage;
+    NSImage *_stopButtonAquaImage;
+    NSImage *_stopButtonGraphiteImage;
+    HSAppearanceButtonCell *_playButtonCell;
+    NSTimer *_previewMovieTimer;
+    float _panAngle;
+    float _panAngleMin;
+    float _panAngleMax;
+    NSTextField *_currentMovieProgressField;
+    NSButton *_playButton;
+    HSMovie *_movie;
+    NSUInteger _playableItemIndex;
+    NSImage *_currentFrameImage;
+    unsigned int _storedGridSelection;
+    NSSlider *_volumeSlider;
+    NSButton *_volumeMin;
+    NSButton *_volumeMax;
+    NSTextField *_itemsCountTextField;
+    NSSlider *_thumbnailSizeSlider;
+    NSButton *_thumbnailSizeMin;
+    NSButton *_thumbnailSizeMax;
+    NSString *_filterString;
+    NSDictionary *_concreteMediaTypesDictionary;
+    NSImage *_mainThreadImage;
+    NSImage *_invalidMoviePreviewImage;
+    NSTableView *_browseTableView;
+    NSPopUpButton *_itemsFilterPopUp;
+}
+- (void)generateMovieThumbnailInMainThread:(id)aThread;
+- (id)concreteMediaTypesDictionary;
+- (void)setMode:(NSInteger)aMode forGridControl:(id)aControl;
+- (id)invalidMoviePreviewImage;
+- (void)invalidateSearch;
+- (void)generateCurrentFrameImageInMainThread;
+- (void)stopPlayingQTVR;
+- (void)playQTVRSelectionFireMethod:(id)aMethod;
+- (void)playSelection;
+- (id)movieAtIndex:(NSUInteger)aIndex;
+- (double)displayDurationForMovie:(id)aMovie;
+- (BOOL)isPlaying;
+- (void)stopPlaying;
+- (void)invalidateCellAtIndex:(NSUInteger)aIndex;
+- (void)endMoviePlayback:(id)aPlayback;
+- (void)changedMovieTime:(id)aTime;
+- (void)previewMovieTimerFireMethod:(id)aMethod;
+- (void)startPreviewMovieTimer;
+- (void)stopPreviewMovieTimer;
+- (void)invalidatePreviewMovieTimer;
+- (void)setImagesForPlayButton:(BOOL)aButton;
+- (void)volumeChangedToMaximum:(id)aMaximum;
+- (void)volumeChangedToMinimum:(id)aMinimum;
+- (void)volumeChanged:(id)aChanged;
+- (void)setPreviewMovieVolume:(CGFloat)aVolume;
+- (void)zoomMax:(id)aMax;
+- (void)zoomMin:(id)aMin;
+- (void)zoomThumbnailSizeSliderToValue:(double)aValue;
+- (void)sliderMoved:(id)aMoved;
+- (void)playSelection:(id)aSelection;
+- (void)onDoubleClick:(id)aClick;
+- (BOOL)mediaPathConformsToFilter:(id)aFilter;
+- (void)itemsFilterPopUpDidChange:(id)aChange;
+- (void)controlTextDidChange:(id)aChange;
+- (void)selectionDidChangeInGridControl:(id)aControl;
+- (void)validatePreviewMovieControls;
+- (id)gridControl:(id)aControl additionalInfoForItemAt:(NSInteger)aAt;
+- (id)gridControl:(id)aControl imageForItemAt:(NSInteger)aAt;
+- (id)gridControl:(id)aControl titleForItemAt:(NSInteger)aAt;
+- (NSInteger)numberOfItemsInGridControl:(id)aControl;
+- (void)invalidateMediaPaths;
+- (void)willMountToDialogController:(id)aController;
+- (id)helpTopicKey;
+- (id)currentMediaPathsLocation;
+- (void)restoreSelection;
+- (void)storeSelection;
+- (id)paneFilePath;
+- (id)supportedMediaTypes;
+- (id)filterString;
+- (id)concreteMediaTypeForMovie:(id)aMovie;
+- (void)paneDialogWillOpen;
+- (void)paneDialogWillClose;
+- (id)paneViewNibName;
+- (id)paneAccessoryView;
+- (id)paneView;
+- (id)paneIdentifier;
+- (void)awakeFromNib;
+- (void)configurePlayButton;
+- (void)dealloc;
+- (id)init;
+@end
+

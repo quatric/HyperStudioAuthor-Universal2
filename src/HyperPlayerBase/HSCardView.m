@@ -1,0 +1,655 @@
+#import "HSCardView.h"
+#import "HSCard.h"
+#import "HSStack.h"
+#import "HSDocument.h"
+#import "HSMainWindowController.h"
+#import "HSPresentationContext.h"
+#import "HSFunctions.h"
+#import "NSAffineTransform+HSKeyValueCoding.h"
+
+#define HSCardViewEpsilon (1.0 / 512.0)
+
+// The intersection used throughout the autosizing: rects that only touch do
+// not intersect, and the result is CGRectNull when they don't.
+static CGRect HSCardViewIntersectRect(CGRect a, CGRect b)
+{
+    if (a.origin.x >= b.origin.x + b.size.width || b.origin.x >= a.origin.x + a.size.width
+        || a.origin.y >= b.origin.y + b.size.height || b.origin.y >= a.origin.y + a.size.height)
+        return CGRectNull;
+    CGFloat x = fmax(a.origin.x, b.origin.x);
+    CGFloat y = fmax(a.origin.y, b.origin.y);
+    return CGRectMake(x, y,
+                      fmin(a.origin.x + a.size.width, b.origin.x + b.size.width) - x,
+                      fmin(a.origin.y + a.size.height, b.origin.y + b.size.height) - y);
+}
+
+// Plain bounding-box union; neither rect is ever null here.
+static CGRect HSCardViewUnionRect(CGRect a, CGRect b)
+{
+    CGFloat x = fmin(a.origin.x, b.origin.x);
+    CGFloat y = fmin(a.origin.y, b.origin.y);
+    return CGRectMake(x, y,
+                      fmax(a.origin.x + a.size.width, b.origin.x + b.size.width) - x,
+                      fmax(a.origin.y + a.size.height, b.origin.y + b.size.height) - y);
+}
+
+static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
+{
+    return a >= b - HSCardViewEpsilon && b + HSCardViewEpsilon >= a;
+}
+
+// Shows a card zoomed by _zoomFactor inside an enclosing scroll view. The
+// view is sized so that the card stays centered when it is smaller than the
+// visible area and scrollable when it is larger, keeping track of the part
+// of the content last visible so that resizing preserves it.
+@implementation HSCardView
+
++ (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen
+{
+    return [self zoomFactorForFullScreen:aScreen forScreen:[[NSApp mainWindow] screen]];
+}
+
++ (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen forScreen:(id)aScreen2
+{
+    NSSize screenSize = [(NSScreen *)aScreen2 frame].size;
+    return fmin(screenSize.width / aScreen.width, screenSize.height / aScreen.height);
+}
+
+- (void)autosizePreservingVisibleCenter
+{
+    [self HSCardView_autosizePreservingVisibleArea:YES orCenteringAtUserPoint:NSZeroPoint respectingLastVisibleContent:NO];
+}
+
+- (void)autosizePreservingVisibleArea
+{
+    [self HSCardView_autosizePreservingVisibleArea:YES orCenteringAtUserPoint:NSZeroPoint respectingLastVisibleContent:YES];
+}
+
+- (void)autosizeCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
+{
+    [self HSCardView_autosizePreservingVisibleArea:NO orCenteringAtUserPoint:aPoint respectingLastVisibleContent:aContent];
+}
+
+- (void)HSCardView_autosizePreservingVisibleArea:(BOOL)aArea orCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
+{
+    NSScrollView *scrollView = [self enclosingScrollView];
+    NSRect userBounds = [self userObjectBounds];
+    NSRect contentBounds = [self contentBoundingRect];
+    Class scrollViewClass = [scrollView class];
+    NSBorderType borderType = [scrollView borderType];
+    NSSize frameSize = [scrollView frame].size;
+    // Visible size with both scrollers shown, and with none.
+    NSSize scrolledSize = [scrollViewClass contentSizeForFrameSize:frameSize hasHorizontalScroller:YES hasVerticalScroller:YES borderType:borderType];
+    NSSize visibleSize = [scrollViewClass contentSizeForFrameSize:frameSize hasHorizontalScroller:NO hasVerticalScroller:NO borderType:borderType];
+    CGRect viewUser = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:userBounds]));
+    CGRect viewContent = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:contentBounds]));
+    CGPoint clipOrigin = CGRectNull.origin;
+    CGFloat availWidth = scrolledSize.width;
+    CGFloat availHeight = scrolledSize.height;
+    CGFloat contentWidth = viewContent.size.width;
+    CGFloat contentHeight = viewContent.size.height;
+    NSPoint center;
+
+    if (!aArea)
+        center = aPoint;
+    else {
+        NSRect clip = [self convertRect:[[scrollView contentView] frame] fromView:scrollView];
+        clipOrigin = NSPointToCGPoint(clip.origin);
+        center = [self convertPointFromViewSpaceToUserSpace:NSMakePoint(clip.origin.x + visibleSize.width * 0.5, clip.origin.y + visibleSize.height * 0.5)];
+    }
+
+    if (aContent && _lastVisibleContentUserRect.size.width > HSCardViewEpsilon && _lastVisibleContentUserRect.size.height > HSCardViewEpsilon) {
+        CGRect viewLast = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:NSRectFromCGRect(_lastVisibleContentUserRect)]));
+        if (viewLast.size.width > HSCardViewEpsilon && viewLast.size.height > HSCardViewEpsilon) {
+            if (!aArea) {
+                NSRect clip = [self convertRect:[[scrollView contentView] frame] fromView:scrollView];
+                clipOrigin = NSPointToCGPoint(clip.origin);
+            }
+            CGRect visibleLast = HSCardViewIntersectRect(CGRectMake(clipOrigin.x, clipOrigin.y, visibleSize.width, visibleSize.height), viewLast);
+            if (visibleLast.size.width > HSCardViewEpsilon && visibleLast.size.height > HSCardViewEpsilon) {
+                CGRect visibleUnion = HSCardViewUnionRect(visibleLast, viewContent);
+                CGRect scrolledLast = HSCardViewIntersectRect(CGRectMake(clipOrigin.x, clipOrigin.y, availWidth, availHeight), viewLast);
+                if (scrolledLast.size.width > HSCardViewEpsilon && scrolledLast.size.height > HSCardViewEpsilon)
+                    viewContent = HSCardViewUnionRect(scrolledLast, viewContent);
+                contentWidth = visibleUnion.size.width;
+                contentHeight = visibleUnion.size.height;
+            }
+        }
+    }
+
+    // Horizontally: a card narrower than the visible area is centered in it.
+    CGFloat fitWidth;
+    if (visibleSize.width > viewUser.size.width) {
+        CGFloat x0 = viewUser.origin.x - floor((visibleSize.width - viewUser.size.width) * 0.5 + HSCardViewEpsilon);
+        if (viewContent.origin.x > x0) {
+            CGFloat delta = viewContent.origin.x - x0;
+            contentWidth += delta;
+            viewContent.size.width += delta;
+            viewContent.origin.x = x0;
+        }
+        fitWidth = contentWidth;
+        if (availWidth > viewUser.size.width) {
+            CGFloat width = x0 + availWidth - viewContent.origin.x;
+            if (width > viewContent.size.width)
+                viewContent.size.width = width;
+            contentWidth = fmax(width, fitWidth);
+        } else
+            contentWidth = fitWidth;
+        CGFloat width = x0 + visibleSize.width - viewContent.origin.x;
+        if (width > fitWidth)
+            fitWidth = width;
+    } else
+        fitWidth = contentWidth;
+
+    CGFloat fitHeight;
+    if (visibleSize.height > viewUser.size.height) {
+        CGFloat y0 = viewUser.origin.y - floor((visibleSize.height - viewUser.size.height) * 0.5 + HSCardViewEpsilon);
+        if (viewContent.origin.y > y0) {
+            CGFloat delta = viewContent.origin.y - y0;
+            contentHeight += delta;
+            viewContent.size.height += delta;
+            viewContent.origin.y = y0;
+        }
+        fitHeight = contentHeight;
+        if (availHeight > viewUser.size.height) {
+            CGFloat height = y0 + availHeight - viewContent.origin.y;
+            if (height > viewContent.size.height)
+                viewContent.size.height = height;
+            contentHeight = fmax(height, fitHeight);
+        } else
+            contentHeight = fitHeight;
+        CGFloat height = y0 + visibleSize.height - viewContent.origin.y;
+        if (height > fitHeight)
+            fitHeight = height;
+    } else
+        fitHeight = contentHeight;
+
+    BOOL horizontalOverflow = viewContent.size.width > visibleSize.width
+        || (viewContent.size.width > availWidth && (fitWidth > visibleSize.width || viewContent.size.height > visibleSize.height));
+    BOOL verticalOverflow = viewContent.size.height > visibleSize.height
+        || (viewContent.size.height > availHeight && (fitHeight > visibleSize.height || viewContent.size.width > visibleSize.width));
+
+    if (horizontalOverflow && verticalOverflow) {
+        viewContent.size.width = contentWidth;
+        viewContent.size.height = contentHeight;
+    } else if (horizontalOverflow) {
+        viewContent.size.width = fitWidth;
+        availWidth = visibleSize.width;
+    } else {
+        viewContent.size.height = fitHeight;
+        availHeight = visibleSize.height;
+        if (!verticalOverflow) {
+            viewContent.size.width = fitWidth;
+            availWidth = visibleSize.width;
+        }
+    }
+
+    [self autooffsetCardTo:NSMakePoint(viewUser.origin.x - viewContent.origin.x, viewUser.origin.y - viewContent.origin.y)];
+
+    NSPoint viewCenter = [self convertPointFromUserSpaceToViewSpace:center];
+    CGFloat offsetX = ceil(visibleSize.width * 0.5 - viewCenter.x - HSCardViewEpsilon);
+    CGFloat offsetY = ceil(visibleSize.height * 0.5 - viewCenter.y - HSCardViewEpsilon);
+    NSRect frame;
+    frame.size.width = fmax(viewContent.size.width, availWidth);
+    frame.size.height = fmax(viewContent.size.height, availHeight);
+    frame.origin.x = offsetX >= 0 ? 0 : fmax(offsetX, availWidth - frame.size.width);
+    frame.origin.y = offsetY >= 0 ? 0 : fmax(offsetY, availHeight - frame.size.height);
+
+    if (!aContent)
+        _lastVisibleContentUserRect = NSRectToCGRect(contentBounds);
+    else {
+        // Work out which part of the content will be visible, snapping the
+        // edges of a centered card to the card itself.
+        CGRect user = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:userBounds]));
+        BOOL centered = NO;
+        CGFloat edgeX = user.origin.x, edgeWidth = user.size.width;
+        CGFloat edgeY = user.origin.y, edgeHeight = user.size.height;
+        if (visibleSize.width > user.size.width) {
+            edgeX = user.origin.x - floor((visibleSize.width - user.size.width) * 0.5 + HSCardViewEpsilon);
+            edgeWidth = visibleSize.width;
+            centered = YES;
+        }
+        if (visibleSize.height > user.size.height) {
+            edgeY = user.origin.y - floor((visibleSize.height - user.size.height) * 0.5 + HSCardViewEpsilon);
+            edgeHeight = visibleSize.height;
+            centered = YES;
+        }
+        NSRect visible = NSMakeRect(-frame.origin.x, -frame.origin.y, visibleSize.width, visibleSize.height);
+        if (centered) {
+            if (HSCardViewNearlyEqual(visible.origin.x, edgeX)) {
+                visible.size.width -= user.origin.x - edgeX;
+                visible.origin.x = user.origin.x;
+            }
+            if (HSCardViewNearlyEqual(visible.origin.x + visible.size.width, edgeX + edgeWidth))
+                visible.size.width = user.origin.x + user.size.width - visible.origin.x;
+            if (HSCardViewNearlyEqual(visible.origin.y, edgeY)) {
+                visible.size.height -= user.origin.y - edgeY;
+                visible.origin.y = user.origin.y;
+            }
+            if (HSCardViewNearlyEqual(visible.origin.y + visible.size.height, edgeY + edgeHeight))
+                visible.size.height = user.origin.y + user.size.height - visible.origin.y;
+        }
+        CGRect visibleUser = NSRectToCGRect([self userBoundingRectForViewRect:visible]);
+        CGRect last = HSCardViewIntersectRect(visibleUser, _lastVisibleContentUserRect);
+        if (last.size.width <= HSCardViewEpsilon || last.size.height <= HSCardViewEpsilon)
+            _lastVisibleContentUserRect = NSRectToCGRect(contentBounds);
+        else
+            _lastVisibleContentUserRect = HSCardViewUnionRect(last, NSRectToCGRect(contentBounds));
+    }
+
+    _isAutosizing = 1;
+    [self autosizeToFrame:[self convertRect:frame toView:[self superview]]];
+    _isAutosizing = 0;
+}
+
+- (void)enclosingScrollViewDidScroll
+{
+    if (!_isAutosizingScheduled && !_isAutosizing)
+        _isAutosizingScheduled = [self HSCardView_scheduleAutosizing];
+}
+
+- (void)HSCardView_autosizeScheduled
+{
+    NSScrollView *scrollView = [self enclosingScrollView];
+    if (scrollView) {
+        // Wait for the clip view to finish an animated scroll; the private
+        // _isAnimatingScroll is only queried when it is there.
+        char isAnimating = 0;
+        NSClipView *clipView = [scrollView contentView];
+        NSMethodSignature *signature = [clipView methodSignatureForSelector:@selector(_isAnimatingScroll)];
+        if (signature && strcmp([signature methodReturnType], "c") == 0) {
+            NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:signature];
+            if (invocation) {
+                [invocation setTarget:clipView];
+                [invocation setSelector:@selector(_isAnimatingScroll)];
+                [invocation invoke];
+                [invocation getReturnValue:&isAnimating];
+            }
+        }
+        if (isAnimating) {
+            _isAutosizingScheduled = [self HSCardView_scheduleAutosizing];
+            return;
+        }
+        [self autosizeToReflectEnclosingScrollView];
+    }
+    _isAutosizingScheduled = 0;
+}
+
+- (BOOL)HSCardView_scheduleAutosizing
+{
+    NSArray *modes = [NSArray arrayWithObject:NSDefaultRunLoopMode];
+    if (modes)
+        [[NSRunLoop currentRunLoop] performSelector:@selector(HSCardView_autosizeScheduled) target:self argument:nil order:0xffffffff modes:modes];
+    return modes != nil;
+}
+
+- (void)enclosingScrollViewDidResize
+{
+    [self autosizeToFitEnclosingScrollView];
+}
+
+- (void)autosizeToReflectEnclosingScrollView
+{
+}
+
+- (void)autosizeToFitEnclosingScrollView
+{
+}
+
+- (void)autosizeToFrame:(NSRect)aFrame
+{
+    BOOL openGL = [self isOpenGLSurfaceEnabled];
+    if (!openGL)
+        [self setFrameSize:aFrame.size];
+    else {
+        // Grow first so the surface never shrinks below what is scrolled
+        // into view, then settle on the final size after scrolling.
+        [[self window] disableScreenUpdatesUntilFlush];
+        NSSize size = [self frame].size;
+        if (aFrame.size.width > size.width || aFrame.size.height > size.height)
+            [self setFrameSize:NSMakeSize(fmax(aFrame.size.width, size.width), fmax(aFrame.size.height, size.height))];
+    }
+    NSClipView *clipView = [[self enclosingScrollView] contentView];
+    NSRect clipFrame = [[self superview] convertRect:aFrame toView:clipView];
+    [clipView setBoundsOrigin:NSMakePoint(-clipFrame.origin.x, -clipFrame.origin.y)];
+    if (openGL)
+        [self setFrameSize:aFrame.size];
+}
+
+- (void)autooffsetCardTo:(NSPoint)aTo
+{
+}
+
+- (void)swipeWithEvent:(id)aEvent
+{
+    SEL action;
+    if ([(NSEvent *)aEvent deltaX] < 0)
+        action = @selector(goToNextCardWithoutLeaveActions:);
+    else if ([(NSEvent *)aEvent deltaX] > 0)
+        action = @selector(goToPreviousCardWithoutLeaveActions:);
+    else
+        return;
+    [[[self userObject] document] performSelector:action withObject:self];
+}
+
+- (NSRect)userBoundingRectForViewRect:(NSRect)aRect
+{
+    return NSMakeRect(aRect.origin.x / _zoomFactor, aRect.origin.y / _zoomFactor, aRect.size.width / _zoomFactor, aRect.size.height / _zoomFactor);
+}
+
+- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect
+{
+    return NSMakeRect(aRect.origin.x * _zoomFactor, aRect.origin.y * _zoomFactor, aRect.size.width * _zoomFactor, aRect.size.height * _zoomFactor);
+}
+
+- (NSPoint)convertPointFromViewSpaceToUserSpace:(NSPoint)aSpace
+{
+    return NSMakePoint(aSpace.x / _zoomFactor, aSpace.y / _zoomFactor);
+}
+
+- (NSPoint)convertPointFromUserSpaceToViewSpace:(NSPoint)aSpace
+{
+    return NSMakePoint(aSpace.x * _zoomFactor, aSpace.y * _zoomFactor);
+}
+
+- (id)viewSpaceToUserSpaceTransform
+{
+    float scale = 1.0f / _zoomFactor;
+    struct HyperPlayerBase_anon1 transform = {scale, 0, 0, scale, 0, 0};
+    return [NSAffineTransform transformWithHyperTransformStruct:transform];
+}
+
+- (id)userSpaceToViewSpaceTransform
+{
+    struct HyperPlayerBase_anon1 transform = {_zoomFactor, 0, 0, _zoomFactor, 0, 0};
+    return [NSAffineTransform transformWithHyperTransformStruct:transform];
+}
+
+- (CGFloat)zoomFactor
+{
+    return _zoomFactor;
+}
+
+- (void)setZoomFactor:(CGFloat)aFactor
+{
+    float factor = aFactor;
+    float magnitude = fmaxf(factor != 0 ? fabsf(factor) : 1, _zoomFactor != 0 ? fabsf(_zoomFactor) : 1);
+    if (magnitude * 0.0005f < fabsf(factor - _zoomFactor))
+        _zoomFactor = factor;
+}
+
+- (void)setHasEdgeShadowView:(BOOL)aView
+{
+}
+
+- (BOOL)isSlideshow
+{
+    return [[self presentationContext] isSlideshowContext];
+}
+
+- (BOOL)canDeactivate
+{
+    return YES;
+}
+
+- (BOOL)isActive
+{
+    return _active;
+}
+
+- (void)refreshCanvasLayersRunningInCurrentActiveState
+{
+    [self setSupportsCanvasLayersRunning:[self supportsCanvasLayersRunningInCurrentActiveState]];
+}
+
+- (BOOL)supportsCanvasLayersRunningInCurrentActiveState
+{
+    return _active;
+}
+
+- (void)deactivate
+{
+    _active = NO;
+    [self refreshCanvasLayersRunningInCurrentActiveState];
+}
+
+- (void)activate
+{
+    _active = YES;
+    [self refreshCanvasLayersRunningInCurrentActiveState];
+}
+
+- (void)endChangeUserSpaceToViewSpaceTransformNotificationsCoalescing
+{
+    if (--_changeUserSpaceToViewSpaceTransformNotificationsCoalescingCount == 0)
+        [self flushChangeUserSpaceToViewSpaceTransformNotifications];
+}
+
+- (void)beginChangeUserSpaceToViewSpaceTransformNotificationsCoalescing
+{
+    _changeUserSpaceToViewSpaceTransformNotificationsCoalescingCount++;
+}
+
+- (void)notifyDidChangeUserSpaceToViewSpaceTransform
+{
+    _hasPendingUserSpaceToViewSpaceTransformNotifications = YES;
+    if (_changeUserSpaceToViewSpaceTransformNotificationsCoalescingCount == 0)
+        [self flushChangeUserSpaceToViewSpaceTransformNotifications];
+}
+
+- (void)flushChangeUserSpaceToViewSpaceTransformNotifications
+{
+    if (_hasPendingUserSpaceToViewSpaceTransformNotifications) {
+        _hasPendingUserSpaceToViewSpaceTransformNotifications = NO;
+        [[NSNotificationCenter defaultCenter] postNotificationName:HSViewDidChangeUserSpaceToViewSpaceTransformNotification object:self];
+    }
+}
+
+- (void)setSupportsCanvasLayersRunning:(BOOL)aRunning
+{
+    if (_supportsCanvasLayersRunning != (aRunning != NO)) {
+        _supportsCanvasLayersRunning = aRunning != NO;
+        [[self rootCanvasLayer] setRunningDisabled:!_supportsCanvasLayersRunning];
+    }
+}
+
+- (BOOL)supportsCanvasLayersRunning
+{
+    return _supportsCanvasLayersRunning;
+}
+
+- (void)setupRootCanvasLayer:(id)aLayer
+{
+    [super setupRootCanvasLayer:aLayer];
+    [aLayer setRunningDisabled:!_supportsCanvasLayersRunning];
+}
+
+- (void)drawBackgroundInContentRect:(NSRect)aRect
+{
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    NSRect cardRect = [self viewBoundingRectForUserRect:[self userObjectBounds]];
+    CGAffineTransform ctm = CGContextGetCTM(context);
+    CGContextSetPatternPhase(context, CGSizeMake(ctm.a * cardRect.origin.x + ctm.c * cardRect.origin.y + ctm.tx,
+                                                 ctm.b * cardRect.origin.x + ctm.d * cardRect.origin.y + ctm.ty));
+    [NSBezierPath fillRect:[self bounds]];
+
+    // A thin frame around the card, aligned to device pixels.
+    NSRect frame = [self convertRect:NSInsetRect(cardRect, -1, -1) toView:nil];
+    CGFloat x = roundf(frame.origin.x);
+    CGFloat y = roundf(frame.origin.y);
+    frame = NSMakeRect(x, y, roundf(x - frame.origin.x + frame.size.width), roundf(y - frame.origin.y + frame.size.height));
+    frame = [self convertRect:NSInsetRect(frame, 0.5, 0.5) fromView:nil];
+    CGContextSetRGBStrokeColor(context, 0.095, 0.21, 0.3, 0.5);
+    [self addCardRect:frame toContext:context];
+    CGContextStrokePath(context);
+}
+
+- (void)addCardRect:(NSRect)aRect toContext:(struct CGContext *)aContext
+{
+    CGContextAddRect(aContext, NSRectToCGRect(aRect));
+}
+
+- (void)setNeedsDisplayWorkAreaBackground
+{
+}
+
+- (BOOL)isFlipped
+{
+    return YES;
+}
+
+- (NSRect)contentViewingRect
+{
+    NSRect rect = [self contentBoundingRect];
+    if (!NSIsEmptyRect(rect))
+        rect = [self viewBoundingRectForUserRect:rect];
+    return rect;
+}
+
+- (NSRect)cardViewingRect
+{
+    NSRect rect;
+    rect.origin = NSZeroPoint;
+    rect.size = [self cardSize];
+    return [self viewBoundingRectForUserRect:rect];
+}
+
+- (NSRect)userObjectBounds
+{
+    NSRect rect;
+    rect.origin = NSZeroPoint;
+    rect.size = [self cardSize];
+    return rect;
+}
+
+- (NSSize)cardSize
+{
+    id size = [[self card] queryHyperInterface:@protocol(HSSizeAttributes)];
+    if (!size)
+        return NSZeroSize;
+    return [(id<HSSizeAttributes>)size size];
+}
+
+- (void)setCard:(id)aCard
+{
+    if ([self card] == aCard)
+        return;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSCurrentCardInCardViewWillChange" object:self];
+    if ([self card] && [_delegate respondsToSelector:@selector(cardView:willSetCard:)])
+        [_delegate cardView:self willSetCard:aCard];
+    [self setUserObject:aCard];
+    if ([_delegate respondsToSelector:@selector(cardView:didSetCard:)])
+        [_delegate cardView:self didSetCard:aCard];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSCurrentCardInCardViewDidChange" object:self];
+}
+
+- (id)card
+{
+    return [self userObject];
+}
+
+- (void)stackDidChange:(id)aChange
+{
+    [self cardStackDidChange];
+}
+
+- (void)stackWillChange:(id)aChange
+{
+    [self cardStackWillChange];
+}
+
+- (void)cardStackDidChange
+{
+    [self registerStackNotifications];
+}
+
+- (void)cardStackWillChange
+{
+    [self unregisterStackNotifications];
+}
+
+- (void)cardSizeDidChange:(id)aChange
+{
+    [self setNeedsDisplayOpenGLSurface:YES];
+}
+
+- (void)registerObservingUserObjectAttributesChange
+{
+    [super registerObservingUserObjectAttributesChange];
+    id card = [self card];
+    [card addObserver:self selector:@selector(stackWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeParentAttribute) withPriority:-0.75];
+    [card addObserver:self selector:@selector(stackDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSNodeParentAttribute) withPriority:-0.75];
+    [card addObserver:self selector:@selector(cardSizeDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSSizeAttribute) withPriority:-0.75];
+    [self registerStackNotifications];
+}
+
+- (void)unregisterObservingUserObjectAttributesChange
+{
+    [super unregisterObservingUserObjectAttributesChange];
+    id card = [self card];
+    [card removeObserver:self selector:@selector(stackWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeParentAttribute)];
+    [card removeObserver:self selector:@selector(stackDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSNodeParentAttribute)];
+    [card removeObserver:self selector:@selector(cardSizeDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSSizeAttribute)];
+    [self unregisterStackNotifications];
+}
+
+- (void)unregisterStackNotifications
+{
+    [self unregisterObservingCardStackAttributesChanges];
+}
+
+- (void)registerStackNotifications
+{
+    [self registerObservingCardStackAttributesChanges];
+}
+
+- (void)unregisterObservingCardStackAttributesChanges
+{
+}
+
+- (void)registerObservingCardStackAttributesChanges
+{
+}
+
+- (void)cancelOperation:(id)aOperation
+{
+    BOOL handled = [self handleKeyEventSelector:_cmd];
+    if (!handled) {
+        id windowController = [[self window] windowController];
+        if ([windowController isKindOfClass:[HSMainWindowController class]])
+            handled = [(HSMainWindowController *)windowController cancelOperation];
+    }
+    if (handled)
+        [self didHandleKeyEvent];
+}
+
+- (void)dealloc
+{
+    [[[[self card] stack] attributeObservingController] removeAttributeObserver:self];
+    [[self card] removeAttributeObserver:self];
+    [super dealloc];
+}
+
+- (id)initWithCoder:(id)aCoder
+{
+    self = [super initWithCoder:aCoder];
+    if (self) {
+        _zoomFactor = 1;
+        [super enableOpenGLSurface];
+        [super setOpenGLSurfaceAutodisplayMode:1];
+    }
+    return self;
+}
+
+- (id)initWithFrame:(NSRect)aFrame
+{
+    self = [super initWithFrame:aFrame];
+    if (self) {
+        _zoomFactor = 1;
+        [super enableOpenGLSurface];
+        [super setOpenGLSurfaceAutodisplayMode:1];
+    }
+    return self;
+}
+
+@end

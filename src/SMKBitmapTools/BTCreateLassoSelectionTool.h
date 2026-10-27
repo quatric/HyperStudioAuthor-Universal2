@@ -1,0 +1,107 @@
+#import "SMKBitmapToolsPrefix.h"
+#import "BTTool.h"
+
+
+@interface BTCreateLassoSelectionTool : BTTool <BTToolDelegate, NSObject>
+{
+    NSString *_initialCreateSelectionMode;
+    NSString *_pendingInitialCreateSelectionMode;
+    BTCreateFreeHandSelectionTool *_createFreeHandSelectionTool;
+    BTCreateMagicWandSelectionTool *_createMagicWandSelectionTool;
+    CGFloat _tolerance;
+    NSValue *_selectionStartPointValue;
+    CGPathRef _initialSelectionPath;
+    CGPathRef _selectionPath;
+    NSString *_finalizingCreateSelectionMode;
+    NSCursor *_willCreateFreeHandSelectionCursor;
+    NSCursor *_doCreateFreeHandSelectionCursor;
+    NSCursor *_willCreateMagicLassoSelectionCursor;
+    NSCursor *_doCreateMagicLassoSelectionCursor;
+    NSUInteger _magicSwitchingOption;
+    NSUInteger _lassoSwitchingOption;
+    unsigned int _isCreateFreeHandSelectionToolActivated:1;
+    unsigned int _isCreateMagicWandSelectionToolActivated:1;
+    unsigned int _switchesMagicLassoAndMagicWandModes:1;
+    unsigned int _switchesFreeHandAndMagicLassoModes:1;
+    unsigned int _shouldSmoothSelectionPath:1;
+    unsigned int _isWillCreateFreeHandSelectionCursorInitialized:1;
+    unsigned int _isDoCreateFreeHandSelectionCursorInitialized:1;
+}
+- (id)layoutGuidingContextForTool:(id)aTool;
+- (id)mouseTrackingDelegateForTool:(id)aTool;
+- (id)imageViewTransformerForTool:(id)aTool;
+- (id)tool:(id)aTool willSetUndoActionName:(id)aName;
+- (void)tool:(id)aTool willRegisterUndoInManager:(id)aManager category:(id)aCategory;
+- (id)undoManagerForTool:(id)aTool category:(id)aCategory;
+- (void)tool:(id)aTool didFinalizeOutputForKey:(id)aKey;
+- (void)tool:(id)aTool didUpdateOutputForKey:(id)aKey;
+- (void)tool:(id)aTool willUpdateOutputForKey:(id)aKey;
+- (void)tool:(id)aTool didReplaceImageWithEffectiveChangeInRect:(NSRect)aRect;
+- (void)tool:(id)aTool willReplaceImageWithEffectiveChangeInRect:(NSRect)aRect;
+- (void)tool:(id)aTool didChangeImageInRect:(NSRect)aRect;
+- (void)tool:(id)aTool willChangeImageInRect:(NSRect)aRect;
+- (void)toolDidEndChangingImageContinuously:(id)aContinuously;
+- (void)toolWillBeginChangingImageContinuously:(id)aContinuously;
+- (BOOL)tool:(id)aTool didFinalizeStage:(id)aStage withEvent:(id)aEvent nextStage:(id)aStage2;
+- (void)tool:(id)aTool didUpdateCursorWithEvent:(id)aEvent;
+- (void)finalizeSelectionPath:(id)aPath;
+- (void)selectAllArea:(id)aArea;
+- (BOOL)flagsChanged:(id)aChanged;
+- (BOOL)mouseDown:(id)aDown;
+- (void)BTCreateLassoSelectionTool_flagsChanged:(id)aChanged;
+- (id)cursorForPoint:(NSPoint)aPoint modifierFlags:(NSUInteger)aFlags;
+- (id)currentStage;
+- (void)performDeactivate;
+- (BOOL)activateWithDelegate:(id)aDelegate inView:(id)aView;
+- (void)changeViewInvalidationEnabledTo:(BOOL)aTo;
+- (void)changeReferenceCGContextTo:(struct CGContext *)aTo;
+- (void)changeWorkPasteboardTo:(id)aTo;
+- (void)changeWorkImageTo:(id)aTo;
+- (id)outputKeys;
+- (id)inputKeys;
+- (id)selectionPath;
+- (void)setFinalizingCreateSelectionMode:(id)aMode;
+- (id)finalizingCreateSelectionMode;
+- (void)setInitialSelectionPath:(id)aPath;
+- (id)initialSelectionPath;
+- (void)setSelectionStartPoint:(id)aPoint;
+- (id)selectionStartPoint;
+- (id)currentCreateSelectionMode;
+- (void)setInitialCreateSelectionMode:(id)aMode;
+- (id)initialCreateSelectionMode;
+- (void)setLassoSwitchingOption:(NSUInteger)aOption;
+- (NSUInteger)lassoSwitchingOption;
+- (NSUInteger)defaultLassoSwitchingOption;
+- (void)setMagicSwitchingOption:(NSUInteger)aOption;
+- (NSUInteger)magicSwitchingOption;
+- (NSUInteger)defaultMagicSwitchingOption;
+- (void)setTolerance:(CGFloat)aTolerance;
+- (CGFloat)tolerance;
+- (CGPathRef)BTCreateLassoSelectionTool_createLassoPathWithInitialPath:(CGPathRef)aPath startPoint:(NSPoint)aPoint tolerance:(CGFloat)aTolerance shouldSmooth:(BOOL)aSmooth;
+- (void)setDoCreateMagicLassoSelectionCursor:(id)aCursor;
+- (id)doCreateMagicLassoSelectionCursor;
+- (id)defaultDoCreateMagicLassoSelectionCursor;
+- (void)setWillCreateMagicLassoSelectionCursor:(id)aCursor;
+- (id)willCreateMagicLassoSelectionCursor;
+- (id)defaultWillCreateMagicLassoSelectionCursor;
+- (void)setWillCreateMagicWandSelectionCursor:(id)aCursor;
+- (id)willCreateMagicWandSelectionCursor;
+- (id)defaultWillCreateMagicWandSelectionCursor;
+- (void)setDoCreateFreeHandSelectionCursor:(id)aCursor;
+- (id)doCreateFreeHandSelectionCursor;
+- (id)defaultDoCreateFreeHandSelectionCursor;
+- (void)setWillCreateFreeHandSelectionCursor:(id)aCursor;
+- (id)willCreateFreeHandSelectionCursor;
+- (id)defaultWillCreateFreeHandSelectionCursor;
+- (void)BTCreateLassoSelectionTool_synchronizeWithFreeHandMode;
+- (BOOL)BTCreateLassoSelectionTool_isInFreeHandMode;
+- (id)BTCreateLassoSelectionTool_activeSubtoolSwitchingMagicLassoAndMagicWandModes:(BOOL)aModes;
+- (id)BTCreateLassoSelectionTool_activeCreateFreeHandSelectionTool;
+- (id)BTCreateLassoSelectionTool_activeCreateMagicWandSelectionTool;
+- (BOOL)BTCreateLassoSelectionTool_activateSubtool:(id)aSubtool;
+- (void)BTCreateLassoSelectionTool_synchronizeSubtool:(id)aSubtool;
+- (id *)requiredImageProtocols;
+- (void)dealloc;
+- (id)init;
+@end
+

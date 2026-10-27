@@ -1,0 +1,152 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSVisualUserObject.h"
+
+
+@interface HSCard : HSVisualUserObject <HSMutableCardAttributes, HSCardAttributes, HSAttributes, HyperInterface, NSObject, HSCardTitleAttribute, HSAttribute, HSCardGroupAttribute, HSCardMarkedAttribute, HSMutableBackgroundAttributes, HSBackgroundAttributes, HSBackgroundGraphicsAttribute, HSBackgroundAttribute, HSVisualAttribute, HSUndoableAttribute, HSBackgroundBoundsAttribute, HSBackgroundRenderer, HSGenericSolidColorAttributes, HSGenericSolidColorAttribute, HSLayoutInfluencingObjectGeometry, HSLayoutGeometryHolder, HSCardLayoutGuidingInterface, HSLayoutGeometryHoldersProvider, HSBackgroundAttributesContainerPrimitives, HSImageRectSubattributes, HSImageRectAttribute, HSActorOwner, HSSizeAdditionalAttributes>
+{
+    NSString *_title;
+    int _pasteboardChangeCount;
+    int _pasteCount;
+    HSUniqueNameGenerator *_cardTitleGenerator;
+    int _cardIdOldFileFormat;
+    int _playedObjectsCount;
+    NSImage *_backgroundThumbnail;
+    HSGraphics *_backgroundGraphics;
+    BOOL _isPostingNotification;
+    BOOL _isHyperCardIgnoredInLayoutGuiding;
+    HSAnimationController *_animationController;
+    HSUID *_cardGroupUID;
+    BOOL _markedCard;
+    BOOL _isMenuBarVisible;
+    NSMutableArray *_webPageObjects;
+}
++ (id)cardWithData:(id)aData pasteboard:(id)aPasteboard;
++ (id)defaultUnitClassNames;
+- (void)setObjectName:(id)aName;
+- (id)objectName;
+- (void)importGeometryFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importSharedPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importLocalPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (id)XMLGeometryElementRepresentationInContext:(id)aContext;
+- (void)storeLocalPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (void)storeSharedPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (id)groupUIDForXMLStoring;
+- (BOOL)canBeStoredAsXMLElement;
+- (id)XMLElementName;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (BOOL)isIntegralSize;
+- (id)deepComments;
+- (id)childrenComments;
+- (void)eraseBackgroundWithColor:(id)aColor;
+- (void)importBackgroundFromImage:(id)aImage toPoint:(NSPoint)aPoint eraseBackground:(BOOL)aBackground;
+- (void)importBackgroundFromImage:(id)aImage imageScalingOption:(NSInteger)aOption eraseBackground:(BOOL)aBackground;
+- (void)HSCard_importBackgroundFromImage:(id)aImage toPoint:(NSPoint)aPoint imageScalingOption:(NSInteger)aOption eraseBackground:(BOOL)aBackground;
+- (void)currentCardInCardViewDidChange:(id)aChange;
+- (void)currentCardInCardViewWillChange:(id)aChange;
+- (id)valuesForMDAttribute:(id)aAttribute;
+- (void)cardPresentationWillStart;
+- (BOOL)supportsActionType:(id)aType forEvent:(id)aEvent;
+- (id)hyperObjectForActor:(id)aActor;
+- (id)fullDictionaryRepresentationWithAllNodeUnits:(BOOL)aUnits;
+- (void)removeFromHyperParent;
+- (void)notifyDidChangeCardGroupAttribute;
+- (void)notifyWillChangeCardGroupAttribute;
+- (void)setCursor:(id)aCursor;
+- (id)cursor;
+- (void)makeNonGroupCard;
+- (void)makeGroupCardWithGroupUID:(id)aUID;
+- (void)makeNewGroupCard;
+- (id)otherActorsFromGroup:(id)aGroup;
+- (BOOL)isGroupCard;
+- (void)setCardGroupUID:(id)aUID;
+- (id)cardGroupUID;
+- (id)cardGroupController;
+- (id)animationController;
+- (id)objectInHyperGeometryHoldersForInterface:(id)aInterface atIndex:(NSUInteger)aIndex;
+- (NSUInteger)countOfHyperGeometryHoldersForInterface:(id)aInterface;
+- (void)setHyperCardIgnoredInLayoutGuiding:(BOOL)aGuiding;
+- (BOOL)isHyperCardIgnoredInLayoutGuiding;
+- (NSRect)hyperLayoutInfluencingBoundingRect;
+- (CGAffineTransform)hyperLayoutInfluencingTransform;
+- (BOOL)isHyperInfluencingLayout;
+- (void)setMarkedCard:(BOOL)aCard;
+- (BOOL)isMarkedCard;
+- (id)basename;
+- (id)wrapperExtension;
+- (void)setHyperDroppedSolidColor:(id)aColor;
+- (void)setHyperSolidColor:(id)aColor;
+- (id)hyperSolidColor;
+- (id)makeImageRepresentationForContext:(id)aContext;
+- (void)setMenuBarVisible:(BOOL)aVisible;
+- (BOOL)isMenuBarVisible;
+- (void)fillBackgroundWithEraserColorIfNeeded;
+- (void)fillBackgroundWithColor:(id)aColor;
+- (void)convertObjectToImage:(id)aImage;
+- (id)flatObjectsToImageObject:(id)aObject addToCard:(BOOL)aCard;
+- (void)flatObjectsToImage:(id)aImage;
+- (void)flatObjectsToBackground:(id)aBackground;
+- (void)HSCard_setBackgroundImage:(id)aImage inRect:(id)aRect draw:(id)aDraw;
+- (void)HSCard_mergeActionsFromObjects:(id)aObjects toObject:(id)aObject firstName:(id *)aName;
+- (void)drawObjectsOnBackground:(id)aBackground;
+- (void)_setBackgroundGraphics:(id)aGraphics;
+- (NSRect)backgroundBounds;
+- (id)backgroundGraphics;
+- (void)setHyperBackgroundGraphics:(id)aGraphics copyObject:(BOOL)aObject;
+- (void)setBackgroundThumbnail:(id)aThumbnail;
+- (id)backgroundThumbnail;
+- (NSRect)imageRect;
+- (id)queryNewHyperInterface:(id)aInterface;
+- (NSInteger)incrementPasteCount;
+- (void)resetPasteCount;
+- (void)hyperDrawBackgroundInROI:(NSRect)aROI ofBounds:(NSRect)aBounds;
+- (void)postTitleDidChange;
+- (BOOL)isEmpty;
+- (void)setCardIdOldFileFormatAsString:(id)aString;
+- (id)cardIdOldFileFormatAsString;
+- (void)setCardIdOldFileFormat:(NSInteger)aFormat;
+- (NSInteger)cardIdOldFileFormat;
+- (void)setHyperTitle:(id)aTitle;
+- (id)hyperTitle;
+- (void)hyperRefreshTitle;
+- (id)enumeratorForGenerator:(id)aGenerator;
+- (id)nameBaseTemplates;
+- (void)setTitle:(id)aTitle;
+- (id)title;
+- (void)loadChildrenFromFileWrapper:(id)aWrapper;
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (BOOL)isItemProxy;
+- (id)childWrapperExtension;
+- (id)stack;
+- (id)card;
+- (void)dealloc;
+- (void)willDisconnectFromParent;
+- (void)didConnectToParent;
+- (void)HSCard_cardSizeDidChange:(id)aChange;
+- (id)init;
+- (void)HSCard_setDefaultBackgroundIfNeeded;
+- (void)removeHyperChild:(id)aChild;
+- (void)insertTemporaryHyperChild:(id)aChild atIndex:(NSUInteger)aIndex;
+- (void)addTemporaryHyperChild:(id)aChild;
+@end
+
+@interface HSCard_HSDefaultBackgroundImage : NSObject <BTCGImage, BTImage, NSObject, BTCocoaImage, HSPlaceholderImage>
+{
+    CGSize _size;
+}
+- (struct CGColor *)colorAtPoint:(CGPoint)aPoint;
+- (void)drawInCurrentNSGraphicsContextAtPoint:(NSPoint)aPoint;
+- (void)drawInCurrentNSGraphicsContextInRect:(NSRect)aRect;
+- (void)drawInCGContext:(struct CGContext *)aContext atPoint:(CGPoint)aPoint;
+- (void)drawInCGContext:(struct CGContext *)aContext inRect:(CGRect)aRect;
+- (struct CGImage *)coreGraphicsImage;
+- (struct CGColorSpace *)coreGraphicsColorSpace;
+- (struct CGPDFDocument *)coreGraphicsPDFDocument;
+- (void)setImageSize:(NSSize)aSize;
+- (CGSize)imageSize;
+- (id)initWithImageSize:(NSSize)aSize;
+- (id)init;
+@end
+

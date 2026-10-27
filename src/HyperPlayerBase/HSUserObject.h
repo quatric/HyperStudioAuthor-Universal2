@@ -1,0 +1,133 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSConcreteVisualObjectProvider.h"
+
+
+@interface HSUserObject : HSConcreteVisualObjectProvider <HSUserObjectSupport, HyperInterface, NSObject, HSUserObjectUIDBasedAccess, HSMutableObjectAttributes, HSObjectAttributes, HSAttributes, HSScriptObject, HSObjectNameAttribute, HSAttribute, HSObjectKindDisplayNameAttribute, HSObjectScriptDisplayNameAttribute, HSObjectScriptKindAttribute, HSObjectScriptNameAttribute, HSObjectUIDAttribute, HSObjectKindNameAttribute, HSSelectableObject, HSCursorAttributes, HSCursorAttribute, HSScriptableEntity, EXKeyValueCoding, HSObjectStyleCopying, HSMediaCopySupport, HSMDItemObject, HSActionSupport, HSCommentsAttributes, HSCommentsAttribute, HSImportUserInfoContainer, HSActionCopySupport, HSXMLUserObjectStoringSupport, HSXMLStoringSupport, HSXMLUserObjectLoadingSupport, HSXMLLoadingSupport, HSiPadUnsupportedFunctionality, HSObjectNaming>
+{
+    NSMutableDictionary *_userInfo;
+}
++ (id)defaultObject;
++ (Class)nodeDataClass;
+- (void)importFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importLocalPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importSharedPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importCursorFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importHypertextLinksFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importActionFromXMLElement:(id)aElement forActor:(id)aActor inContext:(id)aContext;
+- (void)importGeometryFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importAttributesFromXMLRepresentation:(id)aRepresentation forActor:(id)aActor;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
+- (id)XMLHypertextLinksElementForContext:(id)aContext;
+- (id)XMLActorElementForActor:(id)aActor inContext:(id)aContext;
+- (id)XMLGeometryElementRepresentationInContext:(id)aContext;
+- (void)storeLocalPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (void)storeSharedPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (id)XMLCursorElementRepresentationInContext:(id)aContext;
+- (id)groupUIDForXMLStoring;
+- (id)XMLElementRepresentationInContext:(id)aContext;
+- (id)XMLElementName;
+- (BOOL)canBeStoredAsXMLElement;
+- (BOOL)hasiPadUnsupportedFunctionality;
+- (id)iPadUnsupportedFunctionalityDescription;
+- (void)setObjectName:(id)aName;
+- (id)objectName;
+- (id)valuesForMDAttribute:(id)aAttribute;
+- (id)supportedMDAttributes;
+- (void)setUsingTemplateName:(BOOL)aName;
+- (BOOL)usingTemplateName;
+- (void)setName:(id)aName;
+- (id)name;
+- (BOOL)supportsActionType:(id)aType forEvent:(id)aEvent;
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
+- (id)attributeToNotificationMapForCodingOperation:(id)aOperation;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (id)unrefreshingUIDs;
+- (id)mediaUIDs;
+- (id)ownedMediaUIDs;
+- (id)queryNewHyperInterface:(id)aInterface;
+- (void)loadObjectStyleDictionaryRepresentation:(id)aRepresentation;
+- (id)objectStyleDictionaryRepresentation;
+- (BOOL)canLoadStyleFromDictionary:(id)aDictionary;
+- (void)appendHyperCommentsFromObjects:(id)aObjects;
+- (void)appendHyperComments:(id)aComments;
+- (void)setHyperComments:(id)aComments;
+- (id)childrenComments;
+- (id)deepComments;
+- (id)hyperComments;
+- (void)setComments:(id)aComments;
+- (id)comments;
+- (void)setHyperCursor:(id)aCursor;
+- (id)hyperCursor;
+- (void)setCursor:(id)aCursor;
+- (id)cursor;
+- (id)parentHyperScriptableEntity;
+- (id)objectInHyperScriptableEntitiesAtIndex:(NSUInteger)aIndex;
+- (NSUInteger)countOfHyperScriptableEntities;
+- (void)actorDidChange:(id)aChange;
+- (id)stackForAction:(id)aAction;
+- (id)cardForAction:(id)aAction;
+- (id)stack;
+- (id)card;
+- (BOOL)isUsingTemplateName;
+- (id)uniqueName:(id)aName;
+- (id)uniqueNameGenerator;
+- (BOOL)needsOwnUniqueNameGenerator;
+- (void)resetHyperName;
+- (void)validateUniqueNames;
+- (void)validateSetName:(id *)aName usingTemplateName:(BOOL *)aName2;
+- (void)setHyperName:(id)aName usingTemplateName:(BOOL)aName2;
+- (void)userObjectNameBaseTemplateDidChange;
+- (id)nameBaseTemplates;
+- (id)preferredNameTemplate;
+- (BOOL)isHyperValid;
+- (BOOL)hasHyperWarnings;
+- (void)willDisconnectFromDocument;
+- (void)didConnectToDocument;
+- (void)willDisconnectFromSupport;
+- (void)didConnectToSupport;
+- (void)willRemoveFromDocument;
+- (void)didAddToDocument;
+- (void)willRemoveFromParent;
+- (void)didAddToParent;
+- (BOOL)isInDocument;
+- (id)allActionsOfType:(id)aType;
+- (void)setActor:(id)aActor;
+- (id)actor;
+- (void)objectWillRemoveFromCardView;
+- (void)objectDidAddToCardView;
+- (id)document;
+- (id)childInTreeWithUID:(id)aUID;
+- (id)childWithUID:(id)aUID;
+- (id)hyperScriptName;
+- (id)hyperScriptKind;
+- (id)hyperScriptDisplayName;
+- (void)cleanupUserInfo;
+- (id)userInfoForKey:(id)aKey;
+- (void)setUserInfo:(id)aInfo forKey:(id)aKey;
+- (void)setUserInfo:(id)aInfo;
+- (void)setHyperName:(id)aName;
+- (id)hyperName;
+- (id)nonLocalizedObjectKindKey;
+- (id)defaultIdentifierTemplate;
+- (id)hyperKindDisplayName;
+- (id)nonLocalizedKindName;
+- (id)enumeratorForGenerator:(id)aGenerator;
+- (void)setHyperUID:(id)aUID;
+- (id)hyperUID;
+- (void)setUID:(id)aUID;
+- (id)UID;
+- (id)debugDescription;
+- (void)dealloc;
+- (NSUInteger)hash;
+- (BOOL)canHaveExtraInitializer;
+- (id)init;
+- (id)initUserObject;
+@end
+
+@interface NSObject (ScriptKind)
+- (id)hyperScriptKind;
+@end
+

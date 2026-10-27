@@ -1,0 +1,103 @@
+#import "HyperStudioPrefix.h"
+#import "HSAssistantPaneApplier.h"
+
+
+@interface HSPresentationAssistantPaneApplier : HSAssistantPaneApplier <HSGraphicsDelegate, HyperInterface, NSObject>
+{
+    id<HSBackgroundAttributes> _defaultBackgroundAttributes;
+    int _initialFillType;
+    NSColor *_initialFirstGradientColor;
+    NSColor *_initialSecondGradientColor;
+    NSColor *_initialSolidColor;
+    float _initialAngle;
+    int _initialImageScaling;
+    NSImage *_initialImage;
+    BOOL _initialPlaysWithoutTitleBar;
+    BOOL _initialShouldPlayInFullScreen;
+    BOOL _initialMenuVisible;
+    BOOL _initialCoveringDesktop;
+    int _initialHyperKind;
+    BOOL _initialHyperClear;
+    BOOL _initialHyperCacheEnabled;
+    BOOL _initialHyperSolid;
+    float _initialCenterX;
+    float _initialCenterY;
+    int _currentFillType;
+    NSColor *_currentFirstGradientColor;
+    NSColor *_currentSecondGradientColor;
+    NSColor *_currentSolidColor;
+    float _currentAngle;
+    int _currentImageScaling;
+    NSImage *_currentImage;
+    BOOL _currentShouldPlayInFullScreen;
+    BOOL _currentPlaysWithoutTitleBar;
+    BOOL _currentMenuVisible;
+    BOOL _currentCoveringDesktop;
+    int _currentHyperKind;
+    BOOL _currentHyperClear;
+    BOOL _currentHyperCacheEnabled;
+    BOOL _currentHyperSolid;
+    float _currentCenterX;
+    float _currentCenterY;
+    id<HSMutableImage> _mutableBackgroundImageInterface;
+    id<HSMutableColor> _mutableBackgroundColorInterface;
+}
+- (id)hyperObject;
+- (id)undoManagerForGraphics:(id)aGraphics;
+- (void)hyperVisualAttributesChanged:(id)aChanged;
+- (void)refreshDefaultBackgroundAttributes;
+- (NSInteger)fillTypeFromInterface:(id)aInterface;
+- (id)backgroundColorInterface;
+- (id)backgroundImageInterface;
+- (id)mutableBackgroundColorInterface;
+- (id)mutableBackgroundImageInterface;
+- (void)setHyperImage:(id)aImage;
+- (id)hyperImage;
+- (void)setHyperImageFromPath:(id)aPath;
+- (void)setHyperImageScaling:(NSInteger)aScaling;
+- (NSInteger)hyperImageScaling;
+- (void)hyperSwapGradientColors;
+- (void)setHyperCenterX:(CGFloat)aX andY:(CGFloat)aY;
+- (CGFloat)hyperCenterY;
+- (CGFloat)hyperCenterX;
+- (void)setHyperCacheEnabled:(BOOL)aEnabled;
+- (BOOL)isHyperCacheEnabled;
+- (void)setHyperKind:(NSInteger)aKind;
+- (NSInteger)hyperKind;
+- (void)setHyperSolid:(BOOL)aSolid;
+- (BOOL)isHyperSolid;
+- (void)setHyperClear:(BOOL)aClear;
+- (BOOL)isHyperClear;
+- (void)setHyperAngle:(CGFloat)aAngle;
+- (CGFloat)hyperAngle;
+- (void)setHyperEndColor:(id)aColor;
+- (id)hyperEndColor;
+- (void)setHyperStartColor:(id)aColor;
+- (id)hyperStartColor;
+- (void)setHyperSolidColor:(id)aColor;
+- (id)hyperSolidColor;
+- (void)setFillType:(NSInteger)aType;
+- (NSInteger)fillType;
+- (void)setPresentationMenuVisible:(BOOL)aVisible;
+- (BOOL)isPresentationMenuVisible;
+- (void)setPresentationCoveringDesktop:(BOOL)aDesktop;
+- (BOOL)isPresentationCoveringDesktop;
+- (void)setShouldPlayInFullScreen:(BOOL)aScreen;
+- (BOOL)shouldPlayInFullScreen;
+- (void)setPresentationPlaysWithoutTitleBar:(BOOL)aBar;
+- (BOOL)isPresentationPlaysWithoutTitleBar;
+- (BOOL)areSettingsEqual;
+- (void)makeCurrentEqualToInitial;
+- (void)makeInitialEqualToCurrent;
+- (void)enableNotifications;
+- (void)disableNotifications;
+- (void)setInitialSettingsToObject;
+- (void)setCurrentSettingsToObject;
+- (void)dealloc;
+- (id)initWithObject:(id)aObject;
+- (id)undoActionName;
+- (id)stackAttributes;
+- (id)defaultBackgroundAttributes;
+- (id)backgroundAttributes;
+@end
+

@@ -1,0 +1,90 @@
+#import "HyperPlayerBasePrefix.h"
+
+
+@interface HSNavigationController : NSObject <HSCardNavigator, NSObject, NSUserInterfaceValidations, NSAnimationDelegate>
+{
+    HSDocument *_document;
+    id _delegate;
+    HSNavigationOperation *_currentNavigationOperation;
+    BOOL _performingHistoryOperation;
+    NSWindow *_spinControlWindow;
+    NSProgressIndicator *_spinControl;
+    unsigned int _wasOpenGLSurfaceEnabled:1;
+}
++ (BOOL)goToHomeStack;
++ (BOOL)goToHomeStackAtURL:(id)aURL;
++ (BOOL)documentCanGoHome:(id)aHome;
++ (id)findFile:(id)aFile base:(id)aBase;
++ (id)findURLUsingActionURL:(id)aURL baseURL:(id)aURL2;
++ (id)privateFindUsingAcitonURL:(id)aURL baseURL:(id)aURL2;
++ (id)privateFindFile:(id)aFile base:(id)aBase;
+- (void)interruptAllNavigationOperations;
+- (void)willBeClosedWithDocument;
+- (double)transitionDurationForCurrentNavigationOperation;
+- (id)presentationSync;
+- (void)recycleCurrentNavigationOperation:(BOOL)aOperation;
+- (void)cancelNavigationOperation:(id)aOperation;
+- (void)finishNavigationOperation:(id)aOperation;
+- (void)concludeHistoryOperationIfNeeded:(BOOL)aNeeded;
+- (void)continueNavigationOperation:(id)aOperation;
+- (void)disableOpenGLSurfaceIfNeeded;
+- (void)startNavigationOperation:(id)aOperation;
+- (void)setNavigationOperation:(id)aOperation;
+- (id)currentNavigationOperation;
+- (BOOL)canPerformNavigationOperation:(id)aOperation;
+- (void)advanceToNextCard:(id)aCard;
+- (void)goToUntitledDocument:(id)aDocument;
+- (void)goToFirstCard:(id)aCard;
+- (void)goToLastCard:(id)aCard;
+- (void)goToPreviousCard:(id)aCard;
+- (void)goToNextCard:(id)aCard;
+- (void)goToHome:(id)aHome;
+- (void)goForward:(id)aForward;
+- (void)goBack:(id)aBack;
+- (BOOL)validateUserInterfaceItem:(id)aItem;
+- (BOOL)canGoToCardWithUID:(id)aUID;
+- (BOOL)canGoForward;
+- (BOOL)canGoBack;
+- (BOOL)canGoToPreviousCard;
+- (BOOL)canGoToNextCard;
+- (id)historyStack;
+- (void)goToCardWithUID:(id)aUID inStackAtURL:(id)aURL withTransition:(id)aTransition;
+- (void)goToCardWithUID:(id)aUID;
+- (void)goToCardAtIndex:(NSInteger)aIndex;
+- (void)goToCardAtIndex:(NSInteger)aIndex allowGoToCurrent:(BOOL)aCurrent;
+- (void)goToCardAtIndex:(NSInteger)aIndex inStackAtURL:(id)aURL withTransition:(id)aTransition;
+- (void)goToCard:(id)aCard withTransition:(id)aTransition;
+- (void)animationDidEnd:(id)aEnd;
+- (void)animationDidStop:(id)aStop;
+- (void)prepareForNavigationToOpenedStack:(id)aStack;
+- (void)continueNavigationToDestinationStack;
+- (void)destinationDocument:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo;
+- (void)notifyUserAboutOpenedStackForNavigationOperation:(id)aOperation;
+- (BOOL)isDestinationStackOpened:(id)aOpened;
+- (void)document:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo;
+- (void)alertAskUserToSaveChangesDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)askUserToSaveChangesForNavigationOperation:(id)aOperation;
+- (BOOL)shouldAskUserToSaveChangesForNavigationOperation:(id)aOperation;
+- (BOOL)moveToStackWithNavigationOperation:(id)aOperation;
+- (void)hideSpinIndicator;
+- (void)showSpinIndicator;
+- (id)spinControlWindow;
+- (void)saveHistoryForNavigationOperationIfNeeded:(id)aNeeded;
+- (void)pushCurrentCardInHistoryIfNeededWithTransition:(id)aTransition isGoingToAnotherStack:(BOOL)aStack;
+- (void)showCannotFindCardAlert;
+- (void)processUserInitiatedNavigationOperation:(id)aOperation;
+- (BOOL)canGoToCardWithUID:(id)aUID inStackAtURL:(id)aURL;
+- (BOOL)HS_canGoToCardWithUID:(id)aUID;
+- (BOOL)canGoToCardAtIndex:(NSInteger)aIndex inStackAtURL:(id)aURL;
+- (BOOL)canGoToCardAtIndex:(NSInteger)aIndex;
+- (BOOL)canGoToCardAtIndex:(NSInteger)aIndex allowGoToCurrent:(BOOL)aCurrent;
+- (NSUInteger)cardIndex;
+- (NSUInteger)cardCount;
+- (void)setDelegate:(id)aDelegate;
+- (id)delegate;
+- (void)setDocument:(id)aDocument;
+- (id)document;
+- (void)dealloc;
+- (id)initWithDocument:(id)aDocument;
+@end
+

@@ -1,0 +1,92 @@
+#import "HyperStudioPrefix.h"
+
+
+@interface HSExportManager : NSObject <HSImageSequenceExporterDataSource, HSExporter2DataSource, HSExportCardsImages, HSVideoExporterDataSource, HSQTMovieExporterDataSource, HSExportVideoAttributes, HSArtworkImageDataSource, HSHyperCastingExporterDataSource, HSExporterDelegate, NSObject>
+{
+    HSEditorDocument *_document;
+    HSPreviewDocument *_previewDocument;
+    HSExporter2 *_exporter;
+    HSPublisher *_publisher;
+    int _exportFormat;
+    int _publishType;
+    HSExportProgressSheetController *_progressSheetController;
+    HSError *_exportSessionError;
+    NSMapTable *_alertToDidEndInvocationMapTable;
+    NSArray *_movieObjectsRunOnArrive;
+    NSArray *_movieObjectsRunOnArriveTemporaryState;
+    NSArray *_movieObjectsRunOnLeave;
+    NSArray *_movieObjectsRunOnLeaveTemporaryState;
+    HSSlideshowAttributes *_slideshowAttributes;
+    id<HSQuartzTransitionRenderer> _slideshowTransitionRenderer;
+    unsigned int _slideshowTransitionImageIndex;
+    unsigned int _isExporting:1;
+    unsigned int _isPublishing:1;
+    unsigned int _hasSessionError:1;
+    unsigned int _isMovieExportHelperEnable:1;
+    HSXMLNode *_embeddedCode;
+}
+- (id)hyperCastingLauncherForExporter:(id)aExporter;
+- (void)setCurrentTimeForMovies:(double)aMovies runOnStart:(BOOL)aStart onCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (double)timeIntervalBetweenFrames;
+- (double)transitionTimeAfterCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (BOOL)hasTransitionAfterCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (id)transitionImageForTime:(double)aTime afterCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (double)asyncSoundLengthOnCardAtIndex:(NSUInteger)aIndex;
+- (BOOL)asyncSoundPresentOnCardAtIndex:(NSUInteger)aIndex;
+- (id)soundsWithPropertiesOnCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (id)moviesWithPropertiesOnCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (double)timeDelayOnArriveOnCardAtIndex:(NSUInteger)aIndex;
+- (id)artworkImageForExporter:(id)aExporter;
+- (id)movieObjectsFromPlayMovieActionAttributes:(id)aAttributes onCard:(id)aCard;
+- (id)soundsWithPropertiesFromSoundItems:(id)aItems runOn:(id)aOn;
+- (id)movieWithPropertiesFromMovieObjects:(id)aObjects runOn:(id)aOn;
+- (id)mediaWithPropertiesFromMovieObject:(id)aObject runOn:(id)aOn;
+- (BOOL)canExportDocumentAsVideoWithNarration;
+- (NSSize)videoFrameSize;
+- (BOOL)isExportDocumentInStoryboardMode;
+- (NSUInteger)countExistedCards;
+- (id)imageForCardAtIndex:(NSUInteger)aIndex forExporter:(id)aExporter;
+- (id)exportedCardIndexesForExporter:(id)aExporter onlySelected:(BOOL)aSelected;
+- (void)cancelExport:(id)aExport;
+- (id)embeddedCode:(id)aCode;
+- (void)publishDidTerminate:(id)aTerminate;
+- (void)publishDidEnd:(id)aEnd;
+- (void)publishDidStart:(id)aStart;
+- (void)publishWillStart:(id)aStart;
+- (void)publishAlertInProgress:(id)aProgress invokeOptions:(id)aOptions;
+- (void)publishErrorInProgress:(id)aProgress error:(id)aError;
+- (void)publishProgressDidChange:(id)aChange withProgress:(double)aProgress;
+- (void)exportDidTerminate:(id)aTerminate;
+- (void)exportDidEnd:(id)aEnd;
+- (void)exportDidStart:(id)aStart;
+- (void)exportWillStart:(id)aStart withSlideshowAttributes:(id)aAttributes;
+- (void)exportErrorInProgress:(id)aProgress error:(id)aError;
+- (void)exportProgressDidChange:(id)aChange withProgress:(double)aProgress;
+- (void)stopPublish;
+- (BOOL)isPublishing;
+- (void)stopExport;
+- (BOOL)isExporting;
+- (void)exportDocumentWithFileName:(id)aName ofType:(id)aType;
+- (void)clearSessionError;
+- (id)exportSessionError;
+- (void)closeExportSession;
+- (BOOL)isOpenExportSession;
+- (void)openExportSessionWithDocument:(id)aDocument;
+- (void)alertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (id)alertToDidEndInvocationMapTable;
+- (void)removeProgressSheetController;
+- (id)progressSheetController;
+- (id)exportPanelController;
+- (id)storyboardControllerForDocument:(id)aDocument;
+- (id)windowControllerOfClass:(Class)aClass forDocument:(id)aDocument;
+- (id)previewDocument;
+- (void)removePublisher;
+- (void)removeExporter;
+- (id)publisher;
+- (id)exporter;
+- (void)setPublishType:(NSInteger)aType;
+- (void)setExportFormat:(NSInteger)aFormat;
+- (NSInteger)exportFormat;
+- (void)dealloc;
+@end
+

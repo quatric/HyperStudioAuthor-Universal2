@@ -1,0 +1,93 @@
+#import "HyperStudioPrefix.h"
+
+
+@interface HSDependentPlayerWindowController : HSPlayerInEditorWindowController <HSStoredMenuItemTitleValidationSupport>
+{
+    NSUndoManager *_dummyUndoManager;
+    id _bottomAreaTintedView;
+    id _mainAreaTintedView;
+    id _workAreaView;
+    HSMainWindowStatusbarController *_statusbarController;
+    HSPlayerStackTextProvider *_stackTextProvider;
+}
++ (id)windowNibName;
+- (id)stackTextProvider;
+- (void)hyperShowGuessPanel:(id)aPanel;
+- (void)hyperCheckSpelling:(id)aSpelling;
+- (void)performHyperFindPanelAction:(id)aAction;
+- (void)setBottomToolbarVisible:(BOOL)aVisible;
+- (void)setStatusbarController:(id)aController;
+- (void)setWorkAreaView:(id)aView;
+- (void)setMainAreaTintedView:(id)aView;
+- (void)setBottomAreaTintedView:(id)aView;
+- (void)modeSwitcherDidEndModeSwitching:(id)aSwitching;
+- (void)didBecomeWorkingInModeSwitcher:(id)aSwitcher;
+- (void)willBecameNonWorkingInModeSwitcher:(id)aSwitcher;
+- (void)willBecomeWorkingInModeSwitcher:(id)aSwitcher;
+- (void)windowDidBecomeKey:(id)aKey;
+- (id)secondaryModeSwitcherWindows:(id)aWindows;
+- (id)mainModeSwitcherWindow:(id)aWindow;
+- (BOOL)cancelOperation;
+- (BOOL)hasPlayerMode;
+- (void)navigationOperationDidFinishInPlayerView:(id)aView;
+- (void)hideShowToolbar:(id)aToolbar;
+- (void)toggleObjectAssistant:(id)aAssistant;
+- (BOOL)supportMenuItemStoredTitleValidation;
+- (BOOL)validateUserInterfaceItem:(id)aItem;
+- (id)dummyUndoManager;
+- (id)windowWillReturnUndoManager:(id)aManager;
+- (BOOL)validateUserInterfaceItemThatRequiresSwitchToEditMode:(id)aMode;
+- (void)sameBackground:(id)aBackground;
+- (void)makeGroupCard:(id)aCard;
+- (void)delete:(id)aDelete;
+- (void)cut:(id)aCut;
+- (void)paste:(id)aPaste;
+- (void)copy:(id)aCopy;
+- (void)draw3DShapes:(id)aShapes;
+- (void)runMakeEveryCardNextCardExtra:(id)aExtra;
+- (void)runEasyLinkDialog:(id)aDialog;
+- (void)titleCard:(id)aCard;
+- (void)textFieldTamer:(id)aTamer;
+- (void)addReadyMadeCards:(id)aCards;
+- (void)addQuickShotBackground:(id)aBackground;
+- (void)addQuickShotGraphicObject:(id)aObject;
+- (void)runVideoRecordingPanel:(id)aPanel;
+- (void)runSoundRecordingPanel:(id)aPanel;
+- (void)editCardActions:(id)aActions;
+- (void)editStackActions:(id)aActions;
+- (void)showStackOptionsDialog:(id)aDialog;
+- (void)showCardOptionsDialog:(id)aDialog;
+- (void)eraseBackground:(id)aBackground;
+- (void)importBackground:(id)aBackground;
+- (void)showYouTubeDialog:(id)aDialog;
+- (void)captureImage:(id)aImage;
+- (void)addGraphicObject:(id)aObject;
+- (void)addGraphic:(id)aGraphic;
+- (void)addWebCamObject:(id)aObject;
+- (void)addLiveVideoObject:(id)aObject;
+- (void)addSoundObject:(id)aObject;
+- (void)addMediaObject:(id)aObject;
+- (void)addMovieComboObject:(id)aObject;
+- (void)addSoundComboObject:(id)aObject;
+- (void)addWebObject:(id)aObject;
+- (void)importText:(id)aText;
+- (void)addTextObject:(id)aObject;
+- (void)addButtonObject:(id)aObject;
+- (void)HSDependentPlayerWindowController_HSUIModeSettingsDidChangeNotification:(id)aNotification;
+- (BOOL)isMenuShown;
+- (BOOL)supportsMinimalWindowMode;
+- (void)windowControllerDidBindToWindowInModeSwitcher:(id)aSwitcher;
+- (void)windowControllerWillUnbindFromWindowInModeSwitcher:(id)aSwitcher;
+- (id)stackView;
+- (id)selectionController;
+- (void)hyperWindowDidToggleToolbar:(id)aToolbar;
+- (void)didBindToModelOnLoad;
+- (void)activateOnLoad;
+- (void)handleWindowDidLoad;
+- (void)windowDidLoad;
+- (BOOL)prefersToEmbedModeSwitcherViewIntoScrollViewIfPossible;
+- (id)modeSwitcherView:(id)aView;
+- (void)dealloc;
+- (id)initWithWindow:(id)aWindow;
+@end
+

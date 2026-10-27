@@ -1,0 +1,87 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSSystemSquareButtonData.h"
+
+
+@interface HSButtonObjectData : HSSystemSquareButtonData
+{
+    NSColor *_titleColor;
+    BOOL _hyperUnderlined;
+    BOOL _hyperOutline;
+    NSColor *_hyperOutlineColor;
+    float _hyperOutlineWidth;
+    int _iconPosition;
+    NSAttributedString *_cachedAttributedTitle;
+    BOOL _iconVisible;
+    NSString *_backgroundStyle;
+    NSDictionary *_backgroundStyleToBackroundDictionary;
+    BOOL _contentOverlapsBackground;
+    BOOL _titleShadowEnabled;
+    NSSize _titleShadowOffset;
+    float _titleShadowBlurRadius;
+    float _hyperSpaceBetweenCharacters;
+    BOOL _hiddenIEditor;
+    NSMutableDictionary *_buttonTypeToButtonFlagsMaskDictionary;
+    NSNumber *_cachedUnusedOutlineWidthValue;
+}
++ (id)nodeDataKeysToNodeKeysMap;
++ (id)allButtonTypes;
+- (NSUInteger)buttonFlagsMaskForButtonType:(id)aType;
+- (id)buttonTypeToButtonFlagsMaskDictionary;
+- (id)buttonType;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (void)setHiddenIEditor:(BOOL)aEditor;
+- (BOOL)isHiddenInEditor;
+- (void)setSizeAsString:(id)aString;
+- (id)sizeAsString;
+- (void)setSize:(NSSize)aSize;
+- (NSSize)size;
+- (NSSize)sizeIncludingContent;
+- (NSSize)backgroundSize;
+- (NSSize)contentSize;
+- (void)setHyperSpaceBetweenCharacters:(CGFloat)aCharacters;
+- (CGFloat)hyperSpaceBetweenCharacters;
+- (NSUInteger)visualIconPosition;
+- (void)setContentOverlapsBackground:(BOOL)aBackground;
+- (BOOL)contentOverlapsBackground;
+- (id)buttonObjectForButtonObjectBackground:(id)aBackground;
+- (id)background;
+- (void)setBackgroundStyleToBackroundDictionary:(id)aDictionary;
+- (id)backgroundStyleToBackroundDictionary;
+- (void)setBackgroundStyle:(id)aStyle;
+- (id)backgroundStyle;
+- (void)setHasHighlight:(BOOL)aHighlight;
+- (BOOL)hasHighlightForButtonType:(id)aType;
+- (BOOL)hasHighlight;
+- (void)setIconVisible:(BOOL)aVisible;
+- (BOOL)isIconVisible;
+- (void)setTitleVisible:(BOOL)aVisible;
+- (BOOL)isTitleVisibleForButtonType:(id)aType;
+- (BOOL)isTitleVisible;
+- (void)setCachedAttributedTitle:(id)aTitle;
+- (id)cachedAttributedTitle;
+- (void)setIconPosition:(NSUInteger)aPosition;
+- (NSUInteger)iconPosition;
+- (void)setTitleShadowBlurRadius:(CGFloat)aRadius;
+- (CGFloat)titleShadowBlurRadius;
+- (void)setTitleShadowOffsetAsString:(id)aString;
+- (id)titleShadowOffsetAsString;
+- (void)setTitleShadowOffset:(NSSize)aOffset;
+- (NSSize)titleShadowOffset;
+- (void)setTitleShadowEnabled:(BOOL)aEnabled;
+- (BOOL)isTitleShadowEnabled;
+- (void)setCachedUnusedOutlineWidthValue:(id)aValue;
+- (id)cachedUnusedOutlineWidthValue;
+- (void)setHyperOutlineWidth:(CGFloat)aWidth;
+- (CGFloat)hyperOutlineWidth;
+- (void)setHyperOutlineColor:(id)aColor;
+- (id)hyperOutlineColor;
+- (void)setHyperOutlineEnabled:(BOOL)aEnabled;
+- (BOOL)isHyperOutlineEnabled;
+- (void)setHyperUnderlined:(BOOL)aUnderlined;
+- (BOOL)isHyperUnderlined;
+- (void)setTitleColor:(id)aColor;
+- (id)titleColor;
+- (void)dealloc;
+- (id)init;
+@end
+

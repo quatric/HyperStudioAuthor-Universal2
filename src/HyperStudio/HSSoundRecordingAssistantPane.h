@@ -1,0 +1,103 @@
+#import "HyperStudioPrefix.h"
+#import "HSActionAssistantPane.h"
+
+
+@interface HSSoundRecordingAssistantPane : HSActionAssistantPane <NSTextFieldDelegate, NSControlTextEditingDelegate, NSObject, HSMovieDelegate>
+{
+    HSDiscreteIndicatorView *_levelIndicator;
+    HSImageView *_soundRecordBackgroundView;
+    NSTextField *_audioTimeTextField;
+    HSAppearanceButtonCell *_recordButton;
+    HSAppearanceButtonCell *_playButton;
+    NSTextField *_soundNameTextField;
+    NSPopUpButton *_soundCaptureDevicePopUp;
+    HSCountDownViewController *_countDownViewController;
+    HSCaptureDeviceList *_soundCaptureDeviceList;
+    QTCaptureSession *_soundCaptureSession;
+    QTCaptureDeviceInput *_soundCaptureInput;
+    QTCaptureMovieFileOutput *_soundCaptureOutput;
+    NSTimer *_timerForObservingInputAudioLevel;
+    NSTimer *_timerForMeasurementRecordAudioTime;
+    unsigned int _windowLevel;
+    HSMovie *_previewSoundObject;
+    NSString *_recordedSoundFilePath;
+    HSObjectAssistantNavigationPaneSwitcher *_navigationPaneSwitcher;
+    id<HSSoundRecordingAssistantPaneDelegate> _soundRecordingAssistantPaneDelegate;
+    unsigned int _isRecording:1;
+    unsigned int _didCaptureMovieFileOutputStartRecording:1;
+    unsigned int _didCaptureMovieFileOutputFinishRecording:1;
+    unsigned int _supportSettingsOnTheSpotMode:1;
+}
++ (id)stopRecordButtonAquaImage;
++ (id)stopRecordButtonGraphiteImage;
++ (id)stopRecordButtonImage;
++ (id)recordButtonGraphiteImage;
++ (id)recordButtonAquaImage;
++ (id)recordButtonImage;
++ (id)stopButtonGraphiteImage;
++ (id)stopButtonAquaImage;
++ (id)stopButtonImage;
++ (id)playButtonGraphiteImage;
++ (id)playButtonAquaImage;
++ (id)playButtonImage;
+- (void)captureOutput:(id)aOutput didFinishRecordingToOutputFileAtURL:(id)aURL forConnections:(id)aConnections dueToError:(id)aError;
+- (void)captureOutput:(id)aOutput didStartRecordingToOutputFileAtURL:(id)aURL forConnections:(id)aConnections;
+- (id)localizedUniqueRecordName;
+- (void)removeRecorderSoundFile;
+- (void)invalidatePreviewSoundObject;
+- (id)previewSoundObject;
+- (void)restoreWindowLevel:(id)aLevel;
+- (void)runSoundRecordingModalSession;
+- (void)movieDidStop:(id)aStop;
+- (void)movieDidPlayOnce:(id)aOnce;
+- (void)movieDidEnd:(id)aEnd;
+- (void)movieDidChangeImage:(id)aImage;
+- (void)soundCaptureDeviceDidChange:(id)aChange;
+- (void)updateSoundDuration:(id)aDuration;
+- (void)setSoundDuration:(double)aDuration forTextField:(id)aField;
+- (double)soundDurationForTextField:(id)aField;
+- (void)installTimerForMeasurementSoundDuration;
+- (void)removeTimerForMeasurementSoundDuration;
+- (void)updateIndicatorState:(id)aState;
+- (void)installTimerForObservingInputAudioLevel;
+- (void)removeTimerForObservingInputAudioLevel;
+- (void)observeValueForKeyPath:(id)aPath ofObject:(id)aObject change:(id)aChange context:(void *)aContext;
+- (void)soundCaptureDeviceDidChangeState:(id)aState;
+- (void)informAboutDiskSpaceError;
+- (void)controlTextDidChange:(id)aChange;
+- (BOOL)isPlaying;
+- (void)stopPlaying;
+- (void)play:(id)aPlay;
+- (void)countDownDidEnd:(id)aEnd;
+- (void)stopRecording;
+- (BOOL)isRecording;
+- (void)record:(id)aRecord;
+- (void)validateUserInterface;
+- (id)recordedSoundFilePath;
+- (void)setSoundCaptureDevice:(id)aDevice;
+- (void)destroySoundCaptureSession;
+- (id)soundCaptureSession;
+- (id)soundCaptureDeviceList;
+- (void)selectDefaultDevice;
+- (id)countDownViewController;
+- (void)storeSelectedDeviceInUserDefaults;
+- (BOOL)selectDeviceFromUserDefaults;
+- (void)paneDidOK:(id)aOK;
+- (void)paneDidCancel:(id)aCancel;
+- (BOOL)shouldEnableOKButtonInNavigationPaneSwitcher:(id)aSwitcher;
+- (void)viewWillDisappear:(BOOL)aDisappear;
+- (void)viewWillAppear:(BOOL)aAppear;
+- (void)viewDidLoad;
+- (id)helpTopicKey;
+- (BOOL)needsToBeSavedInHistory;
+- (id)navigationPaneSwitcher;
+- (id)actionAttributes;
+- (id)actionType;
+- (Class)applierClass;
+- (void)setSoundRecordingAssistantPaneDelegate:(id)aDelegate;
+- (id)soundRecordingAssistantPaneDelegate;
+- (BOOL)requiresDarkBottomArea;
+- (void)dealloc;
+- (id)init;
+@end
+

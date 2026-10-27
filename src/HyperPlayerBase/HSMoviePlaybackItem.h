@@ -1,0 +1,125 @@
+#import "HyperPlayerBasePrefix.h"
+
+
+@interface HSMoviePlaybackItem : NSObject <HSAttributeObserving, NSObject, EXKeyValueCoding, HSMoviePlaybackAttributes, HSPlaybackItemAttributes, HSAttributes, HyperInterface, HSPlaybackItemUIDAttribute, HSAttribute, HSPlaybackItemTemporaryAttribute, HSPlaybackEnabledAttribute, HSPlaybackSizeAttribute, HSVisualAttribute, HSUndoableAttribute, HSPlaybackTransformAttribute, HSPlaybackItemSupportAttribute, NSCopying, HSPlayMovieObjectMediaUIDAttribute, HSPlayMovieObjectUIDAttribute, HSMovieVolumeAttribute, HSPlayMovieShowFirstFrameAttribute, HSPlayMoviePlayOverObjectsAttribute, HSPlayMovieActionPlayCountAttribute, HSPlayMovieUseMovieControllerAttribute, HSPlayMovieEraseWhenDoneAttribute, HSPlayMoviePlayRangeAttribute, HSPlayMovieSoundFadeOutTimeAttribute, HSMovieObjectAttribute, HSActionMediaPlayerMovieOwner, HSXMLStoringSupport>
+{
+    id<HSPlaybackItemSupport> _playMovieAction;
+    HSMovieObject *_movieObject;
+    HSUID *_movieObjectUID;
+    HSMovieObject *_playableMovieObject;
+    id<HSCardAttributes> _cardForPlayableMovieObject;
+    BOOL _showFirstFrame;
+    BOOL _playOverObjects;
+    unsigned int _playCount;
+    BOOL _eraseWhenDone;
+    BOOL _enabled;
+    BOOL _shouldPauseHiddenMovie;
+    double _soundFadeOutTime;
+    struct HSTimeRange _playRange;
+    float _volume;
+    HSActionExecutionContext *_actionExecutionContext;
+    unsigned int _originalPlayCount;
+    unsigned int _originalIndex;
+    struct HSTimeRange _originalPlayRange;
+    float _originalVolume;
+    double _originalSoundFadeOutTime;
+    float _oldFormatVersion;
+    BOOL _oldUseMovieController;
+    float _oldVolume;
+    id<HSMutableGeometryAttributes> _movieMutableGeometryAttributes;
+}
+- (id)attributesChangedTemporary;
+- (id)attributesBeingChangedContinuously;
+- (void)endContinuousChangeOfAttributeSet:(id)aSet;
+- (void)beginContinuousChangeOfAttributeSet:(id)aSet;
+- (void)endContinuousChangeOfAttribute:(id)aAttribute;
+- (void)beginContinuousChangeOfAttribute:(id)aAttribute;
+- (void)removeAttributeObserver:(id)aObserver;
+- (void)removeAttributeObserver:(id)aObserver selector:(SEL)aSelector;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute withPriority:(CGFloat)aPriority;
+- (id)attributeObservingController;
+- (id)attributeNotificationCenter;
+- (id)undoManager;
+- (BOOL)canBeStoredAsXMLElement;
+- (id)XMLElementRepresentationInContext:(id)aContext;
+- (id)XMLElementName;
+- (void)setPlayRangeForSaving:(id)aSaving;
+- (id)playRangeForSaving;
+- (id)movieObjectMutableGeometryAttributes;
+- (id)HSMoviePlaybackItem_movieObject;
+- (id)movieObject;
+- (void)setMovieObjectUID:(id)aUID;
+- (void)setMovieObjectUIDForSaving:(id)aSaving;
+- (id)movieObjectUIDForSaving;
+- (void)restoreAttributesOfMovieObject:(id)aObject;
+- (void)applyAttributesToMovieObject:(id)aObject;
+- (void)applyMoviePositionForMovieObject:(id)aObject;
+- (void)cleanupPlayableMovieObject;
+- (void)preparePlayableMovieObjectWithMovieObject:(id)aObject forCard:(id)aCard;
+- (void)willDisconnectFromDocument;
+- (void)didConnectToDocument;
+- (void)setPlaybackItemSupport:(id)aSupport;
+- (id)playbackItemSupport;
+- (void)setSize:(NSSize)aSize;
+- (NSSize)size;
+- (void)setAffineTransform:(CGAffineTransform)aTransform;
+- (CGAffineTransform)affineTransform;
+- (BOOL)isTemporary;
+- (void)setPlayRange:(struct HSTimeRange)aRange;
+- (struct HSTimeRange)playRange;
+- (void)setVolume:(CGFloat)aVolume;
+- (CGFloat)volume;
+- (void)setSoundFadeOutTime:(double)aTime;
+- (double)soundFadeOutTime;
+- (void)setEraseWhenDone:(BOOL)aDone;
+- (BOOL)eraseWhenDone;
+- (void)setUseMovieController:(BOOL)aController;
+- (BOOL)useMovieController;
+- (void)setPlayCount:(NSUInteger)aCount;
+- (NSUInteger)playCount;
+- (void)setLoopMovie:(BOOL)aMovie;
+- (BOOL)loopMovie;
+- (void)setPlayOverObjects:(BOOL)aObjects;
+- (BOOL)playOverObjects;
+- (void)setShowFirstFrame:(BOOL)aFrame;
+- (BOOL)showFirstFrame;
+- (void)setEnabled:(BOOL)aEnabled;
+- (BOOL)isEnabled;
+- (id)movieObjectForCard:(id)aCard;
+- (id)movieMediaUID;
+- (id)movieObjectUID;
+- (id)objectUID;
+- (void)showFirstFrameIfNeededInContext:(id)aContext;
+- (void)stopPlaying;
+- (void)hyperPlayableObjectDidStop:(id)aStop;
+- (void)playMovieInExecutionContext:(id)aContext;
+- (void)playableMovieObjectHiddenDidChange:(id)aChange;
+- (void)playableMovieObjectHiddenWillChange:(id)aChange;
+- (void)playInActionExecutionContext:(id)aContext;
+- (void)setMoviePlaybackItemVersion:(id)aVersion;
+- (id)moviePlaybackItemVersion;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (NSUInteger)hash;
+- (BOOL)isEqual:(id)aEqual;
+- (void)dealloc;
+- (id)copyWithZone:(NSZone *)aZone;
+- (id)initWithExtraDictionary:(id)aDictionary codingContext:(id)aContext;
+- (id)initWithMovieObject:(id)aObject playMovieAction:(id)aAction;
+- (id)initWithMediaUID:(id)aUID playMovieAction:(id)aAction;
+@end
+
+@interface HSMoviePlaybackItem (HSMoviePlaybackItemDeprecated)
+- (void)setGeometryNodeUnits:(id)aUnits;
+- (id)geometryNodeUnits;
+@end
+

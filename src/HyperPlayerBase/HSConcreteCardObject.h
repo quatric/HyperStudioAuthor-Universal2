@@ -1,0 +1,130 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSCardObject.h"
+
+
+@interface HSConcreteCardObject : HSCardObject <HSMutableCardObjectAttributes, HSCardObjectAttributes, HSAttributes, HyperInterface, NSObject, HSCardObjectRotatableAttribute, HSAttribute, HSCardObjectResizableAttribute, HSCardObjectDraggableAttribute, HSCardObjectHiddenAttribute, HSVisualAttribute, HSUndoableAttribute, HSCardObjectLockedAttribute, HSCardObjectFlattenAttribute, HSCardObjectNoClickAttribute, HSCardObjectDropOffOnlyAttribute, HSCardObjectSendActionsOnDropAttribute, HSCardObjectGroupAttribute, HSCardObjectEffectPerObjectAttribute, HSAutoplayAttributes, HSAutoplayAttribute, HSLayoutInfluencingObjectGeometry, HSLayoutGeometryHolder, HSCardObjectLayoutGuidingInterface, HSEffectMutableAttributes, HSEffectAttributes, HSEffectNameAttribute, HSEffectAttribute, HSEffectSourceAreaAttribute, HSEffectVisualAttribute, HSCoreImageEffectAccessing, HSQuickTimeEffectAccessing, HSAnimatedObjectAttributes, HSAnimatedObjectAttribute, HSInteractiveInAnimationAttribute>
+{
+    HSActionEvent *_autoPlayActionEvent;
+    BOOL _animatedObject;
+    BOOL _interactiveInAnimation;
+}
++ (Class)nodeDataClass;
+- (void)importGeometryFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importSharedPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)importLocalPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (BOOL)canBeStoredAsXMLElement;
+- (void)storeSharedPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (void)storeLocalPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (id)XMLElementName;
+- (id)XMLGeometryElementRepresentationInContext:(id)aContext;
+- (NSRect)boundsForXMLStoring;
+- (BOOL)isGenericCardObjectForXMLStoring;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (BOOL)shouldSetStoredAttributes;
+- (void)postProcessAfterCreationFromGroupObject:(id)aObject;
+- (id)localCopyIncludingNodeUnits:(BOOL)aUnits copiedLinkedObjects:(id *)aObjects;
+- (id)linkedObjects;
+- (BOOL)hasLinkedObjects;
+- (id)localCopyIncludingNodeUnits:(BOOL)aUnits;
+- (void)setInteractiveInAnimation:(BOOL)aAnimation;
+- (BOOL)isInteractiveInAnimation;
+- (void)setAnimatedObject:(BOOL)aObject;
+- (BOOL)isAnimatedObject;
+- (id)quickTimeEffectAdjustedToSize:(NSSize)aSize;
+- (id)coreImageEffectAdjustedToSize:(NSSize)aSize;
+- (id)quickTimeEffect;
+- (id)coreImageEffect;
+- (void)setHyperValue:(id)aValue forKey:(id)aKey;
+- (void)setHyperEffectName:(id)aName settings:(id)aSettings;
+- (void)setHyperEffectName:(id)aName;
+- (id)hyperValueForKey:(id)aKey;
+- (id)hyperInputKeys;
+- (id)effectSettings;
+- (id)hyperAttributes;
+- (struct CGPath *)effectSourceAreaBoundingPath;
+- (id)hyperEffectName;
+- (id)effectPerObjectAdjustedToSize:(NSSize)aSize;
+- (id)effectPerObject;
+- (BOOL)hasEffectPerObject;
+- (BOOL)supportsEffectPerObject;
+- (void)HSNode_postAttributeChangeNotification:(id)aNotification;
+- (void)HSNode_justPostAttributeChangeNotification:(id)aNotification;
+- (void)removeFromHyperParent;
+- (void)notifyDidChangeCardObjectGroupAttribute;
+- (void)notifyWillChangeCardObjectGroupAttribute;
+- (void)makeGroupObjectIgnoringGroupObjectFlag;
+- (void)makeNonGroupObject;
+- (void)makeGroupObject;
+- (BOOL)isGroupObject;
+- (void)setHyperIgnoredInLayoutGuiding:(BOOL)aGuiding;
+- (BOOL)isHyperIgnoredInLayoutGuiding;
+- (NSRect)hyperLayoutInfluencingBoundingRect;
+- (CGAffineTransform)hyperLayoutInfluencingTransform;
+- (BOOL)isHyperInfluencingLayout;
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
+- (void)postprocessDeprecatedActionEvents;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (id)playSelfActionType;
+- (void)willRemoveFromParent;
+- (void)didAddToParent;
+- (id)autoPlayActionEvent;
+- (void)setAutoPlayActionEvent:(id)aEvent;
+- (void)setAutoplayed:(BOOL)aAutoplayed;
+- (BOOL)isAutoplayed;
+- (id)queryVectorBrushHitTester;
+- (id)queryGroupBoxObjectHitTester;
+- (id)queryImageWellObjectHitTester;
+- (id)queryWebObjectHitTester;
+- (id)queryCameraObjectHitTester;
+- (id)queryTextViewObjectHitTester;
+- (id)queryImageObjectHitTester;
+- (id)queryMovieObjectHitTester;
+- (id)queryEffectObjectHitTester;
+- (id)queryButtonObjectHitTester;
+- (id)queryTextObjectHitTester;
+- (id)queryVectorGraphicObjectHitTester;
+- (id)queryInteractivePlayerItem;
+- (id)queryEditorHitTester;
+- (id)queryInteractiveHitTester;
+- (id)queryDefaultHitTester;
+- (void)notifyDidChangeUserObjectHitTesterAttribute;
+- (void)setNoClick:(BOOL)aClick;
+- (BOOL)isNoClick;
+- (void)setDropOffOnly:(BOOL)aOnly;
+- (BOOL)isDropOffOnly;
+- (BOOL)canSendActionsOnDrop;
+- (BOOL)canBeGrouped;
+- (BOOL)canBeFlatten;
+- (void)setLocked:(BOOL)aLocked;
+- (BOOL)isLocked;
+- (BOOL)isVisibleInEditor;
+- (void)setIsVisibleInEditor:(BOOL)aEditor;
+- (BOOL)isHiddenInPlayer;
+- (void)setHiddenInPlayer:(BOOL)aPlayer;
+- (void)setHidden:(BOOL)aHidden;
+- (BOOL)canBeHidden;
+- (BOOL)isHidden;
+- (BOOL)isDraggable;
+- (void)setDraggable:(BOOL)aDraggable;
+- (BOOL)canBeDraggable;
+- (id)dropOffObject;
+- (void)setRotatable:(BOOL)aRotatable;
+- (BOOL)isRotatable;
+- (BOOL)canBeRotatable;
+- (void)setResizable:(BOOL)aResizable;
+- (BOOL)isResizable;
+- (BOOL)canBeResizable;
+- (id)queryNewHyperInterface:(id)aInterface;
+- (BOOL)isHyperEqual:(id)aEqual;
+- (id)initUserObject;
+- (void)dealloc;
+@end
+
+@interface HSConcreteCardObject (HSPlayableObjectAttributesPrivate)
+- (void)setDefaultHyperPlayed:(BOOL)aPlayed onActionEvent:(id)aEvent;
+- (BOOL)isDefaultHyperPlayedOnActionEvent:(id)aEvent;
+@end
+

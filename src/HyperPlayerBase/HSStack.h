@@ -1,0 +1,158 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSUserObject.h"
+
+
+@interface HSStack : HSUserObject <HSMutableStackAttributes, HSStackAttributes, HSAttributes, HyperInterface, NSObject, HSStackCardSizeAttribute, HSAttribute, HSStackPasswordAttribute, HSStackCardObjectsVisibilityAttribute, HSVisualAttribute, HSUndoableAttribute, HSTemporaryObjectsManager, HSStackPresentationModeAttributes, HSStackGridSettingsAttribute, HSStackSmartGuidelinesSettingsAttribute, HSLayoutSnappingAttributes, HSLayoutGridSnappingAttribute, HSLayoutObjectsSnappingAttribute, HSCardGroupControllerOwner, HSMutableBackgroundAttributes, HSBackgroundAttributes, HSBackgroundGraphicsAttribute, HSBackgroundAttribute, HSBackgroundBoundsAttribute, HSBackgroundRenderer, HSBackgroundAttributesContainerPrimitives, HSStackSoundStorage>
+{
+    unsigned int _lastUsedCardOrder;
+    NSSize _stackSize;
+    BOOL _isStackProtected;
+    NSString *_stackCompression;
+    NSString *_password;
+    NSString *_recentPassword;
+    BOOL _isSnapToGridEnabled;
+    BOOL _isSnapToObjectsEnabled;
+    BOOL _arePresentationNotificationsSuspended;
+    HSUID *_cardWithVisibleMenuBarUID;
+    HSTestingFunctionsManager *_testingFunctionsManager;
+    struct HyperPlayerBase_anon2 _stackFlags;
+    NSMutableArray *_cardGroups;
+    HSCardGroupController *_cardGroupController;
+    int _cardObjectsVisibility;
+    HSGraphics *_background;
+    struct HyperPlayerBase_anon3 _presentationFlags;
+    HSLayoutGrid *_layoutGrid;
+    BOOL _isGridVisible;
+    NSMutableArray *_hiddenInPlayerObjects;
+    NSMutableDictionary *_playedInPlayerMovieObjects;
+    BOOL _containsWebCams;
+    NSMutableSet *_temporaryObjects;
+    HSGridSettings *_gridSettings;
+    HSSmartGuidelinesSettings *_guidelinesSettings;
+}
++ (void)setNewStackCardSize:(NSSize)aSize;
++ (NSSize)newStackCardSize;
++ (id)defaultUnitClassNames;
+- (void)setObjectName:(id)aName;
+- (id)objectName;
+- (void)importLocalPropertiesFromXMLElementRepresentation:(id)aRepresentation inContext:(id)aContext;
+- (void)storeLocalPropertiesInXMLElementRepresentation:(id)aRepresentation context:(id)aContext;
+- (id)XMLCardRefElementForCard:(id)aCard;
+- (BOOL)canBeStoredAsXMLElement;
+- (id)XMLElementName;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (BOOL)containsWebCams;
+- (id)deepComments;
+- (id)childrenComments;
+- (id)soundMediaForPath:(id)aPath;
+- (BOOL)stackContainsSoundMediaWithName:(id)aName;
+- (void)flushPresentationNotifications;
+- (void)suspendPresentationNotifications;
+- (BOOL)arePresentationNotificationsSuspended;
+- (void)setPresentationMenuVisible:(BOOL)aVisible;
+- (BOOL)isPresentationMenuVisible;
+- (void)setShouldPlayInFullScreen:(BOOL)aScreen;
+- (BOOL)shouldPlayInFullScreen;
+- (void)setPresentationPlaysInFullScreen:(BOOL)aScreen;
+- (BOOL)isPresentationPlaysInFullScreen;
+- (void)setPresentationPlaysWithoutTitleBar:(BOOL)aBar;
+- (BOOL)isPresentationPlaysWithoutTitleBar;
+- (void)setPresentationBasicWindowMode:(BOOL)aMode;
+- (BOOL)isPresentationBasicWindowMode;
+- (void)setPresentationCoveringDesktopMode:(BOOL)aMode;
+- (BOOL)isPresentationCoveringDesktopMode;
+- (void)setHyperBackgroundGraphics:(id)aGraphics copyObject:(BOOL)aObject;
+- (NSRect)backgroundBounds;
+- (void)setBackgroundThumbnail:(id)aThumbnail;
+- (id)backgroundThumbnail;
+- (void)_setBackgroundGraphics:(id)aGraphics;
+- (id)backgroundGraphics;
+- (id)valuesForMDAttribute:(id)aAttribute;
+- (id)supportedMDAttributes;
+- (void)dropMovieObjectsCurrentTime;
+- (void)restoreMovieObjectsCurrentTime;
+- (void)addCurrentTime:(double)aTime forMovieObject:(id)aObject;
+- (void)restoreObjectsVisibility;
+- (void)addHiddenInPlayerObject:(id)aObject;
+- (void)removeAllTemporaryObjects;
+- (void)removeAllTemporaryObjectsForCard:(id)aCard;
+- (void)unregisterTemporaryObject:(id)aObject;
+- (void)registerTemporaryObject:(id)aObject;
+- (id)temporaryObjects;
+- (void)setCardObjectsVisibility:(NSInteger)aVisibility;
+- (NSInteger)cardObjectsVisibility;
+- (void)cardGroupController:(id)aController removeCardsAtIndexes:(id)aIndexes;
+- (void)cardGroupController:(id)aController addCards:(id)aCards atIndexes:(id)aIndexes;
+- (id)cardGroupController:(id)aController cardAtIndex:(NSUInteger)aIndex;
+- (id)cardsForCardGroupController:(id)aController;
+- (id)groupsForCardGroupController:(id)aController;
+- (id)undoManagerForCardGroupController:(id)aController;
+- (id)cardGroupController;
+- (void)setCardGroups:(id)aGroups;
+- (id)cardGroups;
+- (id)nodeDataProvider;
+- (id)stackForAction:(id)aAction;
+- (id)cardForAction:(id)aAction;
+- (BOOL)supportsActionType:(id)aType forEvent:(id)aEvent;
+- (id)queryNewHyperInterface:(id)aInterface;
+- (void)setSnapToObjectsEnabled:(BOOL)aEnabled;
+- (BOOL)isSnapToObjectsEnabled;
+- (void)setSnapToGridEnabled:(BOOL)aEnabled;
+- (BOOL)isSnapToGridEnabled;
+- (id)testingFunctionsManager;
+- (id)basename;
+- (id)wrapperExtension;
+- (id)currentWindow;
+- (BOOL)isPasswordCorrect:(id)aCorrect;
+- (void)setHyperPassword:(id)aPassword;
+- (void)setPassword:(id)aPassword;
+- (id)recentPassword;
+- (void)setRecentPassword:(id)aPassword;
+- (BOOL)isStackProtected;
+- (void)setStackProtected:(BOOL)aProtected;
+- (id)stackCompression;
+- (void)setStackCompression:(id)aCompression;
+- (id)compressString:(id)aString;
+- (id)extraDictionaryRepresentationWithCodingContext:(id)aContext;
+- (void)loadExtraDictionaryRepresentation:(id)aRepresentation withCodingContext:(id)aContext;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (void)setGuidelinesSettings:(id)aSettings;
+- (id)guidelinesSettings;
+- (void)setGridSettings:(id)aSettings;
+- (id)gridSettings;
+- (id)allActionsOfType:(id)aType;
+- (BOOL)needsOwnUniqueNameGenerator;
+- (void)setCardSizeAsString:(id)aString;
+- (id)cardSizeAsString;
+- (void)setHyperCardSize:(NSSize)aSize;
+- (void)HSStack_resizeCardObjectsWithScaleFactor:(NSSize)aFactor;
+- (void)HSStack_resizeCardTo:(NSSize)aTo;
+- (NSSize)hyperCardSize;
+- (id)childWrapperExtension;
+- (id)card;
+- (id)stack;
+- (id)posterCard;
+- (void)insertChild:(id)aChild atIndex:(NSUInteger)aIndex;
+- (void)justInsertHyperChildren:(id)aChildren atIndexes:(id)aIndexes;
+- (void)dealloc;
+- (id)init;
+@end
+
+@interface HSStack (HSValueConstraint)
+- (id)hyperCountMinValue;
+- (id)hyperCountMaxValue;
+@end
+
+@interface HSStack (HSReadyMadeCardsSupport)
+- (BOOL)insertNewCardWithBackgroundFromPasteboard:(id)aPasteboard atIndex:(NSUInteger)aIndex;
+- (id)insertCardsFromPasteboard:(id)aPasteboard atIndex:(NSUInteger)aIndex;
+- (id)insertCards:(id)aCards atIndex:(NSInteger)aIndex;
+- (id)removeUIDsOfCopiedObjectsInCardsDictionaries:(id)aDictionaries fromUnrefreshingUIDs:(id)aDs;
+- (void)insertCards:(id)aCards withCardGroups:(id)aGroups atIndex:(NSInteger)aIndex;
+- (id)retrieveObjectsFromCardsDictionaries:(id)aDictionaries UIDsToIgnore:(id)aIgnore;
+@end
+

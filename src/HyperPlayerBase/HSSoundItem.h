@@ -1,0 +1,96 @@
+#import "HyperPlayerBasePrefix.h"
+
+
+@interface HSSoundItem : NSObject <HSSoundItemAttributes, HSAttributes, HyperInterface, NSObject, HSSoundItemEnableAttribute, HSAttribute, HSSoundItemOwnerAttribute, HSSoundItemUIDAttribute, HSRecordAttributes, HSSoundPlaybackAttributes, HSSoundPlaybackSoundAttribute, HSSoundPlaybackMediaAttribute, HSSoundPlaybackPlayCountAttribute, HSSoundPlaybackFadeOutTimeAttribute, HSSoundPlaybackPlayRangeAttribute, HSSoundPlaybackDurationAttribute, HSSoundPlaybackSynchronousSoundAttribute, HSSoundPlaybackVolumeAttribute, HSSoundPlaybackStopThisSoundAttribute, HSiPadSoundConverterAttributes, HSHTML5ExportSupport, HSAttributeObserving, EXKeyValueCoding, NSCopying>
+{
+    id<HSSoundItemOwnerAttributes> _owner;
+    HSMovie *_sound;
+    HSNewMedia *_media;
+    HSUID *_itemUID;
+    float _volume;
+    struct HSTimeRange _soundPlayRange;
+    double _soundFadeOutTime;
+    BOOL _enabled;
+    BOOL _synchronousSound;
+    unsigned int _playCount;
+    BOOL _stopThisSound;
+}
+- (id)soundItemDuration;
+- (id)soundItemName;
+- (id)attributesChangedTemporary;
+- (id)attributesBeingChangedContinuously;
+- (void)endContinuousChangeOfAttributeSet:(id)aSet;
+- (void)beginContinuousChangeOfAttributeSet:(id)aSet;
+- (void)endContinuousChangeOfAttribute:(id)aAttribute;
+- (void)beginContinuousChangeOfAttribute:(id)aAttribute;
+- (void)removeAttributeObserver:(id)aObserver;
+- (void)removeAttributeObserver:(id)aObserver selector:(SEL)aSelector;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute withPriority:(CGFloat)aPriority;
+- (id)attributeObservingController;
+- (void)setSoundPlayRangeAsDictionary:(id)aDictionary;
+- (id)soundPlayRangeAsDictionary;
+- (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType;
+- (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType;
+- (BOOL)shouldBeExportedAsImage;
+- (id)HTML5UnsupportedFunctionalityDescription;
+- (id)HTML5DictionaryRepresentationInContext:(id)aContext;
+- (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (id)mediaConvertedForIPadExport;
+- (BOOL)isIPadExportableFileType;
+- (id)recordName;
+- (id)defaultRecordName;
+- (void)copyAttributesFromSoundItem:(id)aItem;
+- (void)setEnabled:(BOOL)aEnabled;
+- (BOOL)isEnabled;
+- (void)setOwner:(id)aOwner;
+- (id)owner;
+- (void)setStopThisSound:(BOOL)aSound;
+- (BOOL)stopThisSound;
+- (void)setItemUID:(id)aUID;
+- (id)itemUID;
+- (void)setMediaUID:(id)aUID;
+- (id)mediaUID;
+- (void)HSSoundItem_mediaDidChangeDataSource:(id)aSource;
+- (void)setMedia:(id)aMedia;
+- (void)HSSoundItem_setMedia:(id)aMedia;
+- (id)media;
+- (void)setLoopSound:(BOOL)aSound;
+- (BOOL)loopSound;
+- (void)setPlayCount:(NSUInteger)aCount;
+- (NSUInteger)playCount;
+- (void)setSoundFadeOutTime:(double)aTime;
+- (double)soundFadeOutTime;
+- (double)soundDuration;
+- (void)setSoundPlayRange:(struct HSTimeRange)aRange;
+- (struct HSTimeRange)soundPlayRange;
+- (void)setSynchronousSound:(BOOL)aSound;
+- (BOOL)isSynchronousSound;
+- (void)setVolume:(CGFloat)aVolume;
+- (CGFloat)volume;
+- (id)sound;
+- (id)createSoundWithMediaPath:(id)aPath error:(id *)aError;
+- (NSUInteger)hash;
+- (BOOL)isEqual:(id)aEqual;
+- (id)copyWithZone:(NSZone *)aZone;
+- (void)setSoundItemVersion:(id)aVersion;
+- (id)soundItemVersion;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (id)initWithExtraDictionary:(id)aDictionary codingContext:(id)aContext;
+- (void)applySoundOptions;
+- (void)release;
+- (void)dealloc;
+- (id)initWithMediaUID:(id)aUID andApplyOptionsFromSound:(id)aSound;
+- (id)initWithMediaUID:(id)aUID;
+- (id)init;
+@end
+

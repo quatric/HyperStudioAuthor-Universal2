@@ -1,0 +1,90 @@
+#import "HyperStudioPrefix.h"
+
+
+@interface HSAnimationEditModePathObject : NSObject <HSAttributeObserving, NSObject, HSAttributes, HyperInterface, HSVectorGraphicsOwner, NSCopying>
+{
+    HSVectorGraphics *_vectorGraphics;
+    NSAffineTransform *_transform;
+}
+- (id)copyWithZone:(NSZone *)aZone;
+- (void)notifyChange:(NSInteger)aChange ofAttribute:(id)aAttribute withUserInfoInvocation:(id)aInvocation;
+- (void)notifyChange:(NSInteger)aChange ofAttribute:(id)aAttribute withUserInfo:(id)aInfo;
+- (id)attributesChangedTemporary;
+- (id)attributesBeingChangedContinuously;
+- (void)endContinuousChangeOfAttributeSet:(id)aSet;
+- (void)beginContinuousChangeOfAttributeSet:(id)aSet;
+- (void)endContinuousChangeOfAttribute:(id)aAttribute;
+- (void)beginContinuousChangeOfAttribute:(id)aAttribute;
+- (void)removeAttributeObserver:(id)aObserver;
+- (void)removeAttributeObserver:(id)aObserver selector:(SEL)aSelector;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes;
+- (void)removeObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterfaces:(id *)aInterfaces withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesOfHyperInterface:(id)aInterface withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributesFromSet:(id)aSet withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttributes:(id *)aAttributes withPriority:(CGFloat)aPriority;
+- (void)addObserver:(id)aObserver selector:(SEL)aSelector ofChanges:(NSUInteger)aChanges ofAttribute:(id)aAttribute withPriority:(CGFloat)aPriority;
+- (id)attributeObservingController;
+- (id)attributeNotificationCenter;
+- (void)setHyperFlippedVertical:(BOOL)aVertical;
+- (void)setHyperFlippedHorizontal:(BOOL)aHorizontal;
+- (void)hyperFlipVertical;
+- (void)hyperFlipHorizontal;
+- (void)setHyperScaleFactor:(NSSize)aFactor;
+- (void)setHyperRotationAngle:(CGFloat)aAngle;
+- (void)hyperScaleBy:(NSSize)aBy aboutPoint:(NSPoint)aPoint assumeAsOriginalSize:(NSSize)aSize affineTransform:(id)aTransform;
+- (void)hyperResizeToSize:(NSSize)aSize aboutPoint:(NSPoint)aPoint assumeAsOriginalSize:(NSSize)aSize2 affineTransform:(id)aTransform;
+- (NSSize)constrainHyperSize:(NSSize)aSize;
+- (NSPoint)constrainHyperOrigin:(NSPoint)aOrigin;
+- (void)setHyperOriginY:(CGFloat)aY;
+- (void)setHyperOriginX:(CGFloat)aX;
+- (void)setHyperOrigin:(NSPoint)aOrigin;
+- (id)constrainHyperAffineTransform:(id)aTransform;
+- (NSSize)constrainHyperSize:(NSSize)aSize assumeAsOriginal:(NSSize)aOriginal;
+- (BOOL)prefersHyperResizingToScaling;
+- (void)setHyperPrefersProportionalResizingScaling:(BOOL)aScaling;
+- (void)setHyperAffineTransform:(id)aTransform;
+- (void)setHyperFrameHeight:(CGFloat)aHeight;
+- (void)setHyperFrameWidth:(CGFloat)aWidth;
+- (void)setHyperSize:(NSSize)aSize;
+- (void)hyperResetToDefaultSizeAboutPoint:(NSPoint)aPoint;
+- (NSSize)hyperRotationCenterToSidesRatio;
+- (BOOL)canHyperSkew;
+- (BOOL)canHyperRotate;
+- (BOOL)canHyperScaleVertical;
+- (BOOL)canHyperScaleHorizontal;
+- (BOOL)canHyperMove;
+- (BOOL)canHyperResizeVertical;
+- (BOOL)canHyperResizeHorizontal;
+- (NSSize)hyperDefaultSize;
+- (NSSize)hyperScale;
+- (BOOL)hyperPrefersProportionalResizingScaling;
+- (BOOL)isHyperFlippedVertical;
+- (BOOL)isHyperFlippedHorizontal;
+- (CGFloat)hyperRotationAngle;
+- (id)copiedHyperAffineTransform;
+- (CGAffineTransform)affineTransform;
+- (CGFloat)hyperFrameHeight;
+- (CGFloat)hyperFrameWidth;
+- (NSSize)hyperFrameSize;
+- (CGFloat)hyperOriginY;
+- (CGFloat)hyperOriginX;
+- (NSPoint)hyperOrigin;
+- (NSRect)hyperBoundingRect;
+- (NSSize)hyperSize;
+- (id)queryHyperInterface:(id)aInterface;
+- (void)setTransform:(id)aTransform;
+- (id)transform;
+- (id)undoManager;
+- (id)hyperObjectForVectorGraphics:(id)aGraphics;
+- (void)setVectorGraphics:(id)aGraphics;
+- (id)vectorGraphics;
+- (id)bezierPath;
+- (void)dealloc;
+- (id)initWithBezierPath:(id)aPath;
+- (id)init;
+@end
+

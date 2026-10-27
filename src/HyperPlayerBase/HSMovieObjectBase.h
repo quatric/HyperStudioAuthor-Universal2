@@ -1,0 +1,102 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSShadowedObject.h"
+
+
+@interface HSMovieObjectBase : HSShadowedObject <HSMediaObject, HSMediaAttributes, HSAttributes, HyperInterface, NSObject, HSMediaAttribute, HSVisualAttribute, HSUndoableAttribute, HSAttribute, HSMediaUIDAttribute, HSMovieDelegate, HSMovieObjectBaseAttributes, HSMovieObjectBaseIsEmptyAttribute, HSMovieObjectBaseVolumeAttribute, HSMovieObjectBaseMovieAttribute, HSExtendedPlayableObjectAttributes, HSPlayableObjectAttributes, HSPlayableObjectUIDAttribute, HSPlayableObjectNameAttribute, HSPlayableObjectDurationAttribute, HSPlayableObjectStartTimeAttribute, HSPlayableObjectPlayRangeAttribute, HSPlayableObjectHyperPlayingAttribute, HSExtendedPlayableObjectPlayCountAttribute, HSStartingPlayableObjectAttributes, HSPlayableObjectHyperStartingOnClickAttribute, HSPlayableObjectHyperAllowPlayingOtherMoviesAttribute, HSPlayableObjectHyperAllowPlayingOtherSoundsAttribute>
+{
+    HSMovie *_movie;
+    BOOL _pendingSetPlayRange;
+    id _starter;
+    BOOL _movieCreation;
+}
++ (Class)nodeDataClass;
+- (void)mediaPathToMediaFileDidChange:(id)aChange;
+- (void)copyMovieAttributesToMovie:(id)aMovie;
+- (void)willDisconnectFromDocument;
+- (id)nameBaseTemplates;
+- (void)movieDidStop:(id)aStop;
+- (void)movieDidPlayOnce:(id)aOnce;
+- (void)movieDidEnd:(id)aEnd;
+- (void)movieDidChangeImage:(id)aImage;
+- (id)hyperMovie;
+- (void)setVolume:(CGFloat)aVolume;
+- (CGFloat)volume;
+- (void)setHyperVolume:(CGFloat)aVolume;
+- (CGFloat)hyperVolume;
+- (void)setHyperMovieWithPath:(id)aPath;
+- (void)setHyperMovieWithPath:(id)aPath error:(id *)aError;
+- (void)setHyperMovie:(id)aMovie name:(id)aName;
+- (BOOL)isHyperEmpty;
+- (void)setHyperAllowPlayingOtherSounds:(BOOL)aSounds;
+- (BOOL)isHyperAllowPlayingOtherSounds;
+- (void)setAllowPlayingOtherSounds:(BOOL)aSounds;
+- (BOOL)isAllowPlayingOtherSounds;
+- (void)setHyperAllowPlayingOtherMovies:(BOOL)aMovies;
+- (BOOL)isHyperAllowPlayingOtherMovies;
+- (void)setAllowPlayingOtherMovies:(BOOL)aMovies;
+- (BOOL)isAllowPlayingOtherMovies;
+- (void)setHyperStartingOnClick:(BOOL)aClick;
+- (BOOL)isHyperStartingOnClick;
+- (void)setStartingOnClick:(BOOL)aClick;
+- (BOOL)isStartingOnClick;
+- (void)hyperStop;
+- (void)hyperStart:(id)aStart atRate:(CGFloat)aRate startupMode:(NSInteger)aMode;
+- (void)hyperStart:(id)aStart startupMode:(NSInteger)aMode;
+- (void)hyperStart:(id)aStart;
+- (void)hyperStepForward;
+- (void)hyperStepBack;
+- (void)setHyperCurrentTime:(double)aTime;
+- (double)hyperCurrentTime;
+- (id)hyperStarter;
+- (BOOL)isHyperPlaying;
+- (void)setHyperPlayCount:(NSUInteger)aCount;
+- (NSUInteger)hyperPlayCount;
+- (void)setPlayCount:(NSUInteger)aCount;
+- (NSUInteger)playCount;
+- (void)setStartTime:(double)aTime;
+- (double)startTime;
+- (void)setHyperStartTime:(double)aTime;
+- (double)hyperStartTime;
+- (void)setPendingSetPlayRange:(BOOL)aRange;
+- (void)undoableSetPlayRange:(struct HSTimeRange)aRange;
+- (id)localCopyIncludingNodeUnits:(BOOL)aUnits;
+- (void)setPlayRange:(struct HSTimeRange)aRange;
+- (struct HSTimeRange)playRange;
+- (void)setHyperPlayRange:(struct HSTimeRange)aRange;
+- (struct HSTimeRange)hyperPlayRange;
+- (double)hyperDuration;
+- (id)hyperPlayableObjectName;
+- (id)hyperPlayableObjectUID;
+- (void)setMedia:(id)aMedia applyAttributes:(BOOL)aAttributes attributes:(struct MovieAttributesForMediaChange)aAttributes2 error:(id *)aError;
+- (BOOL)isCurrentMediaDifferentFrom:(id)aFrom;
+- (BOOL)canUseMedia:(id)aMedia error:(id *)aError;
+- (void)setMedia:(id)aMedia;
+- (void)setMedia:(id)aMedia error:(id *)aError;
+- (id)initWithMedia:(id)aMedia;
+- (id)initWithMedia:(id)aMedia error:(id *)aError;
+- (void)clearMediaDependentAttributes;
+- (void)applyAttributesToMovie;
+- (void)readAttributesFromMovie;
+- (void)destroyMovie;
+- (BOOL)createMovieFromMedia:(id)aMedia error:(id *)aError;
+- (id)moviePtr;
+- (id)movie;
+- (void)validateMedia;
+- (void)currentMediaDidChange;
+- (void)currentMediaWillChange;
+- (void)HSMovieObjectBase_mediaDidChangeDataSource:(id)aSource;
+- (void)changeCurrentMediaFrom:(id)aFrom to:(id)aTo error:(id *)aError;
+- (void)HSMovieObjectBase_changeCurrentMediaFrom:(id)aFrom to:(id)aTo error:(id *)aError;
+- (id)media;
+- (id)mediaUID;
+- (void)setLoopMode:(NSInteger)aMode;
+- (NSInteger)loopMode;
+- (void)setPlayRangeAsString:(id)aString;
+- (id)playRangeAsString;
+- (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (void)release;
+- (void)dealloc;
+- (id)init;
+- (id)movieObjectBaseNodeData;
+@end
+

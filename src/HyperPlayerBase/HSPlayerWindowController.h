@@ -1,0 +1,99 @@
+#import "HyperPlayerBasePrefix.h"
+#import "HSMainWindowController.h"
+
+
+@interface HSPlayerWindowController : HSMainWindowController
+{
+    HSPlayerView *_playerView;
+    HSBorderlessAttributes *_borderlessAttributes;
+    NSWindow *_oldWindow;
+    int _oldLevel;
+    NSWindow *_borderlessWindow;
+    BTToolView *_bitmapLayerView;
+    HSSlideshowAttributes *_sessionSlideshowAttributes;
+    HSSlideshowAttributes *_lastSlideShowOptions;
+    struct __CFDictionary *_lastCardViewMouseDownEventNumbers;
+    NSMutableSet *_modifiedAttributesSet;
+    unsigned int _isFullScreenMode:1;
+    unsigned int _isBorderlessWindowMode:1;
+    unsigned int _isMarkerActive:1;
+    unsigned int _inResizeMainWindow:1;
+    unsigned int _miniaturizeWhenSlideShow:1;
+    unsigned int _beginSheetWhenSlideShow:1;
+    unsigned int _isSlideShowAttributesObserverInited:1;
+}
+- (BOOL)isBackgroundGraphics;
+- (BOOL)isMenuShown;
+- (BOOL)isTitlebarDisabled;
+- (BOOL)isFullScreen;
+- (void)HSPlayerWindowController_defaultSlideshowAttributesDidChange:(id)aChange;
+- (void)HSPlayerWindowController_startSlideShow:(id)aShow isLive:(BOOL)aLive;
+- (void)HSPlayerWindowController_defaultBorderlessAttributesDidChange:(id)aChange;
+- (void)HSPlayerWindowController_setBorderlessAttributes:(id)aAttributes;
+- (void)activeCardDidChange:(id)aChange;
+- (void)stackTitleDidChanged:(id)aChanged;
+- (void)insertNewline:(id)aNewline;
+- (void)insertBacktab:(id)aBacktab;
+- (void)insertTab:(id)aTab;
+- (void)cancelOperation:(id)aOperation;
+- (BOOL)cancelOperation;
+- (void)keyDown:(id)aDown;
+- (BOOL)validateUserInterfaceItem:(id)aItem;
+- (void)liveSlideShow:(id)aShow;
+- (id)sessionSlideshowAttributes;
+- (void)changeFontTrait:(id)aTrait;
+- (void)slideshow:(id)aSlideshow;
+- (void)borderlessWindowMode:(id)aMode;
+- (void)saveEditingState;
+- (void)navigationOperationDidFinishInPlayerView:(id)aView;
+- (id)windowScreen;
+- (BOOL)hasPlayerMode;
+- (id)navigationControllerForPlayerView:(id)aView;
+- (BOOL)needRunArrivingActions;
+- (void)runAutomaticTimersAndArrivingActions;
+- (void)startSlideShowWithAttributes:(id)aAttributes;
+- (id)slideshowAttributesFromDialog;
+- (BOOL)isFullScreenMode;
+- (void)revertUIMode;
+- (void)setupUIMode;
+- (void)mouseMoved:(id)aMoved;
+- (void)exitBorderlessModeIfNeeded;
+- (void)makeWindowBorderlessWithFullScreen:(BOOL)aScreen;
+- (void)setOldWindow:(id)aWindow;
+- (void)windowDidMove:(id)aMove;
+- (NSRect)bestWindowFrameForCurrentStack;
+- (void)verifyWindowMode;
+- (void)adjustWindowFrame;
+- (void)centerWindowFrame;
+- (void)verifyCardViewZoomFactor;
+- (NSSize)adjustedCardSize;
+- (void)attachToStackAndUpdateView;
+- (void)didBindToModelOnLoad;
+- (void)bindToModelOnLoad;
+- (void)stackDidChangeAttributes:(id)aAttributes;
+- (void)coverDesktopAttributesDidChange;
+- (void)setupRoundedCornersIfNeeded;
+- (void)HSPlayerWindowController_screenParametersDidChange:(id)aChange;
+- (void)HSPlayerWindowController_applicationDidBecomeActive:(id)aActive;
+- (id)playerView;
+- (id)cardViewContainer;
+- (id)cardView;
+- (BOOL)hyperWindow:(id)aWindow shouldSendLocationEvent:(id)aEvent;
+- (void)didEndModalWindow:(id)aWindow;
+- (void)willRunModalWindow:(id)aWindow;
+- (void)windowDidEndSheet:(id)aSheet;
+- (void)windowWillBeginSheet:(id)aSheet;
+- (void)windowDidDeminiaturize:(id)aDeminiaturize;
+- (void)windowWillMiniaturize:(id)aMiniaturize;
+- (void)restoreSlideShow:(BOOL)aShow;
+- (BOOL)stopSlideShow;
+- (void)windowWillClose:(id)aClose;
+- (void)setWindow:(id)aWindow;
+- (void)awakeFromNib;
+- (id)presentationSync;
+- (void)handleWindowDidLoad;
+- (void)windowDidLoad;
+- (id)windowNibName;
+- (void)dealloc;
+@end
+

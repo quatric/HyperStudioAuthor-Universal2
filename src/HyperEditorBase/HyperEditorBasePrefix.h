@@ -1,0 +1,173 @@
+// Shared declarations for the HyperEditorBase sources.
+#import "HSSystemFrameworks.h"
+#import "SMKApplicationKitUmbrella.h"
+#import "SMKBitmapToolsUmbrella.h"
+#import "SMKControlsUmbrella.h"
+#import "HyperPlayerBaseUmbrella.h"
+#import "HyperEditorBaseData.h"
+
+@protocol HSEditorCardViewBackgroundHost;
+@protocol HSLibraryPlugin;
+@protocol HSLibrarySharedMedia;
+@protocol HSEmailTextFieldController;
+@protocol HSLibraryMediaData;
+@protocol HSLibraryMediaDataFolder;
+@protocol HSLibraryMediaDataItem;
+@protocol HSLibraryMediaDataItemAccessibility;
+@protocol HSLibraryMediaDataProvider;
+@protocol HSLibraryMediaFiltering;
+@protocol HSLibraryMediaItem;
+@protocol HSLibraryMediaUserInterface;
+@protocol HSLibraryUserMediaData;
+@protocol HSMediaContentFilter;
+@protocol HSModeController;
+@protocol HSTrackingButtonCell;
+@protocol HSTrackingButtonCellDelegate;
+@protocol HSVectorGraphicsShapeTypeSharedInfo;
+@protocol HSVectorGraphicsShapeTypeSharedProvider;
+
+@class HSActionsPaneButtonBackgroundRenderer;
+@class HSAddressBookEmailTokenFieldController;
+@class HSAlertContentView;
+@class HSAnimationOptionsControlBackgroundRenderer;
+@class HSAppearanceButtonCell;
+@class HSAssistantButtonBackgroundRenderer;
+@class HSAssistantLargeButtonBackgroundRenderer;
+@class HSAssistantPaneControlBackgroundRenderer;
+@class HSAssistantSegmentedControlBackgroundRenderer;
+@class HSAssistantSegmentedControlControlBackgroundRenderer;
+@class HSAttributeCheckBox;
+@class HSAttributeTextField;
+@class HSBlueCircleSliderCell;
+@class HSBlueTriangleSlider;
+@class HSBlueTriangleSliderCell;
+@class HSButton;
+@class HSButtonBackgroundRenderer;
+@class HSButtonCell;
+@class HSCardNavigationControlBackgroundRenderer;
+@class HSColorSlider;
+@class HSComboBox;
+@class HSComboBoxCell;
+@class HSCommentsAndAttributionsPaletteController;
+@class HSControlAnimation;
+@class HSControlAnimator;
+@class HSControlBackgroundRenderer;
+@class HSControlObjectView;
+@class HSControlslImageProvider;
+@class HSCustomCellPropertiesCopier;
+@class HSCustomPopUpButtonCell;
+@class HSCustomTabViewBackgroundRenderer;
+@class HSDocument;
+@class HSDragImageView;
+@class HSDropImageView;
+@class HSEditorBaseID;
+@class HSEmailAddressRepresentation;
+@class HSEventBasedTrackingController;
+@class HSExcludedMediaFileTypesHelper;
+@class HSFontComboboxDataSource;
+@class HSFontSizeComboBox;
+@class HSGraphicsLibraryAnimation;
+@class HSGraphicsLibraryAnimationsAllMediaItem;
+@class HSGraphicsLibraryAnimationsMediaItem;
+@class HSGraphicsLibraryBuiltInMediaDataProvider;
+@class HSGraphicsLibraryBuiltInMediaItem;
+@class HSGraphicsLibraryBuiltinMoviesDataProvider;
+@class HSGraphicsLibraryMoviesHelper;
+@class HSGraphicsLibraryiPhotoAlbum;
+@class HSGraphicsLibraryiPhotoHelper;
+@class HSGraphicsLibraryiPhotoMediaDataProvider;
+@class HSGraphicsLibraryiPhotoPhoto;
+@class HSHelpBookManager;
+@class HSImageCropView;
+@class HSImageView;
+@class HSImageViewWithImagePicker;
+@class HSImagesProvider;
+@class HSImportDialogGraphicsBTCGImage;
+@class HSLayoutGrid;
+@class HSLayoutGridPreview;
+@class HSLayoutPaletteButtonBackgroundRenderer;
+@class HSLayoutPaletteTitleButtonBackgroundRenderer;
+@class HSLibraryContentHelper;
+@class HSLibraryManager;
+@class HSLibraryOptionsButtonBackgroundRenderer;
+@class HSLibraryPanelControlBackgroundRenderer;
+@class HSLibraryPasteboardDataProvider;
+@class HSLibraryPicture;
+@class HSLibraryPicturesAllMediaItem;
+@class HSLibraryPicturesDataProvider;
+@class HSLibraryPicturesHelper;
+@class HSLibraryPicturesMediaItem;
+@class HSLibraryPlusButtonBackgroundRenderer;
+@class HSLibrarySound;
+@class HSLibrarySoundIndexer;
+@class HSLibrarySoundsAllMediaItem;
+@class HSLibrarySoundsDataProvider;
+@class HSLibrarySoundsHelper;
+@class HSLibrarySoundsMediaItem;
+@class HSMediaOutlineCell;
+@class HSMediaOutlineView;
+@class HSMediaPlaySynchronizer;
+@class HSNBAHelpProvider;
+@class HSNode;
+@class HSObjectAssistantsToolbarControlBackgroundRenderer;
+@class HSObjectBrowserToolbarButtonBackgroundRenderer;
+@class HSPaletteController;
+@class HSPaneScrollView;
+@class HSPaneScroller;
+@class HSPlaceholderTextView;
+@class HSPlaybackControlImagesProvider;
+@class HSPlayerInEditorWindowController;
+@class HSPlayerPresentationView;
+@class HSPlayerSettingsDataSource;
+@class HSPopUpButtonBackgroundRender;
+@class HSPreviewDocument;
+@class HSPurePlayerInEditorWindowController;
+@class HSRangeCell;
+@class HSRangeControl;
+@class HSRangeIndicatorCell;
+@class HSRangeKnobsCell;
+@class HSRunLoopBasedTrackingController;
+@class HSSegmentedCell;
+@class HSSegmentedControl;
+@class HSSegmentedTrackingButtonCell;
+@class HSShortcutsPaletteButtonBackgroundRenderer;
+@class HSSliderCell;
+@class HSSmallControlBackgroundRenderer;
+@class HSSoundsLibraryBuiltInMediaDataProvider;
+@class HSSoundsLibraryBuiltInMediaItem;
+@class HSSoundsLibraryTableView;
+@class HSSoundsLibraryiTunesHelper;
+@class HSSoundsLibraryiTunesMediaDataProvider;
+@class HSSoundsLibraryiTunesPlaylist;
+@class HSSoundsLibraryiTunesSong;
+@class HSTigerEmailTextFieldController;
+@class HSTimerBasedTrackingController;
+@class HSToolSettingsBigControlBackgroundRenderer;
+@class HSToolSettingsControlBackgroundRenderer;
+@class HSToolsControlBackgroundRenderer;
+@class HSTrackingButtonCell;
+@class HSTrackingController;
+@class HSValidatedUserInterfacePaletteController;
+@class HSVectorGraphicsShapeTypeSharedInfo;
+@class HSVectorGraphicsShapeTypeSharedProvider;
+
+struct HyperEditorBase_anon1 {
+    int version;
+    void *info;
+    void *retain;
+    void *release;
+    void *copyDescription;
+};
+
+struct HyperEditorBase_anon2 {
+    int f0;
+    void *f1;
+    void *f2;
+    void *f3;
+    void *f4;
+};
+
+float HSNonLinearValueForSlider(NSSlider *aSlider);
+float HSLinearValueForSliderFromNonLinear(NSSlider *aSlider, float aValue);
+
+#import "HyperEditorBaseProtocols.h"
