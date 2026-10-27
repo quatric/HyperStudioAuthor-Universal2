@@ -1197,8 +1197,11 @@ static void HSUserObjectViewReleaseFrame(CVPixelBufferRef *aFrame)
 
 - (void)enableOpenGLSurface
 {
-    if ([[HSSystem sharedSystem] isOpenGLEnabled])
-        [super enableOpenGLSurface];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HSOpenGLBackEndDisabled"])
+        return;
+    if (CFPreferencesGetAppBooleanValue(CFSTR("HSOpenGLBackEndDisabled"), CFSTR("com.mackiev.hyperplayerbase"), NULL))
+        return;
+    [super enableOpenGLSurface];
 }
 
 - (BOOL)acceptsFirstMouse:(id)aMouse

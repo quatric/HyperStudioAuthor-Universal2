@@ -109,24 +109,10 @@
 
 - (void)addCardRect:(NSRect)aRect toContext:(struct CGContext *)aContext
 {
-    if (![self roundsCardCorners]) {
+    if (![self roundsCardCorners])
         CGContextAddRect(aContext, NSRectToCGRect(aRect));
-        return;
-    }
-    CGFloat radius = [self HSPlayerInEditorCardView_cornerRoundingRadiusForCardSize:[self cardSize]];
-    CGFloat minX = aRect.origin.x;
-    CGFloat minY = aRect.origin.y;
-    CGFloat maxX = aRect.size.width + minX;
-    CGFloat maxY = aRect.size.height + minY;
-    CGContextMoveToPoint(aContext, minX, minY + radius);
-    CGContextAddArcToPoint(aContext, minX, minY, minX + radius, minY, radius);
-    CGContextAddLineToPoint(aContext, maxX - radius, minY);
-    CGContextAddArcToPoint(aContext, maxX, minY, maxX, minY + radius, radius);
-    CGContextAddLineToPoint(aContext, maxX, maxY - radius);
-    CGContextAddArcToPoint(aContext, maxX, maxY, maxX - radius, maxY, radius);
-    CGContextAddLineToPoint(aContext, minX + radius, maxY);
-    CGContextAddArcToPoint(aContext, minX, maxY, minX, maxY - radius, radius);
-    CGContextClosePath(aContext);
+    else
+        CGContextAddPath(aContext, [self roundedRectClipPath:aRect]);
 }
 
 - (CGFloat)HSPlayerInEditorCardView_cornerRoundingRadiusForCardSize:(NSSize)aSize
