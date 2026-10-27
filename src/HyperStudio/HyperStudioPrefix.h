@@ -227,7 +227,6 @@
 @class HSATutorialWindow;
 @class HSWebAppIconPreviewView;
 @class HSWebAppIconShadowView;
-@class HSRegistrationUserDefaults;
 @class HSArduinoSetupActionAssistantPane;
 @class HSArduinoSetupActionPaneApplier;
 @class HSArduinoWatcherActionAssistantPane;
@@ -732,6 +731,7 @@
 @class HSReadyMadeCardsProvider;
 @class HSRectSelectionTool;
 @class HSRegion;
+@class HSRegistrationForm;
 @class HSRegistrationFormController;
 @class HSRegistrationKeyEquivalentButton;
 @class HSRegistrationLinkButton;

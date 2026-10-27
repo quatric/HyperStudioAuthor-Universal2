@@ -771,3 +771,4 @@
 #import "HSAHTML5ExportCompatibilityChecker.h"
 #import "HSEditorZoomController.h"
 #import "HSRecorder.h"
+#import "HSRegistrationUserDefaults.h"

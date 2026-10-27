@@ -1437,6 +1437,7 @@
 @class HSRunCommandAction;
 @class HSRunScriptAction;
 @class HSRunTimeEditorUndoManager;
+@class HSRegistrationUserDefaults;
 @class HSSVGLoader;
 @class HSSaveOperationQueue;
 @class HSSavePanelAccessoryViewController;

@@ -1,0 +1,81 @@
+#import "HyperStudioPrefix.h"
+
+
+@interface HSRegistrationForm : NSObject
+{
+    NSView *settingsView;
+    NSTextField *firstNameField;
+    NSTextField *lastNameField;
+    NSTextField *emailField;
+    NSTextField *cityField;
+    NSTextField *schoolNameField;
+    NSTextField *statesStarField;
+    NSTextField *addressField;
+    NSTextField *schoolTitleField;
+    NSTextField *schoolDistrictField;
+    NSTextField *zipField;
+    NSPopUpButton *countryPopUp;
+    NSPopUpButton *stateProvPopUp;
+    NSPopUpButton *locationPopUp;
+    NSPopUpButton *mySchoolDistrictPopUp;
+    NSPopUpButton *macsTypePopUp;
+    NSButton *schoolPricesCheckBox;
+    NSButton *educationPricingCheckBox;
+    NSButton *eNewsEmailsCheckBox;
+    NSButton *freeUpdatesCheckBox;
+    NSButton *companyNewsCheckBox;
+    NSButton *privacyStatementButton;
+    NSMenu *noStatesMenu;
+    NSMutableDictionary *userDefaultsKeyMap;
+}
+- (void)dealloc;
+- (void)windowDidLoad;
+- (id)settingsView;
+- (id)firstNameField;
+- (id)lastNameField;
+- (id)emailField;
+- (id)cityField;
+- (id)schoolNameField;
+- (id)statesStarField;
+- (id)addressField;
+- (id)schoolTitleField;
+- (id)schoolDistrictField;
+- (id)zipField;
+- (id)countryPopUp;
+- (id)stateProvPopUp;
+- (id)locationPopUp;
+- (id)mySchoolDistrictPopUp;
+- (id)macsTypePopUp;
+- (id)schoolPricesCheckBox;
+- (id)educationPricingCheckBox;
+- (id)eNewsEmailsCheckBox;
+- (id)freeUpdatesCheckBox;
+- (id)companyNewsCheckBox;
+- (id)privacyStatementButton;
+- (id)countriesMap;
+- (id)userDefaultsKeyForControl:(id)aControl;
+- (id)normalizedString:(id)aString;
+- (id)menuWithItemTitles:(id)aTitles;
+- (void)setupTextFieldsFormatters;
+- (void)setupPopUpButtons;
+- (void)setupPrivacyStatementButton;
+- (void)changeCountry:(id)aSender;
+- (void)changeLocation:(id)aSender;
+- (void)validateStateProvPopUp;
+- (void)validateSchoolNameField;
+- (BOOL)isTextFieldFilled:(id)aField;
+- (BOOL)isPopUpButtonFilled:(id)aButton;
+- (BOOL)areRequiredFieldsFilled;
+- (BOOL)isEmailTextFieldValid;
+- (id)unfilledFieldError;
+- (id)incorrectEmailError;
+- (BOOL)validateValuesWithError:(id *)aError;
+- (void)setValueForTextField:(id)aField fromDictionary:(id)aDictionary;
+- (void)setValueForPopUpButton:(id)aButton fromDictionary:(id)aDictionary;
+- (void)setValueForCheckBox:(id)aButton fromDictionary:(id)aDictionary;
+- (void)writeValueFromTextField:(id)aField toDictionary:(id)aDictionary;
+- (void)writeValueFromPopUpButton:(id)aButton toDictionary:(id)aDictionary;
+- (void)writeValueFromCheckBox:(id)aButton toDictionary:(id)aDictionary;
+- (id)dictionaryRepresentation;
+- (void)setValuesFromDictionaryRepresentation:(id)aDictionary;
+@end
