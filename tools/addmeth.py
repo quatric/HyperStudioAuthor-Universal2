@@ -10,7 +10,7 @@ import sys
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 cls, chunk = sys.argv[1], sys.argv[2]
-impl = glob.glob(os.path.join(ROOT, 'src', '*', cls + '.m'))[0]
+impl = glob.glob(os.path.join(ROOT, 'src', '*', (sys.argv[3] if len(sys.argv) > 3 else cls) + '.m'))[0]
 header = impl[:-1] + 'h'
 body = open(chunk).read().rstrip() + '\n'
 decls = []

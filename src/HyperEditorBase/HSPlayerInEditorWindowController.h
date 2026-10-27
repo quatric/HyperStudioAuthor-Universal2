@@ -4,6 +4,7 @@
 @interface HSPlayerInEditorWindowController : HSPlayerWindowController <HSModeController>
 {
     BOOL _performLeavingOperations;
+    HSPauseView *_pauseView;
 }
 + (id)windowNibName;
 + (NSSize)frameSizeForStackSize:(NSSize)aSize withScrollView:(BOOL)aView;
@@ -27,5 +28,17 @@
 - (id)modeSwitcherWindowController:(id)aController;
 - (void)dealloc;
 - (id)windowNibName;
+- (id)cardView;
+- (NSRect)frameForDisplayingPause;
+- (void)hidePause;
+- (BOOL)isFullScreen;
+- (void)resumeButtonDidClick;
+- (void)showPause;
+- (id)targetForScalePopUpButton:(id)aButton inStatusbarController:(id)aController;
+- (id)textForStatusBarController:(id)aController;
+- (NSApplicationPresentationOptions)window:(id)aWindow willUseFullScreenPresentationOptions:(NSApplicationPresentationOptions)aOptions;
+- (void)windowWillMiniaturize:(id)aNotification;
+- (void)zoomSliderDidFinishTracking:(id)aSlider inStatusbarController:(id)aController;
+- (void)zoomSliderDidStartTracking:(id)aSlider inStatusbarController:(id)aController;
 @end
 

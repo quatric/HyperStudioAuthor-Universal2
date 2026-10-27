@@ -171,4 +171,89 @@
     return [[self class] windowNibName];
 }
 
+- (id)cardView
+{
+    return [super cardView];
+}
+
+- (NSRect)frameForDisplayingPause
+{
+    [self doesNotRecognizeSelector:_cmd];
+    return NSZeroRect;
+}
+
+- (void)hidePause
+{
+    [_pauseView setDelegate:nil];
+    [_pauseView removeFromSuperview];
+    _pauseView = nil;
+}
+
+- (BOOL)isFullScreen
+{
+    return [[self document] isInPresentationMode];
+}
+
+- (void)resumeButtonDidClick
+{
+    [[self document] resume];
+}
+
+- (void)showPause
+{
+    _pauseView = [[HSPauseView alloc] initWithFrame:self != nil ? [self frameForDisplayingPause] : NSZeroRect];
+    [_pauseView setDelegate:self];
+    NSWindow *window = [self window];
+    [[window contentView] addSubview:_pauseView positioned:NSWindowAbove relativeTo:nil];
+    [window makeFirstResponder:_pauseView];
+    [window discardCursorRects];
+    [window invalidateCursorRectsForView:[window contentView]];
+}
+
+- (id)targetForScalePopUpButton:(id)aButton inStatusbarController:(id)aController
+{
+    return [self cardView];
+}
+
+- (id)textForStatusBarController:(id)aController
+{
+    NSString *format = [[NSBundle mainBundle] localizedStringForKey:@"Card %u of %u" value:@"" table:nil];
+    id card = [[[self document] cardView] card];
+    if (card == nil) {
+        return nil;
+    }
+    NSUInteger index = [card hyperIndex];
+    NSUInteger count = [[[card stack] queryHyperInterface:@protocol(HSNodeContainer)] hyperCount];
+    NSString *string = [NSString stringWithFormat:format, (unsigned)(index + 1), (unsigned)count];
+    NSDictionary *attributes = [NSDictionary dictionaryWithObjectsAndKeys:[NSParagraphStyle hyperParagraphStyleWithAlignment:2 lineBreakMode:5], NSParagraphStyleAttributeName, nil];
+    return [[[NSAttributedString alloc] initWithString:string attributes:attributes] autorelease];
+}
+
+- (NSApplicationPresentationOptions)window:(id)aWindow willUseFullScreenPresentationOptions:(NSApplicationPresentationOptions)aOptions
+{
+    if ([[self document] isInPresentationMode]) {
+        return aOptions | 0x800;
+    }
+    return aOptions;
+}
+
+- (void)windowWillMiniaturize:(id)aNotification
+{
+    if ([[HSApplicationController sharedDocumentController] isPauseResumeEnabled]) {
+        [[self document] pause];
+    }
+    [super windowWillMiniaturize:aNotification];
+}
+
+- (void)zoomSliderDidFinishTracking:(id)aSlider inStatusbarController:(id)aController
+{
+    [[self cardView] declineDrawingQualityLoss:0.9999];
+    [[self cardView] setNeedsDisplay:YES];
+}
+
+- (void)zoomSliderDidStartTracking:(id)aSlider inStatusbarController:(id)aController
+{
+    [[self cardView] acceptDrawingQualityLoss:0.9999];
+}
+
 @end

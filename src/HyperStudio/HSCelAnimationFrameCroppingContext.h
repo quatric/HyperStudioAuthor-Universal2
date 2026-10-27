@@ -63,5 +63,17 @@
 - (BOOL)requiresDarkBottomArea;
 - (void)dealloc;
 - (id)init;
+- (void)HSAnimationSetupPickImageAssistantPane_cardsWillChange:(id)aChange;
+- (void)HSAnimationSetupPickImageAssistantPane_currentCardWillChange:(id)aChange;
+- (void)HSAnimationSetupPickImageAssistantPane_objectsWillChange:(id)aChange;
+- (void)HSAnimationSetupPickImageAssistantPane_toolDidChange:(id)aChange;
+- (void)HSAnimationSetupPickImageAssistantPane_windowDidResignMain:(id)aChange;
+- (id)assistantPaneUndoManager;
+- (id)cardView;
+- (id)document;
+- (void)cropImageDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)openPanelDidFinish:(id)aPanel returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)viewWillAppear:(BOOL)aAppear;
+- (void)viewWillDisappear:(BOOL)aDisappear;
 @end
 

@@ -1093,6 +1093,124 @@ id FUN_00231be3(HSCropImageDialogController *self,SEL _cmd)
     return self;
 }
 
+- (id)cropTool
+{
+    return [_imageCropView currentTool];
+}
+
+- (NSRect)croppedImageFrameClippedToOriginalImageBounds:(BOOL)aClipped
+{
+    CGPathRef path = [self cgPath];
+    NSRect rect = NSZeroRect;
+    if (path != NULL) {
+        if (CGPathIsEmpty(path)) {
+            rect = NSRectFromCGRect(CGRectZero);
+        } else {
+            rect = NSRectFromCGRect(CGPathGetPathBoundingBox(path));
+        }
+        NSSize imageSize = [[_imageCropView image] imageSize];
+        if (aClipped) {
+            rect = NSIntersectionRect(rect, NSMakeRect(0, 0, imageSize.width, imageSize.height));
+        }
+    }
+    return rect;
+}
+
+- (id)croppedImageClippedToOriginalImageBounds:(BOOL)aClipped
+{
+    NSRect frame = [self croppedImageFrameClippedToOriginalImageBounds:aClipped];
+    if (NSIsEmptyRect(frame)) {
+        return nil;
+    }
+    NSRect integral = NSIntegralRect(frame);
+    CGPathRef path = [self cgPath];
+    if (path == NULL) {
+        return nil;
+    }
+    NSImage *image = [[[NSImage alloc] initWithSize:integral.size] autorelease];
+    [image lockFocus];
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextConcatCTM(context, CGAffineTransformMake(1, 0, 0, 1, -integral.origin.x, -integral.origin.y));
+    CGContextAddPath(context, path);
+    CGContextClip(context);
+    [[_imageCropView image] drawInCGContext:context atPoint:CGPointZero];
+    [image unlockFocus];
+    return image;
+}
+
+- (id)croppedImageWithHorizontalSelection
+{
+    return [self rotateImage:[self croppedImage] rotationAngle:[self selectionRotationAngle]];
+}
+
+- (id)croppedImageWithHorizontalSelectionClippedToOriginalImageBounds:(BOOL)aClipped
+{
+    return [self rotateImage:[self croppedImageClippedToOriginalImageBounds:aClipped] rotationAngle:[self selectionRotationAngle]];
+}
+
+- (NSSize)croppedImageWithHorizontalSelectionSize
+{
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    [[[_imageCropView currentTool] valueForKey:@"selectionAffineTransform"] getValue:&transform];
+    NSAffineTransform *affine = [NSAffineTransform transformWithHyperCGAffineTransform:transform];
+    [affine rotateByRadians:-[self selectionRotationAngle]];
+    transform = [affine hyperCGAffineTransform];
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGPathAddPath(path, &transform, (CGPathRef)[[self cropTool] valueForKey:@"selectionPath"]);
+    NSRect box = NSIntegralRect(NSRectFromCGRect(CGPathGetBoundingBox(path)));
+    CGPathRelease(path);
+    return box.size;
+}
+
+- (id)defaultCropTool
+{
+    return [self toolForTag:0];
+}
+
+- (void)hideToolMatrix
+{
+    [_helpButton setHidden:YES];
+    [_toolMatrix setHidden:YES];
+    NSRect frame = _scalingView != nil ? [_scalingView frame] : NSZeroRect;
+    frame.origin.x = 20;
+    [_scalingView setFrame:frame];
+}
+
+- (id)rotateImage:(id)aImage rotationAngle:(float)aAngle
+{
+    if (aImage == nil) {
+        return nil;
+    }
+    float magnitude = aAngle != 0 ? fabsf(aAngle) : 1.0f;
+    float tolerance = 1.0f <= magnitude ? magnitude * 0.0005f : 0.0005f;
+    if (!(tolerance < fabsf(aAngle))) {
+        return aImage;
+    }
+    CIImage *source = [CIImage imageWithData:[aImage TIFFRepresentation]];
+    CIImage *rotated = [source imageByApplyingTransform:CGAffineTransformMakeRotation(-aAngle)];
+    NSSize size = [self croppedImageWithHorizontalSelectionSize];
+    NSImage *result = [[[NSImage alloc] initWithSize:size] autorelease];
+    [result lockFocus];
+    CGRect extent = rotated != nil ? [rotated extent] : CGRectZero;
+    CGFloat inset = (CGRectGetWidth(extent) - size.width) * 0.5;
+    CGRect fromRect = CGRectInset(extent, inset, inset);
+    [rotated drawInRect:NSMakeRect(0, 0, size.width, size.height) fromRect:NSRectFromCGRect(fromRect) operation:6 fraction:1.0];
+    [result unlockFocus];
+    return result;
+}
+
+- (CGRect)selectionBounds
+{
+    return CGPathGetBoundingBox((CGPathRef)[[_imageCropView currentTool] valueForKey:@"selectionPath"]);
+}
+
+- (float)selectionRotationAngle
+{
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    [[[_imageCropView currentTool] valueForKey:@"selectionAffineTransform"] getValue:&transform];
+    return atan2f(transform.b, transform.a);
+}
+
 @end
 
 @implementation HSScaledBTCGImage

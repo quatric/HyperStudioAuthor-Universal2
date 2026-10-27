@@ -7,9 +7,11 @@
     HSImageCropView *_imageCropView;
     NSSlider *_scaleSlider;
     NSMatrix *_toolMatrix;
+    NSButton *_helpButton;
     NSButton *_OKButton;
     NSSlider *_toleranceSlider;
     NSView *_sensitivityView;
+    NSView *_scalingView;
     int _selectedToolTag;
     float _selectionTolerance;
     float _selectionAlternateProportion;
@@ -55,6 +57,17 @@
 - (id)windowNibName;
 - (void)dealloc;
 - (id)init;
+- (id)cropTool;
+- (NSRect)croppedImageFrameClippedToOriginalImageBounds:(BOOL)aClipped;
+- (id)croppedImageClippedToOriginalImageBounds:(BOOL)aClipped;
+- (id)croppedImageWithHorizontalSelection;
+- (id)croppedImageWithHorizontalSelectionClippedToOriginalImageBounds:(BOOL)aClipped;
+- (NSSize)croppedImageWithHorizontalSelectionSize;
+- (id)defaultCropTool;
+- (void)hideToolMatrix;
+- (id)rotateImage:(id)aImage rotationAngle:(float)aAngle;
+- (CGRect)selectionBounds;
+- (float)selectionRotationAngle;
 @end
 
 @interface HSScaledBTCGImage : NSObject <BTCGImage, BTImage, NSObject>

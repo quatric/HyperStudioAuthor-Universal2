@@ -53,6 +53,14 @@
 - (id)navigationPaneSwitcher;
 - (void)dealloc;
 - (id)init;
+- (void)HSTransparentColorAssistantPane_cardsWillChange:(id)aChange;
+- (void)HSTransparentColorAssistantPane_currentCardWillChange:(id)aChange;
+- (void)HSTransparentColorAssistantPane_selectionDidChange:(id)aChange;
+- (void)HSTransparentColorAssistantPane_toolWillChange:(id)aChange;
+- (void)HSTransparentColorAssistantPane_windowDidResignMain:(id)aChange;
+- (id)assistantPaneUndoManager;
+- (void)paneDidCancel:(id)aCancel;
+- (id)transparentColorDelegate;
 @end
 
 @interface HSTransparentColorApplier : HSAssistantPaneApplier

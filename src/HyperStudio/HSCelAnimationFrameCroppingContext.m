@@ -2369,5 +2369,129 @@ LAB_0012705a:
     return self;
 }
 
+- (void)HSAnimationSetupPickImageAssistantPane_cardsWillChange:(id)aChange
+{
+    NSSet *removed = [[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"];
+    if ([[[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"] count] == 0 && ![removed containsObject:[self card]]) {
+        return;
+    }
+    [[HSToolManager sharedToolManager] selectToolWithTag:0];
+}
+
+- (void)HSAnimationSetupPickImageAssistantPane_currentCardWillChange:(id)aChange
+{
+    [[HSToolManager sharedToolManager] selectToolWithTag:0];
+}
+
+- (void)HSAnimationSetupPickImageAssistantPane_objectsWillChange:(id)aChange
+{
+    NSSet *removed = [[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"];
+    if ([[[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"] count] == 0 && ![removed containsObject:[[self assistant] object]]) {
+        return;
+    }
+    [[HSToolManager sharedToolManager] selectToolWithTag:0];
+}
+
+- (void)HSAnimationSetupPickImageAssistantPane_toolDidChange:(id)aChange
+{
+    [[[self cardView] selection] removeAllNodes];
+}
+
+- (void)HSAnimationSetupPickImageAssistantPane_windowDidResignMain:(id)aChange
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+    if (current != nil && current != [self document]) {
+        [[HSToolManager sharedToolManager] selectToolWithTag:0];
+    }
+}
+
+- (id)assistantPaneUndoManager
+{
+    return [_delegate undoManagerForPickImageAssistantPane:self];
+}
+
+- (id)cardView
+{
+    return [_delegate cardViewForPickImageAssistantPane:self];
+}
+
+- (id)document
+{
+    return [_delegate documentForPickImageAssistantPane:self];
+}
+
+- (void)cropImageDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aDialog orderOut:nil];
+    NSDictionary *context = aInfo;
+    NSMutableDictionary *options = [context objectForKey:@"optionsKey"];
+    NSRect imageRect = [[context objectForKey:@"imageRectKey"] rectValue];
+    id sourceImage = [context objectForKey:@"sourceImageKey"];
+    id controller = [aDialog delegate];
+    if (aCode == 1) {
+        if ([controller hasValidCropPath]) {
+            NSBezierPath *path = [NSBezierPath hyperBezierPathWithCGPath:[controller borderPath] affineTransform:CGAffineTransformMake(1, 0, 0, -1, 0, imageRect.size.height)];
+            if (path != nil) {
+                [options setObject:path forKey:@"cropping path"];
+            }
+        }
+        [controller autorelease];
+        [_delegate runWithImage:sourceImage options:options fromPane:self];
+    } else {
+        [controller autorelease];
+    }
+    [options release];
+    [sourceImage release];
+    [context release];
+}
+
+- (void)openPanelDidFinish:(id)aPanel returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aPanel orderOut:nil];
+    if (aCode == 1) {
+        NSString *path = [[[aPanel URLs] lastObject] path];
+        [[HSPathsProvider sharedPathsProvider] setImageSequencesFolder:path];
+        id file = [self findFileForCelAnimationForPath:path];
+        if (file == nil) {
+            HSAlert *alert = [[HSAlert new] autorelease];
+            [alert setAlertStyle:NSCriticalAlertStyle];
+            [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"There are no images to animate" value:@"" table:@"Alerts"]];
+            [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"The folder you have chosen does not contain images that can be animated." value:@"" table:@"Alerts"]];
+            [alert runModal];
+        } else {
+            [self createAnimationFromImage:file dialogOptions:nil isAnimatedGif:NO];
+        }
+    }
+}
+
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [super viewWillAppear:aAppear];
+    if ([_delegate needObserveStackChangesForPickImageAssistantPane:self]) {
+        [_delegate runEditPathIfNeededForPickImageAssistantPane:self];
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center addObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_currentCardWillChange:) name:HSCurrentCardInCardViewWillChange object:[self cardView]];
+        [center addObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[[self cardView] window]];
+        [center addObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_toolDidChange:) name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+        id stack = [[self document] stack];
+        [stack addObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+        [stack addObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)aDisappear
+{
+    [super viewWillDisappear:aDisappear];
+    if ([_delegate needObserveStackChangesForPickImageAssistantPane:self]) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self name:HSCurrentCardInCardViewWillChange object:[self cardView]];
+        [center removeObserver:self name:NSWindowDidResignMainNotification object:[[self cardView] window]];
+        [center removeObserver:self name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+        id stack = [[self document] stack];
+        [stack removeObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+        [stack removeObserver:self selector:@selector(HSAnimationSetupPickImageAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    }
+}
+
 @end
 

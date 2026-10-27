@@ -89,5 +89,16 @@
 - (id)modeSwitcherView:(id)aView;
 - (void)dealloc;
 - (id)initWithWindow:(id)aWindow;
+- (void)cardViewDidChangeZoomFactor:(id)aNotification;
+- (void)fitInWindow:(id)aSender;
+- (NSRect)frameForDisplayingPause;
+- (id)statusbarController;
+- (void)textFieldTamerDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)zoomFactorDidChange:(id)aSlider;
+- (void)zoomIn:(id)aSender;
+- (void)zoomOut:(id)aSender;
+- (void)zoomToActualSize:(id)aSender;
+- (void)zoomToMaxScaleFactor:(id)aSender;
+- (void)zoomToMinScaleFactor:(id)aSender;
 @end
 

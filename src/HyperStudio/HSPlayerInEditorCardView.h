@@ -6,6 +6,7 @@
     NSColor *_backgroundColor;
     HSEditorCardViewDragHelper *_dragHelper;
     HSGridSettings *_gridSettings;
+    HSBackgroundViewRenderer *_backgroundRenderer;
 }
 - (id)layoutGuidingContext;
 - (void)renderer:(id)aRenderer didDrawRegion:(id)aRegion ofRenderLayerAtIndexPath:(id)aPath withRenderDelegate:(id)aDelegate;
@@ -67,5 +68,19 @@
 - (NSUInteger)importToCardDataFromFiles:(id)aFiles showHelpPane:(BOOL)aPane;
 - (id)dragHelper;
 - (void)dealloc;
+- (void)UIModeSettingsDidChangeNotification:(id)aNotification;
+- (BOOL)canActivateNonScalableObjects;
+- (void)fillBackground;
+- (id)initWithCoder:(id)aCoder;
+- (id)initWithFrame:(NSRect)aFrame;
+- (void)initializeBackgroundRendering;
+- (void)onScalePopUp:(id)aPopUp;
+- (void)updateBackgroundRendererState;
+- (CGAffineTransform)userSpaceToViewSpaceCGAffineTransformForZoomFactor:(float)aFactor;
+- (BOOL)validateUserInterfaceItem:(id)aItem;
+- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect forZoomFactor:(float)aFactor;
+- (void)zoomIn;
+- (void)zoomOut;
+- (void)zoomToActualSize;
 @end
 

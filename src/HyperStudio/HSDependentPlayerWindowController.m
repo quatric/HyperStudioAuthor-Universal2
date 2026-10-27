@@ -874,5 +874,69 @@ void FUN_001c1183(HSDependentPlayerWindowController *self,SEL _cmd)
     return self;
 }
 
+- (void)cardViewDidChangeZoomFactor:(id)aNotification
+{
+    [_statusbarController setZoomFactor:[[aNotification object] zoomFactor]];
+}
+
+- (void)fitInWindow:(id)aSender
+{
+    [[self cardView] fitInWindow];
+}
+
+- (NSRect)frameForDisplayingPause
+{
+    if (_mainAreaTintedView != nil) {
+        return [_mainAreaTintedView frame];
+    }
+    return NSZeroRect;
+}
+
+- (id)statusbarController
+{
+    return _statusbarController;
+}
+
+- (void)textFieldTamerDialogDidEnd:(id)aDialog returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [aDialog autorelease];
+}
+
+- (void)zoomFactorDidChange:(id)aSlider
+{
+    CGFloat target = [HSEditorZoomController zoomFactorValueFrom:aSlider];
+    CGFloat current = [[self cardView] zoomFactor];
+    if (fabsf(target - current) <= MAX(fabsf(target) != 0 ? fabsf(target) : 1.0f, fabsf(current) != 0 ? fabsf(current) : 1.0f) * 0.0005) {
+        [aSlider setFloatValue:HSLinearValueForSliderFromNonLinear(aSlider, current)];
+    } else {
+        [[self cardView] zoomToFactor:target];
+    }
+}
+
+- (void)zoomIn:(id)aSender
+{
+    [[self cardView] zoomIn];
+}
+
+- (void)zoomOut:(id)aSender
+{
+    [[self cardView] zoomOut];
+}
+
+- (void)zoomToActualSize:(id)aSender
+{
+    [[self cardView] zoomToActualSize];
+}
+
+- (void)zoomToMaxScaleFactor:(id)aSender
+{
+    [[self cardView] zoomToFactor:[HSEditorZoomController maxZoomFactor]];
+}
+
+- (void)zoomToMinScaleFactor:(id)aSender
+{
+    [[self cardView] zoomToFactor:[HSEditorZoomController minZoomFactor]];
+}
+
 @end
 

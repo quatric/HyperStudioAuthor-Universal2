@@ -1295,6 +1295,7 @@ ulonglong FUN_001c7334(HSPlayerInEditorCardView *self,SEL _cmd)
 {
     [_backgroundColor release];
     [_gridSettings release];
+    [_backgroundRenderer release];
     [_dragHelper invalidateDragHost];
     [_dragHelper release];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -1319,6 +1320,174 @@ ulonglong FUN_001c7334(HSPlayerInEditorCardView *self,SEL _cmd)
         relative.origin.y /= bounds.size.height;
     }
     [self setRelativeOpenGLSurfaceBounds:relative];
+}
+
+- (void)UIModeSettingsDidChangeNotification:(id)aNotification
+{
+    [self updateBackgroundRendererState];
+    [self setNeedsDisplayWorkAreaBackground];
+}
+
+- (BOOL)canActivateNonScalableObjects
+{
+    return YES;
+}
+
+- (void)fillBackground
+{
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    id document = [[[self window] windowController] document];
+    if ([document isInPresentationMode] || [document isTutorialStack]) {
+        if ([document isPresentationModeSwitching] && ![document didSwitchToPlayerInEditorWhileEnteringPresentationMode]) {
+            [super fillBackground];
+        } else {
+            CGContextSaveGState(context);
+            NSRect bounds = self != nil ? [self bounds] : NSZeroRect;
+            CGContextScaleCTM(context, 1, -1);
+            CGContextTranslateCTM(context, 0, -bounds.size.height);
+            [[NSColor clearColor] setFill];
+            NSRectFill(bounds);
+            [_backgroundRenderer hyperDrawBackgroundInROI:bounds ofBounds:bounds];
+            CGContextRestoreGState(context);
+        }
+    } else {
+        [super fillBackground];
+    }
+}
+
+- (id)initWithCoder:(id)aCoder
+{
+    self = [super initWithCoder:aCoder];
+    if (self != nil) {
+        [self initializeBackgroundRendering];
+    }
+    return self;
+}
+
+- (id)initWithFrame:(NSRect)aFrame
+{
+    self = [super initWithFrame:aFrame];
+    if (self != nil) {
+        [self initializeBackgroundRendering];
+    }
+    return self;
+}
+
+- (void)initializeBackgroundRendering
+{
+    _backgroundRenderer = [[HSBackgroundViewRenderer alloc] initWithBackgroundView:self];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(UIModeSettingsDidChangeNotification:) name:HSUIModeSettingsDidChangeNotification object:[HSUI sharedUI]];
+    [center addObserver:self selector:@selector(UIModeSettingsDidChangeNotification:) name:HSUIModeDidChangeNotification object:[HSUI sharedUI]];
+    [center addObserver:self selector:@selector(UIModeSettingsDidChangeNotification:) name:HSUICoverDesktopBackgroundDidChangeNotification object:[HSUI sharedUI]];
+    [self updateBackgroundRendererState];
+}
+
+- (void)onScalePopUp:(id)aPopUp
+{
+    float factor = [[[aPopUp selectedCell] representedObject] floatValue];
+    if (isnan(factor)) {
+        [self fitInWindow];
+    } else {
+        [self zoomToFactor:factor];
+    }
+}
+
+- (void)updateBackgroundRendererState
+{
+    id source = [HSUI sharedUI];
+    if ([[NSDocumentController sharedDocumentController] areDocumentSpecificPresentationSettingsActive]) {
+        id document = [[NSDocumentController sharedDocumentController] currentDocument];
+        if ([document isInPresentationMode]) {
+            source = [document stack];
+        }
+    }
+    id graphics = [source backgroundGraphics];
+    if (graphics != [_backgroundRenderer backgroundGraphics]) {
+        [_backgroundRenderer setBackgroundGraphics:graphics];
+    }
+}
+
+- (CGAffineTransform)userSpaceToViewSpaceCGAffineTransformForZoomFactor:(float)aFactor
+{
+    NSScrollView *scrollView = [self enclosingScrollView];
+    NSRect userBounds = NSZeroRect;
+    NSRect contentRect = NSZeroRect;
+    if (self != nil) {
+        userBounds = [self userObjectBounds];
+        contentRect = [self contentBoundingRect];
+    }
+    Class scrollViewClass = [scrollView class];
+    NSBorderType borderType = [scrollView borderType];
+    NSSize frameSize = scrollView != nil ? [scrollView frame].size : NSZeroSize;
+    NSSize sizeWithScrollers = [scrollViewClass contentSizeForFrameSize:frameSize hasHorizontalScroller:YES hasVerticalScroller:YES borderType:borderType];
+    NSSize sizeWithoutScrollers = [scrollViewClass contentSizeForFrameSize:frameSize hasHorizontalScroller:NO hasVerticalScroller:NO borderType:borderType];
+    CGRect userViewRect = CGRectZero;
+    CGRect contentViewRect = CGRectZero;
+    if (self != nil) {
+        userViewRect = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:userBounds forZoomFactor:aFactor]));
+        contentViewRect = CGRectIntegral(NSRectToCGRect([self viewBoundingRectForUserRect:contentRect forZoomFactor:aFactor]));
+    }
+    if (userViewRect.size.width < sizeWithoutScrollers.width) {
+        CGFloat inset = floorf((sizeWithoutScrollers.width - userViewRect.size.width) * 0.5 + 0.001953125);
+        CGFloat x = userViewRect.origin.x - inset;
+        if (x < contentViewRect.origin.x) {
+            contentViewRect.origin.x = x;
+        }
+        if (userViewRect.size.width < sizeWithScrollers.width) {
+            CGFloat width = (sizeWithScrollers.width + x) - contentViewRect.origin.x;
+            if (contentViewRect.size.width < width) {
+                contentViewRect.size.width = width;
+            }
+        }
+    }
+    if (userViewRect.size.height < sizeWithoutScrollers.height) {
+        CGFloat inset = floorf((sizeWithoutScrollers.height - userViewRect.size.height) * 0.5 + 0.001953125);
+        if (userViewRect.origin.y - inset < contentViewRect.origin.y) {
+            contentViewRect.origin.y = userViewRect.origin.y - inset;
+        }
+    }
+    return CGAffineTransformMake(aFactor, 0, 0, aFactor, userViewRect.origin.x - contentViewRect.origin.x, userViewRect.origin.y - contentViewRect.origin.y);
+}
+
+- (BOOL)validateUserInterfaceItem:(id)aItem
+{
+    if ([aItem action] == @selector(onScalePopUp:)) {
+        return ![[[NSDocumentController sharedDocumentController] currentDocument] isInPresentationMode];
+    }
+    return [super validateUserInterfaceItem:aItem];
+}
+
+- (NSRect)viewBoundingRectForUserRect:(NSRect)aRect forZoomFactor:(float)aFactor
+{
+    NSSize offset = [self cardOffset];
+    return NSMakeRect(offset.width + aRect.origin.x * aFactor, offset.height + aRect.origin.y * aFactor, aFactor * aRect.size.width, aRect.size.height * aFactor);
+}
+
+- (void)zoomIn
+{
+    float zoomIn = [self zoomFactor];
+    [HSEditorZoomController nextZoomOutFactor:NULL zoomInFactor:&zoomIn forZoomFactor:[self zoomFactor]];
+    if (!isnan(zoomIn)) {
+        [self setZoomMode:0];
+        [self zoomToFactor:zoomIn];
+    }
+}
+
+- (void)zoomOut
+{
+    float zoomOut = [self zoomFactor];
+    [HSEditorZoomController nextZoomOutFactor:&zoomOut zoomInFactor:NULL forZoomFactor:[self zoomFactor]];
+    if (!isnan(zoomOut)) {
+        [self setZoomMode:0];
+        [self zoomToFactor:zoomOut];
+    }
+}
+
+- (void)zoomToActualSize
+{
+    [self setZoomMode:0];
+    [self zoomToFactor:[HSEditorZoomController actualZoomFactor]];
 }
 
 @end

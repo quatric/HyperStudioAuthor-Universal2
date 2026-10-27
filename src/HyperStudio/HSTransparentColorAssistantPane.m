@@ -772,6 +772,77 @@ LAB_00284648:
     return [self initWithNibName:@"TransparentColorAssistantPane"];
 }
 
+- (void)HSTransparentColorAssistantPane_cardsWillChange:(id)aChange
+{
+    NSSet *removed = [[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"];
+    if ([[[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"] count] == 0 && ![removed containsObject:[self card]]) {
+        return;
+    }
+    [[self transparentColorDelegate] unlockAssistantIfNeededAndClose:NO removeTryItAnimation:YES forTransparentColorAssistantPane:self];
+}
+
+- (void)HSTransparentColorAssistantPane_currentCardWillChange:(id)aChange
+{
+    [[self transparentColorDelegate] unlockAssistantIfNeededAndClose:NO removeTryItAnimation:YES forTransparentColorAssistantPane:self];
+}
+
+- (void)HSTransparentColorAssistantPane_selectionDidChange:(id)aChange
+{
+    id cardView = [[[[self stack] document] editorWindowController] cardView];
+    if ([cardView isColorPickingModeActive]) {
+        return;
+    }
+    id selected = [[aChange object] currentSelectedObject];
+    id animated = [[[_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)] tryItAnimationForTransparentColorAssistantPane:self] animatedObject];
+    if (animated == nil) {
+        return;
+    }
+    if (selected == [[self assistant] object]) {
+        [[[[self stack] document] cardView] selectObject:animated];
+    } else if (selected != animated) {
+        [[self transparentColorDelegate] unlockAssistantIfNeededAndClose:NO removeTryItAnimation:YES forTransparentColorAssistantPane:self];
+        if (selected == nil) {
+            [[cardView selection] removeAllNodes];
+        } else {
+            [[cardView selection] selectNode:selected];
+        }
+    }
+}
+
+- (void)HSTransparentColorAssistantPane_toolWillChange:(id)aChange
+{
+    if ([[HSToolManager sharedToolManager] selectedToolTag] == 1) {
+        [[self transparentColorDelegate] unlockAssistantIfNeededAndClose:YES removeTryItAnimation:YES forTransparentColorAssistantPane:self];
+    }
+}
+
+- (void)HSTransparentColorAssistantPane_windowDidResignMain:(id)aChange
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+    if (current != nil && current != [[self stack] document]) {
+        [[self transparentColorDelegate] unlockAssistantIfNeededAndClose:YES removeTryItAnimation:YES forTransparentColorAssistantPane:self];
+        if ([current isNewAndNotChanged]) {
+            [[HSObjectAssistantController sharedAssistantController] setActive:NO explicitlyByUser:NO];
+        }
+    }
+}
+
+- (id)assistantPaneUndoManager
+{
+    return [[self transparentColorDelegate] undoManagerForTransparentColorAssistantPane:self];
+}
+
+- (void)paneDidCancel:(id)aCancel
+{
+    [[_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)] editingFinishedForTransparentAssistantPane:self apply:NO];
+    [super paneDidCancel:aCancel];
+}
+
+- (id)transparentColorDelegate
+{
+    return [_delegate queryHyperInterface:@protocol(HSTransparentColorAssistantPaneDelegate)];
+}
+
 @end
 
 @implementation HSTransparentColorApplier
