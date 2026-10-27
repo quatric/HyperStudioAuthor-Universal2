@@ -925,21 +925,27 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     if (_stackSelectionHostWasCurrentBeforeAssistantHide) {
         [[self stackSelectionHolder] makeCurrent];
     } else {
-        [[self cardView] localNotifyHyperSelectionDidChangeAndActivate:NO];
+        [[self cardView] localNotifyHyperSelectionDidChangeAndActivate:YES];
     }
     [[self selectionController] setEnabled:YES];
     [[self documentSelectionSync] setEnabled:YES];
-    if (![[[self document] navigationController] isKindOfClass:[HSEditorNavigationController class]]) {
-        id navigationController = [[HSEditorNavigationController alloc] initWithDocument:[self document]];
-        [[self document] setNavigationController:navigationController];
-        [navigationController release];
-    }
     [[self stackView] reloadCards];
     [[HSToolPaletteController sharedInstance] validateUserInterfaceWithView:[self cardView]];
     [[self document] didFinishSwitchToEditMode];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"HSDocumentDidActivateObjectListDataProviderNotification" object:[self document]];
     [super didBecomeWorkingInModeSwitcher:aSwitcher];
-    [[HSObjectAssistantController sharedAssistantController] activateIfNeeded];
+    [[HSObjectAssistantController sharedAssistantController] performSelector:@selector(activateIfNeeded) withObject:nil afterDelay:0];
+    [_statusbarController setDelegate:self];
+    [_statusbarController updateScalePopUpButtonTarget];
+    if ([[self document] isInViewingMode]) {
+        [[[self toolbarController] toolbar] setVisible:NO];
+        [[[self document] playerInEditorWindowController] setBottomToolbarVisible:NO];
+        [self setBottomToolbarVisible:NO];
+        id stackController = [self stackController];
+        if ([stackController respondsToSelector:@selector(showCardIndex:)]) {
+            [stackController showCardIndex:0];
+        }
+    }
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSEditorWindowController_modeSwitcherDidEndModeSwitching:) name:@"HSModeSwitcherDidEndModeSwitchingNotification" object:aSwitcher];
 }
 
@@ -950,8 +956,6 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     [[[self document] stack] removeAllTemporaryObjects];
     [[[self document] undoManager] enableUndoRegistration];
     [[self document] setPlayerView:nil];
-    [_statusbarController validateUI];
-    [_statusbarController updateScalePopUpButtonTarget];
     [[self selectionController] setCardView:[self cardView]];
     [[self documentSelectionSync] setCardView:[self cardView]];
     [[self documentSelectionSync] setThisCardSelectionHost:[self thisCardSelectionHolder]];
@@ -963,9 +967,15 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     if (editor != nil) {
         [editor updateEmbeddedViewWithEditingObject];
     }
-    [_statusbarController setZoomFactor:[[self cardView] zoomFactor]];
+    id zoomCardView = [self cardView];
+    id previous = [aSwitcher previousModeController];
+    if ([previous isKindOfClass:[HSPlayerInEditorWindowController class]]) {
+        [zoomCardView zoomToFactor:[[previous cardView] zoomFactor]];
+        [zoomCardView setZoomMode:[[previous cardView] zoomMode]];
+    }
+    [_statusbarController setZoomFactor:[zoomCardView zoomFactor]];
     [_statusbarController setZoomControlsEnabled:YES];
-    if (![[HSEditorController sharedDocumentController] replacingDocument]) {
+    if (![[HSEditorController sharedDocumentController] replacingDocument] && ![[self document] isInViewingMode]) {
         [[HSSystemUI sharedSystemUI] setupWithMode:0 options:0];
     }
     [[HSCommentsAndAttributionsPaletteController sharedInstance] setDataProvider:self];
