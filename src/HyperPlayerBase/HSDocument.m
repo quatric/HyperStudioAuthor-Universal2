@@ -855,8 +855,19 @@ static NSString *sPlatformInformation;
 
 - (id)willPresentError:(id)aError
 {
-    if ([[aError domain] isEqualToString:HSCocoaErrorDomain] || [[aError domain] isEqualToString:HSSpecificErrorDomain])
+    if (![[self class] forceShowSystemErrorForNSError:aError] &&
+        ([[aError domain] isEqualToString:HSCocoaErrorDomain] || [[aError domain] isEqualToString:HSSpecificErrorDomain]))
         return [HSError errorWithError:aError];
+    if ([self isDefaultHomeStack]) {
+        NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithDictionary:[aError userInfo]];
+        [userInfo setObject:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cannot save changes to \"Home Stack.hsa\"" value:@"" table:@"Alerts"] forKey:NSLocalizedDescriptionKey];
+        [userInfo setObject:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"You may not have privileges to save changes to this file. To keep any changes you have made, duplicate this stack and save it under a different name." value:@"" table:@"Alerts"] forKey:NSLocalizedRecoverySuggestionErrorKey];
+        NSMutableArray *options = [NSMutableArray arrayWithArray:[userInfo objectForKey:NSLocalizedRecoveryOptionsErrorKey]];
+        if ([options count] > 2)
+            [options removeObjectAtIndex:2];
+        [userInfo setObject:options forKey:NSLocalizedRecoveryOptionsErrorKey];
+        aError = [NSError errorWithDomain:[aError domain] code:[aError code] userInfo:userInfo];
+    }
     return [super willPresentError:aError];
 }
 
@@ -1398,6 +1409,7 @@ static NSString *sPlatformInformation;
     [_typeOfAcceptedFile release];
     [_navigationController setDocument:nil];
     [_navigationController release];
+    [_historyStack release];
     [self cleanTemporaryFileAtPath:_imageCachePath];
     [_imageCachePath release];
     [_requiredSlideshowItemType release];
