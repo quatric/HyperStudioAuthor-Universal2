@@ -107,7 +107,6 @@
     [_cardNavigationControl setBackgroundRenderer:[HSCardNavigationControlBackgroundRenderer sharedBackgroundRenderer]];
     [_zoomSlider setDelegate:self];
     [(SMKEngravedTextFieldCell *)[_stausbarTextField cell] setEngraveOffset:1.0f];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillUpdate:) name:NSApplicationWillUpdateNotification object:NSApp];
 }
 
 - (void)loadNibIfNeeded

@@ -22,7 +22,6 @@
 - (void)setZoomFactor:(CGFloat)aFactor;
 - (id)delegate;
 - (void)setDelegate:(id)aDelegate;
-- (void)applicationWillUpdate:(id)aUpdate;
 - (void)validateUI;
 - (void)validateActionCell:(id)aCell;
 - (void)didLoadNib;

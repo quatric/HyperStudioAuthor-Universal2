@@ -3348,7 +3348,7 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
 
 - (void)setBottomToolbarVisible:(BOOL)aVisible animated:(BOOL)aAnimated moveFrame:(BOOL)aFrame
 {
-    [super setBottomToolbarVisible:aVisible animated:aAnimated moveFrame:aFrame];
+    [super setBottomToolbarVisible:aVisible];
     id window = [self window];
     if (!aVisible) {
         [self hideIfNeededBottomToolbarView:_bottomAreaTintedView mainAreaTintedView:_mainAreaTintedView mainWindow:window animated:aAnimated moveFrame:aFrame];
@@ -4312,13 +4312,13 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     NSDictionary *settings = [NSDictionary dictionary];
     id windowStates = [[NSUserDefaults standardUserDefaults] objectForKey:HSDocumentWindowStates];
     NSString *path = [[document fileURL] path];
-    if (windowStates != nil && path != nil) {
-        settings = [windowStates objectForKey:path];
+    BOOL isHomeStack = [[[[HSHomeStackController sharedHomeStackController] homeStackURL] path] isEqualToString:path];
+    BOOL isTutorialStack = [document isTutorialStack];
+    if (windowStates != nil) {
+        NSString *key = path != nil ? path : [[[document stack] UID] stringValue];
+        settings = [windowStates objectForKey:key];
     }
-    HSPathsProvider *paths = [HSPathsProvider sharedPathsProvider];
-    BOOL isHomeStack = [[paths defaultHomeStackPath] isEqualToString:path];
-    BOOL isTutorialStack = [[paths defaultTutorialStackName] isEqualToString:path];
-    BOOL isSampleProject = [[paths sampleProjectsFolder] isEqualToString:[path stringByDeletingLastPathComponent]];
+    BOOL isSampleProject = NO;
     NSString *frameString = nil;
     if (!isSampleProject && !isTutorialStack && !isHomeStack) {
         frameString = [settings objectForKey:HSMainWindowFrameAsStringAttributeKey];

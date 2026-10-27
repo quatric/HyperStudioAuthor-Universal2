@@ -561,8 +561,11 @@ static NSSet *sTextImplementationInterfaces;
     NSUInteger location = [aScanner scanLocation];
     NSString *string = [aScanner string];
     NSRange prefix = [self rangeOfLinkPrefixAtIndex:location inString:string maxRange:aRange];
-    if (prefix.location == NSNotFound)
-        prefix = NSMakeRange(NSNotFound, 0);
+    if (prefix.location == NSNotFound) {
+        if (aRange2 != NULL)
+            *aRange2 = NSMakeRange(NSNotFound, 0);
+        return nil;
+    }
     [aScanner setScanLocation:prefix.location + prefix.length];
     [aScanner scanCharactersFromSet:[self urlAllowedCharacters] intoString:NULL];
     NSRange linkRange = NSMakeRange(NSNotFound, 0);
