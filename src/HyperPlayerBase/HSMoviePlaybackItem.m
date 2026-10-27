@@ -235,25 +235,21 @@ static BOOL HSMoviePlaybackItemFloatsAreEqual(float aValue1, float aValue2)
 {
     if (!aObject || ![aObject hyperParent])
         return;
-    BOOL temporary = [aObject isTemporary];
-    if (!temporary)
-        _originalPlayCount = (unsigned int)[aObject hyperPlayCount];
-    else if ([_actionExecutionContext isInLimitedMode])
-        _originalPlayCount = 1;
-    else
-        _originalPlayCount = (unsigned int)[self playCount];
+    _originalPlayCount = (unsigned int)[aObject hyperPlayCount];
     [[self undoManager] disableUndoRegistration];
     if ([_actionExecutionContext isInLimitedMode] && [self playCount] == 0)
         [aObject setHyperPlayCount:1];
     else
         [aObject setHyperPlayCount:[self playCount]];
-    _originalPlayRange = temporary ? _playRange : [aObject hyperPlayRange];
+    _originalPlayRange = [aObject hyperPlayRange];
     [aObject setHyperPlayRange:_playRange];
-    _originalVolume = temporary ? _volume : (float)[aObject hyperVolume];
+    _originalVolume = (float)[aObject hyperVolume];
     [aObject setHyperVolume:_volume];
-    _originalSoundFadeOutTime = temporary ? _soundFadeOutTime : [[aObject movie] soundFadeOutTime];
+    _originalSoundFadeOutTime = [[aObject movie] soundFadeOutTime];
     [[aObject movie] setSoundFadeOutTime:_soundFadeOutTime];
-    [self applyMoviePositionForMovieObject:aObject];
+    _originalIndex = (unsigned int)[aObject hyperIndex];
+    if ([self playOverObjects])
+        [aObject moveToHyperEnd];
     [[self undoManager] enableUndoRegistration];
 }
 
@@ -586,9 +582,11 @@ static BOOL HSMoviePlaybackItemFloatsAreEqual(float aValue1, float aValue2)
     id card = [[self playbackItemSupport] cardForAction];
     [self preparePlayableMovieObjectWithMovieObject:[self movieObjectForCard:card] forCard:card];
     if (![_playableMovieObject hyperParent]) {
+        [_playableMovieObject setTemporaryObjectForAction:NO];
         [[self undoManager] disableUndoRegistration];
         [aContext addTemporaryPlayableObjectOnCard:_playableMovieObject];
         [[card queryHyperInterface:@protocol(HSNodeContainer)] addTemporaryHyperChild:_playableMovieObject];
+        [self applyMoviePositionForMovieObject:_playableMovieObject];
         [self applyAttributesToMovieObject:_playableMovieObject];
         [[self undoManager] enableUndoRegistration];
         if (![self playOverObjects])
@@ -636,13 +634,17 @@ static BOOL HSMoviePlaybackItemFloatsAreEqual(float aValue1, float aValue2)
         [[self undoManager] disableUndoRegistration];
         [aContext addTemporaryPlayableObjectOnCard:_playableMovieObject];
         [[card queryHyperInterface:@protocol(HSNodeContainer)] addTemporaryHyperChild:_playableMovieObject];
+        [self applyMoviePositionForMovieObject:_playableMovieObject];
+        [self applyAttributesToMovieObject:_playableMovieObject];
         [[self undoManager] enableUndoRegistration];
+        if (![self playOverObjects])
+            [aContext addTemporaryPlayableObjectPlacedBottomOnCard:_playableMovieObject];
     } else if ([_playableMovieObject isHiddenInPlayer]) {
         return;
     }
     [self applyAttributesToMovieObject:_playableMovieObject];
-    if (![self playOverObjects] && ![_playableMovieObject hyperParent])
-        [aContext addTemporaryPlayableObjectPlacedBottomOnCard:_playableMovieObject];
+    if ([_playableMovieObject isTemporaryObjectForAction])
+        [_playableMovieObject setTemporaryObjectForAction:NO];
     if ([_playableMovieObject isHyperQTVR])
         [self hyperPlayableObjectDidStop:_playableMovieObject];
     else
