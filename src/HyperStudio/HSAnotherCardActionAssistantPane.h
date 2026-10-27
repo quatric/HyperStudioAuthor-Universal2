@@ -9,6 +9,7 @@
     HSImageView *_containerView;
     HSDropImageView *_stackDropArea;
     NSTextField *_stackNameField;
+    NSButton *_openInSeparateWindowSwitch;
     NSView *_storyboardContentView;
     NSView *_placeholderView;
     NSView *_contentView;

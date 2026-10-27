@@ -6,6 +6,7 @@
 @interface HSOpenStackActionAssistantPane : HSActionAssistantPane
 {
     NSTextField *_stackNameField;
+    NSButton *_openInSeparateWindowSwitch;
     HSImageView *_containerView;
     NSView *_placeholderView;
     NSView *_cardPreviewContentView;

@@ -61,6 +61,7 @@
 // validates it.
 - (void)validateUI
 {
+    [self refreshStatusbarText];
     NSEnumerator *enumerator = [[NSArray arrayWithObjects:_toggleCardIndexButton, _toggleStoryboardButton, _enterFullScreenButton, _cardNavigationControl, _goToHomeStackButton, nil] objectEnumerator];
     id control;
     while ((control = [enumerator nextObject])) {
@@ -75,11 +76,9 @@
             SEL action = [(NSControl *)control action];
             id target = [control respondsToSelector:@selector(target)] ? [(NSControl *)control target] : nil;
             if (action) {
-                id validator = [NSApp targetForAction:action to:target from:control];
+                id validator = [_delegate document];
                 BOOL enabled;
-                if (!validator)
-                    enabled = NO;
-                else if (![validator respondsToSelector:@selector(validateUserInterfaceItem:)])
+                if (![validator respondsToSelector:@selector(validateUserInterfaceItem:)])
                     enabled = YES;
                 else
                     enabled = [validator validateUserInterfaceItem:control];

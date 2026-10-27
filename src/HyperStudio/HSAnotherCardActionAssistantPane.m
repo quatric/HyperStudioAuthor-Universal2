@@ -525,6 +525,14 @@ LAB_000e4aba:
         [self mountContentView:_placeholderView];
         [_stackDropArea setImage:nil];
     }
+    {
+        NSURL *targetURL = [[self actionAttributes] URL];
+        BOOL enabled = YES;
+        if (targetURL != nil)
+            enabled = ![targetURL isEqual:[[[self stack] document] fileURL]];
+        [_openInSeparateWindowSwitch setEnabled:enabled];
+        [_openInSeparateWindowSwitch setState:enabled ? [[self actionAttributes] shouldOpenInSeparateWindow] : 0];
+    }
     [[self navigationPaneSwitcher] validateUserInterface];
 }
 

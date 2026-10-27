@@ -413,6 +413,8 @@ LAB_0010710e:
         id card = [[[[[self previewDocument] stack] queryHyperInterface:@protocol(HSNodeAttributes)] hyperChildren] extraFirstObject];
         [_cardPreviewView setImage:[HSCardBorderRenderer borderedThumbnailWithCardThumbnail:[self thumbnailOfCard:card ofSize:[_cardPreviewView frame].size]]];
         [self mountContentView:_cardPreviewContentView];
+        [_openInSeparateWindowSwitch setEnabled:YES];
+        [_openInSeparateWindowSwitch setState:[[self actionAttributes] shouldOpenInSeparateWindow]];
         [_stackDropArea setImage:[[NSWorkspace sharedWorkspace] iconForFile:[url path]]];
     } else {
         [_stackNameField setStringValue:[NSString string]];
