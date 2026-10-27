@@ -6825,7 +6825,7 @@ LAB_0000f2b3:
     fVar1 = (_cardOffset).width;
     fVar2 = (_cardOffset).height;
     if (_zoomMode == 1) {
-        [self HSEditorCardView_autozoomToFitCardToVisibleArea];
+        [self autozoomToFitCardToVisibleArea];
     }
     [self autosizePreservingVisibleCenter];
     dVar6 = [self zoomFactor];

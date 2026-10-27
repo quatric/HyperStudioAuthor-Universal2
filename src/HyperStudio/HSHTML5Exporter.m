@@ -889,8 +889,9 @@ void FUN_0028e55b(HSHTML5Exporter *self,SEL _cmd,id finalizeExportForDocument)
     }
     [stackWrapper addRegularFileWithContents:[json dataUsingEncoding:NSUTF8StringEncoding] preferredFilename:@"stack.json"];
     [stackWrapper addFileWrapper:[self resourcesWrapperWithContext:_context]];
-    [stackWrapper addFileWrapper:[self previewsWrapperForDocument:aDocument]];
-    [_exportRepresentation addFileWrapper:[self previewIconWrapperForDocument:aDocument]];
+    NSFileWrapper *previews = [self previewsWrapperForDocument:aDocument];
+    [stackWrapper addFileWrapper:previews];
+    [previews addFileWrapper:[self webAppIconWrapperForDocument:aDocument]];
     [stackData addFileWrapper:stackWrapper];
     [stackWrapper release];
     if ([[_context linkedStackURLs] count] != 0) {

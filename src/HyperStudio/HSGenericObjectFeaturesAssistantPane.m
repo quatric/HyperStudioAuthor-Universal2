@@ -250,7 +250,6 @@ void FUN_000efb97(HSGenericObjectFeaturesAssistantPane *self,SEL _cmd,id textDid
 {
     [self validateGroupObjectSwitch];
     [self validateDraggableOptionsButton];
-    [self validateDropOptionsStateForDragableState:[[self cardObjectAttributes] isDraggable]];
 }
 
 - (void)validateDraggableOptionsButton

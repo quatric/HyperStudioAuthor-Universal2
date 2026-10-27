@@ -167,7 +167,7 @@ void FUN_002a546f(HSDropOffOptionsAssistansPane *self,SEL _cmd,BOOL hideHelpNeed
 {
     [self unlockAssistantIfNeeded];
     [self resetToolToDefault];
-    [self restoreSelectonAfterExit];
+    [self restoreSelection];
     [_cardView ignoreNextMouseDown];
 }
 
@@ -249,7 +249,7 @@ void FUN_002a5839(HSDropOffOptionsAssistansPane *self,SEL _cmd,BOOL finishAndApp
     }
     else {
         [self revertChanges];
-        [self restoreSelectonAfterExit];
+        [self restoreSelection];
     }
     [[self undoHelper] finishDuplicating:aChanges];
     if ([[_navigationController viewControllers] count] == 1) {
@@ -384,7 +384,7 @@ LAB_002a5ade:
 - (void)paneDidOK:(id)aOK
 {
     [self finishAndApplyChanges:YES];
-    [self restoreSelectonAfterExit];
+    [self restoreSelection];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -433,14 +433,17 @@ void FUN_002a5e25(HSDropOffOptionsAssistansPane *self,SEL _cmd,id placingFinishe
 {
     [self endAtomicMovingOfObject:[_placeObjectAssisantPane object]];
     [aTool setDelegate:nil];
-    [self setDropOffTarget:[_placeObjectAssisantPane object]];
+    id target = [self dropOffTarget];
     if ([[self object] isGroupObject]) {
-        [[self dropOffTarget] makeGroupObject];
+        [target makeGroupObject];
     }
-    [_dropOffTarget setTemporary:NO];
+    [target setTemporary:NO];
+    [[self undoManager] disableUndoRegistration];
+    [target setHidden:YES];
+    [[self undoManager] enableUndoRegistration];
     [_cardView setOccupiedByTool:NO];
     [self resetToolToDefault];
-    [self restoreSelectonAfterExit];
+    [self restoreSelection];
     [_navigationController popAllTopViewControllersWithIdentifier:@"HSDropOffTemporaryPaneIdentifier" animate:YES];
     [self unlockAssistantIfNeeded];
     [[HSObjectAssistantController sharedAssistantController] setSupportsSettingsOnTheSpotMode:_initialInspectorSupportsSOTSMode];
@@ -496,7 +499,7 @@ void FUN_002a5fe6(HSDropOffOptionsAssistansPane *self,SEL _cmd,id placingCancele
         [[self card] addHyperChild:_dropOffTarget];
     }
     [self resetToolToDefault];
-    [self restoreSelectonAfterExit];
+    [self restoreSelection];
     [self unlockAssistantIfNeeded];
     [_cardView setOccupiedByTool:NO];
     [_placeObjectAssisantPane dismiss:YES];
@@ -1707,7 +1710,7 @@ LAB_002a894d:
         if (pvVar1_2 != [self document]) {
             [self unlockAssistantIfNeeded];
             [self resetToolToDefault];
-            [self restoreSelectonAfterExit];
+            [self restoreSelection];
         }
     }
 }

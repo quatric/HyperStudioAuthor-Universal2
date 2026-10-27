@@ -1379,14 +1379,12 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     [[[self document] stackSelectionHolder] makeCurrent];
     [self switchToToolWithTag:1];
     [[HSObjectAssistantController sharedAssistantController] openDefaultEditingPaneForObject:[[self document] stack]];
-    [self removeHelpPaneOverCurrentPaneOfClass:[HSStackAssistantPane class]];
 }
 
 - (void)showCardOptionsDialog:(id)aDialog
 {
     [self switchToToolWithTag:1];
     [self selectActiveCardAndShowInspector];
-    [self removeHelpPaneOverCurrentPaneOfClass:[HSCardAssistantPane class]];
 }
 
 - (void)effectDialog:(id)aDialog didEndWithReturnCode:(NSInteger)aCode
@@ -4548,7 +4546,6 @@ static NSInteger HSEditorSpacingCompareByOriginY(id aObject, id aOther, void *aC
     [_statusbarController refreshStatusbarText];
     [self synchronizeWindowTitleWithDocumentName];
     [self showAlertAboutOldButtonStylesIfNeeded];
-    [self updateURLInOpenStackAndOtherCardActions];
 }
 
 - (id)stackSelectionHolder

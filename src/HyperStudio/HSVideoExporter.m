@@ -170,7 +170,7 @@ id FUN_0025feec(HSVideoExporter *self,SEL _cmd)
 - (id)currentExporter
 {
     if (_currentExporter == nil) {
-        if ([self videoExportOption] == 1) {
+        if ([[self exportSettingsValueForKey:HSVideoExportOptionKey] intValue] == 1) {
             _currentExporter = [self createHyperCastingExporter];
         } else {
             _currentExporter = [self createQTMovieExporter];
@@ -238,7 +238,7 @@ id FUN_0026063f(HSVideoExporter *self,SEL _cmd)
     HSHyperCastingExporter *exporter = [HSHyperCastingExporter new];
     NSInteger format;
     NSSize frameSize;
-    switch ([self videoExportDevice]) {
+    switch ([[self exportSettingsValueForKey:HSVideoExportDeviceKey] intValue]) {
         case 1:
             format = 1;
             frameSize = NSMakeSize(320.0, 240.0);
@@ -256,7 +256,7 @@ id FUN_0026063f(HSVideoExporter *self,SEL _cmd)
             frameSize = NSMakeSize(1024.0, 768.0);
             break;
         default:
-            frameSize = [self movieFrameSize];
+            frameSize = [[self exportSettingsValueForKey:HSVideoExportFrameSizeKey] sizeValue];
             format = 0;
             break;
     }
@@ -265,7 +265,7 @@ id FUN_0026063f(HSVideoExporter *self,SEL _cmd)
     [exporter setUseRoundedCorners:[self canUseRoundedCorners]];
     [exporter setDataSource:self];
     [exporter setDelegate:self];
-    [exporter setFramesPerSecondLimit:[self framesPerSecondLimit]];
+    [exporter setFramesPerSecondLimit:[[self exportSettingsValueForKey:HSVideoExportFramesPerSecondKey] doubleValue]];
     return exporter;
 }
 
@@ -328,7 +328,7 @@ LAB_00260976:
 {
     HSQTMovieExporter *exporter = [HSQTMovieExporter new];
     NSMutableDictionary *configuration;
-    switch ([self videoExportDevice]) {
+    switch ([[self exportSettingsValueForKey:HSVideoExportDeviceKey] intValue]) {
         case 1:
             configuration = [NSMutableDictionary dictionaryWithDictionary:[HSQTMovieExporter defaultCodecConfigurationForIPodMovie]];
             break;
@@ -343,16 +343,16 @@ LAB_00260976:
             break;
         default:
             configuration = [NSMutableDictionary dictionaryWithDictionary:[HSQTMovieExporter defaultCodecConfigurationForMovie]];
-            [configuration setObject:[NSValue valueWithSize:[self movieFrameSize]] forKey:HSQTMovieExporterMovieFrameSize];
+            [configuration setObject:[NSValue valueWithSize:[[self exportSettingsValueForKey:HSVideoExportFrameSizeKey] sizeValue]] forKey:HSQTMovieExporterMovieFrameSize];
             break;
     }
     [exporter setCodecConfiguration:configuration];
     [exporter setUseRoundedCorners:[self canUseRoundedCorners]];
-    [exporter setTransitionName:_transitionName];
-    [exporter setSlideDelay:_slideDelay];
+    [exporter setTransitionName:[self exportSettingsValueForKey:HSVideoExportTransitionKey]];
+    [exporter setSlideDelay:[[self exportSettingsValueForKey:HSVideoExportCardDelayKey] floatValue]];
     [exporter setDataSource:self];
     [exporter setDelegate:self];
-    [exporter setFramesPerSecondLimit:[self framesPerSecondLimit]];
+    [exporter setFramesPerSecondLimit:[[self exportSettingsValueForKey:HSVideoExportFramesPerSecondKey] doubleValue]];
     return exporter;
 }
 
@@ -406,7 +406,7 @@ id FUN_0025fce2(HSVideoExporter *self,SEL _cmd)
 - (id)progressSheetDescription
 {
     NSString *key;
-    switch ([self videoExportDevice]) {
+    switch ([[self exportSettingsValueForKey:HSVideoExportDeviceKey] intValue]) {
         case 0: key = @"ExportSheetProgressQuickTimeMovieDescription"; break;
         case 1: key = @"ExportSheetProgressIPodDescription"; break;
         case 2: key = @"ExportSheetProgressIPhoneDescription"; break;
@@ -429,7 +429,7 @@ id FUN_0025fce2(HSVideoExporter *self,SEL _cmd)
 
     pvVar1 = _exportAccessoryViewController;
     if (pvVar1 == nil) {
-        if ([self videoExportFormat] == 0x1) {
+        if ([[self exportSettingsValueForKey:HSVideoExportFormatKey] intValue] == 0x1) {
             pvVar1_3 = [HSPodcastExportAccessoryViewController alloc];
         }
         else {
@@ -485,7 +485,7 @@ BOOL FUN_0025faf2(HSVideoExporter *self,SEL _cmd)
 */
 - (BOOL)canUseRoundedCorners
 {
-    return _useRoundedCorners ? YES : NO;
+    return [[NSUserDefaults standardUserDefaults] boolForKey:@"HSExportUseRoundedCorners"];
 }
 
 /* --- i386 decompilation (Ghidra) ---

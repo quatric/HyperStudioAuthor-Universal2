@@ -110,14 +110,11 @@ LAB_00282f6a:
 - (void)chooseEndingCard:(id)aCard
 {
     [[self cardShufflerActionAsssistantApplier] setEndingCardIndex:[[[_endingCardPopUp selectedItem] representedObject] unsignedIntegerValue]];
-    [self updateRelatedPopUpButton:_startingCardPopUp selectedMenuItem:[_endingCardPopUp selectedItem]]
-    ;
 }
 
 - (void)chooseStartingCard:(id)aCard
 {
     [[self cardShufflerActionAsssistantApplier] setStartingCardIndex:[[[_startingCardPopUp selectedItem] representedObject] unsignedIntegerValue]];
-    [self updateRelatedPopUpButton:_endingCardPopUp selectedMenuItem:[_startingCardPopUp selectedItem]];
 }
 
 - (void)updatePopUpLists

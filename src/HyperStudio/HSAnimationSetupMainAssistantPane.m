@@ -220,7 +220,7 @@ static id sDAT_0034294c;
     [_dontEraseReturningButton setState:[animation dontEraseReturning] ? 1 : 0];
     [_layerPopUpButton selectItemWithTag:[(HSAnimation *)animation layer]];
     NSInteger speedMode = [animation speedMode];
-    [self movePopUpButtonSelectItemWithTag:speedMode];
+    [_movePopUpButton selectItemWithTag:speedMode];
     int value;
     if (speedMode == 0) {
         [_moveValueTextField setHidden:YES];
