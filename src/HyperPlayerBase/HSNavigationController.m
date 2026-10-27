@@ -790,6 +790,8 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
         [cardView display];
     }
     [self showSpinIndicator];
+    BOOL separateWindow = [[HSPathsProvider sharedPathsProvider] isTutorialURL:url] || [aOperation shouldOpenInSeparateWindow];
+    BOOL result = YES;
     NSError *error = nil;
     id card = [cardView card];
     CGAffineTransform userSpaceToViewSpace = [cardView userSpaceToViewSpaceCGAffineTransform];
@@ -798,7 +800,10 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
     NSString *type = nil;
     id newDocument = nil;
     if (![_document isWebPlayerDocument]) {
-        newDocument = [[HSApplicationController sharedDocumentController] openDocumentWithContentsOfURL:url inWindowOfDocument:[self document] error:&error];
+        if (separateWindow)
+            newDocument = [[HSApplicationController sharedDocumentController] openDocumentWithContentsOfURL:url display:YES error:&error];
+        else
+            newDocument = [[HSApplicationController sharedDocumentController] openDocumentWithContentsOfURL:url inWindowOfDocument:[self document] error:&error];
         succeeded = error == nil && newDocument != nil;
     } else {
         NSString *fileType = [[NSFileManager defaultManager] hyperFileTypeAtPath:[url path]];
@@ -814,6 +819,11 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
         if (newDocument == nil) {
             [_document setFileURL:url];
             [_document setFileType:type];
+        } else if (separateWindow) {
+            id destinationCard = [self destinationCardInStack:[newDocument stack] fromNavigationOperation:aOperation];
+            result = NO;
+            if (destinationCard != nil)
+                [newDocument setCurrentCard:destinationCard];
         } else {
             [aOperation setSourceDocument:_document];
             [aOperation setSourceCard:card];
@@ -853,7 +863,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
         [cardView enableOpenGLSurface];
         [cardView setNeedsDisplay:YES];
     }
-    return succeeded;
+    return succeeded && result;
 }
 
 - (void)hideSpinIndicator
