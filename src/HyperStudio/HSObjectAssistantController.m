@@ -250,7 +250,7 @@ void FUN_000fdfe9(HSObjectAssistantController *self,SEL _cmd,BOOL setIsRecording
 */
 - (void)setIsRecordingSound:(BOOL)aSound
 {
-    _isRecordingSound = aSound;
+    [[[[self stack] queryHyperInterface:@protocol(HSStackAttributes)] document] setIsRecordingSound:aSound];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -274,7 +274,7 @@ BOOL FUN_000fdfd0(HSObjectAssistantController *self,SEL _cmd)
 */
 - (BOOL)isRecordingSound
 {
-    return _isRecordingSound;
+    return [[[[self stack] queryHyperInterface:@protocol(HSStackAttributes)] document] isRecordingSound];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -294,7 +294,7 @@ void FUN_000fdfac(HSObjectAssistantController *self,SEL _cmd,BOOL setIsRecording
 */
 - (void)setIsRecordingMovie:(BOOL)aMovie
 {
-    _isRecordingMovie = aMovie;
+    [[[[self stack] queryHyperInterface:@protocol(HSStackAttributes)] document] setIsRecordingMovie:aMovie];
 }
 
 /* --- i386 decompilation (Ghidra) ---
@@ -318,7 +318,7 @@ BOOL FUN_000fdf94(HSObjectAssistantController *self,SEL _cmd)
 */
 - (BOOL)isRecordingMovie
 {
-    return _isRecordingMovie;
+    return [[[[self stack] queryHyperInterface:@protocol(HSStackAttributes)] document] isRecordingMovie];
 }
 
 /* --- i386 decompilation (Ghidra) ---

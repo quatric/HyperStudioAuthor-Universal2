@@ -14,6 +14,8 @@
 
 - (BOOL)shouldDisplaySelectionKnobs
 {
+    if ([[[NSDocumentController sharedDocumentController] currentDocument] isInViewingMode])
+        return NO;
     return _shouldDisplaySelectionKnobs;
 }
 

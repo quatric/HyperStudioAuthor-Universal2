@@ -6406,7 +6406,7 @@ id FUN_0000e752(HSEditorCardView *self,SEL _cmd)
 - (void)cardSizeDidChange:(id)aChange
 {
     if ([self enclosingScrollView] != nil) {
-        [self HSEditorCardView_autolayoutPreservingVisibleArea];
+        [self autolayoutPreservingVisibleCenter];
         [self setNeedsDisplayOpenGLSurface:YES];
     }
     [self updateCardAlternateProportion];
