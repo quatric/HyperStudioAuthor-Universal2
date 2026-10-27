@@ -1,4 +1,5 @@
 #import "HyperPlayerBasePrefix.h"
+#include <pthread.h>
 #import "HSMovieObjectBase.h"
 
 
@@ -10,6 +11,7 @@
     BOOL _isQTVRMovie;
     BOOL _isPanoramaObject;
     BOOL _shouldResizeForNewMedia;
+    pthread_mutex_t _videoConvertingMutex;
     NSTimer *_invalidationTimerForController;
     BOOL _needUpdateController;
 }
@@ -169,5 +171,14 @@
 - (id)movieMediaDataConvertedWithoutFramingForHTML5ExportContext:(id)aContext;
 - (id)movieMediaDataConvertedWithFramingForHTML5ExportContext:(id)aContext;
 - (void)verifyUnsupportedFeatures;
+- (void)lockVideoRecordingToFile;
+- (void)unlockVideoRecordingToFile;
+- (void)waitForFinishVideoRecordingToFile;
+- (void)recorder:(id)aRecorder didFinishRecordingToOutputFileAtPath:(id)aPath dueToError:(id)aError;
+- (void)recorder:(id)aRecorder willFinishRecordingToOutputFileAtPath:(id)aPath dueToError:(id)aError;
+- (void)startCapturingForConsumer:(id)aConsumer;
+- (void)stopCapturingForConsumer:(id)aConsumer;
++ (id)movieObjectRecorderWithMovieObject:(id)aObject;
+- (id)movieDataWithVideoAtFilePath:(id)aPath soundMovie:(id)aSoundMovie forHTML5ExportContext:(id)aContext;
 @end
 

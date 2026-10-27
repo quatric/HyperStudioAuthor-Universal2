@@ -1,4 +1,5 @@
 #import "HSMovieObject.h"
+#include <pthread.h>
 #import "CGEImage.h"
 #import "HSActionEvent.h"
 #import "HSActionMediaPlayer.h"
@@ -1555,6 +1556,64 @@ done:
     [colors setTransparentColorEnabled:NO];
     [self setHyperVolume:1.0];
     [super verifyUnsupportedFeatures];
+}
+
+- (void)lockVideoRecordingToFile
+{
+    pthread_mutex_init(&_videoConvertingMutex, NULL);
+    pthread_mutex_lock(&_videoConvertingMutex);
+}
+
+- (void)unlockVideoRecordingToFile
+{
+    pthread_mutex_unlock(&_videoConvertingMutex);
+}
+
+- (void)waitForFinishVideoRecordingToFile
+{
+    pthread_mutex_lock(&_videoConvertingMutex);
+    pthread_mutex_unlock(&_videoConvertingMutex);
+    pthread_mutex_destroy(&_videoConvertingMutex);
+}
+
+- (void)recorder:(id)aRecorder didFinishRecordingToOutputFileAtPath:(id)aPath dueToError:(id)aError
+{
+    [self unlockVideoRecordingToFile];
+}
+
+- (void)recorder:(id)aRecorder willFinishRecordingToOutputFileAtPath:(id)aPath dueToError:(id)aError
+{
+}
+
+- (void)startCapturingForConsumer:(id)aConsumer
+{
+}
+
+- (void)stopCapturingForConsumer:(id)aConsumer
+{
+}
+
++ (id)movieObjectRecorderWithMovieObject:(id)aObject
+{
+    id recorder = [[HSRecorder new] autorelease];
+    [recorder setDataSource:aObject];
+    [recorder setDelegate:aObject];
+    [recorder prepareToRecordWithAttributes:nil];
+    return recorder;
+}
+
+- (id)movieDataWithVideoAtFilePath:(id)aPath soundMovie:(id)aSoundMovie forHTML5ExportContext:(id)aContext
+{
+    id movie = [[[QTMovie alloc] initToWritableData:[NSMutableData data] error:NULL] autorelease];
+    [movie insertVideoTracksFromMovie:[QTMovie movieWithFile:aPath error:NULL]];
+    if ([self isMovieCompatibleWithHTML5:aSoundMovie forContext:aContext]) {
+        [movie insertAudioTracksFromMovie:[aSoundMovie QTMovie]];
+    } else {
+        id convertedPath = [aSoundMovie convertedSoundtrackPath];
+        [movie insertAudioTracksFromMovie:[QTMovie movieWithFile:convertedPath error:NULL]];
+        [[NSFileManager defaultManager] removeItemAtPath:convertedPath error:NULL];
+    }
+    return [movie flattenMovieData];
 }
 
 @end
