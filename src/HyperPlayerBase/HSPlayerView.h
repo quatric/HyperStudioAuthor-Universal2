@@ -22,6 +22,7 @@
     HSRendererStreamDrawable *_transitionDestinationCardDrawable;
     HSRendererStreamDrawable *_transitionSourceCardDrawable;
     HSTransitionView *_transitionView;
+    HSFluidSwipe *_handledSwipe;
     HSSlideshowAttributes *_liveSlideShowAttributes;
     HSSlideshow *_slideshow;
     NSView *_slideshowContentView;
@@ -158,6 +159,13 @@
 - (id)HSPlayerView_transitionDestinationCardRenderer;
 - (id)HSPlayerView_transitionView;
 - (id)HSPlayerView_graphicCompositionView;
+- (void)handleFluidSwipe:(id)aSwipe;
+- (BOOL)canceledWithSwipe;
+- (BOOL)isComplete;
+- (double)transitionAmount;
+- (void)pauseTransition;
+- (void)resumeTransition;
+- (void)viewDidChangeUserSpaceToViewSpaceTransform:(id)aTransform;
 @end
 
 @interface HSPlayerView_HSGraphicCompositionView : HSGraphicCompositionView

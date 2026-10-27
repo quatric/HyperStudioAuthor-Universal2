@@ -1176,6 +1176,7 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
     if ([_transitionView dataSource] == self)
         [_transitionView setDataSource:nil];
     [_transitionView release];
+    [_handledSwipe release];
     if ([_graphicCompositionView delegate] == self)
         [_graphicCompositionView setDelegate:nil];
     [_graphicCompositionView release];
@@ -1421,6 +1422,66 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
         [_graphicCompositionView setDelegate:self];
     }
     return _graphicCompositionView;
+}
+
+// A fluid swipe drives the transition itself: the first change with a
+// forward amount starts the transition to the next card, and the ending
+// phase navigates when no transition took over.
+- (void)handleFluidSwipe:(id)aSwipe
+{
+    if ([aSwipe phase] == NSEventPhaseBegan) {
+        if ([self isTransitionPlaying])
+            [self stopTransition];
+        if (![[self document] isInPurePlayerMode] && ![[self document] isInPresentationMode])
+            return;
+        if (!([aSwipe gestureAmount] < 0))
+            return;
+        [_handledSwipe release];
+        _handledSwipe = [aSwipe retain];
+        [[self HSPlayerView_transitionView] setTransitionPlaybackController:self];
+        [[self document] advanceToNextCardWithoutLeaveActions:self];
+    } else if ([aSwipe phase] == NSEventPhaseEnded) {
+        if ([_transitionView transitionPlaybackController] == self)
+            return;
+        if ([aSwipe gestureAmount] < 0)
+            [[self document] goToNextCardWithoutLeaveActions:self];
+        else if ([aSwipe gestureAmount] > 0)
+            [[self document] goToPreviousCardWithoutLeaveActions:self];
+    }
+}
+
+- (BOOL)canceledWithSwipe
+{
+    if ([_transitionView transitionPlaybackController] != self)
+        return NO;
+    return [_handledSwipe isCanceled] || 0.0f < [_handledSwipe gestureAmount];
+}
+
+- (BOOL)isComplete
+{
+    return [_handledSwipe isComplete];
+}
+
+- (double)transitionAmount
+{
+    if ([_handledSwipe gestureAmount] > 0.0f)
+        return 0.0;
+    return fabsf([_handledSwipe gestureAmount]);
+}
+
+- (void)pauseTransition
+{
+    [_transitionView pause];
+}
+
+- (void)resumeTransition
+{
+    [_transitionView resume];
+}
+
+- (void)viewDidChangeUserSpaceToViewSpaceTransform:(id)aTransform
+{
+    [_graphicCompositionView setFrame:(_cardView != nil ? [_cardView cardViewingRect] : NSZeroRect)];
 }
 
 @end
