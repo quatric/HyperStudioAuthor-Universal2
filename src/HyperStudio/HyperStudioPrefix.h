@@ -412,7 +412,6 @@
 @class HSEditorToolbarController;
 @class HSEditorWindowController;
 @class HSEditorWindowStatusbarController;
-@class HSEditorZoomController;
 @class HSEffect;
 @class HSEffectApplierPreviewImageRep;
 @class HSEffectCenterSelectionKnob;

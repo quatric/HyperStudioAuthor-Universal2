@@ -167,7 +167,5 @@ struct HyperEditorBase_anon2 {
     void *f4;
 };
 
-float HSNonLinearValueForSlider(NSSlider *aSlider);
-float HSLinearValueForSliderFromNonLinear(NSSlider *aSlider, float aValue);
 
 #import "HyperEditorBaseProtocols.h"

@@ -858,6 +858,7 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSEditorZoomController;
 @class HSAHTML5ExportCompatibilityChecker;
 @class HSAExternalFilesData;
 @class HSDocumentLoadingIndicatorController;
@@ -2079,3 +2080,5 @@ struct HyperPlayerBase_anon24 {
 };
 
 #import "HyperPlayerBaseProtocols.h"
+float HSNonLinearValueForSlider(NSSlider *aSlider);
+float HSLinearValueForSliderFromNonLinear(NSSlider *aSlider, float aValue);

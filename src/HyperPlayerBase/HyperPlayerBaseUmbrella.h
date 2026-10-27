@@ -778,3 +778,4 @@
 #import "HSDocumentLoadingIndicatorController.h"
 #import "HSAExternalFilesData.h"
 #import "HSAHTML5ExportCompatibilityChecker.h"
+#import "HSEditorZoomController.h"

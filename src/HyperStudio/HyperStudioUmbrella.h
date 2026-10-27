@@ -203,7 +203,6 @@
 #import "HSEditorToolbarController.h"
 #import "HSEditorWindowController.h"
 #import "HSEditorWindowStatusbarController.h"
-#import "HSEditorZoomController.h"
 #import "HSEffectApplierPreviewImageRep.h"
 #import "HSEffectCenterSelectionKnob.h"
 #import "HSEffectCenterSelectionTracker.h"

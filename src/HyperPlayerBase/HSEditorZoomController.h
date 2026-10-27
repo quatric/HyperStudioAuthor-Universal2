@@ -1,4 +1,4 @@
-#import "HyperStudioPrefix.h"
+#import "HyperPlayerBasePrefix.h"
 
 
 @interface HSEditorZoomController : NSObject
