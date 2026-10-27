@@ -252,7 +252,9 @@ static CGFloat HSShapeBackgroundScale(CGFloat aFrom, CGFloat aTo)
 // A freehand area's path is half a point larger on each side.
 - (NSSize)size
 {
-    if (_borderPath == nil)
+    // Current AppKit raises for the bounds of a path without elements, where
+    // the original answered an empty rect.
+    if (_borderPath == nil || [_borderPath elementCount] == 0)
         return NSZeroSize;
     NSRect bounds = [_borderPath bounds];
     if (NSIsEmptyRect(bounds))

@@ -104,17 +104,12 @@
     return [image autorelease];
 }
 
-// Whether a window can be created (it can't without a window server).
+// Whether the view is drawn through an offscreen cache window. NSCachedImageRep
+// no longer has a backing store on current systems, so a view is always
+// rendered into a bitmap.
 - (BOOL)shouldUseOffscreenWindow
 {
-    BOOL result = NO;
-    @try {
-        NSWindow *window = [[NSWindow alloc] initWithContentRect:NSMakeRect(0, 0, 16, 16) styleMask:NSWindowStyleMaskBorderless backing:NSBackingStoreBuffered defer:NO];
-        result = window != nil;
-        [window release];
-    } @catch (NSException *exception) {
-    }
-    return result;
+    return NO;
 }
 
 // The transform maps the cache into the requested size. (The cache is
@@ -131,6 +126,8 @@
     NSSize cacheSize = [self NSView_HSExtensions_cacheSizeForCachingRect:aRect inSize:aSize withIntegralScaling:aScaling cacheScale:&cacheScale integralCacheOffset:&integralOffset compensationScale:&compensationScale compensationOffset:&compensationOffset];
     NSRect cacheRect = { NSZeroPoint, cacheSize };
     NSBitmapImageRep *rep = [self bitmapImageRepForCachingDisplayInRect:cacheRect];
+    if (rep == nil)
+        return nil;
     [self cacheDisplayInRect:cacheRect toBitmapImageRep:rep];
     struct HyperPlayerBase_anon1 transform = { compensationScale.width, 0, 0, compensationScale.height, compensationOffset.width, compensationOffset.height };
     if (aFlipped) {
