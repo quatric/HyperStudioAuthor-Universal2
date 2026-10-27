@@ -45,6 +45,7 @@
 #import "HSAFTPServerPublisher.h"
 #import "HSAFTPServerExporter.h"
 #import "HSAFTPServerExportPanelController.h"
+#import "HSATemplateChooser.h"
 #import "HSAExportPanelController.h"
 #import "HSPublishComboDialog.h"
 #import "HSHypertextLinksInspectorController.h"

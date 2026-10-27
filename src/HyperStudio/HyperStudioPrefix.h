@@ -214,6 +214,7 @@
 @class HSAFTPServerPublisher;
 @class HSAFTPServerExporter;
 @class HSAFTPServerExportPanelController;
+@class HSATemplateChooser;
 @class HSAExportPanelController;
 @class HSPublishComboDialog;
 @class HSHypertextLinksInspectorController;
