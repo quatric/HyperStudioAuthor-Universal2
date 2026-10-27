@@ -17,5 +17,6 @@
 - (BOOL)shouldDismissWhenDisappearedByDefault;
 - (id)newBackgroundImage;
 - (id)assistantPaneUndoManager;
+- (void)HSAnimationSetupCoachingAssistantPane_windowDidResignMain:(id)aResign;
 @end
 

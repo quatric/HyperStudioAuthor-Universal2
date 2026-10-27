@@ -59,4 +59,28 @@
     return [_delegate undoManagerForAnimationSetupCoachingAssistantPane:self];
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super dealloc];
+}
+
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [super viewWillAppear:aAppear];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSAnimationSetupCoachingAssistantPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[[[[self stack] document] cardView] window]];
+    [_delegate prepareToolAndCardViewForAnimationSetupCoachingAssistantPane:self];
+}
+
+- (void)viewWillDisappear:(BOOL)aDisappear
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidResignMainNotification object:[[[[self stack] document] cardView] window]];
+    [super viewWillDisappear:aDisappear];
+}
+
+- (void)HSAnimationSetupCoachingAssistantPane_windowDidResignMain:(id)aResign
+{
+    [_delegate prepareToolAndCardViewAfterSwitchForAnimationSetupCoachingAssistantPane:self];
+}
+
 @end
