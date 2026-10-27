@@ -5,6 +5,7 @@
 
 @interface HSSlideShowActionAssistantPane : HSNBAAssistantPane
 {
+    NSSlider *_speedSlider;
     NSPopUpButton *_transitionPopup;
     NSSlider *_durationSlider;
     NSTextField *_slideDurationField;

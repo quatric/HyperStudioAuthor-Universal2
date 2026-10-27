@@ -11,6 +11,7 @@
 
 @interface HSWebAppIconEditorDialogController : HSCropImageDialogController <HSImageCropViewDelegate>
 {
+    NSTextField *_infoLabel;
     HSTintedView *_cardIndexContainerView;
     HSCardIndexScrollView *_stripScrollView;
     HSWebAppIconShadowView *_shadowView;

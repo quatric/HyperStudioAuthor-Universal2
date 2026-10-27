@@ -7,7 +7,7 @@
     HSSlider *_zoomSlider;
     NSButton *_toggleCardIndexButton;
     NSButton *_toggleStoryboardButton;
-    NSButton *_enterFullScreenButton;
+    NSButton *_togglePresentationModeButton;
     NSButton *_goToHomeStackButton;
     NSView *_statusbarView;
     NSTextField *_stausbarTextField;

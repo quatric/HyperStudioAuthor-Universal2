@@ -4,6 +4,7 @@
 
 @interface HSAFTPServerFinishWindowController : HSAFinishWindowController
 {
+    NSWindow *_finishWindow;
     NSView *_openURLFinishView;
     NSView *_finishView;
 }

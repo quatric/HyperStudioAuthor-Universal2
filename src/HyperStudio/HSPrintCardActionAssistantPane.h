@@ -5,6 +5,7 @@
 
 @interface HSPrintCardActionAssistantPane : HSNBAAssistantPane
 {
+    NSView *_paneView;
     NSButton *_printDialogCheckBox;
     NSButton *_pageSetupDialogCheckBox;
     NSButton *_centerPrintoutCheckBox;

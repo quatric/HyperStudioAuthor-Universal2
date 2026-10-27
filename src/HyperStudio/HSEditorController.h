@@ -3,6 +3,7 @@
 
 @interface HSEditorController : HSApplicationController
 {
+    NSMenuItem *_revertToSavedMenuItem;
     HSPlayerInEditorWindowController *_sharedPlayerInEditorWindowController;
     HSPurePlayerInEditorWindowController *_sharedPurePlayerWindowController;
     HSPurePlayerInEditorWindowController *_sharedPresentationWindowController;

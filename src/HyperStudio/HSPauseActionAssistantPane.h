@@ -5,6 +5,7 @@
 
 @interface HSPauseActionAssistantPane : HSNBAAssistantPane
 {
+    NSView *_paneView;
     NSTextField *_pauseDurationField;
     NSStepper *_pauseDurationStepperField;
 }

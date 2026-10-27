@@ -4,6 +4,8 @@
 
 @interface HSImportDialogGraphicsPaneViewController : HSImportDialogBasePaneViewController <NSTextFieldDelegate, NSControlTextEditingDelegate, NSObject>
 {
+    NSView *_containerView;
+    NSView *_previewAndLayoutOptionsView;
     NSView *_paneView;
     NSView *_paneAccessoryView;
     NSSegmentedControl *_historyNavigationControl;

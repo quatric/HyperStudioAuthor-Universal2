@@ -4,6 +4,7 @@
 
 @interface HSMovieObjectAppearanceAssistantPane : HSObjectAssistantPane
 {
+    NSView *_paneView;
     NSTextField *_nameTextField;
     HSRangeControl *_rangeControl;
     HSBlueTriangleSlider *_volumeSlider;

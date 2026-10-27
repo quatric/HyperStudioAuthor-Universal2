@@ -4,6 +4,8 @@
 
 @interface HSBevelerEffectController : HSEffectCompositeController
 {
+    NSButton *_flatSwitch;
+    NSButton *_inverseSwitch;
     NSTextField *_widthTextField;
     NSButton *_roundedSwitch;
     NSButton *_raisedSwitch;

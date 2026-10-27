@@ -4,6 +4,7 @@
 
 @interface HSMovieStartingAssistantPane : HSObjectAssistantPane
 {
+    NSView *_paneView;
     id<HSActor> _actorAttributes;
     id<HSPlayMovieActionAttributes> _playMovieActionAttributes;
     id<HSMoviePlaybackAttributes> _moviePlaybackAttributes;
