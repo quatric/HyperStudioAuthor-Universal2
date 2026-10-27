@@ -777,3 +777,4 @@
 #import "HSFluidSwipeTracker.h"
 #import "HSDocumentLoadingIndicatorController.h"
 #import "HSAExternalFilesData.h"
+#import "HSAHTML5ExportCompatibilityChecker.h"

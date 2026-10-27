@@ -59,4 +59,4 @@ need that library ported separately.
 Remaining: HSApplicationLicenseDialogsContext, HSApplicationLicensorUtilities, HSRegistrationForm.
 The HyperStudio 5 only classes still have to be removed, and shared methods whose bodies changed re-checked.
 
-Translated Author-only PlayerBase classes (6 of 10): HSPauseView, HSToolbarPopUpButton, HSFluidSwipe, HSFluidSwipeTracker, HSDocumentLoadingIndicatorController, HSAExternalFilesData.
+Translated Author-only PlayerBase classes (7 of 10): HSPauseView, HSToolbarPopUpButton, HSFluidSwipe, HSFluidSwipeTracker, HSDocumentLoadingIndicatorController, HSAExternalFilesData, HSAHTML5ExportCompatibilityChecker.

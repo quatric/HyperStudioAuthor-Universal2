@@ -858,6 +858,7 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSAHTML5ExportCompatibilityChecker;
 @class HSAExternalFilesData;
 @class HSDocumentLoadingIndicatorController;
 @class HSFluidSwipe;
