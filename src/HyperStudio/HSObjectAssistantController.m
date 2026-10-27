@@ -144,8 +144,8 @@ LAB_00101458:
     if (aField == nil) {
         aField = aObject;
     }
-    [[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] setupHypertextLinksPaneWithInitialText:aText initialStack:aStack initialField:aField];
-    [self setSelectedInModelObjectAndBringAssistantToFront:[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector]];
+    [[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:[self stack]] setupHypertextLinksPaneWithInitialText:aText initialStack:aStack initialField:aField];
+    [self setSelectedInModelObjectAndBringAssistantToFront:[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:[self stack]]];
     [self setActive:YES explicitlyByUser:YES];
 }
 
@@ -584,7 +584,15 @@ void FUN_00100d34(HSObjectAssistantController *self,SEL _cmd,id deactivateIfNeed
 */
 - (void)deactivateIfNeeded
 {
-    [self deactivateIfNeededForObject:_selectedInModelObject];
+    if (![self isActive])
+        return;
+    if ((_wasOpenExplicitlyByUser || _newObjectDidAdd) && [self toolAllowsActivation]) {
+        if (!_wasOpenExplicitlyByUser)
+            return;
+        if ([self shouldOpenCardInfo])
+            return;
+    }
+    [self setActive:NO explicitlyByUser:NO];
 }
 
 - (void)activateIfNeeded
@@ -684,7 +692,7 @@ LAB_00100bc8:
     } else if (_wasOpenExplicitlyByUser
                && ([self toolAllowsActivation] ? (!_temporaryHide || !isMutableCard) : NO)) {
         activate = YES;
-    } else if (_wasOpenExplicitlyByUser && [self shouldOpenCardInfoForObject:aObject]) {
+    } else if (_wasOpenExplicitlyByUser && [self shouldOpenCardInfo]) {
         activate = YES;
     } else if ([coachingPanes count] != 0 && isNullObject) {
         activate = YES;
@@ -821,7 +829,7 @@ BOOL FUN_0010088c(HSObjectAssistantController *self,SEL _cmd,id canSupportSettin
     if ([aObject implementsHyperInterface:@protocol(HSCardAttributes)] || [aObject implementsHyperInterface:@protocol(HSStackAttributes)]) {
         return NO;
     }
-    if ([HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] == aObject) {
+    if ([[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:[self stack]] == aObject) {
         return NO;
     }
     if (nullObjectInterface != nil) {
@@ -998,7 +1006,7 @@ void FUN_00100618(HSObjectAssistantController *self,SEL _cmd,id windowWillMiniat
 - (void)visibleRectDidChange:(id)aChange
 {
     if ([[[self objectAssistant] currentPane] needToRelayoutAssistant]) {
-        [self revalidateObjectSreenFrameUpdateTimer];
+        [[self objectAssistant] updateObjectScreenFrame:NO];
     }
 }
 
@@ -1846,7 +1854,7 @@ void FUN_000ff259(HSObjectAssistantController *self,SEL _cmd)
 - (void)geometryAttributesDidChange:(id)aChange
 {
     if ([[[self objectAssistant] currentPane] needToRelayoutAssistant]) {
-        [self revalidateObjectSreenFrameUpdateTimer];
+        [[self objectAssistant] updateObjectScreenFrame:NO];
     }
 }
 
@@ -2033,7 +2041,7 @@ void FUN_000feafa(HSObjectAssistantController *self,SEL _cmd,id setSelectedInMod
 {
     if (_selectedInModelObject != aObject) {
         if (![self shouldActivateForObject:aObject]) {
-            [self deactivateIfNeededForObject:aObject];
+            [self deactivateIfNeeded];
         }
         if ([self isLocked]) {
             [[[_selectedInModelObject queryHyperInterface:@protocol(HSNodeSupportAttributes)] attributeObservingController] removeObserver:self selector:@selector(supportChangingInLockedStateForSelectedObject:) ofChanges:1 ofAttribute:@protocol(HSNodeSupportAttribute)];

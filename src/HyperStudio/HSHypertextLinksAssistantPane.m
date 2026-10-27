@@ -347,7 +347,7 @@ void FUN_0022dcc0(HSHypertextLinksAssistantPane *self,SEL _cmd)
     Class pvVar2_3;
 
     pvVar1_3 = [self linkAtIndex:[[_linksTableView selectedRowIndexes] firstIndex]];
-    [[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] selectHypertextLink:pvVar1_3];
+    [[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:_initialStack] selectHypertextLink:pvVar1_3];
     if ([self modalViewController] == nil) {
         pvVar1_4 = [HSActionsAssistantPane alloc];
         pvVar2_3 = [HSActionsPaneGoBackSwitcher class];
@@ -546,7 +546,7 @@ void FUN_0022e45e(HSHypertextLinksAssistantPane *self,SEL _cmd,id textViewTextDi
 {
     id self_00;
 
-    self_00 = [HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector];
+    self_00 = [[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:_initialStack];
     if ([[[aModal userInfo] objectForKey:@"HSHypertextLinkRemovedLinks"] containsObject:_linkInModalSession]) {
         if ([self modalViewController] != nil) {
             [self dismissModalViewControllerAnimated:YES];
@@ -891,7 +891,7 @@ ulonglong FUN_0022ed96(HSHypertextLinksAssistantPane *self,SEL _cmd)
 {
     id pvVar1_2;
 
-    pvVar1_2 = [[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] selectedHypertextLink];
+    pvVar1_2 = [[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:_initialStack] selectedHypertextLink];
     _linkInModalSession = pvVar1_2;
     [[pvVar1_2 queryHyperInterface:@protocol(HSAttributeObserving)] addObserver:self selector:@selector(containerWillChangeDuringModal:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSHypertextLinkContainerLinksAttribute) withPriority:0.25];
     [super presentModalViewController:aController animated:aAnimated];
@@ -945,7 +945,7 @@ id FUN_0022f1eb(HSHypertextLinksAssistantPane *self,SEL _cmd)
 {
     if ([[self modalViewController] respondsToSelector:@selector(windowTitle)]) {
         NSString *modalTitle = [[self modalViewController] windowTitle];
-        NSString *linkTitle = [[[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] selectedHypertextLink] title];
+        NSString *linkTitle = [[[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:_initialStack] selectedHypertextLink] title];
         NSString *title;
         if (modalTitle != nil) {
             title = [NSString stringWithFormat:@"%@ : %@", linkTitle, modalTitle];
@@ -1023,7 +1023,7 @@ void FUN_0022f53b(HSHypertextLinksAssistantPane *self,SEL _cmd,id setUp)
 */
 - (void)setUp:(id)aUp
 {
-    [[HSHypertextLinksProxyForInspector sharedHypertextLinksProxyForInspector] selectHypertextLink:nil];
+    [[[HSHypertextLinksInspectorController sharedHypertextLinksInspectorController] hypertextLinksInspectorForStack:_initialStack] selectHypertextLink:nil];
     [[self window] makeFirstResponder:_titleTextField];
     [_titleTextField setStringValue:aUp];
     [_titleTextField setDelegate:self];
