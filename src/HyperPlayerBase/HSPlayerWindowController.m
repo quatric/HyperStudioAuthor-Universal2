@@ -328,7 +328,7 @@
 - (void)mouseMoved:(id)aMoved
 {
     [[self cardView] handleMouseMoved:aMoved];
-    Class editorApplication = NSClassFromString(@"HSEditorApplication");
+    Class editorApplication = NSClassFromString(@"HSAEditorApplication");
     if (editorApplication != Nil)
         [[editorApplication sharedHyperApplication] noteMainWindowDidHandleMouseMovedEvent];
 }
