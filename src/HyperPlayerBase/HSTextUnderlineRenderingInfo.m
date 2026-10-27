@@ -331,8 +331,16 @@ static BOOL HSFloatsNearlyEqual(float a, float b)
     CGContextSetTextPosition(context, aPoint.x, aPoint.y);
     if ([fontName isEqualToString:@"GB18030Bitmap"])
         CGContextShowGlyphsWithAdvances(context, (const CGGlyph *)aGlyphs, (const CGSize *)advances, count);
-    else
+    else {
+        // The CGE renderer outlines glyphs at one unit to the em and takes the
+        // size from the text matrix; on the current system the context's
+        // matrix carries only the flip.
+        CGAffineTransform matrix = CGContextGetTextMatrix(context);
+        CGFloat pointSize = [aFont pointSize];
+        CGContextSetTextMatrix(context, CGAffineTransformMake(matrix.a * pointSize, matrix.b * pointSize, matrix.c * pointSize, matrix.d * pointSize, matrix.tx, matrix.ty));
         CGEContextShowGlyphsWithAdvances(context, (const CGGlyph *)aGlyphs, (const CGSize *)advances, count);
+        CGContextSetTextMatrix(context, matrix);
+    }
 }
 
 - (void)drawGlyphsForGlyphRange:(NSRange)aRange atPoint:(NSPoint)aPoint
