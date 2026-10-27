@@ -93,11 +93,6 @@
     if ([[[self cardView] card] hyperIndex] == NSNotFound)
         [[self cardView] setCard:[[[[self document] stack] hyperChildren] lastObject]];
     id document = [self document];
-    if (![[document navigationController] isKindOfClass:[HSPlayerNavigationController class]]) {
-        HSPlayerNavigationController *controller = [[HSPlayerNavigationController alloc] initWithDocument:document];
-        [document setNavigationController:controller];
-        [controller release];
-    }
     [[self cardView] showCursor];
     [[document actionExecutionContext] activate];
 }
@@ -126,9 +121,11 @@
 
 - (void)willResignActiveInModeSwitcher:(id)aSwitcher
 {
+    id document = [self document];
+    if ([[HSApplicationController sharedDocumentController] isPauseResumeEnabled])
+        [document resume];
     [self exitBorderlessModeIfNeeded];
     _performLeavingOperations = YES;
-    id document = [self document];
     [[document actionExecutionManager] stopAllActionQueues];
     [[self playerView] presentationWillInterrupt];
     id navigationController = [document navigationController];
