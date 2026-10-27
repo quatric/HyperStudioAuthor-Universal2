@@ -258,6 +258,7 @@
     if (selectedIndex != NSNotFound && selectedIndex < [aCard hyperCount])
         [[[aCard document] cardView] selectHyperObject:[aCard hyperChildAtIndex:selectedIndex]];
     [self shareActionsOfActor:[aCard2 actor] withActor:[aCard actor]];
+    [aCard hyperRefreshTitle];
     [[self undoManager] enableUndoRegistration];
     [[[self undoManager] prepareWithInvocationTarget:self] removeGroupCard:aCard withGroupObjects:aObjects afterCard:aCard2];
 }
@@ -486,6 +487,7 @@
     [self HSCardGroupController_shareUnitsOfNode:aObject withCardGroup:group];
     // Insert a copy on every other card of the group, before the same next group object.
     id nextNodeData = [[aObject nextGroupNode] nodeData];
+    BOOL autoplayed = [aObject isAutoplayed];
     NSEnumerator *cardEnumerator = [[_owner cardsForCardGroupController:self] objectEnumerator];
     id card;
     while ((card = [cardEnumerator nextObject]) != nil) {
@@ -499,6 +501,7 @@
         else
             index = [card hyperCount];
         [self addGroupObject:object toCard:card atIndex:index];
+        [object setAutoplayed:autoplayed];
     }
 }
 
