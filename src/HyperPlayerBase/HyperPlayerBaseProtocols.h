@@ -299,7 +299,7 @@
 @end
 
 @protocol HSAnimationPlaybackTimerDelegate <NSObject>
-- (void)playbackTimerDidFired:(id)aFired;
+- (void)proceedAnimationOnTimer;
 @end
 
 @protocol HSAnimationPositioningDataSource <NSObject>

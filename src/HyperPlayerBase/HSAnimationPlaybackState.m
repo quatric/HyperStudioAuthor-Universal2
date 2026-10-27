@@ -8,6 +8,21 @@
 {
     return _playbackTime;
 }
+- (void)proceedAnimationOnTimer
+{
+    if (_paused)
+        return;
+    _playbackTime = MAX([[NSDate date] timeIntervalSinceDate:_startDate], 0.0);
+    double duration = [_owner playbackDurationForAnimationPlaybackState:self];
+    if (duration == -1.0 || _playbackTime < duration) {
+        [_owner playbackTimeDidChangeForAnimationPlaybackState:self];
+    } else {
+        _playbackTime = duration;
+        [_owner playbackTimeDidChangeForAnimationPlaybackState:self];
+        [self stop];
+    }
+}
+
 - (void)resume
 {
     if (!_paused)
@@ -15,7 +30,7 @@
     _paused = NO;
     [_startDate release];
     _startDate = [[NSDate dateWithTimeIntervalSinceNow:-_playbackTime] retain];
-    [_playbackTimer touchDelegate:self];
+    [_playbackTimer touchAnimation:self];
 }
 - (void)pause
 {
@@ -30,8 +45,7 @@
 {
     if (_playbackTimer == nil)
         return;
-    [self updatePlaybackTime];
-    [_playbackTimer removeDelegate:self];
+    [_playbackTimer removeAnimation:self];
     [_playbackTimer release];
     _playbackTimer = nil;
     [_startDate release];
@@ -45,14 +59,14 @@
     [self stop];
     [_owner playbackWillStartForAnimationPlaybackState:self];
     if ([_owner usesNormalTimesPerSecondForAnimationPlaybackState:self])
-        _playbackTimer = [[HSAnimationPlaybackTimer sharedPlaybackTimer] retain];
+        _playbackTimer = [[HSAnimationPlaybackTimer sharedController] retain];
     else
         _playbackTimer = [[HSAnimationPlaybackTimer alloc]
-            initWithFireTimesPerSecond:[_owner timesPerSecondForAnimationPlaybackState:self]];
+            initWithRate:[_owner timesPerSecondForAnimationPlaybackState:self]];
     _startDate = [[NSDate date] retain];
     _playbackTime = 0;
     _paused = NO;
-    [_playbackTimer addDelegate:self];
+    [_playbackTimer addAnimation:self];
 }
 - (BOOL)isPlaying
 {

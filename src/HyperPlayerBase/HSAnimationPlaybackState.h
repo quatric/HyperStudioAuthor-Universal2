@@ -9,8 +9,7 @@
     double _playbackTime;
     BOOL _paused;
 }
-- (void)playbackTimerDidFired:(id)aFired;
-- (void)updatePlaybackTime;
+- (void)proceedAnimationOnTimer;
 - (double)playbackTime;
 - (void)resume;
 - (void)pause;

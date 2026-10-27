@@ -3,20 +3,24 @@
 
 @interface HSAnimationPlaybackTimer : NSObject
 {
-    double _timeInterval;
-    NSMutableSet *_delegates;
+    int _timesPerSecond;
+    NSMutableSet *_entries;
+    NSMutableSet *_finishedEntries;
     NSTimer *_playbackTimer;
 }
-+ (id)sharedPlaybackTimer;
-- (void)HSAnimationPlaybackTimer_timerFired:(id)aFired;
-- (void)stopTimer;
-- (void)stopTimerIfNeeded;
-- (void)startTimerIfNeeded;
-- (double)timeInterval;
-- (void)touchDelegate:(id)aDelegate;
-- (void)removeDelegate:(id)aDelegate;
-- (void)addDelegate:(id)aDelegate;
++ (id)sharedController;
++ (NSInteger)defaultTimesPerSecond;
+- (id)initWithRate:(NSInteger)aRate;
+- (NSInteger)timesPerSecond;
 - (void)dealloc;
-- (id)initWithFireTimesPerSecond:(NSInteger)aSecond;
+- (void)addAnimation:(id)aAnimation;
+- (void)removeAnimation:(id)aAnimation;
+- (void)animationDidFinish:(id)aAnimation;
+- (BOOL)hasAnimation:(id)aAnimation;
+- (void)touchAnimation:(id)aAnimation;
+- (double)timerPeriod;
+- (void)startTimerIfNecessary;
+- (void)stopTimer;
+- (void)HSAnimationPlaybackTimer_timerFired:(id)aFired;
+- (void)removeFinishedAnimations;
 @end
-
