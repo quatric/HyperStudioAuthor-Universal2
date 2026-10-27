@@ -165,6 +165,13 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
         NSRunAlertPanel(title, @"%@", ok, nil, nil, message);
     }
     [[NSColorPanel sharedColorPanel] setShowsAlpha:YES];
+    if ([[HSPreferencesController sharedPreferencesController] getStartupPreferencesOption] == 2) {
+        if (!_wasWindowRestoration && [[self documents] count] == 0 && [[self recentDocumentURLs] count] != 0)
+            [self openDocumentWithContentsOfURL:[[self recentDocumentURLs] extraFirstObject] display:YES error:NULL];
+        id openHomeStack = [[NSUserDefaults standardUserDefaults] objectForKey:@"HSOpenHomeStackOnStartup"];
+        if (openHomeStack != nil && [openHomeStack boolValue] == YES)
+            [self openDocumentWithContentsOfURL:[[HSHomeStackController sharedHomeStackController] defaultHomeStackURL] display:YES error:NULL];
+    }
     [[NSSpellChecker sharedSpellChecker] learnWord:@"HyperStudio"];
     [self validateMenuShortcuts];
     [[HSSubmitRequest sharedInstance] submitInformation:nil];
