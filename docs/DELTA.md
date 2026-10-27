@@ -56,6 +56,6 @@ Note: Author links an older license library (`SLLicensor*` entry points, e.g. `S
 than HyperStudio 5 (`SL*` ported in `SLLicense.c`), so HSApplicationLicensorUtilities and the registration dialogs
 need that library ported separately.
 
-Remaining: the FTP classes (HSAFTP*, HSANetwork*), HSATemplateChooser, HSApplicationLicenseDialogsContext,
-HSApplicationLicensorUtilities, HSRegistrationForm, HSWebAppIconEditorDialogController, HSAHTML5FTPServerUploader.
+Remaining: HSATemplateChooser, HSApplicationLicenseDialogsContext, HSApplicationLicensorUtilities, HSRegistrationForm,
+HSWebAppIconEditorDialogController.
 The HyperStudio 5 only classes still have to be removed, and shared methods whose bodies changed re-checked.
