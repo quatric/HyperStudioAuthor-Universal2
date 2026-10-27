@@ -154,5 +154,8 @@
 - (NSSize)size;
 - (void)didCreateSystemView;
 - (void)dealloc;
+- (id)createContentButtonCell;
+- (id)XMLIconStyleElementWithButtonCell:(id)aCell;
+- (id)XMLTitleStyleElementWithButtonCell:(id)aCell;
 @end
 

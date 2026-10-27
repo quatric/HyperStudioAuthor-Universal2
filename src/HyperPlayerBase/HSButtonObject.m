@@ -1399,4 +1399,67 @@ static BOOL HSButtonObjectFloatsDiffer(float a, float b)
     [super dealloc];
 }
 
+// A borderless cell laying out the icon and the centered title the way the
+// button draws them.
+- (id)createContentButtonCell
+{
+    NSButtonCell *cell = [[[NSButtonCell alloc] init] autorelease];
+    [cell setBordered:NO];
+    [cell setButtonType:NSMomentaryChangeButton];
+    if ([self isIconVisible]) {
+        [cell setImage:[self image]];
+        [cell setImagePosition:[self visualIconPosition]];
+    }
+    if ([self isTitleVisible]) {
+        NSMutableAttributedString *title = [[[self hyperText] mutableCopy] autorelease];
+        NSUInteger length = [title length];
+        NSMutableParagraphStyle *style = [[[NSParagraphStyle defaultParagraphStyle] mutableCopy] autorelease];
+        [style setAlignment:NSTextAlignmentCenter];
+        [title addAttribute:NSParagraphStyleAttributeName value:style range:NSMakeRange(0, length)];
+        [cell setAttributedTitle:title];
+    }
+    return cell;
+}
+
+- (id)XMLIconStyleElementWithButtonCell:(id)aCell
+{
+    if (![[self backgroundStyle] isEqualToString:@"HSButtonObjectShapeBackgroundStyle"] || aCell == nil)
+        return nil;
+    NSXMLElement *element = [NSXMLElement elementWithName:@"iconStyle"];
+    [element addAttribute:[NSXMLNode attributeWithName:@"visible" stringValue:[self isIconVisible] ? HSXMLStoring1String : HSXMLStoring0String]];
+    [element addAttribute:[NSXMLNode attributeWithName:@"position" stringValue:[NSString stringWithFormat:@"%d", (int)[self iconPosition]]]];
+    if ([self media] != nil && [self isIconVisible]) {
+        NSXMLElement *geometry = [NSXMLElement elementWithName:@"geometry"];
+        NSSize size = [self size];
+        NSSize cellSize = [aCell cellSize];
+        NSRect rect = [aCell imageRectForBounds:NSMakeRect(0, 0, cellSize.width, cellSize.height)];
+        CGFloat x = (size.width - cellSize.width) * 0.5 + rect.origin.x;
+        CGFloat y = (size.height - cellSize.height) * 0.5 + rect.origin.y;
+        [geometry addAttribute:[NSXMLNode attributeWithName:@"origin" stringValue:[NSString stringWithFormat:@"%.0f,%.0f", x, y]]];
+        [geometry addAttribute:[NSXMLNode attributeWithName:@"size" stringValue:[NSString stringWithFormat:@"%.0f,%.0f", rect.size.width, rect.size.height]]];
+        [element addChild:geometry];
+    }
+    return element;
+}
+
+- (id)XMLTitleStyleElementWithButtonCell:(id)aCell
+{
+    if (aCell == nil)
+        return nil;
+    NSXMLElement *element = [NSXMLElement elementWithName:@"titleStyle"];
+    [element addAttribute:[NSXMLNode attributeWithName:@"visible" stringValue:[self isTitleVisible] ? HSXMLStoring1String : HSXMLStoring0String]];
+    if ([self isTitleVisible]) {
+        NSXMLElement *geometry = [NSXMLElement elementWithName:@"geometry"];
+        NSSize size = [self size];
+        NSSize cellSize = [aCell cellSize];
+        NSRect rect = [aCell titleRectForBounds:NSMakeRect(0, 0, cellSize.width, cellSize.height)];
+        CGFloat x = (size.width - cellSize.width) * 0.5 + rect.origin.x;
+        CGFloat y = (size.height - cellSize.height) * 0.5 + rect.origin.y;
+        [geometry addAttribute:[NSXMLNode attributeWithName:@"origin" stringValue:[NSString stringWithFormat:@"%.0f,%.0f", x, y]]];
+        [geometry addAttribute:[NSXMLNode attributeWithName:@"size" stringValue:[NSString stringWithFormat:@"%.0f,%.0f", rect.size.width, rect.size.height]]];
+        [element addChild:geometry];
+    }
+    return element;
+}
+
 @end
