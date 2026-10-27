@@ -619,6 +619,14 @@ void FUN_001adc36(HSMoviePositionAssistantPane *self,SEL _cmd,id positionallyNod
     [super dealloc];
 }
 
+- (void)HSMoviePositionAssistantPane_windowDidResignMain:(id)aResign
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+
+    if (current != nil && current != [[self card] document])
+        [self dismiss:YES];
+}
+
 @end
 
 @implementation HSMoviePositionApplier

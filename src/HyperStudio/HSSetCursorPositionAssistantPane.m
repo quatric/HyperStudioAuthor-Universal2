@@ -110,4 +110,12 @@
     [super dealloc];
 }
 
+- (void)HSSetCursorPositionAssistantPane_windowDidResignMain:(id)aResign
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+
+    if (current != nil && current != [[self card] document])
+        [self paneWillGoBack:NO];
+}
+
 @end

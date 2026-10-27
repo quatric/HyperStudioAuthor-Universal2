@@ -26,5 +26,6 @@
 - (BOOL)needsToBeSavedInHistory;
 - (id)navigationPaneSwitcher;
 - (void)dealloc;
+- (void)HSSetCursorPositionAssistantPane_windowDidResignMain:(id)aResign;
 @end
 

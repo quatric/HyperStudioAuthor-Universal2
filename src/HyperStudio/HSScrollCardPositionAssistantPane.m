@@ -98,4 +98,12 @@
     [super dealloc];
 }
 
+- (void)HSScrollCardPositionAssistantPane_windowDidResignMain:(id)aResign
+{
+    id current = [[NSDocumentController sharedDocumentController] currentDocument];
+
+    if (current != nil && current != [[self card] document])
+        [self paneWillGoBack:NO];
+}
+
 @end

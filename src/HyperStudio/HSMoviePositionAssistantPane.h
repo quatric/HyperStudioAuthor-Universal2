@@ -50,6 +50,7 @@
 - (void)viewDidLoad;
 - (id)navigationPaneSwitcher;
 - (void)dealloc;
+- (void)HSMoviePositionAssistantPane_windowDidResignMain:(id)aResign;
 @end
 
 @interface HSMoviePositionApplier : HSAssistantPaneApplier
