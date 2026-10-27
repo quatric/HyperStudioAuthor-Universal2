@@ -582,4 +582,31 @@
     return fabsf(1.0f - zoom) <= scale * 0.0005f;
 }
 
+- (void)handleFluidSwipe:(id)aSwipe
+{
+    if (![[self playerView] tryToPerform:_cmd with:aSwipe])
+        [[self nextResponder] tryToPerform:_cmd with:aSwipe];
+}
+
+// A clip path for the card rect with rounded corners, nil when the card does
+// not round its corners.
+- (CGPathRef)roundedRectClipPath:(NSRect)aRect
+{
+    if (![self roundsCardCorners])
+        return NULL;
+    CGMutablePathRef path = CGPathCreateMutable();
+    CGFloat radius = [self HSPlayerInEditorCardView_cornerRoundingRadiusForCardSize:[self cardSize]];
+    CGFloat minX = NSMinX(aRect), minY = NSMinY(aRect), maxX = NSMaxX(aRect), maxY = NSMaxY(aRect);
+    CGPathMoveToPoint(path, NULL, minX, minY + radius);
+    CGPathAddArcToPoint(path, NULL, minX, minY, minX + radius, minY, radius);
+    CGPathAddLineToPoint(path, NULL, maxX - radius, minY);
+    CGPathAddArcToPoint(path, NULL, maxX, minY, maxX, minY + radius, radius);
+    CGPathAddLineToPoint(path, NULL, maxX, maxY - radius);
+    CGPathAddArcToPoint(path, NULL, maxX, maxY, maxX - radius, maxY, radius);
+    CGPathAddLineToPoint(path, NULL, minX + radius, maxY);
+    CGPathAddArcToPoint(path, NULL, minX, maxY, minX, maxY - radius, radius);
+    CGPathCloseSubpath(path);
+    return (CGPathRef)[(id)path autorelease];
+}
+
 @end

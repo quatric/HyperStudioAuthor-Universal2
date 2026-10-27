@@ -477,4 +477,13 @@
     [super dealloc];
 }
 
+- (BOOL)isTextObjectRotationAngleZero:(id)aObject
+{
+    id adapter = [aObject queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)];
+    float angle = [[[adapter queryGeometryBehaviorApplier] mutableGeometryAttributes] rotationAngle];
+    if (angle >= -0.01f && angle <= 0.01f)
+        return YES;
+    return angle >= 6.2731853f && angle <= 6.2931857f;
+}
+
 @end

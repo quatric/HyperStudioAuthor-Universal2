@@ -381,4 +381,9 @@
     return _shouldOpenInSeparateWindow;
 }
 
+- (id)initialURL
+{
+    return _URL;
+}
+
 @end

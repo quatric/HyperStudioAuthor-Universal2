@@ -64,5 +64,6 @@
 - (id)keysForExtraLoadingWithCodingContext:(id)aContext;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
+- (BOOL)isTextObjectRotationAngleZero:(id)aObject;
 @end
 

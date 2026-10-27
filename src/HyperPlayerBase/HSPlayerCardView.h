@@ -73,5 +73,7 @@
 - (id)initWithCoder:(id)aCoder;
 - (id)initWithFrame:(NSRect)aFrame;
 - (BOOL)canActivateNonScalableObjects;
+- (void)handleFluidSwipe:(id)aSwipe;
+- (CGPathRef)roundedRectClipPath:(NSRect)aRect;
 @end
 

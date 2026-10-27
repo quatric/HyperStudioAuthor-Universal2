@@ -51,5 +51,6 @@
 - (void)dealloc;
 - (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
 - (BOOL)shouldOpenInSeparateWindow;
+- (id)initialURL;
 @end
 

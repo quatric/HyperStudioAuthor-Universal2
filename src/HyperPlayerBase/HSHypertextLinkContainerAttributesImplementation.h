@@ -22,5 +22,6 @@
 - (id)node;
 - (void)dealloc;
 - (id)initWithNodeUnit:(id)aUnit node:(id)aNode;
+- (void)removeAllLinks;
 @end
 

@@ -125,4 +125,9 @@
     return self;
 }
 
+- (void)removeAllLinks
+{
+    [_nodeUnit removeAllLinks];
+}
+
 @end
