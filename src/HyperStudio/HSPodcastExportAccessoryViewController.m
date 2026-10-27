@@ -4,7 +4,7 @@
 
 - (void)changeExportDevice:(id)aDevice
 {
-    [_exporter setVideoExportDevice:[[_exportDevicePopUpButton selectedItem] tag]];
+    [_exporter setExportSettingsValue:[NSNumber numberWithInt:[[_exportDevicePopUpButton selectedItem] tag]] forKey:HSVideoExportDeviceKey];
     [[self exportPanelController] setRequiredFileType:@"m4v"];
 }
 
@@ -14,12 +14,11 @@
     NSInteger device;
 
     [super viewDidLoad];
-    [_exporter setVideoExportDevice:1];
-    canExportWithNarration = [_exporter canExportWithNarrationOption];
+    [_exporter setExportSettingsValue:[NSNumber numberWithInt:1] forKey:HSVideoExportDeviceKey];
+    canExportWithNarration = [[_exporter exportSettingsValueForKey:HSVideoExportAllowsNarrationKey] boolValue];
     [_exportOptionMatrix selectCellWithTag:canExportWithNarration];
-    [_exporter setVideoExportOption:canExportWithNarration];
+    [_exporter setExportSettingsValue:[NSNumber numberWithInt:canExportWithNarration] forKey:HSVideoExportOptionKey];
     [_exportOptionMatrix setEnabled:canExportWithNarration];
-    [_exporter setUseRoundedCorners:[self useRoundedCorners]];
     [_exportDevicePopUpButton removeAllItems];
     for (device = 0; device < 5; device++) {
         id title = [self titleOfPopUpItemForDevice:device];
@@ -28,7 +27,7 @@
             [[_exportDevicePopUpButton itemWithTitle:title] setTag:device];
         }
     }
-    [_exportDevicePopUpButton selectItemWithTag:[_exporter videoExportDevice]];
+    [_exportDevicePopUpButton selectItemWithTag:[[_exporter exportSettingsValueForKey:HSVideoExportDeviceKey] intValue]];
 }
 
 - (id)titleOfPopUpItemForDevice:(NSInteger)aDevice

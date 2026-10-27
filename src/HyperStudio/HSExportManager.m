@@ -2348,13 +2348,13 @@ LAB_0025b6e4:
         case 4:
             _isMovieExportHelperEnable = YES;
             _exporter = [HSVideoExporter new];
-            [(HSVideoExporter *)_exporter setVideoExportFormat:0];
+            [(HSVideoExporter *)_exporter setExportSettingsValue:[NSNumber numberWithInt:0] forKey:HSVideoExportFormatKey];
             break;
         case 5:
         case 6:
             _isMovieExportHelperEnable = YES;
             _exporter = [HSVideoExporter new];
-            [(HSVideoExporter *)_exporter setVideoExportFormat:1];
+            [(HSVideoExporter *)_exporter setExportSettingsValue:[NSNumber numberWithInt:1] forKey:HSVideoExportFormatKey];
             break;
         case 7:
             _exporter = [HSHTML5Exporter new];

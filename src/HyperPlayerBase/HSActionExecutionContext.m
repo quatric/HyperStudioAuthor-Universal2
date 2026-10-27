@@ -151,11 +151,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 - (void)handleClickInInteractiveLayer
 {
     [self stopGhostWriterActions];
-    if ([self isRecording])
-    {
-        _shouldIgnoreRecording = YES;
-        [self stopRecording];
-    }
     if ([self currentPauseAction] != nil && [[self currentPauseAction] canBeStopped])
     {
         [[self currentPauseAction] stop:self];

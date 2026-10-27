@@ -4,7 +4,7 @@
 
 - (void)viewWillDisappear:(BOOL)aDisappear
 {
-    [_exporter setFramesPerSecondLimit:[self fixedFramesPerSecondLimitForValue:[_framesPerSecondLimitField doubleValue]]];
+    [_exporter setExportSettingsValue:[NSNumber numberWithDouble:[self fixedFramesPerSecondLimitForValue:[_framesPerSecondLimitField doubleValue]]] forKey:HSVideoExportFramesPerSecondKey];
     [_slideDelayTextField sendAction:[_slideDelayTextField action] to:[_slideDelayTextField target]];
     [super viewWillDisappear:aDisappear];
 }
@@ -12,12 +12,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    if (![_exporter canExportWithNarrationOption]) {
+    if (![[_exporter exportSettingsValueForKey:HSVideoExportAllowsNarrationKey] boolValue]) {
         [_transitionsPopUpButton setEnabled:YES];
         [_slideDelayTextField setEnabled:YES];
         [_slideDelayStepper setEnabled:YES];
     }
-    double limit = [_exporter framesPerSecondLimit];
+    double limit = [[_exporter exportSettingsValueForKey:HSVideoExportFramesPerSecondKey] doubleValue];
     [_framesPerSecondLimitField setDoubleValue:limit];
     [_framesPerSecondLimitStepper setDoubleValue:limit];
     id attributes = [HSSlideshowAttributes defaultSlideshowAttributes];
@@ -39,20 +39,20 @@
         id transitionName = [[attributes transition] transitionName];
         if (transitionName != nil) {
             [_transitionsPopUpButton selectItemAtIndex:[menu indexOfItemWithRepresentedObject:transitionName]];
-            [_exporter setTransitionName:transitionName];
+            [_exporter setExportSettingsValue:transitionName forKey:HSVideoExportTransitionKey];
         }
     }
     float delay = [attributes durationBetweenSlides];
     [_slideDelayTextField setFloatValue:delay];
     [_slideDelayStepper setFloatValue:delay];
-    [_exporter setSlideDelay:delay];
+    [_exporter setExportSettingsValue:[NSNumber numberWithFloat:delay] forKey:HSVideoExportCardDelayKey];
 }
 
 - (void)changeSlideDelayByStepper:(id)aStepper
 {
     float delay = [_slideDelayStepper floatValue];
     [_slideDelayTextField setFloatValue:delay];
-    [_exporter setSlideDelay:delay];
+    [_exporter setExportSettingsValue:[NSNumber numberWithFloat:delay] forKey:HSVideoExportCardDelayKey];
 }
 
 - (void)changeSlideDelay:(id)aDelay
@@ -60,19 +60,19 @@
     float delay = fmaxf([_slideDelayTextField floatValue], 0.1f);
     [_slideDelayTextField setFloatValue:delay];
     [_slideDelayStepper setFloatValue:delay];
-    [_exporter setSlideDelay:delay];
+    [_exporter setExportSettingsValue:[NSNumber numberWithFloat:delay] forKey:HSVideoExportCardDelayKey];
 }
 
 - (void)changeTransition:(id)aTransition
 {
-    [_exporter setTransitionName:[[_transitionsPopUpButton selectedItem] representedObject]];
+    [_exporter setExportSettingsValue:[[_transitionsPopUpButton selectedItem] representedObject] forKey:HSVideoExportTransitionKey];
 }
 
 - (void)changeFramesPerSecondLimitByStepper:(id)aStepper
 {
     double limit = [self fixedFramesPerSecondLimitForValue:[_framesPerSecondLimitStepper doubleValue]];
     [_framesPerSecondLimitField setDoubleValue:limit];
-    [_exporter setFramesPerSecondLimit:limit];
+    [_exporter setExportSettingsValue:[NSNumber numberWithDouble:limit] forKey:HSVideoExportFramesPerSecondKey];
 }
 
 - (void)controlTextDidChange:(id)aChange
@@ -80,7 +80,7 @@
     if ([aChange object] == _framesPerSecondLimitField) {
         double limit = [self fixedFramesPerSecondLimitForValue:[_framesPerSecondLimitField doubleValue]];
         [_framesPerSecondLimitField setDoubleValue:limit];
-        [_exporter setFramesPerSecondLimit:limit];
+        [_exporter setExportSettingsValue:[NSNumber numberWithDouble:limit] forKey:HSVideoExportFramesPerSecondKey];
         [_framesPerSecondLimitStepper setDoubleValue:limit];
     }
 }
@@ -103,7 +103,7 @@
     [_transitionsPopUpButton setEnabled:enabled];
     [_slideDelayTextField setEnabled:enabled];
     [_slideDelayStepper setEnabled:enabled];
-    [_exporter setVideoExportOption:option];
+    [_exporter setExportSettingsValue:[NSNumber numberWithInt:option] forKey:HSVideoExportOptionKey];
 }
 
 @end

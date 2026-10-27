@@ -518,7 +518,6 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
         BOOL useClickOnExitCard = [[context currentSlideshowAttributes] useClickOnExitCard];
         [context stopSlideshow];
         if (!useClickOnExitCard) {
-            [context setShouldIgnoreRecording:NO];
             result = YES;
             goto done;
         }
@@ -540,7 +539,6 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
         }
     }
     if (item == nil) {
-        [context setShouldIgnoreRecording:NO];
         goto done;
     }
 
@@ -604,7 +602,6 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
                 [self sendDropOffActionsFromItemIfNeeded:item];
         }
     }
-    [context setShouldIgnoreRecording:NO];
     [item autorelease];
     result = YES;
 

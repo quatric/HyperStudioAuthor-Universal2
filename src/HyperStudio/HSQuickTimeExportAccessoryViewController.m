@@ -4,7 +4,7 @@
 
 - (void)changeMovieSize:(id)aSize
 {
-    [_exporter setMovieFrameSize:NSSizeFromString([[[_movieSizePopUpButton selectedItem] representedObject] objectForKey:@"size"])];
+    [_exporter setExportSettingsValue:[NSValue valueWithSize:NSSizeFromString([[[_movieSizePopUpButton selectedItem] representedObject] objectForKey:@"size"])] forKey:HSVideoExportFrameSizeKey];
 }
 
 // Lists the card sizes; the exporter's own size is added when it is none of them.
@@ -17,14 +17,13 @@
     BOOL isListed;
 
     [super viewDidLoad];
-    canExportWithNarration = [_exporter canExportWithNarrationOption];
+    canExportWithNarration = [[_exporter exportSettingsValueForKey:HSVideoExportAllowsNarrationKey] boolValue];
     [_exportOptionMatrix selectCellWithTag:canExportWithNarration];
-    [_exporter setVideoExportOption:canExportWithNarration];
+    [_exporter setExportSettingsValue:[NSNumber numberWithInt:canExportWithNarration] forKey:HSVideoExportOptionKey];
     [_exportOptionMatrix setEnabled:canExportWithNarration];
-    [_exporter setUseRoundedCorners:[self useRoundedCorners]];
     [_movieSizePopUpButton removeAllItems];
     enumerator = [[self movieSizesInfo] objectEnumerator];
-    frameSize = [_exporter movieFrameSize];
+    frameSize = [[_exporter exportSettingsValueForKey:HSVideoExportFrameSizeKey] sizeValue];
     isListed = NSEqualSizes(frameSize, NSZeroSize);
     while ((info = [enumerator nextObject]) != nil) {
         NSSize size = NSSizeFromString([info objectForKey:@"size"]);

@@ -41,6 +41,14 @@ static NSInteger HSTransitionEffectProviderCompareNames(id aName1, id aName2, vo
 
 // A slow effect's thumbnail gets the badge in its lower left corner (the
 // thumbnail is drawn unflipped, so at the top).
+// Exported stacks name transitions without spaces.
++ (id)exportTransitionNameForTransitionName:(id)aName
+{
+    NSMutableString *name = [aName mutableCopy];
+    [name replaceOccurrencesOfString:@" " withString:@"_" options:0 range:NSMakeRange(0, [name length])];
+    return [name autorelease];
+}
+
 - (id)thumbnailForTransitionEffectWithName:(id)aName
 {
     NSImage *thumbnail = [_transitionEffectThumbnails objectForKey:aName];
