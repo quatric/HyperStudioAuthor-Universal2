@@ -6,6 +6,7 @@
     id<HSVectorGraphicsOwner> _owner;
     NSBezierPath *_path;
     NSAffineTransform *_canonizingTransform;
+    NSColor *_PDFColor;
     HSVectorGraphicsLineDashInfoObject *_lineDashInfo;
     NSColor *_strokeColor;
     NSMapTable *_connectedMasterElements;
@@ -100,5 +101,6 @@
 - (id)initWithBezierPath:(id)aPath;
 - (void)setCanonizingTransform:(id)aTransform;
 - (id)canonizingTransform;
+- (id)hyperPDFColor;
 @end
 

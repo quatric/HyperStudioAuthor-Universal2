@@ -940,6 +940,7 @@ static float HSVectorGraphicsScale(float aNewLength, float aOldLength)
     [_connectedChildElementIndexes release];
     [_path release];
     [_canonizingTransform release];
+    [_PDFColor release];
     [_lineDashInfo releaseOwnerCount];
     [_lineDashInfo release];
     [_strokeColor release];
@@ -972,6 +973,13 @@ static float HSVectorGraphicsScale(float aNewLength, float aOldLength)
 - (id)canonizingTransform
 {
     return _canonizingTransform;
+}
+
+- (id)hyperPDFColor
+{
+    if (_PDFColor == nil)
+        _PDFColor = [[[self hyperStrokeColor] hyperPDFColor] retain];
+    return _PDFColor;
 }
 
 @end

@@ -51,3 +51,28 @@
     return [NSString stringWithFormat:@"%f %f %f %f", [self redComponent], [self greenComponent], [self blueComponent], [self alphaComponent]];
 }
 @end
+
+@implementation NSColor (HSPDFTexturedColor)
+
+// A pattern color is re-created from the PDF data of its pattern image so
+// that it stays vector in saved output; nil for other colors.
+- (id)hyperPDFColor
+{
+    if (![[self colorSpaceName] isEqualToString:NSPatternColorSpace])
+        return nil;
+    NSImage *image = [self patternImage];
+    [image lockFocus];
+    NSRect rect = NSMakeRect(0, 0, [image size].width, [image size].height);
+    NSImageView *view = [[NSImageView alloc] initWithFrame:rect];
+    [view setImage:image];
+    [view setFrame:rect];
+    NSData *data = [view dataWithPDFInsideRect:rect];
+    NSImage *pdfImage = [[NSImage alloc] initWithData:data];
+    NSColor *color = [NSColor colorWithPatternImage:pdfImage];
+    [view release];
+    [pdfImage release];
+    [image unlockFocus];
+    return color;
+}
+
+@end

@@ -30,5 +30,7 @@
 - (void)dealloc;
 - (id)init;
 - (id)initWithVisualization:(id)aVisualization options:(id)aOptions;
++ (BOOL)isSavedRenderMode;
++ (void)setSavedRenderMode:(BOOL)aMode;
 @end
 

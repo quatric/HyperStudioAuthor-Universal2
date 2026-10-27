@@ -5,6 +5,7 @@
 {
     NSColor *_outlineColor;
     NSColor *_underlineColor;
+    NSColor *_underlinePDFColor;
     float _fontPointSize;
     float _outlineWidth;
     NSRange _characterRange;
@@ -27,6 +28,8 @@
 - (BOOL)shouldUseSystemImplementationForRendering;
 - (void)dealloc;
 - (id)initWithAttributes:(id)aAttributes characterRange:(NSRange)aRange;
+- (BOOL)shouldUsePDFUnderlineColor;
+- (id)underlinePDFColor;
 @end
 
 @interface HSLayoutManager : NSLayoutManager

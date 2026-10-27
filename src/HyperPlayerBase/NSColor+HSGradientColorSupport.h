@@ -12,3 +12,6 @@
 - (id)hyperStringRepresentation;
 @end
 
+@interface NSColor (HSPDFTexturedColor)
+- (id)hyperPDFColor;
+@end

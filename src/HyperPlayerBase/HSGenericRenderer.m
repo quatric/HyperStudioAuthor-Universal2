@@ -1,7 +1,22 @@
 #import "HSGenericRenderer.h"
+#import "HSSystem.h"
 
 // Draws a visualization through a lazily built render layer tree.
+static BOOL sSavedRenderMode;
+
 @implementation HSGenericRenderer
+
++ (BOOL)isSavedRenderMode
+{
+    return sSavedRenderMode;
+}
+
+// Only honoured from Mountain Lion on.
++ (void)setSavedRenderMode:(BOOL)aMode
+{
+    if ([[HSSystem sharedSystem] isMountainLionOrGreater])
+        sSavedRenderMode = aMode;
+}
 - (void)renderLayerWantsToReexpand:(id)aReexpand
 {
     [self invalidateRenderLayerTree];

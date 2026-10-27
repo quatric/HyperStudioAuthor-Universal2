@@ -113,6 +113,7 @@ static BOOL HSFloatsNearlyEqual(float a, float b)
 // The colors are retained by init but never released (original behaviour).
 - (void)dealloc
 {
+    [_underlinePDFColor release];
     [super dealloc];
 }
 
@@ -158,6 +159,18 @@ static BOOL HSFloatsNearlyEqual(float a, float b)
     }
     _fontPointSize = [[aAttributes objectForKey:NSFontAttributeName] pointSize];
     return self;
+}
+
+- (BOOL)shouldUsePDFUnderlineColor
+{
+    return _shouldDrawUnderline && [HSGenericRenderer isSavedRenderMode] && [[[self underlineColor] colorSpaceName] isEqualToString:NSPatternColorSpace];
+}
+
+- (id)underlinePDFColor
+{
+    if (_underlinePDFColor == nil)
+        _underlinePDFColor = [[[self underlineColor] hyperPDFColor] retain];
+    return _underlinePDFColor;
 }
 
 @end
