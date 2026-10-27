@@ -187,6 +187,116 @@
     return self;
 }
 
++ (double)defaultPointsPerSecond
+{
+    return 60.0;
+}
+
++ (double)minTimeIntervalBetweenKeyFrames
+{
+    return 0.01;
+}
+
++ (NSInteger)keyFrameCountForPath:(id)aPath
+{
+    NSInteger count = [aPath elementCount];
+    return [aPath isHyperLastContourClosed] ? count - 2 : count;
+}
+
+// Fuzzy ordering of key frame times: a relative tolerance of 1e-5 of the
+// larger magnitude, with zero treated as 1.
+static double HSAnimationStructureTolerance(double a, double b)
+{
+    double ma = (a != 0.0) ? fabs(a) : 1.0;
+    double mb = (b != 0.0) ? fabs(b) : 1.0;
+    return (mb <= ma ? ma : mb) * 1e-05;
+}
+
+static double HSAnimationStructureClampTime(double aTime, double aStart, double aEnd)
+{
+    double time = (aStart - HSAnimationStructureTolerance(aTime, aStart) <= aTime) ? aTime : aStart;
+    return (time <= aEnd + HSAnimationStructureTolerance(time, aEnd)) ? time : aEnd;
+}
+
++ (CGFloat)pathLengthAtTime:(double)aTime forPath:(id)aPath keyFrames:(id)aFrames
+{
+    double time = HSAnimationStructureClampTime(aTime, [[aFrames objectAtIndex:0] doubleValue], [[aFrames lastObject] doubleValue]);
+    NSInteger count = [self keyFrameCountForPath:aPath];
+    float length = 0.0f;
+    for (NSInteger i = 0; i < count - 1; i++) {
+        float segment = (float)[aPath hyperLengthOfElementAtIndex:i + 1];
+        double start = [[aFrames objectAtIndex:i] doubleValue];
+        double end = [[aFrames objectAtIndex:i + 1] doubleValue];
+        if (start - HSAnimationStructureTolerance(time, start) <= time && time < end - HSAnimationStructureTolerance(time, end))
+            return length + (float)((double)segment * ((time - start) / (end - start)));
+        length += segment;
+    }
+    return length;
+}
+
+- (BOOL)hasPath
+{
+    return _path != nil;
+}
+
+- (CGFloat)lengthOfSegment:(NSInteger)aSegment
+{
+    return (float)[_path hyperLengthOfElementAtIndex:aSegment + 1];
+}
+
+- (CGFloat)relativeSpeedAtTime:(double)aTime
+{
+    NSInteger index = [self segmentIndexAtTime:aTime];
+    if (index < 0)
+        return 0.0f;
+    double length = [self lengthOfSegment:index];
+    double end = [[[self pathKeyFrames] objectAtIndex:index + 1] doubleValue];
+    double start = [[[self pathKeyFrames] objectAtIndex:index] doubleValue];
+    return (float)((length / (end - start)) / [HSAnimationStructure defaultPointsPerSecond]);
+}
+
+- (void)removeAttributeWithName:(id)aName
+{
+    [_attributes removeObjectForKey:aName];
+}
+
+- (NSInteger)segmentIndexAtTime:(double)aTime
+{
+    if (![self hasPath])
+        return -1;
+    double time = HSAnimationStructureClampTime(aTime, [[_pathKeyFrames objectAtIndex:0] doubleValue], [[_pathKeyFrames lastObject] doubleValue]);
+    NSInteger count = [_pathKeyFrames count];
+    for (NSInteger i = 1; i < count; i++) {
+        double start = [[_pathKeyFrames objectAtIndex:i - 1] doubleValue];
+        double end = [[_pathKeyFrames objectAtIndex:i] doubleValue];
+        if (start <= time + HSAnimationStructureTolerance(start, time) && time < end - HSAnimationStructureTolerance(time, end))
+            return i - 1;
+    }
+    return count - 2;
+}
+
+- (void)setTime:(double)aTime ofPathKeyFrameAtIndex:(NSInteger)aIndex
+{
+    [_pathKeyFrames replaceObjectAtIndex:aIndex withObject:[NSNumber numberWithDouble:aTime]];
+    [self checkKeyFramesAreOrdered:_pathKeyFrames];
+}
+
+- (double)timeOfPathKeyFrameAtIndex:(NSInteger)aIndex
+{
+    return [[_pathKeyFrames objectAtIndex:aIndex] doubleValue];
+}
+
+- (void)updatePathKeyFramesTo:(id)aFrames
+{
+    [self checkKeyFramesAreOrdered:aFrames];
+    [self setPathKeyFrames:aFrames];
+}
+
+- (void)updatePathTo:(id)aPath
+{
+    [self setPath:aPath];
+}
+
 @end
 
 @implementation NSBezierPath (HSAnimationStructure)
