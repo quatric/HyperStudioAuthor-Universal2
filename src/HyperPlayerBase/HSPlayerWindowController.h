@@ -96,5 +96,9 @@
 - (id)windowNibName;
 - (void)dealloc;
 - (Class)navigationControllerClass;
+- (void)setDefaultSlideshowAttributesToBeCustomizedIntoDialog:(id)aDialog;
+- (void)slideShowAttributesFromSheetDialogForWindow:(id)aWindow modalDelegate:(id)aDelegate didEndSelector:(SEL)aSelector;
+- (void)slideShowAttributesWindowDidEnd:(id)aDialog returnedCode:(int)aCode;
+- (void)storeDocumentWindowState:(id)aState;
 @end
 

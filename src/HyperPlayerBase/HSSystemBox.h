@@ -42,5 +42,6 @@
 - (NSUInteger)boxTitlePosition;
 - (void)didCreateSystemView;
 - (id)keysForExtraLoadingWithCodingContext:(id)aContext;
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange;
 @end
 

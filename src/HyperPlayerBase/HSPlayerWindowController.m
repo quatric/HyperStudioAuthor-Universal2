@@ -874,4 +874,54 @@
     return [HSPlayerNavigationController class];
 }
 
+// Seeds the dialog with the attributes the last slideshow ran with; the keys
+// modified since are copied over from the default ones.
+- (void)setDefaultSlideshowAttributesToBeCustomizedIntoDialog:(id)aDialog
+{
+    HSSlideshowAttributes *attributes = [HSSlideshowAttributes defaultSlideshowAttributes];
+    if (_lastSlideShowOptions == nil) {
+        HSSlideshowAttributes *session = [self sessionSlideshowAttributes];
+        [attributes setStartsNextSlideAutomatically:[session startsNextSlideAutomatically]];
+        [attributes setUseKeystrokeOnExitCard:[session useKeystrokeOnExitCard:nil]];
+        [attributes setDurationBetweenSlides:[session durationBetweenSlides]];
+        [attributes setStopsAfterEnd:[session stopsAfterEnd]];
+    } else {
+        if (attributes != nil && _modifiedAttributesSet != nil) {
+            NSArray *keys = [_modifiedAttributesSet allObjects];
+            [_modifiedAttributesSet release];
+            _modifiedAttributesSet = nil;
+            for (NSUInteger i = 0; i < [keys count]; i++) {
+                id key = [keys objectAtIndex:i];
+                [_lastSlideShowOptions setValue:[attributes valueForKey:key] forKey:key];
+            }
+            [_lastSlideShowOptions setTransition:[attributes transition]];
+        }
+        attributes = _lastSlideShowOptions;
+    }
+    [aDialog setDefaultSlideshowAttributesToBeCustomized:attributes];
+}
+
+- (void)slideShowAttributesFromSheetDialogForWindow:(id)aWindow modalDelegate:(id)aDelegate didEndSelector:(SEL)aSelector
+{
+    HSSlideshowDialogController *dialog = [HSSlideshowDialogController new];
+    [self setDefaultSlideshowAttributesToBeCustomizedIntoDialog:dialog];
+    [dialog runForWindow:aWindow delegate:aDelegate didEndSelector:aSelector];
+}
+
+- (void)slideShowAttributesWindowDidEnd:(id)aDialog returnedCode:(int)aCode
+{
+    if (aCode == 1) {
+        HSSlideshowAttributes *attributes = [[[aDialog slideshowAttributes] retain] autorelease];
+        if (attributes != nil)
+            [self startSlideShowWithAttributes:attributes];
+    }
+    [aDialog autorelease];
+}
+
+- (void)storeDocumentWindowState:(id)aState
+{
+    if ([[self document] isInPresentationMode])
+        [aState setValue:[NSNumber numberWithFloat:[[self cardView] zoomFactor]] forKey:HSCardViewZoomFactorKey];
+}
+
 @end

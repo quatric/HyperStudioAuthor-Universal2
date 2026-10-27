@@ -248,4 +248,11 @@
     return keys;
 }
 
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange
+{
+    NSMutableString *string = [NSMutableString stringWithString:[self title]];
+    [string replaceCharactersInRange:aRange withString:aString];
+    [self setTitle:string];
+}
+
 @end

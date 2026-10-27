@@ -761,4 +761,11 @@
     return keys;
 }
 
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange
+{
+    NSMutableString *string = [NSMutableString stringWithString:[self hyperStringValue]];
+    [string replaceCharactersInRange:aRange withString:aString];
+    [self setHyperStringValue:string];
+}
+
 @end
