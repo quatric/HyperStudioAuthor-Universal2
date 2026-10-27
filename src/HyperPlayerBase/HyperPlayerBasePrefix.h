@@ -858,6 +858,7 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSAExternalFilesData;
 @class HSDocumentLoadingIndicatorController;
 @class HSFluidSwipe;
 @class HSFluidSwipeTracker;
