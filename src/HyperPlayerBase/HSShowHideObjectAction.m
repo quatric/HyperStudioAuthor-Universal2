@@ -199,13 +199,9 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
 
 - (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
 {
-    NSSet *names = nil;
-    [self hasUnsupportedTransitionNames:&names];
     NSMutableSet *features = [NSMutableSet set];
-    for (NSString *name in names) {
-        NSString *format = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureTransition" value:@"" table:@"Export"];
-        [features addObject:[NSString stringWithFormat:format, name]];
-    }
+    for (id name in [self unsupportedTransitions])
+        [features addObject:[self HTML5UnsupportedFunctionalityDescriptionForTransitionName:name]];
     return features;
 }
 

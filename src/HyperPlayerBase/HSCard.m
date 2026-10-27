@@ -799,13 +799,10 @@ static NSInteger HSCardCompareObjectNames(id aObject1, id aObject2, void *aConte
     }
     [children sortByHyperOrder];
     [[self queryHyperInterface:@protocol(HSCommentsAttributes)] appendHyperCommentsFromObjects:children];
+    [self drawObjectsOnBackground:children];
     [self hyperRemoveChildrenBeginGrouping];
     [children makeObjectsPerformSelector:@selector(removeFromHyperParent)];
     [self hyperRemoveChildrenEndGrouping];
-    NSPoint origin = NSZeroPoint;
-    NSImage *image = [HSUserObjectInPlayerPreviewView previewImageForObjects:children renderingOrigin:&origin];
-    NSSize size = [image size];
-    [self HSCard_setBackgroundImage:image inRect:[NSValue valueWithRect:NSMakeRect(origin.x, origin.y, size.width, size.height)] draw:[NSNumber numberWithBool:YES]];
 }
 
 // Undo registers the opposite draw flag, so undo itself draws nothing.

@@ -273,7 +273,7 @@ static NSSet *sTextImplementationInterfaces;
     if ([text length] != 0)
         [dictionary setObject:text forKey:@"text"];
     [dictionary setObject:@"0" forKey:@"hasShadow"];
-    BOOL asImage = [self willBeExportedAsImage];
+    BOOL asImage = [self isRotationAngleZero] ? [self hasNotSolidColorComponentsInString:[self hyperText]] : YES;
     if ([self isRotatableText] && ![self isRotationAngleZero]) {
         [dictionary setObject:@"rotatable" forKey:@"textType"];
         [dictionary setObject:@"0" forKey:@"rotationAngle"];

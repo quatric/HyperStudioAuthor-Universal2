@@ -256,7 +256,7 @@
             continue;
         unichar character = [string characterAtIndex:0];
         BOOL command = [[mapping objectForKey:@"HSKeyMapperActionUseCommandKeyKey"] boolValue];
-        BOOL shift = [[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:character] || [self isUsedShiftForKey:character];
+        BOOL shift = [[NSCharacterSet uppercaseLetterCharacterSet] characterIsMember:character];
         id button = [self buttonWithUID:[HSUID UIDWithString:[mapping objectForKey:@"HSKeyMapperActionObjectUIDKey"]]];
         if (button == nil)
             continue;

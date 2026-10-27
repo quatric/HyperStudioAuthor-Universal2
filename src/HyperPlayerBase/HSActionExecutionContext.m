@@ -830,8 +830,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     id object = [self interactiveObjectForKeyEvent:aEvent];
     if (object == nil)
         return NO;
-    if (![self HSActionExecutionContext_drawHighlighButtonIfNeeded:object])
-        [self HSActionExecutionContext_drawHighlighImageIfNeeded:object];
     [self runActionsForObject:object];
     return YES;
 }
@@ -868,7 +866,6 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 
 - (void)startSequencerActionForObjects:(id)aObjects delays:(id)aDelays forRequestor:(id)aRequestor
 {
-    [[self sequencerRequestorToIgnore] removeObject:aRequestor];
     id timerManager = [[[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager] automaticTimerManager];
     NSEnumerator *objects = [aObjects objectEnumerator];
     NSEnumerator *delays = [aDelays objectEnumerator];
@@ -884,7 +881,7 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 
 - (void)runActionsForObjects:(id)aObjects forRequestor:(id)aRequestor actionEvent:(id)aEvent
 {
-    if ([[self sequencerRequestorToIgnore] containsObject:aRequestor])
+    if (!_isActive)
         return;
     id manager = [[[self document] queryHyperInterface:@protocol(HSActionExecutionManagerProvider)] actionExecutionManager];
     NSEnumerator *objects = [aObjects objectEnumerator];

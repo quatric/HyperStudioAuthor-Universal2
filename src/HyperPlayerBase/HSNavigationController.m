@@ -354,7 +354,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
         [self continueNavigationOperation:aOperation];
         break;
     case HSNavigationStageNotifyDestinationOpened:
-        [self notifyUserAboutOpenedStackForNavigationOperation:aOperation];
+        [self prepareForNavigationToOpenedStack:aOperation];
         break;
     case HSNavigationStageMoveToOpenedStack:
         [self prepareForNavigationToOpenedStack:aOperation];

@@ -244,7 +244,6 @@
 {
     if (![self canBeStopped])
         return;
-    [self updateURL];
     NSURL *URL = [self URL];
     if (URL != nil && ![URL isFileURL]) {
         _isDownloadFinished = NO;

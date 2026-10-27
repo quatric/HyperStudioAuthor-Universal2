@@ -157,12 +157,19 @@
 
 - (double)duration
 {
-    double pathTime = [self timeOfLastPathKeyFrame];
-    double attributesTime = [self timeOfLastAttributesKeyFrame];
-    double magnitude = MAX(pathTime != 0.0 ? fabs(pathTime) : 1.0, attributesTime != 0.0 ? fabs(attributesTime) : 1.0);
-    if (pathTime <= attributesTime + magnitude * 1e-05)
-        return attributesTime;
-    return pathTime;
+    double time = [self timeOfLastPathKeyFrame];
+    NSEnumerator *attributes = [_attributes objectEnumerator];
+    id attribute;
+    while ((attribute = [attributes nextObject]) != nil) {
+        double last = [attribute timeOfLastKeyFrame];
+        double a = (last != 0.0) ? fabs(last) : 1.0;
+        double b = (time != 0.0) ? fabs(time) : 1.0;
+        double magnitude = MAX(a, b);
+        time = (last <= magnitude * 1e-05 + time) ? time : last;
+    }
+    if (time == 0.0)
+        time = [[self class] minTimeIntervalBetweenKeyFrames];
+    return time;
 }
 
 - (BOOL)isEmpty

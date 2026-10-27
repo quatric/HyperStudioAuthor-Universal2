@@ -22,7 +22,7 @@
 {
     BOOL valid = [super validateUserInterfaceItem:aItem];
     SEL action = [(id<NSValidatedUserInterfaceItem>)aItem action];
-    BOOL animating = [self isInAnimationMode];
+    BOOL animating = NO;
     if (action == @selector(revertDocumentToSaved:)) {
         if (animating || !valid || [self isInPresentationMode] || ![self isDocumentEdited])
             return NO;
