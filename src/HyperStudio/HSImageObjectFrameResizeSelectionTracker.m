@@ -90,16 +90,9 @@
 - (void)flagsChanged:(id)aChanged inView:(id)aView
 {
     [super flagsChanged:aChanged inView:aView];
-    BOOL isCrop = [self isCropForEvent:aChanged];
+    BOOL isCrop = [self isCrop];
     id cacheAttributes = [[self trackingObject] queryHyperInterface:@protocol(HSImageCacheAttributes)];
     [cacheAttributes setEnabledCacheImage:!isCrop];
-    if (isCrop && [cacheAttributes needDisableBorderForCropping]) {
-        id outline = [[self trackingObject] queryHyperInterface:@protocol(HSMutableOutlineAttributes)];
-        if ([outline isHyperOutlineEnabled]) {
-            [outline setHyperOutlineEnabled:NO];
-            _needEnableOutline = YES;
-        }
-    }
     [self updateStartClipPathsBounds];
 }
 
@@ -115,8 +108,6 @@
     [[self mutableImageRectAttributes] setRelativeImageRect:_startRelativeImageRect];
     [super mouseUp:aUp inView:aView];
     [[self mutableImageRectAttributes] setRelativeImageRect:relativeImageRect];
-    if (_needEnableOutline)
-        [[[self trackingObject] queryHyperInterface:@protocol(HSMutableOutlineAttributes)] setHyperOutlineEnabled:YES];
     id cacheAttributes = [[self trackingObject] queryHyperInterface:@protocol(HSImageCacheAttributes)];
     BOOL wasDisabled = ![cacheAttributes isEnabledCacheImage];
     if (wasDisabled)
@@ -130,13 +121,6 @@
     BOOL isCrop = [self isCropForEvent:aDown];
     id cacheAttributes = [[self trackingObject] queryHyperInterface:@protocol(HSImageCacheAttributes)];
     [cacheAttributes setEnabledCacheImage:!isCrop];
-    if (isCrop && [cacheAttributes needDisableBorderForCropping]) {
-        id outline = [[self trackingObject] queryHyperInterface:@protocol(HSMutableOutlineAttributes)];
-        if ([outline isHyperOutlineEnabled]) {
-            [outline setHyperOutlineEnabled:NO];
-            _needEnableOutline = YES;
-        }
-    }
     _startRelativeImageRect = [[self mutableImageRectAttributes] relativeImageRect];
 }
 
