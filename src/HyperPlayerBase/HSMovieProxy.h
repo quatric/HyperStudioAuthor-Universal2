@@ -18,6 +18,7 @@
     float _panAngle;
     float _fieldOfView;
     unsigned int _backupDisablingCounter;
+    id _movieObjectInfo;
 }
 + (BOOL)respondsToSelector:(SEL)aSelector;
 + (id)movieWithURL:(id)aURL error:(id *)aError;
@@ -41,5 +42,7 @@
 - (id)initWithURL:(id)aURL error:(id *)aError;
 - (id)initWithMovie:(id)aMovie error:(id *)aError;
 - (void)dealloc;
+- (id)movieObjectInfo;
+- (void)setMovieObjectInfo:(id)aMovieObjectInfo;
 @end
 

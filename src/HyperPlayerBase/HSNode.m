@@ -2714,4 +2714,11 @@ static void HSNodeRemoveChangingAttributes(id aAttributes, NSEMutableProtocolSet
         [self notifyChange:2 ofAttributeSet:attributes withUserInfo:nil];
 }
 
+- (id)loadedChildren
+{
+    if (_children == nil)
+        return nil;
+    return [NSArray arrayWithArray:[self children]];
+}
+
 @end

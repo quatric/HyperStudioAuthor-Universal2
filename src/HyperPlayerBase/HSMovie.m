@@ -1429,4 +1429,18 @@ static NSInteger HSMovieSampleCountOfTrack(AVAssetTrack *aTrack, NSInteger aLimi
     }
 }
 
+- (BOOL)isSynchronousRendering
+{
+    return _isSynchronousRendering;
+}
+
+- (void)setSynchronousRendering:(BOOL)aSynchronousRendering
+{
+    if (_isSynchronousRendering != aSynchronousRendering) {
+        _isSynchronousRendering = aSynchronousRendering;
+        [self destroyMovieRenderer];
+        [self makeSureWeHaveMovieRendererIfPossible];
+    }
+}
+
 @end

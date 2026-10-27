@@ -361,6 +361,11 @@ static HSSlideshow *HSSharedSlideshow;
     return _slideshowContentView;
 }
 
+- (BOOL)isRunning
+{
+    return _isRunning;
+}
+
 @end
 
 // Steps or stops the slideshow (its delegate) on keystrokes and clicks.

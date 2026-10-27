@@ -288,5 +288,6 @@
 - (void)HSNode_registerChildrenAttributeNotificationCenters;
 - (void)HSNode_registerChildrenAttributeNotificationCentersWithinChild:(id)aChild;
 - (void)HSNode_injectUnit:(id)aUnit forRole:(id)aRole asUndoableOperation:(BOOL)aOperation;
+- (id)loadedChildren;
 @end
 

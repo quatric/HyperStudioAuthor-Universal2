@@ -52,6 +52,7 @@
 - (BOOL)isRunningInExternalView;
 - (void)setSlideshowContentView:(id)aView;
 - (id)slideshowContentView;
+- (BOOL)isRunning;
 @end
 
 @interface HSSlideshow_HSTransitionView : HSTransitionView

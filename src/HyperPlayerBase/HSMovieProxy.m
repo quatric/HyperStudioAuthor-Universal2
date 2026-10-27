@@ -204,4 +204,14 @@ static NSMutableSet *HSMovieProxyContainers = nil;
     [_movieFilePath release];
     [super dealloc];
 }
+- (id)movieObjectInfo
+{
+    return _movieObjectInfo;
+}
+
+- (void)setMovieObjectInfo:(id)aMovieObjectInfo
+{
+    _movieObjectInfo = aMovieObjectInfo;
+}
+
 @end
