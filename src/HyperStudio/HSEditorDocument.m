@@ -9,7 +9,6 @@ static id sDAT_00342a48;
 static id sDAT_00342a4c;
 static id sDAT_00342a50;
 
-
 @implementation HSEditorDocument
 
 /* i386 ivar offsets: _iPadStack=0xb0, _originalStackStorage=0xb4, _iPadUndoManager=0xb8, _modeSwitcher=0xbc, _animationModeController=0xc0, _exportManager=0xc4, _documentSharingController=0xc8, _commitLogMessage=0xcc, _isReceived=0xd0, _isHyperCollaborative=0xd1, _isHyperServer=0xd2, _isHyperClient=0xd3, _hyperSaveOperation=0xd4, _hyperRemovedItemsPaths=0xd8, _autosaveUndoManager=0xdc, _openWarning=0xe0, _editObjectDialogContext=0xe4, _selectionController=0xe8, _stackSelectionHolder=0xec, _selectionSync=0xf0, _storyboardController=0xf4, _purePlayerWindowController=0xf8, _presentationWindowController=0xfc, _playerInEditorWindowController=0x100, _hyperCastingWindowController=0x104, _invocationsToPerformAfterSwitchToEditMode=0x108, _modeHistory=0x10c, _playerView=0x110, _minimalWindowApplier=0x114, _isReadyToCreateMinimalWindowApplier=0x118, _hasPendingRequestToCreateMinimalWindowApplier=0x119, _isInDocumentClosing=0x11a, _palettesToHideInHypercastingMode=0x11c, _textViewsToResetScrollPosition=0x120, _wasOptimizedAndNotSaved=0x124 */
@@ -54,477 +53,11 @@ static id sDAT_00342a50;
     [[self stackView] setMediaStripUpdateDisabled:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00271ec7 @ 00271ec7, 581 bytes * /
-
-void FUN_00271ec7(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id self_00;
-  
-  pvVar1 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorNotInstalledMessageText,&cfstr_empty,&cfstr_Alerts);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorNotInstalledInformativeText,&cfstr_empty,&cfstr_Alerts);
-  pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorNotInstalledDownloadNowButtonTitle,&cfstr_empty,
-                         &cfstr_Alerts);
-  pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                         &cfstr_Alerts);
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  _objc_msgSend(self_00,sel_setAlertStyle_,5);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar2);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar3);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar4);
-  pvVar1 = _objc_msgSend(self_00,sel_runModal);
-  _objc_msgSend(self_00,sel_release);
-  if (pvVar1 == (id)0x3e8) {
-    pvVar1 = _objc_msgSend(cls_NSWorkspace,sel_sharedWorkspace,pvVar4);
-    pvVar2 = _objc_msgSend(cls_NSURL,sel_URLWithString_,&cfstr_http___www_hyperstudio_com_hsa);
-    _objc_msgSend(pvVar1,sel_openURL_,pvVar2);
-  }
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027210c @ 0027210c, 154 bytes * /
-
-void FUN_0027210c(HSEditorDocument *self,SEL _cmd,id HSAuthorOpenAlertDidEnd,int returnCode,
-                 void *contextInfo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *puVar3;
-  SEL op;
-  
-  op = sel_openInHSAuthor;
-  if (returnCode != 1000) {
-    pvVar1 = _objc_msgSend(cls_NSMenuItem,sel_class);
-    pvVar2 = _objc_msgSend(contextInfo,sel_isKindOfClass_,pvVar1);
-    if ((((char)pvVar2 == '\0') ||
-        (puVar3 = _objc_msgSend(contextInfo,sel_action,pvVar1), op = sel_exportTo_,
-        puVar3 != sel_exportTo_)) && (op = sel_exportTo_, contextInfo != self)) {
-      return;
-    }
-  }
-  _objc_msgSend(self,op);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002721a6 @ 002721a6, 538 bytes * /
-
-void FUN_002721a6(HSEditorDocument *self,SEL _cmd,id showExportToHTML5Alert)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSExportToHTML5MessageText,&cfstr_empty,&cfstr_Alerts);
-  pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSExportToHTML5InformativeText,&cfstr_empty,&cfstr_Alerts);
-  pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorOpenButtonTitle,&cfstr_empty,&cfstr_Alerts);
-  pvVar5 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar5 = _objc_msgSend(pvVar5,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                         &cfstr_Alerts);
-  pvVar6 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar6 = _objc_msgSend(pvVar6,sel_autorelease);
-  _objc_msgSend(pvVar6,sel_setAlertStyle_,5);
-  _objc_msgSend(pvVar6,sel_setMessageText_,pvVar2);
-  _objc_msgSend(pvVar6,sel_setInformativeText_,pvVar3);
-  _objc_msgSend(pvVar6,sel_addButtonWithTitle_,pvVar4);
-  _objc_msgSend(pvVar6,sel_addButtonWithTitle_,pvVar5);
-  puVar1 = sel_HSAuthorOpenAlertDidEnd_returnCode_contextInfo_;
-  pvVar2 = _objc_msgSend(self,sel_windowForSheet);
-  _objc_msgSend(pvVar6,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_,pvVar2
-                ,self,puVar1,showExportToHTML5Alert);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002723c0 @ 002723c0, 538 bytes * /
-
-void FUN_002723c0(HSEditorDocument *self,SEL _cmd,id showHSAuthorOpenAlert)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorOpenMessageText,&cfstr_empty,&cfstr_Alerts);
-  pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorOpenInformativeText,&cfstr_empty,&cfstr_Alerts);
-  pvVar4 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAuthorOpenButtonTitle,&cfstr_empty,&cfstr_Alerts);
-  pvVar5 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar5 = _objc_msgSend(pvVar5,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                         &cfstr_Alerts);
-  pvVar6 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar6 = _objc_msgSend(pvVar6,sel_autorelease);
-  _objc_msgSend(pvVar6,sel_setAlertStyle_,5);
-  _objc_msgSend(pvVar6,sel_setMessageText_,pvVar2);
-  _objc_msgSend(pvVar6,sel_setInformativeText_,pvVar3);
-  _objc_msgSend(pvVar6,sel_addButtonWithTitle_,pvVar4);
-  _objc_msgSend(pvVar6,sel_addButtonWithTitle_,pvVar5);
-  puVar1 = sel_HSAuthorOpenAlertDidEnd_returnCode_contextInfo_;
-  pvVar2 = _objc_msgSend(self,sel_windowForSheet);
-  _objc_msgSend(pvVar6,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_,pvVar2
-                ,self,puVar1,showHSAuthorOpenAlert);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002725da @ 002725da, 764 bytes * /
-
-void FUN_002725da(HSEditorDocument *self,SEL _cmd)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  HSEditorDocument *pHVar4;
-  id pvVar5;
-  HSEditorDocument *pHVar6;
-  cfstringStruct *pcVar7;
-  undefined4 uVar8;
-  
-  pvVar1 = _objc_msgSend(cls_NSWorkspace,sel_sharedWorkspace);
-  pcVar7 = &cfstr_com_mackiev_hyperstudioauthor;
-  pvVar2 = _objc_msgSend(pvVar1,sel_absolutePathForAppBundleWithIdentifier_,
-                         &cfstr_com_mackiev_hyperstudioauthor);
-  pHVar4 = (HSEditorDocument *)pcVar7;
-  if (pvVar2 == (id)0x0) goto LAB_002728b9;
-  pvVar3 = _objc_msgSend(self,sel_fileURL,pcVar7);
-  pHVar4 = _objc_msgSend(pvVar3,sel_path);
-  if ((pHVar4 == (HSEditorDocument *)0x0) ||
-     (pvVar3 = _objc_msgSend(self,sel_isDocumentEdited,pcVar7), (char)pvVar3 != '\0')) {
-    pHVar4 = (HSEditorDocument *)pcVar7;
-    if (DAT_00342a54 == (id)0x0) {
-      pvVar3 = _objc_msgSend(cls_NSString,sel_hyperUIDString,pHVar4);
-      if (pvVar3 == (id)0x0) goto LAB_002728b9;
-      pvVar5 = (id)_NSTemporaryDirectory();
-      pHVar6 = _objc_msgSend(pvVar5,sel_stringByAppendingPathComponent_,pvVar3);
-      pvVar3 = _objc_msgSend(cls_NSFileManager,sel_defaultManager);
-      uVar8 = 0;
-      pHVar4 = pHVar6;
-      pvVar3 = _objc_msgSend(pvVar3,sel_createDirectoryAtPath_attributes_,pHVar6,0);
-      if ((char)pvVar3 == '\0') goto LAB_002728b9;
-      DAT_00342a54 = _objc_msgSend(pHVar6,sel_retain,pHVar4,uVar8);
-    }
-    pvVar3 = _objc_msgSend(self,sel_currentWindowController,pHVar4);
-    _objc_msgSend(pvVar3,sel_saveEditingState);
-    pHVar4 = (HSEditorDocument *)0x0;
-    _objc_msgSend(self,sel_setResourcesWrapper_,0);
-    pvVar3 = _objc_msgSend(self,sel_resourcesWrapper);
-    if ((pvVar3 == (id)0x0) ||
-       (pHVar4 = self,
-       pvVar5 = _objc_msgSend(cls_HSMediaSaver,sel_saveMediaForDocument_resourcesWrapper_,self,
-                              pvVar3), (char)pvVar5 == '\0')) goto LAB_002728b9;
-    _objc_msgSend(self,sel_reloadDocumentMedia,pHVar4,pvVar3);
-    pvVar3 = _objc_msgSend(self,sel_displayName);
-    pvVar5 = _objc_msgSend(pvVar3,sel_pathExtension);
-    pvVar5 = _objc_msgSend(pvVar5,sel_isEqualToString_,&cfstr_stack);
-    if ((char)pvVar5 == '\0') {
-      pvVar3 = _objc_msgSend(pvVar3,sel_stringByAppendingPathExtension_,&cfstr_stack);
-    }
-    self_00 = cls_NSURL;
-    pvVar3 = _objc_msgSend(DAT_00342a54,sel_stringByAppendingPathComponent_,pvVar3);
-    pHVar6 = _objc_msgSend(self_00,sel_fileURLWithPath_,pvVar3);
-    pcVar7 = &cfstr_HSDocumentType;
-    uVar8 = 0;
-    pHVar4 = pHVar6;
-    pvVar3 = _objc_msgSend(self,sel_writeToURL_ofType_error_,pHVar6,&cfstr_HSDocumentType,0);
-    if ((char)pvVar3 == '\0') goto LAB_002728b9;
-    pHVar4 = _objc_msgSend(pHVar6,sel_path,pHVar4,pcVar7,uVar8);
-  }
-  pvVar1 = _objc_msgSend(pvVar1,sel_openFile_withApplication_andDeactivate_,pHVar4,pvVar2,1);
-  if ((char)pvVar1 != '\0') {
-    return;
-  }
-LAB_002728b9:
-  _objc_msgSend(self,sel_showHSAuthorNotInstalledAlert,pHVar4);
-  return;
-}
-
-*/
 - (void)exportForiBooksAuthor:(id)aAuthor
 {
     [self exportToDocumentWithType:@"HSiBooksAuthorDocumentType" inPublishType:3 inFormat:8 withRequiredFileType:@"wdgt"];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027294d @ 0027294d, 122 bytes * /
-
-void FUN_0027294d(HSEditorDocument *self,SEL _cmd,id exportToHTML5)
-
-{
-  id pvVar1;
-  SEL op;
-  cfstringStruct *pcVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_shouldOpenHSAuthorForExport);
-  op = sel_showExportToHTML5Alert_;
-  pcVar2 = exportToHTML5;
-  if ((char)pvVar1 == '\0') {
-    pcVar2 = &cfstr_HSHTML5DocumentType;
-    op = sel_exportToDocumentWithType_inPublishType_inFormat_withRequiredFileType_;
-  }
-  _objc_msgSend(self,op,pcVar2);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002729c7 @ 002729c7, 308 bytes * /
-
-void FUN_002729c7(HSEditorDocument *self,SEL _cmd,id exportToDocumentWithType,int inPublishType,
-                 int inFormat,id withRequiredFileType)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_isWritingDisabled);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_exportManager);
-    pvVar2 = _objc_msgSend(pvVar1,sel_isOpenExportSession);
-    if ((char)pvVar2 != '\0') {
-      _objc_msgSend(pvVar1,sel_closeExportSession);
-    }
-    _objc_msgSend(pvVar1,sel_openExportSessionWithDocument_,self);
-    _objc_msgSend(pvVar1,sel_setPublishType_,inPublishType);
-    _objc_msgSend(pvVar1,sel_setExportFormat_,inFormat);
-    pvVar2 = _objc_msgSend(withRequiredFileType,sel_length);
-    if (pvVar2 != (id)0x0) {
-      pvVar1 = _objc_msgSend(pvVar1,sel_exportPanelController,inFormat);
-      _objc_msgSend(pvVar1,sel_setRequiredFileType_,withRequiredFileType);
-    }
-    _objc_msgSend(self,
-                  sel_runModalExportPanelWithDelegate_didSaveSelector_contextInfo_needRunExportDialogOnCancel_
-                  ,self,sel_exportPanelControllerDidEnd_returnCode_contextInfo_,
-                  exportToDocumentWithType,0);
-  }
-  return;
-}
-
-*/
-- (void)exportToDocumentWithType:(id)aType inPublishType:(NSInteger)aType2 inFormat:(NSInteger)aFormat withRequiredFileType:(id)aType3
-{
-    if (![self isWritingDisabled]) {
-        id manager = [self exportManager];
-        if ([manager isOpenExportSession]) {
-            [manager closeExportSession];
-        }
-        [manager openExportSessionWithDocument:self];
-        [manager setPublishType:aType2];
-        [manager setExportFormat:aFormat];
-        if ([aType3 length] != 0) {
-            [[manager exportPanelController] setRequiredFileType:aType3];
-        }
-        [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEnd:returnCode:contextInfo:) contextInfo:aType needRunExportDialogOnCancel:NO];
-    }
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00272afb @ 00272afb, 645 bytes * /
-
-void FUN_00272afb(HSEditorDocument *self,SEL _cmd,id exportTo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  cfstringStruct *self_00;
-  SEL op;
-  HSEditorDocument *pHVar5;
-  HSEditorDocument *pHVar6;
-  
-  pvVar1 = _objc_msgSend(self,sel_isWritingDisabled);
-  if ((char)pvVar1 != '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(cls_HSExportComboDialog,sel_new);
-  pHVar5 = self;
-  pvVar2 = _objc_msgSend(pvVar1,sel_runModalWithDelegate_,self);
-  pHVar6 = pHVar5;
-  if (pvVar2 != (id)0x1) goto LAB_00272d63;
-  pvVar2 = _objc_msgSend(pvVar1,sel_exportFormat,pHVar5);
-  pvVar3 = _objc_msgSend(self,sel_shouldOpenHSAuthorForExport);
-  if (((char)pvVar3 != '\0') &&
-     (op = sel_showExportToHTML5Alert_, pHVar6 = exportTo, pvVar2 == (id)0x7)) goto LAB_00272d5e;
-  pvVar3 = _objc_msgSend(self,sel_exportManager,pHVar5);
-  pvVar4 = _objc_msgSend(pvVar3,sel_isOpenExportSession);
-  if ((char)pvVar4 != '\0') {
-    _objc_msgSend(pvVar3,sel_closeExportSession);
-  }
-  _objc_msgSend(pvVar3,sel_openExportSessionWithDocument_,self);
-  pvVar4 = _objc_msgSend(pvVar1,sel_publishType);
-  _objc_msgSend(pvVar3,sel_setExportFormat_,pvVar2);
-  switch(pvVar2) {
-  case (id)0x1:
-    break;
-  case (id)0x2:
-    break;
-  case (id)0x3:
-    break;
-  case (id)0x4:
-    break;
-  case (id)0x5:
-    goto joined_r0x00272ca7;
-  case (id)0x6:
-joined_r0x00272ca7:
-    if (pvVar4 == (id)0x1) {
-      pvVar4 = (id)0x2;
-    }
-    break;
-  case (id)0x7:
-    break;
-  case (id)0x8:
-  }
-  _objc_msgSend(pvVar3,sel_setPublishType_,pvVar4);
-  if (pvVar2 == (id)0x7) {
-    self_00 = &cfstr_empty;
-  }
-  else if (pvVar2 == (id)0x8) {
-    self_00 = &cfstr_wdgt;
-  }
-  else {
-    self_00 = (cfstringStruct *)0x0;
-  }
-  pvVar2 = _objc_msgSend(self_00,sel_length,pvVar4);
-  op = sel_runModalExportPanelWithDelegate_didSaveSelector_contextInfo_needRunExportDialogOnCancel_;
-  pHVar6 = self;
-  if (pvVar2 != (id)0x0) {
-    pvVar2 = _objc_msgSend(pvVar3,sel_exportPanelController,pvVar4);
-    _objc_msgSend(pvVar2,sel_setRequiredFileType_,self_00);
-    op = 
-    sel_runModalExportPanelWithDelegate_didSaveSelector_contextInfo_needRunExportDialogOnCancel_;
-  }
-LAB_00272d5e:
-  _objc_msgSend(self,op,pHVar6);
-LAB_00272d63:
-  _objc_msgSend(pvVar1,sel_release,pHVar6);
-  return;
-}
-
-*/
-- (void)exportTo:(id)aTo
-{
-    if ([self isWritingDisabled]) {
-        return;
-    }
-    HSExportComboDialog *dialog = [HSExportComboDialog new];
-    if ([dialog runModalWithDelegate:self] == 1) {
-        NSInteger format = [dialog exportFormat];
-        if ([self shouldOpenHSAuthorForExport] && format == 7) {
-            [self showExportToHTML5Alert:aTo];
-        } else {
-            id manager = [self exportManager];
-            if ([manager isOpenExportSession]) {
-                [manager closeExportSession];
-            }
-            [manager openExportSessionWithDocument:self];
-            NSInteger publishType = [dialog publishType];
-            [manager setExportFormat:format];
-            NSString *documentType = nil;
-            switch (format) {
-                case 1: documentType = @"HSWebDocumentType"; break;
-                case 2: documentType = @"HSMakeStackToGoDocumentType"; break;
-                case 3: documentType = @"HSImageSequenceDocumentType"; break;
-                case 4: documentType = @"HSQTMovieDocumentType"; break;
-                case 5:
-                    documentType = @"HSiPodDocumentType";
-                    if (publishType == 1) {
-                        publishType = 2;
-                    }
-                    break;
-                case 6:
-                    documentType = @"HSiPhoneDocumentType";
-                    if (publishType == 1) {
-                        publishType = 2;
-                    }
-                    break;
-                case 7: documentType = @"HSHTML5DocumentType"; break;
-                case 8: documentType = @"HSiBooksAuthorDocumentType"; break;
-                default: break;
-            }
-            [manager setPublishType:publishType];
-            NSString *requiredFileType = (format == 7) ? @"" : (format == 8) ? @"wdgt" : nil;
-            if ([requiredFileType length] != 0) {
-                [[manager exportPanelController] setRequiredFileType:requiredFileType];
-            }
-            [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEnd:returnCode:contextInfo:) contextInfo:documentType needRunExportDialogOnCancel:YES];
-        }
-    }
-    [dialog release];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00272da0 @ 00272da0, 291 bytes * /
-
-void FUN_00272da0(HSEditorDocument *self,SEL _cmd,int exitFromHyperCastingModeWithReturnCode)
-
-{
-  id pvVar1;
-  id self_00;
-  HSEditorDocument *self_01;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar1 = _objc_msgSend(pvVar1,sel_switching);
-  if (((char)pvVar1 == '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_isInHyperCastingMode), (char)pvVar1 != '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_modeHistory);
-    pvVar1 = _objc_msgSend(pvVar1,sel_lastObject);
-    self_01 = self;
-    op = sel_switchToEditor;
-    if (pvVar1 != (id)0x0) {
-      self_00 = _objc_msgSend(self,sel_modeSwitcher);
-      _objc_msgSend(self_00,sel_switchToModeController_,pvVar1);
-      self_01 = _objc_msgSend(self,sel_modeHistory);
-      op = sel_removeLastObject;
-    }
-    _objc_msgSend(self_01,op);
-    pvVar1 = _objc_msgSend(self,sel_hyperCastingWindowController);
-    _objc_msgSend(pvVar1,sel_setHyperCastingWindowControllerDelegate_,0);
-    _objc_msgSend(self,sel_showPalettesAfterExport);
-  }
-  return;
-}
-
-*/
 - (void)exitFromHyperCastingModeWithReturnCode:(NSInteger)aCode
 {
     if (![[self modeSwitcher] switching] && [self isInHyperCastingMode]) {
@@ -540,39 +73,6 @@ void FUN_00272da0(HSEditorDocument *self,SEL _cmd,int exitFromHyperCastingModeWi
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00272ec3 @ 00272ec3, 373 bytes * /
-
-void FUN_00272ec3(HSEditorDocument *self,SEL _cmd,id switchToHyperCastingModeWithDelegate)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_editorWindowController);
-  _objc_msgSend(pvVar1,sel_saveScrollerPosition);
-  _objc_msgSend(pvVar1,sel_saveEditingState);
-  pvVar1 = _objc_msgSend(cls_HSCursor,sel_cursorNamed_,*(undefined4 *)PTR_00336430);
-  _objc_msgSend(pvVar1,sel_set);
-  pvVar1 = _objc_msgSend(self,sel_modeHistory);
-  pvVar2 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(pvVar2,sel_activeModeController);
-  _objc_msgSend(pvVar1,sel_addObject_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_hyperCastingWindowController);
-  _objc_msgSend(pvVar1,sel_setHyperCastingWindowControllerDelegate_,
-                switchToHyperCastingModeWithDelegate);
-  pvVar2 = _objc_msgSend(self,sel_isInPurePlayerMode);
-  if ((char)pvVar2 != '\0') {
-    switchToHyperCastingModeWithDelegate = (id)0x0;
-    _objc_msgSend(self,sel_exitPurePlayerModeWithAnimation_,0);
-  }
-  pvVar2 = _objc_msgSend(self,sel_modeSwitcher,switchToHyperCastingModeWithDelegate);
-  _objc_msgSend(pvVar2,sel_switchWithoutAnimationToModeController_deffered_,pvVar1,0);
-  _objc_msgSend(self,sel_hidePalettesBeforeExport);
-  return;
-}
-
-*/
 - (void)switchToHyperCastingModeWithDelegate:(id)aDelegate
 {
     id editorWindowController = [self editorWindowController];
@@ -622,27 +122,6 @@ void FUN_00272ec3(HSEditorDocument *self,SEL _cmd,id switchToHyperCastingModeWit
     [[self currentWindowController] setBottomToolbarVisible:(unsigned int)(!pvVar1_2)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273164 @ 00273164, 106 bytes * /
-
-void FUN_00273164(HSEditorDocument *self,SEL _cmd,id toggleCardIndex)
-
-{
-  id self_00;
-  id pvVar1;
-  SEL op;
-  
-  self_00 = _objc_msgSend(self,sel_stackView);
-  pvVar1 = _objc_msgSend(self_00,sel_isStripVisible);
-  op = sel_showCardIndex_;
-  if ((char)pvVar1 != '\0') {
-    op = sel_hideCardIndex_;
-  }
-  _objc_msgSend(self_00,op,self);
-  return;
-}
-
-*/
 - (void)toggleCardIndex:(id)aIndex
 {
     id stackView = [self stackView];
@@ -658,150 +137,6 @@ void FUN_00273164(HSEditorDocument *self,SEL _cmd,id toggleCardIndex)
     [self removeCurrentCardWithAlert:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002731fc @ 002731fc, 1619 bytes * /
-
-void FUN_002731fc(HSEditorDocument *self,SEL _cmd,id removeCards,BOOL withAlert)
-
-{
-  cfstringStruct *pcVar1;
-  bool bVar2;
-  char cVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  id pvVar7;
-  id pvVar8;
-  HSEditorDocument *pHVar9;
-  ushort uVar10;
-  uint uVar11;
-  cfstringStruct *pcVar12;
-  cfstringStruct *pcVar13;
-  SEL op;
-  
-  cVar3 = '\x01';
-  pvVar4 = _objc_msgSend(removeCards,sel_objectEnumerator);
-  do {
-    pvVar5 = _objc_msgSend(pvVar4,sel_nextObject);
-    if (pvVar5 == (id)0x0) break;
-    pvVar5 = _objc_msgSend(pvVar5,sel_queryHyperInterface_,&DAT_003875bc);
-    pvVar5 = _objc_msgSend(pvVar5,sel_isEmpty);
-    cVar3 = (char)pvVar5;
-  } while (cVar3 != '\0');
-  if (withAlert != '\0') {
-    pvVar4 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-    pvVar4 = _objc_msgSend(pvVar4,sel_objectForKey_,&cfstr_HSDeleteCardAlertShow);
-    pvVar4 = _objc_msgSend(pvVar4,sel_intValue);
-    if ((pvVar4 != (id)0x0) && (cVar3 == '\0')) {
-      bVar2 = true;
-      goto LAB_002732ce;
-    }
-  }
-  bVar2 = false;
-LAB_002732ce:
-  uVar11 = 0;
-  pvVar4 = _objc_msgSend(self,sel_stack);
-  pvVar4 = _objc_msgSend(pvVar4,sel_hyperEnumerator);
-  do {
-    cVar3 = (char)(uVar11 >> 8);
-    pvVar5 = _objc_msgSend(pvVar4,sel_nextObject);
-    if (pvVar5 == (id)0x0) break;
-    pvVar6 = _objc_msgSend(removeCards,sel_containsObject_,pvVar5);
-    if ((char)pvVar6 == '\0') {
-      pvVar6 = removeCards;
-      pvVar8 = pvVar5;
-      pvVar7 = _objc_msgSend(self,sel_hasClickingOtherCardActionLeadingToCards_inObject_,removeCards
-                             ,pvVar5);
-      cVar3 = (char)pvVar7;
-      uVar10 = CONCAT11(cVar3,bVar2);
-      if (cVar3 != '\0') break;
-      pvVar5 = _objc_msgSend(pvVar5,sel_hyperEnumerator,pvVar6,pvVar8);
-      while( true ) {
-        uVar11 = (uint)uVar10;
-        pvVar8 = _objc_msgSend(pvVar5,sel_nextObject,pvVar6,pvVar8);
-        if (pvVar8 == (id)0x0) break;
-        pvVar6 = removeCards;
-        pvVar7 = _objc_msgSend(self,sel_hasClickingOtherCardActionLeadingToCards_inObject_,
-                               removeCards,pvVar8);
-        if ((char)pvVar7 != '\0') {
-          uVar11 = ((uint)pvVar7 & 0xff) << 8;
-          break;
-        }
-        uVar10 = 0;
-      }
-    }
-    cVar3 = (char)(uVar11 >> 8);
-  } while (cVar3 == '\0');
-  if (cVar3 == '\0') {
-    op = sel_actuallyRemoveCards_;
-    if (bVar2) {
-      pHVar9 = _objc_msgSend(cls_HSDontShowAgainAlert,sel_new);
-      pvVar4 = _objc_msgSend(removeCards,sel_count);
-      pvVar5 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pcVar12 = &cfstr_HSDeleteCardAlertMessageText;
-      if ((id)0x1 < pvVar4) {
-        pcVar12 = &cfstr_HSDeleteCardsAlertMessageText;
-      }
-      pcVar13 = &cfstr_HSDeleteCardAlertInformativeText;
-      pcVar1 = &cfstr_HSDeleteCardAlertFirstButtonTitle;
-      if ((id)0x1 < pvVar4) {
-        pcVar13 = &cfstr_HSDeleteCardsAlertInformativeText;
-        pcVar1 = &cfstr_HSDeleteCardsAlertFirstButtonTitle;
-      }
-      pvVar4 = _objc_msgSend(pvVar5,sel_localizedStringForKey_value_table_,pcVar12,&cfstr_empty,
-                             &cfstr_Alerts);
-      _objc_msgSend(pHVar9,sel_setMessageText_,pvVar4);
-      pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,pcVar13,&cfstr_empty,
-                             &cfstr_Alerts);
-      _objc_msgSend(pHVar9,sel_setInformativeText_,pvVar4);
-      pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,pcVar1,&cfstr_empty,
-                             &cfstr_Alerts);
-      _objc_msgSend(pHVar9,sel_addButtonWithTitle_,pvVar4);
-      pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-      pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                             &cfstr_HSDeleteCardAlertSecondButtonTitle,&cfstr_empty,&cfstr_Alerts);
-      _objc_msgSend(pHVar9,sel_addButtonWithTitle_,pvVar4);
-      _objc_msgSend(pHVar9,sel_setShowAlertKey_,&cfstr_HSDeleteCardAlertShow);
-      _objc_msgSend(removeCards,sel_retain);
-      pvVar4 = _objc_msgSend(self,sel_currentWindowController);
-      removeCards = _objc_msgSend(pvVar4,sel_window);
-      self = pHVar9;
-      op = sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_;
-    }
-  }
-  else {
-    pHVar9 = _objc_msgSend(cls_HSAlert,sel_new);
-    pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInconsistentActionsAlertMessageText,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(pHVar9,sel_setMessageText_,pvVar4);
-    pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInconsistentActionsAlertInformativeText,&cfstr_empty,
-                           &cfstr_Alerts);
-    _objc_msgSend(pHVar9,sel_setInformativeText_,pvVar4);
-    pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInconsistentActionsAlertDefaultButtonTitle,&cfstr_empty,
-                           &cfstr_Alerts);
-    _objc_msgSend(pHVar9,sel_addButtonWithTitle_,pvVar4);
-    pvVar4 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar4 = _objc_msgSend(pvVar4,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                           &cfstr_Alerts);
-    _objc_msgSend(pHVar9,sel_addButtonWithTitle_,pvVar4);
-    _objc_msgSend(removeCards,sel_retain);
-    pvVar4 = _objc_msgSend(self,sel_currentWindowController);
-    removeCards = _objc_msgSend(pvVar4,sel_window);
-    self = pHVar9;
-    op = sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_;
-  }
-  _objc_msgSend(self,op,removeCards);
-  return;
-}
-
-*/
 - (void)removeCards:(id)aCards withAlert:(BOOL)aAlert
 {
     BOOL allEmpty = YES;
@@ -881,42 +216,6 @@ LAB_002732ce:
     [self removeCards:[self selectedCards] withAlert:aAlert];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273911 @ 00273911, 304 bytes * /
-
-BOOL FUN_00273911(HSEditorDocument *self,SEL _cmd,id hasClickingOtherCardActionLeadingToCards,
-                 id inObject)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_00;
-  id pvVar4;
-  uint uVar5;
-  
-  pvVar1 = _objc_msgSend(inObject,sel_queryHyperInterface_,&DAT_003876fc);
-  pvVar2 = _objc_msgSend(cls_HSActionEvent,sel_actionEventOfType_,*(undefined4 *)PTR_00336084);
-  pvVar3 = _objc_msgSend(cls_HSOtherCardAction,sel_actionType);
-  pvVar1 = _objc_msgSend(pvVar1,sel_hyperActionOfType_forEvent_,pvVar3,pvVar2);
-  uVar5 = 0;
-  self_00 = _objc_msgSend(hasClickingOtherCardActionLeadingToCards,sel_objectEnumerator);
-  while( true ) {
-    pvVar3 = _objc_msgSend(self_00,sel_nextObject,pvVar3,pvVar2);
-    if (pvVar3 == (id)0x0) {
-      return (BOOL)uVar5;
-    }
-    pvVar3 = _objc_msgSend(pvVar3,sel_queryHyperInterface_,&DAT_003876c0,pvVar2);
-    pvVar4 = _objc_msgSend(pvVar1,sel_destinationCardUID);
-    pvVar3 = _objc_msgSend(pvVar3,sel_hyperUID);
-    pvVar4 = _objc_msgSend(pvVar4,sel_isEqual_,pvVar3);
-    if ((char)pvVar4 != '\0') break;
-    uVar5 = (uint)pvVar4 & 0xff;
-  }
-  return (char)pvVar4;
-}
-
-*/
 - (BOOL)hasClickingOtherCardActionLeadingToCards:(id)aCards inObject:(id)aObject
 {
     id otherCardAction = [[aObject queryHyperInterface:@protocol(HSActor)] hyperActionOfType:[HSOtherCardAction actionType] forEvent:[HSActionEvent actionEventOfType:kHSClickActionEventType]];
@@ -930,22 +229,6 @@ BOOL FUN_00273911(HSEditorDocument *self,SEL _cmd,id hasClickingOtherCardActionL
     return NO;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273a41 @ 00273a41, 99 bytes * /
-
-void FUN_00273a41(HSEditorDocument *self,SEL _cmd,id alertDeleteCardDidEnd,int returnCode,
-                 void *contextInfo)
-
-{
-  if (returnCode == 1000) {
-    _objc_msgSend(self,sel_actuallyRemoveCards_,contextInfo);
-  }
-  _objc_msgSend(contextInfo,sel_release);
-  _objc_msgSend(alertDeleteCardDidEnd,sel_release);
-  return;
-}
-
-*/
 - (void)alertDeleteCardDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     if (aCode == 1000) {
@@ -955,75 +238,6 @@ void FUN_00273a41(HSEditorDocument *self,SEL _cmd,id alertDeleteCardDidEnd,int r
     [aEnd release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273aa4 @ 00273aa4, 745 bytes * /
-
-void FUN_00273aa4(HSEditorDocument *self,SEL _cmd,id actuallyRemoveCards)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  id self_01;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  cfstringStruct *pcVar6;
-  HSEditorDocument *pHVar7;
-  
-  pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  _objc_msgSend(pvVar1,sel_deactivateIfNeeded);
-  pvVar1 = _objc_msgSend(cls_NSMutableIndexSet,sel_alloc);
-  pvVar2 = _objc_msgSend(pvVar1,sel_init);
-  pvVar1 = _objc_msgSend(cls_NSMutableArray,sel_alloc);
-  self_00 = _objc_msgSend(pvVar1,sel_init);
-  pvVar1 = _objc_msgSend(cls_NSMutableArray,sel_alloc);
-  self_01 = _objc_msgSend(pvVar1,sel_init);
-  pvVar3 = _objc_msgSend(actuallyRemoveCards,sel_objectEnumerator);
-  pvVar1 = _objc_msgSend(pvVar3,sel_nextObject);
-  while (pvVar1 != (id)0x0) {
-    pvVar4 = _objc_msgSend(pvVar1,sel_hyperIndex);
-    _objc_msgSend(pvVar2,sel_addIndex_,pvVar4);
-    pvVar5 = _objc_msgSend(pvVar1,sel_cardGroupUID);
-    pvVar4 = self_01;
-    if (pvVar5 != (id)0x0) {
-      pvVar4 = self_00;
-    }
-    _objc_msgSend(pvVar4,sel_addObject_,pvVar1);
-    pvVar1 = _objc_msgSend(pvVar3,sel_nextObject);
-  }
-  pcVar6 = &cfstr_HSCardsIndexesForRemovalKey;
-  pvVar1 = pvVar2;
-  pvVar3 = _objc_msgSend(cls_NSDictionary,sel_dictionaryWithObject_forKey_,pvVar2,
-                         &cfstr_HSCardsIndexesForRemovalKey);
-  _objc_msgSend(pvVar2,sel_release);
-  pvVar2 = _objc_msgSend(self,sel_stack);
-  pvVar4 = _objc_msgSend(self_00,sel_count);
-  if (pvVar4 != (id)0x0) {
-    pvVar4 = _objc_msgSend(pvVar2,sel_cardGroupController,pvVar1,pcVar6);
-    pvVar1 = self_00;
-    _objc_msgSend(pvVar4,sel_removeGroupCards_,self_00);
-  }
-  pvVar4 = _objc_msgSend(self_01,sel_count,pvVar1);
-  if (pvVar4 != (id)0x0) {
-    pvVar1 = self_01;
-    _objc_msgSend(pvVar2,sel_removeHyperChildren_,self_01);
-  }
-  _objc_msgSend(self_01,sel_release,pvVar1);
-  _objc_msgSend(self_00,sel_release);
-  pvVar1 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  pcVar6 = &cfstr_HSCardsDidDeleteNotification;
-  pHVar7 = self;
-  _objc_msgSend(pvVar1,sel_postNotificationName_object_userInfo_,&cfstr_HSCardsDidDeleteNotification
-                ,self,pvVar3);
-  if ((pvVar2 != (id)0x0) &&
-     (pvVar1 = _objc_msgSend(pvVar2,sel_hyperCount,pcVar6,pHVar7,pvVar3), pvVar1 == (id)0x0)) {
-    _objc_msgSend(self,sel_newCard_,self,pHVar7,pvVar3);
-  }
-  return;
-}
-
-*/
 - (void)actuallyRemoveCards:(id)aCards
 {
     [[HSObjectAssistantController sharedAssistantController] deactivateIfNeeded];
@@ -1057,42 +271,6 @@ void FUN_00273aa4(HSEditorDocument *self,SEL _cmd,id actuallyRemoveCards)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273d8d @ 00273d8d, 309 bytes * /
-
-void FUN_00273d8d(HSEditorDocument *self,SEL _cmd,id liveSlideShow)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_shouldHandleToolSwitching);
-  if (((char)pvVar1 != '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_canTogglePlayEdit), (char)pvVar1 != '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_playerView);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isSlideshow);
-    if ((char)pvVar1 == '\0') {
-      pvVar1 = _objc_msgSend(self,sel_playerInEditorWindowController);
-      pvVar2 = _objc_msgSend(pvVar1,sel_slideshowAttributesFromDialog);
-      if (pvVar2 == (id)0x0) {
-        return;
-      }
-      pvVar2 = _objc_msgSend(self,sel_currentCard);
-      pvVar2 = _objc_msgSend(pvVar2,sel_hyperUID);
-      _objc_msgSend(self,sel_testCardWithUID_animate_,pvVar2,0);
-      op = sel_startSlideShowWithAttributes_;
-    }
-    else {
-      pvVar1 = _objc_msgSend(self,sel_playerView);
-      op = sel_stopSlideshow;
-    }
-    _objc_msgSend(pvVar1,op);
-  }
-  return;
-}
-
-*/
 - (void)liveSlideShow:(id)aShow
 {
     if ([self shouldHandleToolSwitching] && [self canTogglePlayEdit]) {
@@ -1110,46 +288,6 @@ void FUN_00273d8d(HSEditorDocument *self,SEL _cmd,id liveSlideShow)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00273ec2 @ 00273ec2, 379 bytes * /
-
-void FUN_00273ec2(HSEditorDocument *self,SEL _cmd,id newCard)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  id pvVar3;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(cls_HSCard,sel_defaultObject);
-  pvVar2 = _objc_msgSend(self,sel_selectedHyperObject);
-  pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_003876e8);
-  pvVar2 = _objc_msgSend(pvVar2,sel_card);
-  self_00 = _objc_msgSend(self,sel_stack);
-  op = sel_addHyperChild_;
-  if (pvVar2 != (id)0x0) {
-    pvVar3 = _objc_msgSend(self_00,sel_indexOfHyperChild_,pvVar2);
-    self_00 = _objc_msgSend(self,sel_stack);
-    op = sel_insertHyperChild_atIndex_;
-    if (pvVar3 == (id)0x7fffffff) {
-      pvVar2 = _objc_msgSend(self,sel_stack,pvVar2);
-      _objc_msgSend(pvVar2,sel_hyperCount);
-      op = sel_insertHyperChild_atIndex_;
-    }
-  }
-  pvVar2 = pvVar1;
-  _objc_msgSend(self_00,op,pvVar1);
-  _objc_msgSend(pvVar1,sel_fillBackgroundWithEraserColorIfNeeded);
-  pvVar1 = _objc_msgSend(self,sel_isInPlayerMode);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_editorWindowController,pvVar2);
-    _objc_msgSend(pvVar1,sel_didAddNewCard);
-  }
-  return;
-}
-
-*/
 - (void)newCard:(id)aCard
 {
     HSCard *card = [HSCard defaultObject];
@@ -1260,36 +398,6 @@ void FUN_00273ec2(HSEditorDocument *self,SEL _cmd,id newCard)
     return pvVar2;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274365 @ 00274365, 336 bytes * /
-
-id FUN_00274365(HSEditorDocument *self,SEL _cmd)
-
-{
-  HSExportManager *pHVar1;
-  id self_00;
-  
-  pHVar1 = self->_exportManager;
-  if (pHVar1 == (HSExportManager *)0x0) {
-    pHVar1 = _objc_msgSend(cls_HSExportManager,sel_new);
-    self->_exportManager = pHVar1;
-    self_00 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-    _objc_msgSend(self_00,sel_addObserver_selector_name_object_,self,sel_exportManagerWillStart_,
-                  *(undefined4 *)PTR_PTR_00336428,self->_exportManager);
-    _objc_msgSend(self_00,sel_addObserver_selector_name_object_,self,sel_exportManagerDidEnd_,
-                  *(undefined4 *)PTR_PTR_00336424,self->_exportManager);
-    _objc_msgSend(self_00,sel_addObserver_selector_name_object_,self,
-                  sel_exportManagerDidEndPublishing_,*(undefined4 *)PTR_PTR_00336960,
-                  self->_exportManager);
-    _objc_msgSend(self_00,sel_addObserver_selector_name_object_,self,
-                  sel_exportManagerDidEndPublishing_,*(undefined4 *)PTR_PTR_00336964,
-                  self->_exportManager);
-    pHVar1 = self->_exportManager;
-  }
-  return pHVar1;
-}
-
-*/
 - (id)exportManager
 {
     if (_exportManager == nil) {
@@ -1401,37 +509,6 @@ id FUN_00274365(HSEditorDocument *self,SEL _cmd)
     return _minimalWindowApplier;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274842 @ 00274842, 264 bytes * /
-
-id FUN_00274842(HSEditorDocument *self,SEL _cmd,id newMinimalWindowApplierWithWindowController)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  pvVar1 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_supportsMinimalWindowMode);
-  if ((((char)pvVar1 != '\0') &&
-      (pvVar1 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_window),
-      pvVar1 != (id)0x0)) &&
-     (pvVar1 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_cardView),
-     pvVar1 != (id)0x0)) {
-    pvVar1 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_cardView);
-    pvVar1 = _objc_msgSend(pvVar1,sel_window);
-    pvVar2 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_window);
-    if (pvVar1 == pvVar2) {
-      pvVar1 = _objc_msgSend(cls_HSMinimalWindowApplier,sel_alloc);
-      pvVar2 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_cardView);
-      pvVar3 = _objc_msgSend(newMinimalWindowApplierWithWindowController,sel_window);
-      pvVar1 = _objc_msgSend(pvVar1,sel_initWithWindow_cardView_,pvVar3,pvVar2);
-      return pvVar1;
-    }
-  }
-  return (id)0x0;
-}
-
-*/
 - (id)newMinimalWindowApplierWithWindowController:(id)aController
 {
     if ([aController supportsMinimalWindowMode] && [aController window] != nil && [aController cardView] != nil && [[aController cardView] window] == [aController window]) {
@@ -1450,64 +527,6 @@ id FUN_00274842(HSEditorDocument *self,SEL _cmd,id newMinimalWindowApplierWithWi
     [[self editorCardView] selectHyperObjects:aObjects];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002749cf @ 002749cf, 458 bytes * /
-
-void FUN_002749cf(HSEditorDocument *self,SEL _cmd,SEL finalizeBitmapToolIfNeededForAction,id to,
-                 id from)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *puVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInStandardMode);
-  if ((char)pvVar1 == '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(self,sel_internalPlayerActive);
-  if ((char)pvVar1 != '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_selectedToolTag);
-  puVar3 = sel_openDrawer_;
-  if (pvVar1 != (id)0x12) {
-    return;
-  }
-  if (sel_redo_ == finalizeBitmapToolIfNeededForAction ||
-      (sel_undo_ == finalizeBitmapToolIfNeededForAction ||
-      (sel_openDrawer_ == finalizeBitmapToolIfNeededForAction ||
-      sel_actionToleranceChanged_ == finalizeBitmapToolIfNeededForAction))) {
-    if (sel_actionToleranceChanged_ == finalizeBitmapToolIfNeededForAction) {
-      pvVar1 = _objc_msgSend(cls_HSPaintBucketSettingsViewController,sel_class);
-      pvVar1 = _objc_msgSend(to,sel_isKindOfClass_,pvVar1);
-      if ((char)pvVar1 == '\0') goto LAB_00274ae3;
-    }
-    if (puVar3 != finalizeBitmapToolIfNeededForAction) {
-      return;
-    }
-    pvVar1 = _objc_msgSend(cls_HSToolPaletteController,sel_sharedInstance);
-    if (pvVar1 == to) {
-      return;
-    }
-  }
-LAB_00274ae3:
-  pvVar1 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_currentTool);
-  pvVar1 = _objc_msgSend(pvVar1,sel_bitmapTool);
-  puVar3 = sel_finalize_;
-  _objc_msgSend(pvVar1,sel_doCommandBySelector_,sel_finalize_);
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(pvVar1,sel_groupsByEvent);
-  if (((char)pvVar2 != '\0') &&
-     (pvVar2 = _objc_msgSend(pvVar1,sel_groupingLevel,puVar3), pvVar2 == (id)0x1)) {
-    _objc_msgSend(pvVar1,sel_NSE_endUndoAutogroup,puVar3);
-  }
-  return;
-}
-
-*/
 - (void)finalizeBitmapToolIfNeededForAction:(SEL)aAction to:(id)aTo from:(id)aFrom
 {
     if (![self isInStandardMode] || [self internalPlayerActive]) {
@@ -1537,58 +556,6 @@ LAB_00274ae3:
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274b99 @ 00274b99, 128 bytes * /
-
-void FUN_00274b99(HSEditorDocument *self,SEL _cmd,id togglePlayerMode)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode);
-  if (((char)pvVar1 == '\0') &&
-     ((pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode),
-      op = sel_exitPurePlayerModeWithAnimation_, (char)pvVar1 != '\0' ||
-      (pvVar1 = _objc_msgSend(self,sel_canTogglePlayEdit),
-      op = sel_enterPurePlayerModeWithAnimation_, (char)pvVar1 != '\0')))) {
-    _objc_msgSend(self,op,1);
-  }
-  return;
-}
-
-*/
-- (void)togglePlayerMode:(id)aMode
-{
-    if (![self isInPurePlayerMode] && ([self isInPurePlayerMode] || [self canTogglePlayEdit])) {
-        if ([self isInPurePlayerMode]) {
-            [self exitPurePlayerModeWithAnimation:YES];
-        } else {
-            [self enterPurePlayerModeWithAnimation:YES];
-        }
-    }
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274c19 @ 00274c19, 117 bytes * /
-
-void FUN_00274c19(HSEditorDocument *self,SEL _cmd,id togglePresentationMode)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInPresentationMode);
-  op = sel_exitPurePlayerModeWithAnimation_;
-  if (((char)pvVar1 != '\0') ||
-     (pvVar1 = _objc_msgSend(self,sel_canTogglePlayEdit),
-     op = sel_enterPurePlayerModeWithAnimation_withPreferencesSettings_, (char)pvVar1 != '\0')) {
-    _objc_msgSend(self,op,1);
-  }
-  return;
-}
-
-*/
 - (void)togglePresentationMode:(id)aMode
 {
     if ([self isInPresentationMode]) {
@@ -1598,63 +565,6 @@ void FUN_00274c19(HSEditorDocument *self,SEL _cmd,id togglePresentationMode)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274c8e @ 00274c8e, 542 bytes * /
-
-void FUN_00274c8e(HSEditorDocument *self,SEL _cmd,BOOL exitPurePlayerModeWithAnimation)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id self_00;
-  SEL op;
-  id pvVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_isStackProtected);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode);
-    pvVar2 = _objc_msgSend(self,sel_isInPresentationMode);
-    pvVar3 = _objc_msgSend(self,sel_modeSwitcher);
-    pvVar3 = _objc_msgSend(pvVar3,sel_switching);
-    if ((char)pvVar3 == '\0') {
-      pvVar3 = _objc_msgSend(self,sel_modeHistory);
-      pvVar3 = _objc_msgSend(pvVar3,sel_extraFirstObject);
-      self_00 = _objc_msgSend(self,sel_modeSwitcher);
-      op = sel_switchWithoutAnimationToModeController_deffered_;
-      if (exitPurePlayerModeWithAnimation != '\0') {
-        op = sel_switchToModeController_;
-      }
-      pvVar4 = pvVar3;
-      _objc_msgSend(self_00,op,pvVar3);
-      if (pvVar3 != (id)0x0) {
-        pvVar3 = _objc_msgSend(self,sel_modeHistory,pvVar4);
-        _objc_msgSend(pvVar3,sel_removeAllObjects);
-      }
-      pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,pvVar4);
-      _objc_msgSend(pvVar3,sel_activateIfNeeded);
-    }
-    if ((char)pvVar2 != '\0' || (char)pvVar1 != '\0') {
-      pvVar3 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-      _objc_msgSend(pvVar3,sel_documentEnteredPurePlayerMode_,0);
-    }
-    if ((char)pvVar2 == '\0') {
-      if ((char)pvVar1 != '\0') {
-        _objc_msgSend(self,sel_removeWindowController_,self->_purePlayerWindowController);
-        _objc_msgSend(self->_purePlayerWindowController,sel_release);
-        self->_purePlayerWindowController = (id)0x0;
-      }
-    }
-    else {
-      _objc_msgSend(self,sel_removeWindowController_,self->_presentationWindowController);
-      _objc_msgSend(self->_presentationWindowController,sel_release);
-      self->_presentationWindowController = (id)0x0;
-    }
-  }
-  return;
-}
-
-*/
 - (void)exitPurePlayerModeWithAnimation:(BOOL)aAnimation
 {
     if (![self isStackProtected]) {
@@ -1689,71 +599,6 @@ void FUN_00274c8e(HSEditorDocument *self,SEL _cmd,BOOL exitPurePlayerModeWithAni
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00274eac @ 00274eac, 661 bytes * /
-
-void FUN_00274eac(HSEditorDocument *self,SEL _cmd,BOOL enterPurePlayerModeWithAnimation,
-                 BOOL withPreferencesSettings)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  uint uVar6;
-  SEL op;
-  undefined4 uVar7;
-  
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  uVar7 = 0;
-  _objc_msgSend(pvVar1,sel_setDocumentInEditor_,0);
-  pvVar1 = _objc_msgSend(self,sel_isInPresentationMode);
-  pvVar2 = _objc_msgSend(self,sel_isInPurePlayerMode);
-  if ((char)pvVar2 == '\0' && (char)pvVar1 == '\0') {
-    pvVar3 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController,uVar7);
-    uVar7 = 1;
-    _objc_msgSend(pvVar3,sel_documentEnteredPurePlayerMode_,1);
-  }
-  pvVar3 = _objc_msgSend(self,sel_modeSwitcher,uVar7);
-  pvVar3 = _objc_msgSend(pvVar3,sel_switching);
-  if ((char)pvVar3 == '\0') {
-    pvVar3 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController,uVar7);
-    _objc_msgSend(pvVar3,sel_setActive_explicitlyByUser_,0,0);
-    pvVar3 = _objc_msgSend(self,sel_editorWindowController);
-    _objc_msgSend(pvVar3,sel_saveScrollerPosition);
-    uVar6 = (uint)(byte)withPreferencesSettings;
-    pvVar3 = _objc_msgSend(self,
-                           sel_purePlayerWindowControllerCreateIfNeeded_withPreferencesSettings_,1,
-                           uVar6);
-    pvVar4 = _objc_msgSend(self,sel_modeHistory);
-    pvVar5 = _objc_msgSend(self,sel_modeSwitcher);
-    pvVar5 = _objc_msgSend(pvVar5,sel_activeModeController);
-    _objc_msgSend(pvVar4,sel_addObject_,pvVar5);
-    pvVar4 = _objc_msgSend(self,sel_modeSwitcher);
-    op = sel_switchToModeController_;
-    if (enterPurePlayerModeWithAnimation == '\0') {
-      uVar6 = 0;
-      op = sel_switchWithoutAnimationToModeController_deffered_;
-    }
-    _objc_msgSend(pvVar4,op,pvVar3,uVar6);
-    if ((char)pvVar1 == '\0') {
-      if ((char)pvVar2 != '\0') {
-        _objc_msgSend(self,sel_removeWindowController_,self->_purePlayerWindowController,uVar6);
-        _objc_msgSend(self->_purePlayerWindowController,sel_release);
-        self->_purePlayerWindowController = (id)0x0;
-      }
-    }
-    else {
-      _objc_msgSend(self,sel_removeWindowController_,self->_presentationWindowController,uVar6);
-      _objc_msgSend(self->_presentationWindowController,sel_release);
-      self->_presentationWindowController = (id)0x0;
-    }
-  }
-  return;
-}
-
-*/
 - (void)enterPurePlayerModeWithAnimation:(BOOL)aAnimation withPreferencesSettings:(BOOL)aSettings
 {
     [[HSEditorController sharedDocumentController] setDocumentInEditor:NO];
@@ -1834,34 +679,6 @@ void FUN_00274eac(HSEditorDocument *self,SEL _cmd,BOOL enterPurePlayerModeWithAn
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002753ed @ 002753ed, 199 bytes * /
-
-void FUN_002753ed(HSEditorDocument *self,SEL _cmd,id toggleStoryboard)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar1 = _objc_msgSend(pvVar1,sel_switching);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_isInPresentationMode);
-    if (((char)pvVar1 != '\0') ||
-       (pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode), (char)pvVar1 != '\0')) {
-      _objc_msgSend(self,sel_exitPurePlayerModeWithAnimation_,1);
-    }
-    pvVar1 = _objc_msgSend(self,sel_isInStoryboardMode);
-    op = sel_exitStoryboardMode_;
-    if ((char)pvVar1 == '\0') {
-      op = sel_enterStoryboardMode_;
-    }
-    _objc_msgSend(self,op,toggleStoryboard);
-  }
-  return;
-}
-
-*/
 - (void)toggleStoryboard:(id)aStoryboard
 {
     if (![[self modeSwitcher] switching]) {
@@ -1876,53 +693,6 @@ void FUN_002753ed(HSEditorDocument *self,SEL _cmd,id toggleStoryboard)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002754b4 @ 002754b4, 385 bytes * /
-
-void FUN_002754b4(HSEditorDocument *self,SEL _cmd,id toggleIpadExportPreview)
-
-{
-  id pvVar1;
-  id self_00;
-  SEL op;
-  undefined4 uVar2;
-  undefined4 uVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInIpadExportPreviewMode);
-  if ((char)pvVar1 == '\0') {
-    _objc_msgSend(self,sel_invalidateIpadStack);
-    _objc_msgSend(self,sel_updateIPadStack);
-    if (self->_iPadStack == (id)0x0) {
-      return;
-    }
-    if (self->_originalStackStorage != (id)0x0) {
-      _objc_msgSend(self->_originalStackStorage,sel_release);
-    }
-    pvVar1 = _objc_msgSend(self,sel_stack);
-    pvVar1 = _objc_msgSend(pvVar1,sel_retain);
-    self->_originalStackStorage = pvVar1;
-    pvVar1 = self->_iPadStack;
-    uVar3 = 0;
-    uVar2 = 1;
-    op = sel_setStack_notify_clearChanges_;
-  }
-  else {
-    uVar3 = 0;
-    uVar2 = 1;
-    _objc_msgSend(self,sel_setStack_notify_clearChanges_,self->_originalStackStorage,1,0);
-    pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-    self_00 = _objc_msgSend(pvVar1,sel_activeModeController);
-    pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-    _objc_msgSend(self_00,sel_didBecomeWorkingInModeSwitcher_,pvVar1);
-    _objc_msgSend(self->_originalStackStorage,sel_release);
-    self->_originalStackStorage = (id)0x0;
-    op = sel_invalidateIPadUndoManager;
-  }
-  _objc_msgSend(self,op,pvVar1,uVar2,uVar3);
-  return;
-}
-
-*/
 - (id)modeHistory
 {
     id pvVar1;
@@ -1943,80 +713,6 @@ void FUN_002754b4(HSEditorDocument *self,SEL _cmd,id toggleIpadExportPreview)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027592e @ 0027592e, 779 bytes * /
-
-void FUN_0027592e(HSEditorDocument *self,SEL _cmd,id optimizeAndSaveAs)
-
-{
-  undefined *self_00;
-  id self_01;
-  id pvVar1;
-  undefined **ppuVar2;
-  SEL op;
-  cfstringStruct *pcVar3;
-  undefined4 uVar4;
-  id pvVar5;
-  undefined *local_2c;
-  undefined4 local_28;
-  undefined4 local_24;
-  code *local_20;
-  undefined *local_1c;
-  id local_18;
-  HSEditorDocument *local_14;
-  
-  self_01 = _objc_msgSend(cls_NSSavePanel,sel_savePanel);
-  pvVar1 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar5 = (id)0x0;
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,&cfstr_Optimize,&cfstr_empty,
-                         0);
-  _objc_msgSend(self_01,sel_setPrompt_,pvVar1);
-  pvVar1 = _objc_msgSend(self,sel_fileURL);
-  pvVar1 = _objc_msgSend(pvVar1,sel_path);
-  pvVar1 = _objc_msgSend(pvVar1,sel_lastPathComponent);
-  ppuVar2 = _objc_msgSend(pvVar1,sel_stringByDeletingPathExtension);
-  if (*(double *)PTR_0033605c <= 1038.0 && *(double *)PTR_0033605c != 1038.0) {
-    pcVar3 = &cfstr_stack;
-    _objc_msgSend(self_01,sel_setRequiredFileType_,&cfstr_stack);
-    pvVar1 = _objc_msgSend(self,sel_currentWindowController);
-    pvVar5 = _objc_msgSend(pvVar1,sel_window);
-    if (ppuVar2 == (undefined **)0x0) {
-      ppuVar2 = _objc_msgSend(self,sel_displayName,pcVar3);
-    }
-    pvVar1 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider,pcVar3);
-    pvVar1 = _objc_msgSend(pvVar1,sel_hyperStudioDocumentsFolder);
-    op = sel_beginSheetForDirectory_file_modalForWindow_modalDelegate_didEndSelector_contextInfo_;
-  }
-  else {
-    pvVar1 = _objc_msgSend(cls_NSArray,sel_arrayWithObject_,&cfstr_stack);
-    _objc_msgSend(self_01,sel_setAllowedFileTypes_,pvVar1);
-    self_00 = cls_NSURL;
-    pvVar1 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-    pvVar1 = _objc_msgSend(pvVar1,sel_hyperStudioDocumentsFolder);
-    uVar4 = 1;
-    pvVar1 = _objc_msgSend(self_00,sel_fileURLWithPath_isDirectory_,pvVar1,1);
-    _objc_msgSend(self_01,sel_setDirectoryURL_,pvVar1);
-    if (ppuVar2 == (undefined **)0x0) {
-      ppuVar2 = _objc_msgSend(self,sel_displayName,pvVar1,uVar4);
-    }
-    _objc_msgSend(self_01,sel_setNameFieldStringValue_,ppuVar2,uVar4);
-    local_2c = PTR_003361cc;
-    local_28 = 0x42000000;
-    local_24 = 0;
-    local_20 = FUN_0027cf86;
-    local_1c = &DAT_003426f0;
-    local_14 = self;
-    local_18 = self_01;
-    pvVar1 = _objc_msgSend(self,sel_currentWindowController);
-    pvVar1 = _objc_msgSend(pvVar1,sel_window);
-    ppuVar2 = &local_2c;
-    op = sel_beginSheetModalForWindow_completionHandler_;
-  }
-  _objc_msgSend(self_01,op,pvVar1,ppuVar2,pvVar5);
-  return;
-}
-
-*/
 - (void)optimizeAndSaveAs:(id)aAs
 {
     NSSavePanel *panel = [NSSavePanel savePanel];
@@ -2070,11 +766,6 @@ void FUN_0027592e(HSEditorDocument *self,SEL _cmd,id optimizeAndSaveAs)
     }
 }
 
-- (void)editStack:(id)aStack
-{
-    [self switchToEditorWithToolTag:1];
-}
-
 - (void)testCard:(id)aCard
 {
     [self testCardWithUID:[[self currentCard] hyperUID] animate:YES];
@@ -2094,35 +785,6 @@ void FUN_0027592e(HSEditorDocument *self,SEL _cmd,id optimizeAndSaveAs)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00275fd7 @ 00275fd7, 212 bytes * /
-
-void FUN_00275fd7(HSEditorDocument *self,SEL _cmd,id togglePlayEdit)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_shouldHandleToolSwitching);
-  if (((char)pvVar1 != '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_canTogglePlayEdit), (char)pvVar1 != '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_internalPlayerActive);
-    op = sel_testCard_;
-    if ((char)pvVar1 != '\0') {
-      pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode);
-      if (((char)pvVar1 != '\0') ||
-         (pvVar1 = _objc_msgSend(self,sel_isInPresentationMode), (char)pvVar1 != '\0')) {
-        _objc_msgSend(self,sel_exitPurePlayerModeWithAnimation_,0);
-      }
-      togglePlayEdit = (id)0x1;
-      op = sel_switchToEditorWithToolTag_;
-    }
-    _objc_msgSend(self,op,togglePlayEdit);
-  }
-  return;
-}
-
-*/
 - (void)togglePlayEdit:(id)aEdit
 {
     if ([self shouldHandleToolSwitching] && [self canTogglePlayEdit]) {
@@ -2151,43 +813,6 @@ void FUN_00275fd7(HSEditorDocument *self,SEL _cmd,id togglePlayEdit)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027614b @ 0027614b, 264 bytes * /
-
-void FUN_0027614b(HSEditorDocument *self,SEL _cmd,id switchToStandardMode)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInStandardMode);
-  if ((char)pvVar1 != '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(self,sel_isInPresentationMode);
-  if (((char)pvVar1 == '\0') &&
-     (pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode), (char)pvVar1 == '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_isInStoryboardMode);
-    op = sel_exitStoryboardMode_;
-    if (((char)pvVar1 == '\0') &&
-       (pvVar1 = _objc_msgSend(self,sel_isInIpadExportPreviewMode),
-       op = sel_toggleIpadExportPreview_, switchToStandardMode = self, (char)pvVar1 == '\0'))
-    goto LAB_0027620f;
-  }
-  else {
-    op = sel_exitPurePlayerModeWithAnimation_;
-    switchToStandardMode = (HSEditorDocument *)0x1;
-  }
-  _objc_msgSend(self,op,switchToStandardMode);
-LAB_0027620f:
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(self,sel_editorWindowController);
-  _objc_msgSend(pvVar1,sel_switchToModeController_,pvVar2);
-  return;
-}
-
-*/
 - (void)switchToStandardMode:(id)aMode
 {
     if ([self isInStandardMode]) {
@@ -2197,51 +822,18 @@ LAB_0027620f:
         [self exitPurePlayerModeWithAnimation:YES];
     } else if ([self isInStoryboardMode]) {
         [self exitStoryboardMode:aMode];
-    } else if ([self isInIpadExportPreviewMode]) {
+    } else if (NO) {
         [self toggleIpadExportPreview:self];
     }
     [[self modeSwitcher] switchToModeController:[self editorWindowController]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00276253 @ 00276253, 301 bytes * /
-
-BOOL FUN_00276253(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_mainWindowController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_cardView);
-  pvVar1 = _objc_msgSend(pvVar1,sel_canDeactivate);
-  pvVar2 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(pvVar2,sel_switching);
-  pvVar3 = _objc_msgSend(self,sel_editorCardView);
-  pvVar3 = _objc_msgSend(pvVar3,sel_isOccupiedByTool);
-  pvVar4 = _objc_msgSend(self,sel_isInPlayerMode);
-  if (((char)pvVar4 == '\0') &&
-     (((pvVar4 = _objc_msgSend(self,sel_isInAnimationMode), (char)pvVar4 != '\0' ||
-       (pvVar4 = _objc_msgSend(self,sel_isInPurePlayerMode), (char)pvVar4 != '\0')) ||
-      (pvVar4 = _objc_msgSend(self,sel_isInStoryboardMode), (char)pvVar4 != '\0')))) {
-    pvVar1 = _objc_msgSend(self,sel_modeHistory);
-    _objc_msgSend(pvVar1,sel_lastObject);
-  }
-  else if ((char)pvVar1 != '\0') {
-    return (char)pvVar3 == '\0' && (char)pvVar2 == '\0';
-  }
-  return '\0';
-}
-
-*/
 - (BOOL)canTogglePlayEdit
 {
     BOOL canDeactivate = [[[self mainWindowController] cardView] canDeactivate];
     BOOL switching = [[self modeSwitcher] switching];
     BOOL occupiedByTool = [[self editorCardView] isOccupiedByTool];
-    if (![self isInPlayerMode] && ([self isInAnimationMode] || [self isInPurePlayerMode] || [self isInStoryboardMode])) {
+    if (![self isInPlayerMode] && (NO || [self isInPurePlayerMode] || [self isInStoryboardMode])) {
         [[self modeHistory] lastObject];
         return NO;
     }
@@ -2276,40 +868,6 @@ BOOL FUN_00276253(HSEditorDocument *self,SEL _cmd)
     return (BOOL)[self prepareForActionThatRequiresSwitchToEditMode:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027647e @ 0027647e, 227 bytes * /
-
-BOOL FUN_0027647e(HSEditorDocument *self,SEL _cmd,BOOL prepareForActionThatRequiresSwitchToEditMode)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  
-  pvVar2 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(pvVar2,sel_switching);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(self,sel_isInPlayerMode);
-    if (((char)pvVar2 == '\0') ||
-       (pvVar2 = _objc_msgSend(self,sel_isStackProtected), (char)pvVar2 != '\0')) {
-      BVar1 = '\x01';
-    }
-    else {
-      pvVar2 = _objc_msgSend(self,sel_isInPurePlayerMode);
-      if (((char)pvVar2 != '\0') ||
-         (pvVar2 = _objc_msgSend(self,sel_isInPresentationMode), (char)pvVar2 != '\0')) {
-        _objc_msgSend(self,sel_exitPurePlayerModeWithAnimation_,0);
-      }
-      _objc_msgSend(self,sel_switchToEditor_,(int)prepareForActionThatRequiresSwitchToEditMode);
-      BVar1 = '\x01';
-    }
-  }
-  else {
-    BVar1 = '\0';
-  }
-  return BVar1;
-}
-
-*/
 - (BOOL)prepareForActionThatRequiresSwitchToEditMode:(BOOL)aMode
 {
     if ([[self modeSwitcher] switching]) {
@@ -2345,68 +903,6 @@ BOOL FUN_0027647e(HSEditorDocument *self,SEL _cmd,BOOL prepareForActionThatRequi
     [self switchToEditor:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00276641 @ 00276641, 745 bytes * /
-
-void FUN_00276641(HSEditorDocument *self,SEL _cmd,BOOL switchToEditor,BOOL blockingAnimation)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  undefined4 uVar3;
-  
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  uVar3 = 1;
-  _objc_msgSend(pvVar1,sel_setDocumentInEditor_,1);
-  pvVar1 = _objc_msgSend(self,sel_editorWindowController);
-  _objc_msgSend(pvVar1,sel_saveScrollerPosition);
-  pvVar1 = _objc_msgSend(self,sel_modeHistory);
-  _objc_msgSend(pvVar1,sel_removeAllObjects);
-  pvVar1 = _objc_msgSend(cls_HSActionMediaPlayer,sel_sharedActionMediaPlayer);
-  _objc_msgSend(pvVar1,sel_stopAllSounds);
-  pvVar1 = _objc_msgSend(self,sel_navigationController);
-  _objc_msgSend(pvVar1,sel_interruptAllNavigationOperations);
-  pvVar1 = _objc_msgSend(self,sel_textViewsToResetScrollPosition);
-  pvVar2 = _objc_msgSend(pvVar1,sel_objectEnumerator);
-  pvVar1 = _objc_msgSend(pvVar2,sel_nextObject);
-  while (pvVar1 != (id)0x0) {
-    _objc_msgSend(pvVar1,sel_setVerticalScrollPosition_,0);
-    uVar3 = 0;
-    _objc_msgSend(pvVar1,sel_setHorizontalScrollPosition_,0);
-    pvVar1 = _objc_msgSend(pvVar2,sel_nextObject);
-  }
-  pvVar1 = _objc_msgSend(self,sel_textViewsToResetScrollPosition,uVar3);
-  _objc_msgSend(pvVar1,sel_removeAllObjects);
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(self,sel_editorWindowController);
-  op = sel_switchToModeController_;
-  if (blockingAnimation != '\0') {
-    op = sel_switchWithBlockingAnimationAnimationToModeController_;
-  }
-  _objc_msgSend(pvVar1,op,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_navigationController);
-  pvVar2 = _objc_msgSend(cls_HSEditorNavigationController,sel_class);
-  pvVar1 = _objc_msgSend(pvVar1,sel_isKindOfClass_,pvVar2);
-  if ((char)pvVar1 == '\0') {
-    pvVar2 = (id)0x0;
-    _objc_msgSend(self,sel_setNavigationController_,0);
-  }
-  if (switchToEditor != '\0') {
-    pvVar1 = _objc_msgSend(self,sel_modeSwitcher,pvVar2);
-    pvVar2 = _objc_msgSend(pvVar1,sel_previousModeController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_modeSwitcherWindowController_,pvVar1);
-    pvVar2 = _objc_msgSend(pvVar2,sel_activeCard);
-    if (pvVar2 != (id)0x0) {
-      pvVar1 = _objc_msgSend(self,sel_mainWindowController,pvVar1);
-      pvVar1 = _objc_msgSend(pvVar1,sel_cardView);
-      _objc_msgSend(pvVar1,sel_setCard_,pvVar2);
-    }
-  }
-  return;
-}
-
-*/
 - (void)switchToEditor:(BOOL)aEditor blockingAnimation:(BOOL)aAnimation
 {
     [[HSEditorController sharedDocumentController] setDocumentInEditor:YES];
@@ -2456,40 +952,6 @@ void FUN_00276641(HSEditorDocument *self,SEL _cmd,BOOL switchToEditor,BOOL block
     [[self modeSwitcher] switchToModeController:[self editorWindowController]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00276ae5 @ 00276ae5, 413 bytes * /
-
-void FUN_00276ae5(HSEditorDocument *self,SEL _cmd,id testCardWithUID,BOOL animate)
-
-{
-  id pvVar1;
-  id pvVar2;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  _objc_msgSend(pvVar1,sel_setDocumentInEditor_,0);
-  pvVar1 = _objc_msgSend(self,sel_editorWindowController);
-  _objc_msgSend(pvVar1,sel_saveScrollerPosition);
-  _objc_msgSend(pvVar1,sel_saveEditingState);
-  pvVar1 = _objc_msgSend(cls_HSCursor,sel_cursorNamed_,*(undefined4 *)PTR_00336430);
-  _objc_msgSend(pvVar1,sel_set);
-  pvVar1 = _objc_msgSend(self,sel_cardView);
-  pvVar2 = _objc_msgSend(self,sel_stack);
-  pvVar2 = _objc_msgSend(pvVar2,sel_childWithUID_,testCardWithUID);
-  _objc_msgSend(pvVar1,sel_setCard_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_modeHistory);
-  _objc_msgSend(pvVar1,sel_removeAllObjects);
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar2 = _objc_msgSend(self,sel_playerInEditorWindowController);
-  op = sel_switchWithoutAnimationToModeController_deffered_;
-  if (animate != '\0') {
-    op = sel_switchToModeController_;
-  }
-  _objc_msgSend(pvVar1,op,pvVar2);
-  return;
-}
-
-*/
 - (void)testCardWithUID:(id)aUID animate:(BOOL)aAnimate
 {
     [[HSEditorController sharedDocumentController] setDocumentInEditor:NO];
@@ -2590,57 +1052,6 @@ void FUN_00276ae5(HSEditorDocument *self,SEL _cmd,id testCardWithUID,BOOL animat
     [[HSToolManager sharedToolManager] setToolView:nil];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00276fca @ 00276fca, 330 bytes * /
-
-void FUN_00276fca(HSEditorDocument *self,SEL _cmd)
-
-{
-  bool bVar1;
-  bool bVar2;
-  id pvVar3;
-  HSEditorDocument *pHVar4;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  if (self->_isInDocumentClosing == '\0') {
-    self->_isInDocumentClosing = '\x01';
-    pHVar4 = self;
-    _objc_msgSend(cls_NSObject,sel_cancelPreviousPerformRequestsWithTarget_,self);
-    pvVar3 = _objc_msgSend(self,sel_selectionController);
-    _objc_msgSend(pvVar3,sel_noteWindowControllerWillClose);
-    if (((self->_purePlayerWindowController == (id)0x0) ||
-        (pvVar3 = _objc_msgSend(self,sel_currentWindowController,pHVar4),
-        pvVar3 != self->_purePlayerWindowController)) ||
-       (pvVar3 = _objc_msgSend(self,sel_isInPurePlayerMode,pHVar4), (char)pvVar3 == '\0')) {
-      bVar2 = false;
-    }
-    else {
-      bVar2 = true;
-    }
-    if (((self->_presentationWindowController == (id)0x0) ||
-        (pvVar3 = _objc_msgSend(self,sel_currentWindowController),
-        pvVar3 != self->_presentationWindowController)) ||
-       (pvVar3 = _objc_msgSend(self,sel_isInPresentationMode), (char)pvVar3 == '\0')) {
-      bVar1 = false;
-    }
-    else {
-      bVar1 = true;
-    }
-    if (bVar1 || bVar2) {
-      pvVar3 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-      _objc_msgSend(pvVar3,sel_documentEnteredPurePlayerMode_,0);
-    }
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    _objc_msgSendSuper(&local_1c,sel_close);
-    self->_isInDocumentClosing = '\0';
-    return;
-  }
-  return;
-}
-
-*/
 - (void)close
 {
     if (!_isInDocumentClosing) {
@@ -2657,36 +1068,6 @@ void FUN_00276fca(HSEditorDocument *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277114 @ 00277114, 273 bytes * /
-
-void FUN_00277114(HSEditorDocument *self,SEL _cmd)
-
-{
-  HSEditorDocument *local_14;
-  undefined *local_10;
-  
-  local_14 = self;
-  local_10 = PTR_s_HSDocumentStoring_00356420;
-  _objc_msgSendSuper(&local_14,sel_removeWindowControllers);
-  if (self->_playerInEditorWindowController != (id)0x0) {
-    _objc_msgSend(self->_playerInEditorWindowController,sel_setStatusbarController_,0);
-    _objc_msgSend(self->_playerInEditorWindowController,sel_setToolbarController_,0);
-    _objc_msgSend(self->_playerInEditorWindowController,sel_release);
-    self->_playerInEditorWindowController = (id)0x0;
-  }
-  if (self->_storyboardController != (HSStoryboardController *)0x0) {
-    _objc_msgSend(self->_storyboardController,sel_release);
-    self->_storyboardController = (HSStoryboardController *)0x0;
-  }
-  if (self->_minimalWindowApplier != (HSMinimalWindowApplier *)0x0) {
-    _objc_msgSend(self->_minimalWindowApplier,sel_release);
-    self->_minimalWindowApplier = (HSMinimalWindowApplier *)0x0;
-  }
-  return;
-}
-
-*/
 - (void)removeWindowControllers
 {
     [super removeWindowControllers];
@@ -2695,10 +1076,6 @@ void FUN_00277114(HSEditorDocument *self,SEL _cmd)
         [_playerInEditorWindowController setToolbarController:nil];
         [_playerInEditorWindowController release];
         _playerInEditorWindowController = nil;
-    }
-    if (_animationModeController != nil) {
-        [_animationModeController release];
-        _animationModeController = nil;
     }
     if (_storyboardController != nil) {
         [_storyboardController release];
@@ -2710,47 +1087,6 @@ void FUN_00277114(HSEditorDocument *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277225 @ 00277225, 361 bytes * /
-
-void FUN_00277225(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  self_00 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  local_1c = self;
-  local_18 = PTR_s_HSDocumentStoring_00356420;
-  _objc_msgSendSuper(&local_1c,sel_createWindowControllers);
-  pvVar1 = _objc_msgSend(self_00,sel_sharedPlayerInEditorWindowController);
-  if (pvVar1 != (id)0x0) {
-    pvVar1 = _objc_msgSend(pvVar1,sel_retain);
-    self->_playerInEditorWindowController = pvVar1;
-    _objc_msgSend(self,sel_addWindowController_,pvVar1);
-    _objc_msgSend(self_00,sel_sharedPLayerInEditorWindowControllerHandled);
-  }
-  pvVar1 = _objc_msgSend(self_00,sel_sharedPurePlayerWindowController);
-  if (pvVar1 != (id)0x0) {
-    pvVar1 = _objc_msgSend(pvVar1,sel_retain);
-    self->_purePlayerWindowController = pvVar1;
-    _objc_msgSend(self,sel_addWindowController_,pvVar1);
-    _objc_msgSend(self_00,sel_sharedPurePlayerWindowControllerHandled);
-  }
-  pvVar1 = _objc_msgSend(self_00,sel_sharedPresentationWindowController);
-  if (pvVar1 != (id)0x0) {
-    pvVar1 = _objc_msgSend(pvVar1,sel_retain);
-    self->_presentationWindowController = pvVar1;
-    _objc_msgSend(self,sel_addWindowController_,pvVar1);
-    _objc_msgSend(self_00,sel_sharedPresentationWindowControllerHandled);
-  }
-  _objc_msgSend(self,sel_animationModeController);
-  return;
-}
-
-*/
 - (void)createWindowControllers
 {
     HSEditorController *controller = [HSEditorController sharedDocumentController];
@@ -2773,7 +1109,6 @@ void FUN_00277225(HSEditorDocument *self,SEL _cmd)
         [self addWindowController:_presentationWindowController];
         [controller sharedPresentationWindowControllerHandled];
     }
-    [self animationModeController];
 }
 
 - (void)cleanupWindowControllers
@@ -2792,57 +1127,12 @@ void FUN_00277225(HSEditorDocument *self,SEL _cmd)
     [super removeWindowController:aController];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277483 @ 00277483, 102 bytes * /
-
-void FUN_00277483(HSEditorDocument *self,SEL _cmd,id document,BOOL didSave,void *contextInfo)
-
-{
-  _objc_msgSend(contextInfo,sel_invokeCanCloseCallbackFrom_shouldClose_,self,(uint)(didSave != '\0')
-               );
-  _objc_msgSend(contextInfo,sel_release);
-  return;
-}
-
-*/
 - (void)document:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo
 {
     [(id)aInfo invokeCanCloseCallbackFrom:self shouldClose:aSave];
     [(id)aInfo release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002774e9 @ 002774e9, 220 bytes * /
-
-void FUN_002774e9(HSEditorDocument *self,SEL _cmd,id alertCloseStackProtectedDocumentDidEnd,
-                 int returnCode,void *contextInfo)
-
-{
-  id self_00;
-  SEL op;
-  HSEditorDocument *pHVar1;
-  HSEditorDocument *pHVar2;
-  
-  self_00 = _objc_msgSend(alertCloseStackProtectedDocumentDidEnd,sel_window);
-  _objc_msgSend(self_00,sel_orderOut_,self);
-  if (returnCode == 1000) {
-    pHVar1 = (HSEditorDocument *)0x1;
-    op = sel_runModalSavePanelForSaveOperation_delegate_didSaveSelector_contextInfo_;
-    pHVar2 = self;
-  }
-  else {
-    pHVar2 = (HSEditorDocument *)(uint)(returnCode == 0x3ea);
-    pHVar1 = self;
-    _objc_msgSend(contextInfo,sel_invokeCanCloseCallbackFrom_shouldClose_,self,pHVar2);
-    self = contextInfo;
-    op = sel_release;
-  }
-  _objc_msgSend(self,op,pHVar1,pHVar2);
-  _objc_msgSend(alertCloseStackProtectedDocumentDidEnd,sel_release);
-  return;
-}
-
-*/
 - (void)alertCloseStackProtectedDocumentDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     [[aEnd window] orderOut:self];
@@ -2855,39 +1145,6 @@ void FUN_002774e9(HSEditorDocument *self,SEL _cmd,id alertCloseStackProtectedDoc
     [aEnd release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002775c5 @ 002775c5, 261 bytes * /
-
-void FUN_002775c5(HSEditorDocument *self,SEL _cmd,id alertCloseHyperCastingModeDidEnd,int returnCode
-                 ,void *contextInfo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  if (returnCode == 1000) {
-    pvVar1 = _objc_msgSend(self,sel_exportManager);
-    _objc_msgSend(pvVar1,sel_stopExport);
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    pvVar2 = _objc_msgSend(contextInfo,sel_contextInfo);
-    pvVar1 = _objc_msgSend(contextInfo,sel_selector);
-    self = _objc_msgSend(contextInfo,sel_delegate);
-    _objc_msgSendSuper(&local_1c,sel_canCloseDocumentWithDelegate_shouldCloseSelector_contextInfo_,
-                       self,pvVar1,pvVar2);
-  }
-  else {
-    pvVar1 = (id)0x0;
-    _objc_msgSend(contextInfo,sel_invokeCanCloseCallbackFrom_shouldClose_,self,0);
-  }
-  _objc_msgSend(contextInfo,sel_release,self,pvVar1);
-  _objc_msgSend(alertCloseHyperCastingModeDidEnd,sel_release);
-  return;
-}
-
-*/
 - (void)alertCloseHyperCastingModeDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     if (aCode == 1000) {
@@ -2900,72 +1157,6 @@ void FUN_002775c5(HSEditorDocument *self,SEL _cmd,id alertCloseHyperCastingModeD
     [aEnd release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002776ca @ 002776ca, 269 bytes * /
-
-void FUN_002776ca(HSEditorDocument *self,SEL _cmd,id alertCloseAnimationModeDidEnd,int returnCode,
-                 void *contextInfo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  if (returnCode == 1000) {
-    pvVar1 = _objc_msgSend(self,sel_animationModeController);
-    _objc_msgSend(pvVar1,sel_finishAndApplyChanges_,0);
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    pvVar2 = _objc_msgSend(contextInfo,sel_contextInfo);
-    pvVar1 = _objc_msgSend(contextInfo,sel_selector);
-    self = _objc_msgSend(contextInfo,sel_delegate);
-    _objc_msgSendSuper(&local_1c,sel_canCloseDocumentWithDelegate_shouldCloseSelector_contextInfo_,
-                       self,pvVar1,pvVar2);
-  }
-  else {
-    pvVar1 = (id)0x0;
-    _objc_msgSend(contextInfo,sel_invokeCanCloseCallbackFrom_shouldClose_,self,0);
-  }
-  _objc_msgSend(contextInfo,sel_release,self,pvVar1);
-  _objc_msgSend(alertCloseAnimationModeDidEnd,sel_release);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002777d7 @ 002777d7, 283 bytes * /
-
-void FUN_002777d7(HSEditorDocument *self,SEL _cmd,id alertCloseRecordingMovieOrSoundDidEnd,
-                 int returnCode,void *contextInfo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  if (returnCode == 1000) {
-    pvVar1 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-    _objc_msgSend(pvVar1,sel_setActive_explicitlyByUser_,0,0);
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    pvVar2 = _objc_msgSend(contextInfo,sel_contextInfo);
-    pvVar1 = _objc_msgSend(contextInfo,sel_selector);
-    self = _objc_msgSend(contextInfo,sel_delegate);
-    _objc_msgSendSuper(&local_1c,sel_canCloseDocumentWithDelegate_shouldCloseSelector_contextInfo_,
-                       self,pvVar1,pvVar2);
-  }
-  else {
-    pvVar1 = (id)0x0;
-    _objc_msgSend(contextInfo,sel_invokeCanCloseCallbackFrom_shouldClose_,self,0);
-  }
-  _objc_msgSend(contextInfo,sel_release,self,pvVar1);
-  _objc_msgSend(alertCloseRecordingMovieOrSoundDidEnd,sel_release);
-  return;
-}
-
-*/
 - (void)alertCloseRecordingMovieOrSoundDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     if (aCode == 1000) {
@@ -2978,87 +1169,9 @@ void FUN_002777d7(HSEditorDocument *self,SEL _cmd,id alertCloseRecordingMovieOrS
     [aEnd release];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277979 @ 00277979, 641 bytes * /
-
-void FUN_00277979(HSEditorDocument *self,SEL _cmd,id canCloseDocumentWithDelegate,
-                 SEL shouldCloseSelector,void *contextInfo)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id pvVar6;
-  id pvVar7;
-  SEL op;
-  undefined *puVar8;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInAnimationMode);
-  pvVar2 = _objc_msgSend(self,sel_isInHyperCastingMode);
-  pvVar3 = _objc_msgSend(self,sel_stack);
-  pvVar3 = _objc_msgSend(pvVar3,sel_isStackProtected);
-  pvVar4 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar4 = _objc_msgSend(pvVar4,sel_isRecordingMovie);
-  pvVar5 = _objc_msgSend(cls_HSObjectAssistantController,sel_sharedAssistantController);
-  pvVar5 = _objc_msgSend(pvVar5,sel_isRecordingSound);
-  if (((char)pvVar2 == '\0' && (char)pvVar1 == '\0') &&
-     ((((char)pvVar3 == '\0' ||
-       (pvVar6 = _objc_msgSend(self,sel_isDocumentEdited), (char)pvVar6 == '\0')) &&
-      ((char)pvVar5 == '\0' && (char)pvVar4 == '\0')))) {
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    _objc_msgSendSuper(&local_1c,sel_canCloseDocumentWithDelegate_shouldCloseSelector_contextInfo_,
-                       canCloseDocumentWithDelegate,shouldCloseSelector,contextInfo);
-  }
-  else {
-    pvVar6 = _objc_msgSend(cls_HSCanCloseDocumentParametersData,sel_alloc);
-    pvVar6 = _objc_msgSend(pvVar6,sel_initWithDelegate_selector_contextInfo_,
-                           canCloseDocumentWithDelegate,shouldCloseSelector,contextInfo);
-    pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-    pvVar7 = _objc_msgSend(pvVar7,sel_window);
-    if ((char)pvVar1 == '\0') {
-      if ((char)pvVar2 == '\0') {
-        op = sel_createCanCloseRecordingMovieAlert;
-        if (((char)pvVar4 == '\0') &&
-           (op = sel_createCanCloseRecordingSoundAlert, (char)pvVar5 == '\0')) {
-          if ((char)pvVar3 == '\0') {
-            return;
-          }
-          pvVar1 = _objc_msgSend(self,sel_newCanCloseProtectedStackAlert,
-                                 canCloseDocumentWithDelegate,shouldCloseSelector,contextInfo);
-          puVar8 = sel_alertCloseStackProtectedDocumentDidEnd_returnCode_contextInfo_;
-        }
-        else {
-          pvVar1 = _objc_msgSend(self,op,canCloseDocumentWithDelegate,shouldCloseSelector,
-                                 contextInfo);
-          puVar8 = sel_alertCloseRecordingMovieOrSoundDidEnd_returnCode_contextInfo_;
-        }
-      }
-      else {
-        pvVar1 = _objc_msgSend(self,sel_createCanCloseHyperCastingModeAlert,
-                               canCloseDocumentWithDelegate,shouldCloseSelector,contextInfo);
-        puVar8 = sel_alertCloseHyperCastingModeDidEnd_returnCode_contextInfo_;
-      }
-    }
-    else {
-      pvVar1 = _objc_msgSend(self,sel_createCanCloseAnimationModeAlert,canCloseDocumentWithDelegate,
-                             shouldCloseSelector,contextInfo);
-      puVar8 = sel_alertCloseAnimationModeDidEnd_returnCode_contextInfo_;
-    }
-    _objc_msgSend(pvVar1,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_,
-                  pvVar7,self,puVar8,pvVar6);
-  }
-  return;
-}
-
-*/
 - (void)canCloseDocumentWithDelegate:(id)aDelegate shouldCloseSelector:(SEL)aSelector contextInfo:(void *)aInfo
 {
-    BOOL inAnimationMode = [self isInAnimationMode];
+    BOOL inAnimationMode = NO;
     BOOL inHyperCastingMode = [self isInHyperCastingMode];
     BOOL stackProtected = [[self stack] isStackProtected];
     BOOL recordingMovie = [[HSObjectAssistantController sharedAssistantController] isRecordingMovie];
@@ -3089,41 +1202,6 @@ void FUN_00277979(HSEditorDocument *self,SEL _cmd,id canCloseDocumentWithDelegat
     [alert beginSheetModalForWindow:window modalDelegate:self didEndSelector:didEnd contextInfo:parameters];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277cbc @ 00277cbc, 521 bytes * /
-
-id FUN_00277cbc(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_NavigationSaveDocumentAlertText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_NavigationSaveDocumentAlertInformativeText,&cfstr_empty,
-                         &cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_NavigationSaveDocumentSaveAsButtonTitle,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                         &cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_NavigationSaveDocumentDontSaveTitle,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  return self_00;
-}
-
-*/
 - (id)newCanCloseProtectedStackAlert
 {
     HSAlert *alert = [HSAlert new];
@@ -3135,36 +1213,6 @@ id FUN_00277cbc(HSEditorDocument *self,SEL _cmd)
     return alert;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00277ec5 @ 00277ec5, 427 bytes * /
-
-id FUN_00277ec5(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSHyperCastingModeQuitMessageText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSHyperCastingModeQuitInformativeText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSHyperCastingModeQuitCloseButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSHyperCastingModeQuitCancelButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  return self_00;
-}
-
-*/
 - (id)createCanCloseHyperCastingModeAlert
 {
     HSAlert *alert = [HSAlert new];
@@ -3176,36 +1224,6 @@ id FUN_00277ec5(HSEditorDocument *self,SEL _cmd)
     return alert;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00278070 @ 00278070, 427 bytes * /
-
-id FUN_00278070(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingMovieQuitMessageText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingMovieQuitInformativeText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingMovieQuitOKButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingMovieQuitCancelButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  return self_00;
-}
-
-*/
 - (id)createCanCloseRecordingMovieAlert
 {
     HSAlert *alert = [HSAlert new];
@@ -3217,36 +1235,6 @@ id FUN_00278070(HSEditorDocument *self,SEL _cmd)
     return alert;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027821b @ 0027821b, 427 bytes * /
-
-id FUN_0027821b(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingSoundQuitMessageText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingSoundQuitInformativeText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingSoundQuitOKButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSRecordingSoundQuitCancelButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  return self_00;
-}
-
-*/
 - (id)createCanCloseRecordingSoundAlert
 {
     HSAlert *alert = [HSAlert new];
@@ -3258,50 +1246,6 @@ id FUN_0027821b(HSEditorDocument *self,SEL _cmd)
     return alert;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002783c6 @ 002783c6, 427 bytes * /
-
-id FUN_002783c6(HSEditorDocument *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  
-  self_00 = _objc_msgSend(cls_HSAlert,sel_new);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationModeQuitMessageText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setMessageText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationModeQuitInformativeText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_setInformativeText_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationModeQuitOKButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  pvVar1 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationModeQuitCancelButtonText,&cfstr_empty,&cfstr_Alerts);
-  _objc_msgSend(self_00,sel_addButtonWithTitle_,pvVar1);
-  return self_00;
-}
-
-*/
-- (void)takeDataFromDocument:(id)aDocument
-{
-    id pvVar1;
-
-    [super takeDataFromDocument:aDocument];
-    pvVar1 = [aDocument modeSwitcher];
-    [self setModeSwitcher:pvVar1];
-    pvVar1 = [HSEditorDocument class];
-    if ([aDocument isKindOfClass:pvVar1]) {
-        pvVar1 = [aDocument modeHistory];
-        [self setModeHistory:pvVar1];
-    }
-}
-
 - (void)setPlayerView:(id)aView
 {
     if (_playerView != aView) {
@@ -3310,38 +1254,6 @@ id FUN_002783c6(HSEditorDocument *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00278686 @ 00278686, 172 bytes * /
-
-id FUN_00278686(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id *ppvVar2;
-  
-  if (self->_playerView == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode);
-    if ((((char)pvVar1 != '\0') ||
-        (pvVar1 = _objc_msgSend(self,sel_isInPresentationMode), (char)pvVar1 != '\0')) ||
-       (pvVar1 = self->_playerInEditorWindowController, pvVar1 == (id)0x0)) {
-      pvVar1 = _objc_msgSend(self,sel_isInPresentationMode);
-      if ((char)pvVar1 == '\0') {
-        ppvVar2 = &self->_purePlayerWindowController;
-      }
-      else {
-        ppvVar2 = &self->_presentationWindowController;
-      }
-      pvVar1 = *ppvVar2;
-    }
-    pvVar1 = _objc_msgSend(pvVar1,sel_playerView);
-    pvVar1 = _objc_msgSend(pvVar1,sel_retain);
-    self->_playerView = pvVar1;
-    return pvVar1;
-  }
-  return self->_playerView;
-}
-
-*/
 - (id)playerView
 {
     if (_playerView == nil) {
@@ -3369,78 +1281,6 @@ id FUN_00278686(HSEditorDocument *self,SEL _cmd)
     return [[self playerView] cardView];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002787cc @ 002787cc, 838 bytes * /
-
-void FUN_002787cc(HSEditorDocument *self,SEL _cmd)
-
-{
-  char cVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  undefined4 extraout_EDX;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  local_1c = self;
-  local_18 = PTR_s_HSDocumentStoring_00356420;
-  _objc_msgSendSuper(&local_1c,sel_makeWindowControllers);
-  if (self->_playerInEditorWindowController == (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_sharedPlayerInEditorWindowController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_playerInEditorWindowController = pvVar2;
-    if (pvVar2 != (id)0x0) {
-      _objc_msgSend(self,sel_addWindowController_,pvVar2);
-    }
-  }
-  pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  _objc_msgSend(pvVar2,sel_sharedPLayerInEditorWindowControllerHandled);
-  if (self->_presentationWindowController == (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_sharedPresentationWindowController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_presentationWindowController = pvVar2;
-    if (pvVar2 != (id)0x0) {
-      _objc_msgSend(self,sel_addWindowController_,pvVar2);
-    }
-  }
-  pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  _objc_msgSend(pvVar2,sel_sharedPresentationWindowControllerHandled);
-  if (self->_purePlayerWindowController == (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_sharedPurePlayerWindowController);
-    pvVar2 = _objc_msgSend(pvVar2,sel_retain);
-    self->_purePlayerWindowController = pvVar2;
-    if (pvVar2 != (id)0x0) {
-      _objc_msgSend(self,sel_addWindowController_,pvVar2);
-    }
-  }
-  pvVar2 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  _objc_msgSend(pvVar2,sel_sharedPurePlayerWindowControllerHandled);
-  _objc_msgSend(self,sel_animationModeController);
-  pvVar2 = _objc_msgSend(self,sel_fileURL);
-  if (pvVar2 == (id)0x0) {
-    pvVar2 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager);
-    pvVar3 = _objc_msgSend(self,sel_stack);
-    pvVar4 = _objc_msgSend(self,sel_stack);
-    _objc_msgSend(pvVar2,sel_addObject_forStack_,pvVar4,pvVar3);
-    pvVar2 = _objc_msgSend(cls_HSStack,sel_newStackCardSize);
-    cVar1 = _NSEqualSizes(pvVar2,extraout_EDX,*(undefined4 *)PTR_0033607c,
-                          *(undefined4 *)(PTR_0033607c + 4));
-    if (cVar1 == '\0') {
-      pvVar2 = _objc_msgSend(cls_HSNewStackCoachingPane,sel_new);
-      pvVar3 = _objc_msgSend(cls_HSCoachingHelpManager,sel_sharedCoachingHelpManager);
-      pvVar4 = _objc_msgSend(self,sel_stack);
-      _objc_msgSend(pvVar3,sel_pushAdditionalCoachingPane_forObject_,pvVar2,pvVar4);
-      _objc_msgSend(pvVar2,sel_release);
-    }
-  }
-  return;
-}
-
-*/
 - (void)makeWindowControllers
 {
     [super makeWindowControllers];
@@ -3465,7 +1305,6 @@ void FUN_002787cc(HSEditorDocument *self,SEL _cmd)
         }
     }
     [[HSEditorController sharedDocumentController] sharedPurePlayerWindowControllerHandled];
-    [self animationModeController];
     if ([self fileURL] == nil) {
         [[HSCoachingHelpManager sharedCoachingHelpManager] addObject:[self stack] forStack:[self stack]];
         if (!NSEqualSizes([HSStack newStackCardSize], NSZeroSize)) {
@@ -3501,75 +1340,6 @@ void FUN_002787cc(HSEditorDocument *self,SEL _cmd)
     return (unsigned int)([[self stack] queryHyperInterface:@protocol(HSScriptableEntity)] != nil);
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00278c2b @ 00278c2b, 420 bytes * /
-
-void FUN_00278c2b(HSEditorDocument *self,SEL _cmd,SEL performActionThatRequiresSwitchToEditMode,
-                 id sender)
-
-{
-  id pvVar1;
-  HSEditorDocument *self_00;
-  bool bVar2;
-  SEL op;
-  SEL pcVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_mainWindowController);
-  pcVar3 = performActionThatRequiresSwitchToEditMode;
-  pvVar1 = _objc_msgSend(pvVar1,sel_respondsToSelector_,performActionThatRequiresSwitchToEditMode);
-  if ((char)pvVar1 == '\0') {
-    pvVar1 = _objc_msgSend(self,sel_respondsToSelector_,performActionThatRequiresSwitchToEditMode);
-    self_00 = self;
-    if ((char)pvVar1 == '\0') {
-      self_00 = (HSEditorDocument *)0x0;
-    }
-  }
-  else {
-    self_00 = _objc_msgSend(self,sel_mainWindowController,pcVar3);
-  }
-  pvVar1 = _objc_msgSend(self_00,sel_respondsToSelector_,
-                         sel_actionRequiresConditionalPreprocessingBeforeSwitchToEditMode_);
-  if ((char)pvVar1 == '\0') {
-    bVar2 = false;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self_00,sel_actionRequiresConditionalPreprocessingBeforeSwitchToEditMode_
-                           ,performActionThatRequiresSwitchToEditMode);
-    bVar2 = (char)pvVar1 == '\0';
-  }
-  pcVar3 = sel_actionShouldWaitForFinishingSwitchToEditModeBeforeExecution_;
-  pvVar1 = _objc_msgSend(self_00,sel_respondsToSelector_,
-                         sel_actionShouldWaitForFinishingSwitchToEditModeBeforeExecution_);
-  if (((char)pvVar1 == '\0') ||
-     (pcVar3 = performActionThatRequiresSwitchToEditMode,
-     pvVar1 = _objc_msgSend(self_00,sel_actionShouldWaitForFinishingSwitchToEditModeBeforeExecution_
-                            ,performActionThatRequiresSwitchToEditMode), (char)pvVar1 == '\0')) {
-    if (((!bVar2) ||
-        (pvVar1 = _objc_msgSend(self,sel_shouldHandleActionThatRequiresImmediateSwitchToEditMode,
-                                pcVar3), op = sel_performSelector_withObject_, (char)pvVar1 == '\0')
-        ) && (pvVar1 = _objc_msgSend(self,
-                                     sel_shouldHandleActionThatRequiresConditionalSwitchToEditMode,
-                                     pcVar3), op = sel_performSelector_withObject_,
-             (char)pvVar1 == '\0')) {
-      return;
-    }
-  }
-  else {
-    performActionThatRequiresSwitchToEditMode =
-         _objc_msgSend(self,sel_addActionToPerformAfterSwitchToEditMode_sender_handler_,
-                       performActionThatRequiresSwitchToEditMode,sender,self_00);
-    pvVar1 = _objc_msgSend(self,sel_shouldHandleActionThatRequiresImmediateSwitchToEditMode);
-    self_00 = self;
-    op = sel_removeDelayedInvocationIfExists_;
-    if ((char)pvVar1 != '\0') {
-      return;
-    }
-  }
-  _objc_msgSend(self_00,op,performActionThatRequiresSwitchToEditMode,sender);
-  return;
-}
-
-*/
 - (void)performActionThatRequiresSwitchToEditMode:(SEL)aMode sender:(id)aSender
 {
     id target;
@@ -3604,36 +1374,6 @@ void FUN_00278c2b(HSEditorDocument *self,SEL _cmd,SEL performActionThatRequiresS
     [self flushActionsAfterSwitchToEditMode];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00278e65 @ 00278e65, 235 bytes * /
-
-void FUN_00278e65(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id self_00;
-  HSEditorDocument *pHVar2;
-  
-  pvVar1 = _objc_msgSend(self->_invocationsToPerformAfterSwitchToEditMode,sel_count);
-  if (pvVar1 != (id)0x0) {
-    pHVar2 = self->_invocationsToPerformAfterSwitchToEditMode;
-    pvVar1 = _objc_msgSend(cls_NSArray,sel_arrayWithArray_,pHVar2);
-    _objc_msgSend(self->_invocationsToPerformAfterSwitchToEditMode,sel_removeAllObjects);
-    self_00 = _objc_msgSend(pvVar1,sel_objectEnumerator);
-    pvVar1 = _objc_msgSend(self_00,sel_nextObject);
-    while (pvVar1 != (id)0x0) {
-      pHVar2 = _objc_msgSend(pvVar1,sel_target,pHVar2);
-      if (pHVar2 == (HSEditorDocument *)0x0) {
-        pHVar2 = self;
-      }
-      _objc_msgSend(pvVar1,sel_invokeWithTarget_,pHVar2);
-      pvVar1 = _objc_msgSend(self_00,sel_nextObject);
-    }
-  }
-  return;
-}
-
-*/
 - (void)flushActionsAfterSwitchToEditMode
 {
     if ([_invocationsToPerformAfterSwitchToEditMode count] != 0) {
@@ -3651,41 +1391,6 @@ void FUN_00278e65(HSEditorDocument *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00278f50 @ 00278f50, 260 bytes * /
-
-id FUN_00278f50(HSEditorDocument *self,SEL _cmd,SEL addActionToPerformAfterSwitchToEditMode,
-               id sender,id handler)
-
-{
-  id pvVar1;
-  id self_00;
-  id *ppvVar2;
-  undefined4 uVar3;
-  id local_14;
-  
-  local_14 = sender;
-  pvVar1 = _objc_msgSend(handler,sel_methodSignatureForSelector_,
-                         addActionToPerformAfterSwitchToEditMode);
-  pvVar1 = _objc_msgSend(cls_NSInvocation,sel_invocationWithMethodSignature_,pvVar1);
-  _objc_msgSend(pvVar1,sel_setSelector_,addActionToPerformAfterSwitchToEditMode);
-  if (self != handler) {
-    _objc_msgSend(pvVar1,sel_setTarget_,handler);
-  }
-  ppvVar2 = &local_14;
-  uVar3 = 2;
-  _objc_msgSend(pvVar1,sel_setArgument_atIndex_,ppvVar2,2);
-  _objc_msgSend(pvVar1,sel_retainArguments);
-  self_00 = self->_invocationsToPerformAfterSwitchToEditMode;
-  if (self_00 == (id)0x0) {
-    self_00 = _objc_msgSend(cls_NSMutableArray,sel_new,ppvVar2,uVar3);
-    self->_invocationsToPerformAfterSwitchToEditMode = self_00;
-  }
-  _objc_msgSend(self_00,sel_addObject_,pvVar1,uVar3);
-  return pvVar1;
-}
-
-*/
 - (id)addActionToPerformAfterSwitchToEditMode:(SEL)aMode sender:(id)aSender handler:(id)aHandler
 {
     id sender = aSender;
@@ -3728,71 +1433,14 @@ id FUN_00278f50(HSEditorDocument *self,SEL _cmd,SEL addActionToPerformAfterSwitc
     return YES;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_002790b2 @ 002790b2, 142 bytes * /
-
-BOOL FUN_002790b2(HSEditorDocument *self,SEL _cmd,
-                 id validateUserInterfaceItemThatRequiresTogglePlayEditModes)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInAnimationMode);
-  if (((((char)pvVar1 == '\0') &&
-       (pvVar1 = _objc_msgSend(self,sel_isInStoryboardMode), (char)pvVar1 == '\0')) &&
-      (pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode), (char)pvVar1 == '\0')) &&
-     (pvVar1 = _objc_msgSend(self,sel_canTogglePlayEdit), (char)pvVar1 != '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_isInHyperCastingMode);
-    return (char)pvVar1 == '\0';
-  }
-  return '\0';
-}
-
-*/
 - (BOOL)validateUserInterfaceItemThatRequiresTogglePlayEditModes:(id)aModes
 {
-    if ([self isInAnimationMode] || [self isInStoryboardMode] || [self isInPurePlayerMode] || ![self canTogglePlayEdit]) {
+    if (NO || [self isInStoryboardMode] || [self isInPurePlayerMode] || ![self canTogglePlayEdit]) {
         return NO;
     }
     return ![self isInHyperCastingMode];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00279140 @ 00279140, 222 bytes * /
-
-BOOL FUN_00279140(HSEditorDocument *self,SEL _cmd,
-                 id validateUserInterfaceItemThatRequiresSwitchToEditMode)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  pvVar2 = _objc_msgSend(self,sel_mainWindowController);
-  pvVar3 = _objc_msgSend(validateUserInterfaceItemThatRequiresSwitchToEditMode,sel_action);
-  pvVar2 = _objc_msgSend(pvVar2,sel_respondsToSelector_,pvVar3);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(validateUserInterfaceItemThatRequiresSwitchToEditMode,sel_action,pvVar3);
-    pvVar2 = _objc_msgSend(self,sel_respondsToSelector_,pvVar2);
-    if ((char)pvVar2 == '\0') {
-      BVar1 = '\0';
-    }
-    else {
-      pvVar2 = _objc_msgSend(self,sel_validateUserInterfaceItem_,
-                             validateUserInterfaceItemThatRequiresSwitchToEditMode);
-      BVar1 = (BOOL)pvVar2;
-    }
-  }
-  else {
-    pvVar2 = _objc_msgSend(self,sel_mainWindowController,pvVar3);
-    pvVar2 = _objc_msgSend(pvVar2,sel_validateUserInterfaceItem_,
-                           validateUserInterfaceItemThatRequiresSwitchToEditMode);
-    BVar1 = (BOOL)pvVar2;
-  }
-  return BVar1;
-}
-
-*/
 - (BOOL)validateUserInterfaceItemThatRequiresSwitchToEditMode:(id)aMode
 {
     if ([[self mainWindowController] respondsToSelector:[aMode action]]) {
@@ -3804,522 +1452,16 @@ BOOL FUN_00279140(HSEditorDocument *self,SEL _cmd,
     return NO;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027921e @ 0027921e, 4018 bytes * /
-
-BOOL FUN_0027921e(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItem)
-
-{
-  bool bVar1;
-  byte bVar2;
-  byte bVar3;
-  byte bVar4;
-  byte bVar5;
-  char cVar6;
-  id pvVar7;
-  undefined *puVar8;
-  id pvVar9;
-  cfstringStruct *pcVar10;
-  HSEditorDocument *pHVar11;
-  byte bVar12;
-  byte bVar14;
-  uint uVar13;
-  undefined *puVar15;
-  undefined4 uVar16;
-  SEL pcVar17;
-  char local_1d;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  local_1c = self;
-  local_18 = PTR_s_HSDocumentStoring_00356420;
-  pvVar7 = _objc_msgSendSuper(&local_1c,sel_validateUserInterfaceItem_,validateUserInterfaceItem);
-  local_1d = (char)pvVar7;
-  puVar8 = _objc_msgSend(validateUserInterfaceItem,sel_action);
-  pvVar7 = _objc_msgSend(self,sel_isInAnimationMode);
-  bVar2 = (byte)pvVar7;
-  pvVar7 = _objc_msgSend(self,sel_isInPurePlayerMode);
-  bVar12 = (byte)pvVar7;
-  pvVar7 = _objc_msgSend(self,sel_isInStoryboardMode);
-  bVar3 = (byte)pvVar7;
-  uVar13 = (uint)CONCAT11(bVar3,bVar12);
-  pvVar7 = _objc_msgSend(self,sel_isInHyperCastingMode);
-  bVar4 = (byte)pvVar7;
-  pvVar7 = _objc_msgSend(self,sel_isInPresentationMode);
-  bVar14 = (byte)pvVar7;
-  pvVar7 = _objc_msgSend(self,sel_isInIpadExportPreviewMode);
-  bVar5 = (byte)pvVar7;
-  puVar15 = sel_setState_;
-  if ((puVar8 == sel_togglePresentationMode_) || (puVar8 == sel_switchToPresentationMode_)) {
-    pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-    if ((char)pvVar7 != '\0') {
-      uVar13 = (uint)CONCAT11(bVar3,bVar14 != 0);
-      puVar15 = (undefined *)(uVar13 & 0xff);
-      _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar15);
-    }
-    bVar12 = bVar14;
-    if ((char)(uVar13 >> 8) != '\0' || bVar2 != 0) {
-      return '\0';
-    }
-  }
-  else {
-    if ((puVar8 != sel_togglePlayerMode_) && (puVar8 != sel_switchToPurePlayerMode_)) {
-      if (((puVar8 == sel_saveDocument_) || (puVar8 == sel_saveDocumentAs_)) ||
-         (puVar8 == sel_optimizeAndSaveAs_)) {
-        if (bVar2 != 0) {
-          return '\0';
-        }
-        pvVar7 = _objc_msgSend(self,sel_isWritingDisabled);
-        bVar14 = bVar5;
-        if ((char)pvVar7 != '\0') {
-          return '\0';
-        }
-      }
-      else {
-        if (puVar8 != sel_revertDocumentToSaved_) {
-          if (((puVar8 == sel_exportTo_) || (puVar8 == sel_exportToHTML5_)) ||
-             (puVar8 == sel_exportForiBooksAuthor_)) {
-            pvVar7 = _objc_msgSend(self,sel_isWritingDisabled);
-            if ((char)pvVar7 != '\0') {
-              return '\0';
-            }
-            if (bVar4 != 0 || bVar2 != 0) {
-              return '\0';
-            }
-            pvVar7 = _objc_msgSend(self,sel_exportManager);
-            pvVar7 = _objc_msgSend(pvVar7,sel_isExporting);
-            bVar14 = (byte)pvVar7;
-LAB_0027961b:
-            local_1d = bVar14 == 0;
-          }
-          else if (puVar8 == sel_togglePlayEdit_) {
-            pvVar7 = validateUserInterfaceItem;
-            pvVar9 = _objc_msgSend(self,
-                                   sel_validateUserInterfaceItemThatRequiresTogglePlayEditModes_,
-                                   validateUserInterfaceItem);
-            local_1d = (char)pvVar9;
-            pvVar9 = _objc_msgSend(self,sel_isInPlayerMode);
-            if ((char)pvVar9 == '\0') {
-              uVar13 = (uint)CONCAT11(bVar3 | bVar2,bVar12);
-              if ((bVar3 | bVar2) != 0) {
-                pvVar7 = _objc_msgSend(self,sel_modeHistory,pvVar7);
-                pvVar7 = _objc_msgSend(pvVar7,sel_lastObject);
-                if (pvVar7 == self->_playerInEditorWindowController) goto LAB_0027966f;
-              }
-              uVar16 = 0;
-            }
-            else {
-LAB_0027966f:
-              bVar12 = (byte)uVar13;
-              uVar16 = 1;
-            }
-            pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-            if ((char)pvVar7 != '\0') {
-              _objc_msgSend(validateUserInterfaceItem,sel_setState_,uVar16);
-            }
-            if (bVar12 != 0) {
-              return '\0';
-            }
-          }
-          else {
-            if (puVar8 == sel_switchToStandardMode_) {
-              pvVar7 = _objc_msgSend(self,sel_isInAnimationMode);
-              if (((char)pvVar7 == '\0') &&
-                 (pvVar7 = _objc_msgSend(self,sel_isInHyperCastingMode), (char)pvVar7 == '\0')) {
-                local_1d = '\x01';
-              }
-              else {
-                local_1d = '\0';
-              }
-              pvVar7 = _objc_msgSend(self,sel_isInStandardMode);
-              pvVar9 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_
-                                    );
-              if ((char)pvVar9 != '\0') {
-                _objc_msgSend(validateUserInterfaceItem,sel_setState_,(uint)((char)pvVar7 != '\0'));
-              }
-              goto joined_r0x0027a150;
-            }
-            if ((puVar8 == sel_toggleStoryboard_) || (puVar8 == sel_enterStoryboardMode_)) {
-              if ((bVar14 == 0 && bVar12 == 0) && ((bVar2 == 0 && (local_1d != '\0')))) {
-                pvVar7 = _objc_msgSend(self,sel_modeSwitcher);
-                pvVar7 = _objc_msgSend(pvVar7,sel_switching);
-                if ((char)pvVar7 != '\0') goto LAB_0027982a;
-                pvVar7 = _objc_msgSend(self,sel_navigationController);
-                pvVar7 = _objc_msgSend(pvVar7,sel_currentNavigationOperation);
-                if ((pvVar7 != (id)0x0) || (bVar5 != 0 || bVar4 != 0)) goto LAB_0027982a;
-                local_1d = '\x01';
-              }
-              else {
-LAB_0027982a:
-                local_1d = '\0';
-              }
-              pvVar7 = _objc_msgSend(cls_NSMenuItem,sel_class);
-              pvVar9 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-              if ((char)pvVar9 != '\0') {
-                uVar13 = (uint)CONCAT11(bVar3,bVar3 != 0);
-                pvVar7 = (id)(uVar13 & 0xff);
-                _objc_msgSend(validateUserInterfaceItem,sel_setState_,pvVar7);
-              }
-              pvVar7 = _objc_msgSend(cls_HSButton,sel_class,pvVar7);
-              pvVar9 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-              if ((char)pvVar9 == '\0') {
-                pvVar7 = _objc_msgSend(cls_NSButton,sel_class,pvVar7);
-                pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-                if ((char)pvVar7 == '\0') goto joined_r0x0027a150;
-                pHVar11 = (HSEditorDocument *)cls_NSImage;
-                pcVar17 = sel_imageNamed_;
-                if ((char)(uVar13 >> 8) == '\0') {
-                  pcVar10 = &cfstr_StoryBoardIcon;
-                }
-                else {
-                  pcVar10 = &cfstr_StoryBoard_On;
-                }
-              }
-              else {
-                pcVar10 = &cfstr_Storyboard;
-                pHVar11 = (HSEditorDocument *)cls_NSImage;
-                pcVar17 = sel_imageNamed_;
-              }
-            }
-            else if (puVar8 == sel_toggleCardIndex_) {
-              if ((((bVar3 == 0 && bVar12 == 0) && bVar14 == 0) && (bVar2 == 0)) &&
-                 (local_1d != '\0')) {
-                pvVar7 = _objc_msgSend(self,sel_modeSwitcher);
-                pvVar7 = _objc_msgSend(pvVar7,sel_switching);
-                if ((char)pvVar7 != '\0') goto LAB_002799de;
-                pvVar7 = _objc_msgSend(self,sel_navigationController);
-                pvVar7 = _objc_msgSend(pvVar7,sel_currentNavigationOperation);
-                if ((pvVar7 != (id)0x0) || (bVar4 != 0)) goto LAB_002799de;
-                local_1d = '\x01';
-              }
-              else {
-LAB_002799de:
-                local_1d = '\0';
-              }
-              pvVar7 = _objc_msgSend(cls_NSMenuItem,sel_class);
-              pvVar9 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-              if ((char)pvVar9 != '\0') {
-                pvVar7 = _objc_msgSend(self,sel_stackView,pvVar7);
-                pvVar7 = _objc_msgSend(pvVar7,sel_isStripVisible);
-                pvVar7 = (id)(uint)((char)pvVar7 != '\0');
-                _objc_msgSend(validateUserInterfaceItem,sel_setState_,pvVar7);
-              }
-              pvVar7 = _objc_msgSend(cls_NSButton,sel_class,pvVar7);
-              pvVar9 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pvVar7);
-              if ((char)pvVar9 == '\0') goto joined_r0x0027a150;
-              pvVar7 = _objc_msgSend(self,sel_stackView,pvVar7);
-              pvVar7 = _objc_msgSend(pvVar7,sel_isStripVisible);
-              pHVar11 = (HSEditorDocument *)cls_NSImage;
-              pcVar17 = sel_imageNamed_;
-              if (((char)pvVar7 == '\0') || (local_1d == '\0')) {
-                pcVar10 = &cfstr_CardIndex;
-              }
-              else {
-                pcVar10 = &cfstr_CardIndex_On;
-              }
-            }
-            else {
-              if (puVar8 == sel_toggleBottomToolbar_) {
-                pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,
-                                       sel_setState_);
-                if ((char)pvVar7 != '\0') {
-                  pvVar7 = _objc_msgSend(self,sel_currentWindowController,puVar15);
-                  pvVar7 = _objc_msgSend(pvVar7,sel_isBottomToolbarVisible);
-                  _objc_msgSend(validateUserInterfaceItem,sel_setState_,(uint)((char)pvVar7 != '\0')
-                               );
-                }
-                bVar14 = bVar3 | bVar12 | bVar4 | bVar14;
-                goto LAB_0027961b;
-              }
-              if ((puVar8 == sel_newCard_) || (puVar8 == sel_goToCard_)) {
-                if (bVar12 == 0 && bVar2 == 0) {
-                  pvVar7 = _objc_msgSend(self,sel_editorCardView);
-                  pvVar7 = _objc_msgSend(pvVar7,sel_isEditable);
-                  if ((char)pvVar7 == '\0') goto LAB_00279be6;
-                  pvVar7 = _objc_msgSend(self,sel_navigationController);
-                  pvVar7 = _objc_msgSend(pvVar7,sel_currentNavigationOperation);
-                  if ((pvVar7 != (id)0x0) || (bVar4 != 0)) goto LAB_00279be6;
-                  local_1d = '\x01';
-                }
-                else {
-LAB_00279be6:
-                  local_1d = '\0';
-                }
-                if (puVar8 == sel_newCard_) {
-                  local_1d = local_1d != '\0' && bVar14 == 0;
-                }
-                goto joined_r0x0027a150;
-              }
-              if (puVar8 == sel_removeCurrentCard_) {
-                if ((bVar12 != 0 || bVar2 != 0) || bVar4 != 0) {
-                  return '\0';
-                }
-                pvVar7 = _objc_msgSend(self,sel_selectionController);
-                pvVar7 = _objc_msgSend(pvVar7,sel_selectedHyperObject);
-                pvVar7 = _objc_msgSend(pvVar7,sel_allHyperInterfaces);
-                puVar15 = &DAT_003875bc;
-                pvVar7 = _objc_msgSend(pvVar7,sel_queryHyperInterfaceForAllObjects_,&DAT_003875bc);
-                pvVar7 = _objc_msgSend(pvVar7,sel_countOfAllHyperInterfaces);
-                if ((pvVar7 == (id)0x0) &&
-                   (pvVar7 = _objc_msgSend(self,sel_activeCard,puVar15), pvVar7 == (id)0x0)) {
-                  return '\0';
-                }
-                pvVar7 = _objc_msgSend(self,sel_navigationController,puVar15);
-                pvVar7 = _objc_msgSend(pvVar7,sel_currentNavigationOperation);
-                if (pvVar7 != (id)0x0) {
-                  return '\0';
-                }
-                goto LAB_002793ab;
-              }
-              if ((((((((puVar8 == sel_goBack_) || (puVar8 == sel_goForward_)) ||
-                      (puVar8 == sel_goToNextCard_)) ||
-                     ((puVar8 == sel_goToPreviousCard_ ||
-                      (puVar8 == sel_goToNextCardWithoutLeaveActions_)))) ||
-                    (puVar8 == sel_goToPreviousCardWithoutLeaveActions_)) ||
-                   (((puVar8 == sel_goToLastCardWithoutLeaveActions_ ||
-                     (puVar8 == sel_goToFirstCardWithoutLeaveActions_)) ||
-                    ((puVar8 == sel_goBackWithoutLeaveActions_ ||
-                     (((puVar8 == sel_goForwardWithoutLeaveActions_ ||
-                       (puVar8 == sel_goToSpecificCardWithoutLeaveActions_)) ||
-                      (puVar8 == sel_goToHomeWithoutLeaveActions_)))))))) ||
-                  ((puVar8 == sel_goToLastCard_ || (puVar8 == sel_goToFirstCard_)))) ||
-                 (puVar8 == sel_goToSpecificCard_)) {
-                if ((bVar2 == 0) && (local_1d != '\0')) {
-                  pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-                  pvVar9 = _objc_msgSend(self,sel_storyboardController);
-                  if (pvVar7 == pvVar9) goto LAB_00279da0;
-                  local_1d = '\x01';
-                }
-                else {
-LAB_00279da0:
-                  local_1d = '\0';
-                }
-                pvVar7 = _objc_msgSend(self,sel_navigationController);
-                pvVar7 = _objc_msgSend(pvVar7,sel_respondsToSelector_,puVar8);
-                if ((char)pvVar7 == '\0') goto joined_r0x0027a150;
-                if (local_1d == '\0') {
-                  return '\0';
-                }
-                pvVar7 = _objc_msgSend(self,sel_navigationController,puVar8);
-LAB_0027a149:
-                pvVar7 = _objc_msgSend(pvVar7,sel_validateUserInterfaceItem_,
-                                       validateUserInterfaceItem);
-                local_1d = (char)pvVar7;
-                goto joined_r0x0027a150;
-              }
-              if ((puVar8 != sel_testStack_) && (puVar8 != sel_testCard_)) {
-                if (puVar8 == sel_editStack_) {
-                  if (((bVar12 == 0) && (local_1d != '\0')) &&
-                     ((bVar3 == 0 && bVar2 == 0) && bVar4 == 0)) {
-                    local_1d = '\x01';
-                  }
-                  else {
-                    local_1d = '\0';
-                  }
-                  pvVar7 = _objc_msgSend(self,sel_internalPlayerActive);
-                  if ((char)pvVar7 == '\0') {
-                    pvVar7 = _objc_msgSend(cls_HSToolManager,sel_sharedToolManager);
-                    pvVar7 = _objc_msgSend(pvVar7,sel_selectedToolTag);
-                    if (pvVar7 != (id)0x1) goto LAB_00279f6b;
-                    bVar1 = false;
-                  }
-                  else {
-LAB_00279f6b:
-                    bVar1 = true;
-                  }
-                  if (local_1d != '\0') {
-                    pcVar10 = _objc_msgSend(cls_NSButtonCell,sel_class);
-                    pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pcVar10);
-                    if ((char)pvVar7 != '\0') {
-                      pHVar11 = self;
-                      pcVar17 = sel_editModeSelectedImage;
-                      if (bVar1) {
-                        pHVar11 = self;
-                        pcVar17 = sel_editModeNormalImage;
-                      }
-                      goto LAB_0027993a;
-                    }
-                  }
-                  goto joined_r0x0027a150;
-                }
-                if (puVar8 == sel_addReadyMadeCards_) {
-                  if ((((bVar12 == 0 && bVar2 == 0) && bVar4 == 0) && bVar14 == 0) && bVar5 == 0) {
-                    pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-                    pvVar7 = _objc_msgSend(pvVar7,sel_cardView);
-                    pvVar7 = _objc_msgSend(pvVar7,sel_isOccupiedByTool);
-                    if ((char)pvVar7 != '\0') goto LAB_0027a054;
-                  }
-                  else {
-LAB_0027a054:
-                    local_1d = '\0';
-                  }
-                  pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-                  pHVar11 = _objc_msgSend(pvVar7,sel_cardView);
-                  puVar15 = sel_isOccupiedByTool;
-                  pvVar7 = _objc_msgSend(pHVar11,sel_respondsToSelector_,sel_isOccupiedByTool);
-                  if ((char)pvVar7 == '\0') goto joined_r0x0027a150;
-                  pcVar17 = sel_isOccupiedByTool;
-                  if (local_1d == '\0') {
-                    return '\0';
-                  }
-LAB_0027a0bc:
-                  pvVar7 = _objc_msgSend(pHVar11,pcVar17,puVar15);
-                  if ((char)pvVar7 != '\0') {
-                    return '\0';
-                  }
-                  goto LAB_002793ab;
-                }
-                if (puVar8 != sel_liveSlideShow_) {
-                  if (puVar8 != sel_toggleIpadExportPreview_) goto joined_r0x0027a150;
-                  pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,
-                                         sel_setState_);
-                  if ((char)pvVar7 != '\0') {
-                    puVar15 = (undefined *)(uint)(bVar5 != 0);
-                    _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar15);
-                  }
-                  pHVar11 = self;
-                  pcVar17 = sel_isStackProtected;
-                  if (((bVar12 != 0 || bVar2 != 0) || bVar3 != 0) || bVar4 != 0) {
-                    return '\0';
-                  }
-                  goto LAB_0027a0bc;
-                }
-                pvVar9 = _objc_msgSend(self,
-                                       sel_validateUserInterfaceItemThatRequiresTogglePlayEditModes_
-                                       ,validateUserInterfaceItem);
-                pvVar7 = _objc_msgSend(self,sel_playerInEditorWindowController);
-                if ((char)pvVar9 == '\0') {
-                  return '\0';
-                }
-                pvVar9 = _objc_msgSend(pvVar7,sel_respondsToSelector_,puVar8);
-                if ((char)pvVar9 == '\0') {
-                  return '\0';
-                }
-                goto LAB_0027a149;
-              }
-              if (((bVar2 == 0) && (local_1d != '\0')) && (bVar4 == 0 && bVar3 == 0)) {
-                local_1d = '\x01';
-              }
-              else {
-                local_1d = '\0';
-              }
-              pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-              pvVar7 = _objc_msgSend(pvVar7,sel_cardView);
-              puVar15 = sel_isOccupiedByTool;
-              pvVar9 = _objc_msgSend(pvVar7,sel_respondsToSelector_,sel_isOccupiedByTool);
-              if ((char)pvVar9 == '\0') {
-                if (local_1d == '\0') goto joined_r0x0027a150;
-              }
-              else {
-                if (local_1d == '\0') {
-                  return '\0';
-                }
-                pvVar7 = _objc_msgSend(pvVar7,sel_isOccupiedByTool,puVar15);
-                if ((char)pvVar7 != '\0') {
-                  return '\0';
-                }
-                local_1d = '\x01';
-              }
-              pcVar10 = _objc_msgSend(cls_NSButtonCell,sel_class,puVar15);
-              pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_isKindOfClass_,pcVar10);
-              if ((char)pvVar7 == '\0') goto joined_r0x0027a150;
-              pvVar7 = _objc_msgSend(self,sel_internalPlayerActive,pcVar10);
-              pHVar11 = self;
-              pcVar17 = sel_browseModeSelectedImage;
-              if ((char)pvVar7 == '\0') {
-                pHVar11 = self;
-                pcVar17 = sel_browseModeNormalImage;
-              }
-            }
-LAB_0027993a:
-            pvVar7 = _objc_msgSend(pHVar11,pcVar17,pcVar10);
-            _objc_msgSend(validateUserInterfaceItem,sel_setImage_,pvVar7);
-          }
-joined_r0x0027a150:
-          if (local_1d == '\0') {
-            return '\0';
-          }
-          goto LAB_002793ab;
-        }
-        pvVar7 = _objc_msgSend(self,sel_currentWindowController);
-        pvVar7 = _objc_msgSend(pvVar7,sel_cardView);
-        puVar15 = sel_isOccupiedByTool;
-        pvVar9 = _objc_msgSend(pvVar7,sel_respondsToSelector_,sel_isOccupiedByTool);
-        if ((char)pvVar9 == '\0') {
-          cVar6 = '\0';
-        }
-        else {
-          pvVar7 = _objc_msgSend(pvVar7,sel_isOccupiedByTool,puVar15);
-          cVar6 = (char)pvVar7;
-        }
-        if (bVar12 != 0) {
-          return '\0';
-        }
-        if (local_1d == '\0') {
-          return '\0';
-        }
-        if (cVar6 != '\0' || bVar3 != 0) {
-          return '\0';
-        }
-        pvVar7 = _objc_msgSend(self,sel_isDocumentEdited,puVar15);
-        if ((char)pvVar7 == '\0') {
-          return '\0';
-        }
-        pvVar7 = _objc_msgSend(self,sel_fileType,puVar15);
-        pvVar7 = _objc_msgSend(pvVar7,sel_isEqualToString_,&cfstr_HSDocumentType);
-        if ((char)pvVar7 == '\0') {
-          return '\0';
-        }
-      }
-      if (bVar14 != 0 || bVar4 != 0) {
-        return '\0';
-      }
-      goto LAB_002793ab;
-    }
-    pvVar7 = _objc_msgSend(validateUserInterfaceItem,sel_respondsToSelector_,sel_setState_);
-    if ((char)pvVar7 != '\0') {
-      puVar15 = (undefined *)(uint)(bVar12 != 0);
-      _objc_msgSend(validateUserInterfaceItem,sel_setState_,puVar15);
-    }
-    if (bVar3 != 0 || bVar2 != 0) {
-      return '\0';
-    }
-  }
-  if ((bVar12 == 0) &&
-     (pvVar7 = _objc_msgSend(self,sel_canTogglePlayEdit,puVar15), (char)pvVar7 == '\0')) {
-    return '\0';
-  }
-  if (bVar4 != 0) {
-    return '\0';
-  }
-  pvVar7 = _objc_msgSend(self,sel_isStackProtected,puVar15);
-  if (bVar5 != 0 || (char)pvVar7 != '\0') {
-    return '\0';
-  }
-LAB_002793ab:
-  pvVar7 = _objc_msgSend(self,sel_validateUserInterfaceItemIfInLockStackMode_,
-                         validateUserInterfaceItem);
-  if (((char)pvVar7 != '\0') &&
-     (pvVar7 = _objc_msgSend(self,sel_validateUserInterfaceItemIfInOccupiedByToolMode_,
-                             validateUserInterfaceItem), (char)pvVar7 != '\0')) {
-    pvVar7 = _objc_msgSend(self,sel_validateUserInterfaceItemIfInModalSession_,
-                           validateUserInterfaceItem);
-    return (char)pvVar7 != '\0';
-  }
-  return '\0';
-}
-
-*/
 - (BOOL)validateUserInterfaceItem:(id)aItem
 {
     BOOL ok = [super validateUserInterfaceItem:aItem];
     SEL action = [aItem action];
-    BOOL anim = [self isInAnimationMode];
+    BOOL anim = NO;
     BOOL pure = [self isInPurePlayerMode];
     BOOL story = [self isInStoryboardMode];
     BOOL hyper = [self isInHyperCastingMode];
     BOOL pres = [self isInPresentationMode];
-    BOOL ipad = [self isInIpadExportPreviewMode];
+    BOOL ipad = NO;
     id cardView;
     id navigationOperation;
     NSImage *image;
@@ -4375,7 +1517,7 @@ LAB_002793ab:
         goto joined;
     }
     if (action == @selector(switchToStandardMode:)) {
-        ok = !([self isInAnimationMode] || [self isInHyperCastingMode]);
+        ok = !(NO || [self isInHyperCastingMode]);
         BOOL standard = [self isInStandardMode];
         if ([aItem respondsToSelector:@selector(setState:)]) {
             [aItem setState:standard != 0];
@@ -4570,58 +1712,6 @@ chain:
     return [self validateUserInterfaceItemIfInModalSession:aItem] != 0;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027a1d0 @ 0027a1d0, 528 bytes * /
-
-BOOL FUN_0027a1d0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIfInModalSession)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  bool bVar3;
-  
-  puVar1 = _objc_msgSend(validateUserInterfaceItemIfInModalSession,sel_action);
-  pvVar2 = _objc_msgSend(self,sel_isModalSessionPresent);
-  if ((char)pvVar2 == '\0') {
-    bVar3 = true;
-  }
-  else if ((((((puVar1 == sel_togglePresentationMode_) || (puVar1 == sel_togglePlayerMode_)) ||
-             (puVar1 == sel_toggleStoryboard_)) ||
-            (((puVar1 == sel_enterStoryboardMode_ || (puVar1 == sel_newCard_)) ||
-             ((puVar1 == sel_removeCurrentCard_ ||
-              ((puVar1 == sel_goToCard_ || (puVar1 == sel_goBack_)))))))) ||
-           ((((puVar1 == sel_goForward_ ||
-              ((((puVar1 == sel_goToNextCard_ || (puVar1 == sel_goToPreviousCard_)) ||
-                (puVar1 == sel_goToNextCardWithoutLeaveActions_)) ||
-               ((puVar1 == sel_goToPreviousCardWithoutLeaveActions_ ||
-                (puVar1 == sel_goToLastCardWithoutLeaveActions_)))))) ||
-             (((puVar1 == sel_goToFirstCardWithoutLeaveActions_ ||
-               ((puVar1 == sel_goBackWithoutLeaveActions_ ||
-                (puVar1 == sel_goForwardWithoutLeaveActions_)))) ||
-              (puVar1 == sel_goToSpecificCardWithoutLeaveActions_)))) ||
-            ((((puVar1 == sel_goToHomeWithoutLeaveActions_ || (puVar1 == sel_goToLastCard_)) ||
-              (puVar1 == sel_goToFirstCard_)) ||
-             ((puVar1 == sel_goToSpecificCard_ || (puVar1 == sel_testStack_)))))))) ||
-          ((((puVar1 == sel_testCard_ || ((puVar1 == sel_editStack_ || (puVar1 == sel_goToHome_))))
-            || (puVar1 == sel_addReadyMadeCards_)) ||
-           ((((puVar1 == sel_togglePlayEdit_ || (puVar1 == sel_revertDocumentToSaved_)) ||
-             (puVar1 == sel_saveDocument_)) ||
-            (((((puVar1 == sel_saveDocumentAs_ || (puVar1 == sel_optimizeAndSaveAs_)) ||
-               ((puVar1 == sel_exportTo_ ||
-                ((puVar1 == sel_exportToHTML5_ || (puVar1 == sel_exportForiBooksAuthor_)))))) ||
-              (puVar1 == sel_printCard_)) ||
-             ((((puVar1 == sel_printDocument_ || (puVar1 == sel_printText_)) ||
-               (puVar1 == sel_switchToStandardMode_)) ||
-              ((puVar1 == sel_toggleCardIndex_ || (puVar1 == sel_toggleBottomToolbar_)))))))))))) {
-    bVar3 = false;
-  }
-  else {
-    bVar3 = puVar1 != sel_toggleIpadExportPreview_;
-  }
-  return bVar3;
-}
-
-*/
 - (BOOL)validateUserInterfaceItemIfInModalSession:(id)aSession
 {
     SEL action = [aSession action];
@@ -4674,40 +1764,6 @@ BOOL FUN_0027a1d0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIf
     return action != @selector(toggleIpadExportPreview:);
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027a3e0 @ 0027a3e0, 240 bytes * /
-
-BOOL FUN_0027a3e0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIfInLockStackMode)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  bool bVar3;
-  
-  puVar1 = _objc_msgSend(validateUserInterfaceItemIfInLockStackMode,sel_action);
-  pvVar2 = _objc_msgSend(self,sel_isStackProtected);
-  if ((char)pvVar2 == '\0') {
-    bVar3 = true;
-  }
-  else if (((((((puVar1 == sel_toggleStoryboard_) || (puVar1 == sel_enterStoryboardMode_)) ||
-              (puVar1 == sel_sendBackward_)) ||
-             ((puVar1 == sel_sendToBack_ || (puVar1 == sel_bringForward_)))) ||
-            ((puVar1 == sel_bringToFront_ ||
-             ((puVar1 == sel_removeCurrentObject_ || (puVar1 == sel_editStack_)))))) ||
-           (puVar1 == sel_removeCurrentCard_)) ||
-          ((((puVar1 == sel_newCard_ || (puVar1 == sel_testStack_)) || (puVar1 == sel_testCard_)) ||
-           (((puVar1 == sel_resizeToFillCard_ || (puVar1 == sel_togglePlayEdit_)) ||
-            ((puVar1 == sel_addReadyMadeCards_ ||
-             ((puVar1 == sel_switchToStandardMode_ || (puVar1 == sel_resizeToFitCard_)))))))))) {
-    bVar3 = false;
-  }
-  else {
-    bVar3 = puVar1 != sel_toggleIpadExportPreview_;
-  }
-  return bVar3;
-}
-
-*/
 - (BOOL)validateUserInterfaceItemIfInLockStackMode:(id)aMode
 {
     SEL action = [aMode action];
@@ -4736,63 +1792,6 @@ BOOL FUN_0027a3e0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIf
     return action != @selector(toggleIpadExportPreview:);
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027a4d0 @ 0027a4d0, 481 bytes * /
-
-BOOL FUN_0027a4d0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIfInOccupiedByToolMode
-                 )
-
-{
-  id pvVar1;
-  undefined *puVar2;
-  bool bVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_actionExecutionContext);
-  pvVar1 = _objc_msgSend(pvVar1,sel_waitingForMouseDownEvent);
-  if ((char)pvVar1 == '\0') {
-    puVar2 = _objc_msgSend(validateUserInterfaceItemIfInOccupiedByToolMode,sel_action);
-    pvVar1 = _objc_msgSend(self,sel_editorCardView);
-    pvVar1 = _objc_msgSend(pvVar1,sel_isOccupiedByTool);
-    if (((char)pvVar1 == '\0') &&
-       (pvVar1 = _objc_msgSend(self,sel_isDocumentClosing), (char)pvVar1 == '\0')) {
-      bVar3 = true;
-    }
-    else if ((((((((puVar2 == sel_toggleStoryboard_) || (puVar2 == sel_enterStoryboardMode_)) ||
-                 (puVar2 == sel_goToSpecificCard_)) ||
-                (((puVar2 == sel_goBack_ || (puVar2 == sel_goForward_)) ||
-                 ((puVar2 == sel_goToNextCard_ ||
-                  ((puVar2 == sel_goToPreviousCard_ ||
-                   (puVar2 == sel_goToNextCardWithoutLeaveActions_)))))))) ||
-               (puVar2 == sel_goToPreviousCardWithoutLeaveActions_)) ||
-              (((puVar2 == sel_goToLastCardWithoutLeaveActions_ ||
-                (puVar2 == sel_goToFirstCardWithoutLeaveActions_)) ||
-               (puVar2 == sel_goBackWithoutLeaveActions_)))) ||
-             (((puVar2 == sel_goForwardWithoutLeaveActions_ ||
-               (puVar2 == sel_goToSpecificCardWithoutLeaveActions_)) ||
-              ((puVar2 == sel_goToLastCard_ ||
-               ((puVar2 == sel_goToFirstCard_ || (puVar2 == sel_goToHome_)))))))) ||
-            (((puVar2 == sel_goToHomeWithoutLeaveActions_ ||
-              (((((puVar2 == sel_sendBackward_ || (puVar2 == sel_sendToBack_)) ||
-                 (puVar2 == sel_bringForward_)) ||
-                ((puVar2 == sel_bringToFront_ || (puVar2 == sel_removeCurrentObject_)))) ||
-               ((puVar2 == sel_editStack_ ||
-                ((puVar2 == sel_removeCurrentCard_ || (puVar2 == sel_newCard_)))))))) ||
-             ((puVar2 == sel_togglePlayerMode_ ||
-              (((puVar2 == sel_togglePresentationMode_ || (puVar2 == sel_switchToPresentationMode_))
-               || (puVar2 == sel_switchToPurePlayerMode_)))))))) {
-      bVar3 = false;
-    }
-    else {
-      bVar3 = puVar2 != sel_toggleIpadExportPreview_;
-    }
-  }
-  else {
-    bVar3 = false;
-  }
-  return bVar3;
-}
-
-*/
 - (BOOL)validateUserInterfaceItemIfInOccupiedByToolMode:(id)aMode
 {
     if ([[self actionExecutionContext] waitingForMouseDownEvent]) {
@@ -4951,36 +1950,6 @@ BOOL FUN_0027a4d0(HSEditorDocument *self,SEL _cmd,id validateUserInterfaceItemIf
     return pvVar1;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027a851 @ 0027a851, 169 bytes * /
-
-void FUN_0027a851(HSEditorDocument *self,SEL _cmd,id backgroundDidChange)
-
-{
-  id pvVar1;
-  id self_00;
-  id pvVar2;
-  HSEditorDocument *pHVar3;
-  
-  pvVar1 = _objc_msgSend(self,sel_windowControllers);
-  self_00 = _objc_msgSend(pvVar1,sel_objectEnumerator);
-  pvVar1 = _objc_msgSend(self_00,sel_nextObject);
-  pHVar3 = (HSEditorDocument *)sel_documentBackgroundPatternDidChange_;
-  while (pvVar1 != (id)0x0) {
-    sel_documentBackgroundPatternDidChange_ = pHVar3->super_HSDocumentStoring;
-    pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,pHVar3);
-    if ((char)pvVar2 != '\0') {
-      pHVar3 = self;
-      _objc_msgSend(pvVar1,sel_documentBackgroundPatternDidChange_,self);
-    }
-    pvVar1 = _objc_msgSend(self_00,sel_nextObject,pHVar3);
-    pHVar3 = (HSEditorDocument *)sel_documentBackgroundPatternDidChange_;
-  }
-  sel_documentBackgroundPatternDidChange_ = pHVar3->super_HSDocumentStoring;
-  return;
-}
-
-*/
 - (void)backgroundDidChange:(id)aChange
 {
     NSEnumerator *enumerator = [[self windowControllers] objectEnumerator];
@@ -5010,50 +1979,6 @@ void FUN_0027a851(HSEditorDocument *self,SEL _cmd,id backgroundDidChange)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027aa02 @ 0027aa02, 351 bytes * /
-
-id FUN_0027aa02(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  undefined *puVar3;
-  id local_14;
-  
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar1 = _objc_msgSend(pvVar1,sel_activeModeController);
-  puVar3 = sel_cardView;
-  pvVar1 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_cardView);
-  if ((char)pvVar1 == '\0') {
-    local_14 = (id)0x0;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_modeSwitcher,puVar3);
-    pvVar1 = _objc_msgSend(pvVar1,sel_activeModeController);
-    local_14 = _objc_msgSend(pvVar1,sel_cardView);
-    if (local_14 != (id)0x0) goto LAB_0027ab27;
-  }
-  pvVar1 = _objc_msgSend(self,sel_modeHistory,puVar3);
-  pvVar1 = _objc_msgSend(pvVar1,sel_objectEnumerator);
-  while ((self_00 = _objc_msgSend(pvVar1,sel_nextObject,puVar3), self_00 != (id)0x0 &&
-         (local_14 == (id)0x0))) {
-    puVar3 = sel_cardView;
-    pvVar2 = _objc_msgSend(self_00,sel_respondsToSelector_,sel_cardView);
-    if ((char)pvVar2 != '\0') {
-      local_14 = _objc_msgSend(self_00,sel_cardView,puVar3);
-    }
-  }
-LAB_0027ab27:
-  if (local_14 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_mainWindowController,puVar3);
-    local_14 = _objc_msgSend(pvVar1,sel_cardView);
-  }
-  return local_14;
-}
-
-*/
 - (id)cardViewForNavigation
 {
     id cardView = nil;
@@ -5076,51 +2001,6 @@ LAB_0027ab27:
     return cardView;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027ab61 @ 0027ab61, 363 bytes * /
-
-id FUN_0027ab61(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar1 = _objc_msgSend(pvVar1,sel_activeModeController);
-  puVar4 = sel_cardView;
-  pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_cardView);
-  if ((char)pvVar2 == '\0') {
-    pvVar1 = (id)0x0;
-  }
-  else {
-    pvVar1 = _objc_msgSend(pvVar1,sel_cardView,puVar4);
-    pvVar1 = _objc_msgSend(pvVar1,sel_card);
-    if (pvVar1 != (id)0x0) goto LAB_0027ac87;
-  }
-  pvVar2 = _objc_msgSend(self,sel_modeSwitcher,puVar4);
-  pvVar2 = _objc_msgSend(pvVar2,sel_switching);
-  if ((char)pvVar2 != '\0') {
-    pvVar2 = _objc_msgSend(self,sel_modeSwitcher,puVar4);
-    pvVar2 = _objc_msgSend(pvVar2,sel_previousModeController);
-    puVar4 = sel_cardView;
-    pvVar3 = _objc_msgSend(pvVar2,sel_respondsToSelector_,sel_cardView);
-    if ((char)pvVar3 != '\0') {
-      pvVar1 = _objc_msgSend(pvVar2,sel_cardView,puVar4);
-      pvVar1 = _objc_msgSend(pvVar1,sel_card);
-    }
-  }
-LAB_0027ac87:
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_mainWindowController,puVar4);
-    pvVar1 = _objc_msgSend(pvVar1,sel_cardView);
-    pvVar1 = _objc_msgSend(pvVar1,sel_card);
-  }
-  return pvVar1;
-}
-
-*/
 - (id)currentCard
 {
     id card = nil;
@@ -5142,43 +2022,6 @@ LAB_0027ac87:
     return card;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027accc @ 0027accc, 250 bytes * /
-
-id FUN_0027accc(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *puVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_modeSwitcher);
-  pvVar1 = _objc_msgSend(pvVar1,sel_activeModeController);
-  puVar4 = sel_cardView;
-  pvVar2 = _objc_msgSend(pvVar1,sel_respondsToSelector_,sel_cardView);
-  if ((char)pvVar2 == '\0') {
-    pvVar1 = (id)0x0;
-  }
-  else {
-    pvVar1 = _objc_msgSend(pvVar1,sel_cardView,puVar4);
-    if (pvVar1 != (id)0x0) goto LAB_0027ad93;
-  }
-  pvVar2 = _objc_msgSend(self->_modeSwitcher,sel_previousModeController,puVar4);
-  puVar4 = sel_cardView;
-  pvVar3 = _objc_msgSend(pvVar2,sel_respondsToSelector_,sel_cardView);
-  if ((char)pvVar3 != '\0') {
-    pvVar1 = _objc_msgSend(pvVar2,sel_cardView,puVar4);
-  }
-LAB_0027ad93:
-  if (pvVar1 == (id)0x0) {
-    pvVar1 = _objc_msgSend(self,sel_mainWindowController,puVar4);
-    pvVar1 = _objc_msgSend(pvVar1,sel_cardView);
-  }
-  return pvVar1;
-}
-
-*/
 - (id)cardView
 {
     id activeController = [[self modeSwitcher] activeModeController];
@@ -5285,59 +2128,6 @@ LAB_0027ad93:
     return self_00;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027b163 @ 0027b163, 452 bytes * /
-
-void FUN_0027b163(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  HSEditorDocument **super;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  HSEditorDocument *local_14;
-  undefined *local_10;
-  
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  pvVar1 = _objc_msgSend(pvVar1,sel_replacingDocument);
-  if ((char)pvVar1 != '\0') {
-    return;
-  }
-  pvVar1 = _objc_msgSend(self,sel_fileURL);
-  if (pvVar1 != (id)0x0) {
-    pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-    pvVar1 = _objc_msgSend(pvVar1,sel_shouldBeDocumentOpenedInEditorMode);
-    if ((char)pvVar1 == '\0') {
-      pvVar1 = _objc_msgSend(self,sel_isStackProtected);
-      if ((char)pvVar1 != '\0') goto LAB_0027b277;
-      pvVar1 = _objc_msgSend(self,sel_currentCard);
-      pvVar1 = _objc_msgSend(pvVar1,sel_hyperUID);
-      _objc_msgSend(self,sel_testCardWithUID_animate_,pvVar1,0);
-      local_14 = self;
-      local_10 = PTR_s_HSDocumentStoring_00356420;
-      super = &local_14;
-      goto LAB_0027b263;
-    }
-  }
-  pvVar1 = _objc_msgSend(self,sel_isStackProtected);
-  if ((char)pvVar1 != '\0') {
-LAB_0027b277:
-    _objc_msgSend(self,sel_enterPurePlayerModeWithAnimation_,0);
-    return;
-  }
-  pvVar1 = _objc_msgSend(cls_HSEditorController,sel_sharedDocumentController);
-  _objc_msgSend(pvVar1,sel_setDocumentInEditor_,1);
-  pvVar1 = _objc_msgSend(self,sel_stackSelectionHolder);
-  _objc_msgSend(pvVar1,sel_makeCurrent);
-  local_18 = PTR_s_HSDocumentStoring_00356420;
-  super = &local_1c;
-  local_1c = self;
-LAB_0027b263:
-  _objc_msgSendSuper(super,sel_showWindows);
-  return;
-}
-
-*/
 - (void)showWindows
 {
     if ([[HSEditorController sharedDocumentController] replacingDocument]) {
@@ -5369,7 +2159,7 @@ LAB_0027b263:
 {
     if ([NSView BT_mouseTrackingView] == nil) {
         if (![self isInHyperCastingMode]) {
-            if (![self isInIpadExportPreviewMode]) {
+            if (!NO) {
                 _autosaveUndoManager = [[NSUndoManager alloc] init];
                 [NSApp sendAction:@selector(stamp:) to:0 from:self];
                 [super autosaveDocumentWithDelegate:aDelegate didAutosaveSelector:aSelector contextInfo:aInfo];
@@ -5386,72 +2176,6 @@ LAB_0027b263:
     return _autosaveUndoManager != nil;
 }
 
-- (id)undoManager
-{
-    id pvVar1_2;
-
-    if (![self isInIpadExportPreviewMode]) {
-        pvVar1_2 = _autosaveUndoManager;
-        if (pvVar1_2 == nil) {
-            pvVar1_2 = [super undoManager];
-        }
-    }
-    else {
-        pvVar1_2 = [self iPadUndoManager];
-    }
-    return pvVar1_2;
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027b5c4 @ 0027b5c4, 469 bytes * /
-
-void FUN_0027b5c4(HSEditorDocument *self,SEL _cmd,id optimizeAndSaveAsPanelDidEnd,int returnCode,
-                 void *contextInfo)
-
-{
-  id self_00;
-  id pvVar1;
-  id self_01;
-  SEL op;
-  cfstringStruct *pcVar2;
-  undefined4 uVar3;
-  undefined *puVar4;
-  undefined4 uVar5;
-  
-  _objc_msgSend(optimizeAndSaveAsPanelDidEnd,sel_orderOut_,self);
-  if (returnCode == 1) {
-    _objc_msgSend(self,sel_setShouldStoreCardPreviewImages_,0);
-    self_00 = _objc_msgSend(cls_HSStackOptimizer,sel_new);
-    pvVar1 = _objc_msgSend(self,sel_stack);
-    _objc_msgSend(self_00,sel_optimizeStack_,pvVar1);
-    *(byte *)&self->_wasOptimizedAndNotSaved = (byte)self->_wasOptimizedAndNotSaved | 1;
-    pvVar1 = _objc_msgSend(self,sel_undoManager);
-    _objc_msgSend(pvVar1,sel_removeAllActions);
-    _objc_msgSend(self,sel_updateChangeCount_,2);
-    puVar4 = sel_optimizedDocument_didSave_contextInfo_;
-    pvVar1 = _objc_msgSend(optimizeAndSaveAsPanelDidEnd,sel_URL);
-    pcVar2 = &cfstr_HSDocumentType;
-    uVar5 = 0;
-    uVar3 = 1;
-    _objc_msgSend(self,sel_saveToURL_ofType_forSaveOperation_delegate_didSaveSelector_contextInfo_,
-                  pvVar1,&cfstr_HSDocumentType,1,self,puVar4,0);
-    op = sel_directory;
-    if (1038.0 < *(double *)PTR_0033605c || *(double *)PTR_0033605c == 1038.0) {
-      optimizeAndSaveAsPanelDidEnd =
-           _objc_msgSend(optimizeAndSaveAsPanelDidEnd,sel_directoryURL,pvVar1,pcVar2,uVar3,self,
-                         puVar4,uVar5);
-      op = sel_path;
-    }
-    pvVar1 = _objc_msgSend(optimizeAndSaveAsPanelDidEnd,op,pvVar1,pcVar2,uVar3,self,puVar4,uVar5);
-    self_01 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-    _objc_msgSend(self_01,sel_setHyperStudioDocumentsFolder_,pvVar1);
-    _objc_msgSend(self_00,sel_postprocessAfterOptimization);
-    _objc_msgSend(self_00,sel_release);
-  }
-  return;
-}
-
-*/
 - (void)optimizeAndSaveAsPanelDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
 {
     [aEnd orderOut:self];
@@ -5469,21 +2193,6 @@ void FUN_0027b5c4(HSEditorDocument *self,SEL _cmd,id optimizeAndSaveAsPanelDidEn
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027b799 @ 0027b799, 59 bytes * /
-
-void FUN_0027b799(HSEditorDocument *self,SEL _cmd,id optimizedDocument,BOOL didSave,
-                 void *contextInfo)
-
-{
-  if (didSave != '\0') {
-    *(byte *)&self->_wasOptimizedAndNotSaved = (byte)self->_wasOptimizedAndNotSaved & 0xfe;
-  }
-  _objc_msgSend(self,sel_setShouldStoreCardPreviewImages_,1);
-  return;
-}
-
-*/
 - (void)optimizedDocument:(id)aDocument didSave:(BOOL)aSave contextInfo:(void *)aInfo
 {
     if (aSave) {
@@ -5492,423 +2201,9 @@ void FUN_0027b799(HSEditorDocument *self,SEL _cmd,id optimizedDocument,BOOL didS
     [self setShouldStoreCardPreviewImages:YES];
 }
 
-- (void)invalidExportFilenameAlertDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEnd:returnCode:contextInfo:) contextInfo:aInfo needRunExportDialogOnCancel:[[[self exportManager] exportPanelController] isNeedRunExportDialog]];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027b850 @ 0027b850, 796 bytes * /
-
-void FUN_0027b850(HSEditorDocument *self,SEL _cmd,id exportPanelControllerDidEnd,int returnCode,
-                 void *contextInfo)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  HSEditorDocument *self_00;
-  HSEditorDocument *pHVar5;
-  SEL op;
-  cfstringStruct *pcVar6;
-  id *ppvVar7;
-  id local_14;
-  
-  pcVar6 = &cfstr_HSDocumentType;
-  pvVar2 = _objc_msgSend(contextInfo,sel_isEqualToString_,&cfstr_HSDocumentType);
-  if ((char)pvVar2 != '\0') {
-    return;
-  }
-  if (returnCode == 1) {
-    local_14 = (id)0x0;
-    pvVar2 = _objc_msgSend(exportPanelControllerDidEnd,sel_window,pcVar6);
-    pvVar3 = _objc_msgSend(pvVar2,sel_delegate);
-    if (pvVar3 == (id)0x0) {
-      pvVar3 = _objc_msgSend(pvVar2,sel_URL,pcVar6);
-      ppvVar7 = &local_14;
-      pvVar4 = _objc_msgSend(self,sel_panel_validateURL_error_,pvVar2,pvVar3,ppvVar7);
-      if (((char)pvVar4 == '\0') && (local_14 != (id)0x0)) {
-        self_00 = _objc_msgSend(cls_HSAlert,sel_new,pvVar2,pvVar3,ppvVar7);
-        _objc_msgSend(self_00,sel_setAlertStyle_,0);
-        pvVar2 = _objc_msgSend(local_14,sel_localizedDescription);
-        _objc_msgSend(self_00,sel_setMessageText_,pvVar2);
-        pvVar2 = _objc_msgSend(local_14,sel_localizedRecoverySuggestion);
-        _objc_msgSend(self_00,sel_setInformativeText_,pvVar2);
-        puVar1 = sel_invalidExportFilenameAlertDidEnd_returnCode_contextInfo_;
-        pHVar5 = _objc_msgSend(self,sel_windowForSheet);
-        _objc_msgSend(self_00,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_
-                      ,pHVar5,self,puVar1,contextInfo);
-        op = sel_release;
-        goto LAB_0027b9f2;
-      }
-    }
-    _objc_msgSend(self,sel_setResourcesWrapper_,0);
-    pvVar2 = _objc_msgSend(cls_HSMediaValidator,sel_mediaValidatorForDocument_,self);
-    _objc_msgSend(pvVar2,sel_validateMedia);
-    puVar1 = cls_HSMediaSaver;
-    pvVar2 = _objc_msgSend(self,sel_resourcesWrapper);
-    _objc_msgSend(puVar1,sel_saveMediaForDocument_resourcesWrapper_,self,pvVar2);
-    _objc_msgSend(self,sel_reloadDocumentMedia);
-    pvVar2 = _objc_msgSend(self,sel_editorCardView);
-    _objc_msgSend(pvVar2,sel_saveEditingState);
-    pvVar2 = _objc_msgSend(self,sel_exportManager);
-    pvVar3 = _objc_msgSend(exportPanelControllerDidEnd,sel_filename);
-    _objc_msgSend(pvVar2,sel_exportDocumentWithFileName_ofType_,pvVar3,contextInfo);
-    self_00 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-    pHVar5 = _objc_msgSend(exportPanelControllerDidEnd,sel_directory);
-    op = sel_setHyperStudioDocumentsExportFolder_;
-  }
-  else {
-    pvVar2 = _objc_msgSend(exportPanelControllerDidEnd,sel_isNeedRunExportDialog,pcVar6);
-    self_00 = self;
-    op = sel_exportTo_;
-    pHVar5 = self;
-    if ((char)pvVar2 == '\0') {
-      return;
-    }
-  }
-LAB_0027b9f2:
-  _objc_msgSend(self_00,op,pHVar5);
-  return;
-}
-
-*/
-- (void)exportPanelControllerDidEnd:(id)aEnd returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
-{
-    if ([(id)aInfo isEqualToString:@"HSDocumentType"]) {
-        return;
-    }
-    if (aCode == 1) {
-        NSError *error = nil;
-        id panel = [aEnd window];
-        if ([panel delegate] == nil) {
-            NSURL *url = [panel URL];
-            if (![self panel:panel validateURL:url error:&error] && error != nil) {
-                HSAlert *alert = [HSAlert new];
-                [alert setAlertStyle:0];
-                [alert setMessageText:[error localizedDescription]];
-                [alert setInformativeText:[error localizedRecoverySuggestion]];
-                [alert beginSheetModalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:@selector(invalidExportFilenameAlertDidEnd:returnCode:contextInfo:) contextInfo:aInfo];
-            }
-        }
-        [self setResourcesWrapper:nil];
-        [[HSMediaValidator mediaValidatorForDocument:self] validateMedia];
-        [HSMediaSaver saveMediaForDocument:self resourcesWrapper:[self resourcesWrapper]];
-        [self reloadDocumentMedia];
-        [[self editorCardView] saveEditingState];
-        [[self exportManager] exportDocumentWithFileName:[aEnd filename] ofType:(id)aInfo];
-        [[HSPathsProvider sharedPathsProvider] setHyperStudioDocumentsExportFolder:[aEnd directory]];
-    } else if ([aEnd isNeedRunExportDialog]) {
-        [self exportTo:self];
-    }
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027bb6c @ 0027bb6c, 450 bytes * /
-
-void FUN_0027bb6c(HSEditorDocument *self,SEL _cmd,id runModalExportPanelWithDelegate,
-                 SEL didSaveSelector,void *contextInfo,BOOL needRunExportDialogOnCancel)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  cfstringStruct *pcVar5;
-  
-  pvVar1 = _objc_msgSend(self,sel_exportManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_exportPanelController);
-  pvVar2 = _objc_msgSend(self,sel_fileName);
-  pvVar2 = _objc_msgSend(pvVar2,sel_lastPathComponent);
-  pvVar2 = _objc_msgSend(pvVar2,sel_stringByDeletingPathExtension);
-  if (pvVar2 == (id)0x0) {
-    pvVar2 = _objc_msgSend(self,sel_displayName);
-  }
-  pcVar5 = &cfstr_HSiBooksAuthorDocumentType;
-  pvVar3 = _objc_msgSend(contextInfo,sel_isEqualToString_,&cfstr_HSiBooksAuthorDocumentType);
-  if ((char)pvVar3 != '\0') {
-    pvVar3 = _objc_msgSend(pvVar1,sel_filename,pcVar5);
-    if (pvVar3 != (id)0x0) {
-      pvVar2 = _objc_msgSend(pvVar1,sel_filename,pcVar5);
-    }
-    pvVar2 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_isDirectory_,pvVar2,0);
-    pvVar2 = _objc_msgSend(pvVar2,sel_relativeString);
-    pvVar2 = _objc_msgSend(pvVar2,sel_extraStringByReplacingURLEscapedSymbolsWithUnderscores);
-  }
-  _objc_msgSend(pvVar1,sel_setNeedRunExportDialog_,(int)needRunExportDialogOnCancel);
-  pvVar3 = _objc_msgSend(self,sel_windowForSheet);
-  pvVar4 = _objc_msgSend(cls_HSPathsProvider,sel_sharedPathsProvider);
-  pvVar4 = _objc_msgSend(pvVar4,sel_hyperStudioDocumentsExportFolder);
-  _objc_msgSend(pvVar1,
-                sel_beginSheetForDirectory_file_modalForWindow_modalDelegate_didEndSelector_contextInfo_
-                ,pvVar4,pvVar2,pvVar3,runModalExportPanelWithDelegate,didSaveSelector,contextInfo);
-  return;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027bd2e @ 0027bd2e, 1351 bytes * /
-
-BOOL FUN_0027bd2e(HSEditorDocument *self,SEL _cmd,id panel,id validateURL,id *error)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  cfstringStruct *pcVar5;
-  undefined4 uVar6;
-  cfstringStruct *pcVar7;
-  undefined4 uVar8;
-  cfstringStruct *pcVar9;
-  undefined4 uVar10;
-  
-  pvVar2 = _objc_msgSend(self,sel_exportManager);
-  pvVar3 = _objc_msgSend(pvVar2,sel_exportPanelController);
-  pvVar4 = _objc_msgSend(pvVar3,sel_isWindowLoaded);
-  if ((char)pvVar4 == '\0') {
-    return '\x01';
-  }
-  pvVar3 = _objc_msgSend(pvVar3,sel_window);
-  if (pvVar3 != panel) {
-    return '\x01';
-  }
-  pvVar3 = _objc_msgSend(validateURL,sel_path);
-  pvVar3 = _objc_msgSend(pvVar3,sel_lastPathComponent);
-  if (pvVar3 == (id)0x0) {
-    return '\0';
-  }
-  pvVar2 = _objc_msgSend(pvVar2,sel_exportFormat);
-  if (pvVar2 == (id)0x1) {
-    pvVar2 = _objc_msgSend(cls_NSCharacterSet,sel_characterSetWithCharactersInString_,&cfstr____);
-    if (pvVar2 == (id)0x0) {
-      return '\0';
-    }
-    pvVar4 = _objc_msgSend(pvVar3,sel_rangeOfCharacterFromSet_,pvVar2);
-    puVar1 = cls_NSString;
-    if (pvVar4 == (id)0x7fffffff) {
-      return '\x01';
-    }
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,pvVar2);
-    pcVar9 = &cfstr_Alerts;
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInvalidWebExportPanelFilenameMessageText,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar4 = _objc_msgSend(puVar1,sel_stringWithFormat_,pvVar2,pvVar3);
-    if (pvVar4 == (id)0x0) {
-      return '\0';
-    }
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,pvVar2,pvVar3,pcVar9)
-    ;
-    pcVar9 = &cfstr_Alerts;
-    pcVar7 = &cfstr_empty;
-    pcVar5 = &cfstr_HSInvalidWebExportPanelFilenameInformativeText;
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInvalidWebExportPanelFilenameInformativeText,&cfstr_empty,
-                           &cfstr_Alerts);
-    if (error != (id *)0x0) {
-      pvVar2 = _objc_msgSend(cls_NSDictionary,sel_dictionaryWithObjectsAndKeys_,pvVar4,
-                             *(undefined4 *)PTR_00336968,pvVar2,*(undefined4 *)PTR_0033696c,0);
-      pvVar2 = _objc_msgSend(cls_NSError,sel_errorWithDomain_code_userInfo_,
-                             *(undefined4 *)PTR_003361ac,0x102,pvVar2);
-      *error = pvVar2;
-      return '\0';
-    }
-    pvVar3 = _objc_msgSend(cls_HSAlert,sel_new,pcVar5,pcVar7,pcVar9);
-    _objc_msgSend(pvVar3,sel_setAlertStyle_,0);
-    _objc_msgSend(pvVar3,sel_setMessageText_,pvVar4);
-    _objc_msgSend(pvVar3,sel_setInformativeText_,pvVar2);
-    uVar10 = 0;
-    uVar8 = 0;
-    uVar6 = 0;
-    _objc_msgSend(pvVar3,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_,
-                  panel,0,0,0);
-  }
-  else {
-    if (pvVar2 != (id)0x8) {
-      return '\x01';
-    }
-    uVar6 = 0;
-    pvVar2 = _objc_msgSend(cls_NSURL,sel_fileURLWithPath_isDirectory_,pvVar3,0);
-    pvVar2 = _objc_msgSend(pvVar2,sel_relativeString);
-    if (pvVar2 == (id)0x0) {
-      return '\0';
-    }
-    pvVar4 = pvVar3;
-    pvVar2 = _objc_msgSend(pvVar2,sel_isEqualToString_,pvVar3,uVar6);
-    puVar1 = cls_NSString;
-    if ((char)pvVar2 != '\0') {
-      return '\x01';
-    }
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,pvVar4,uVar6);
-    pcVar9 = &cfstr_Alerts;
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInvalidIBAExportPanelFilenameMessageText,&cfstr_empty,
-                           &cfstr_Alerts);
-    pvVar4 = _objc_msgSend(puVar1,sel_stringWithFormat_,pvVar2,pvVar3);
-    if (pvVar4 == (id)0x0) {
-      return '\0';
-    }
-    pvVar2 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance,pvVar2,pvVar3,pcVar9)
-    ;
-    pcVar9 = &cfstr_Alerts;
-    pcVar7 = &cfstr_empty;
-    pcVar5 = &cfstr_HSInvalidIBAExportPanelFilenameInformativeText;
-    pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSInvalidIBAExportPanelFilenameInformativeText,&cfstr_empty,
-                           &cfstr_Alerts);
-    if (error != (id *)0x0) {
-      pvVar2 = _objc_msgSend(cls_NSDictionary,sel_dictionaryWithObjectsAndKeys_,pvVar4,
-                             *(undefined4 *)PTR_00336968,pvVar2,*(undefined4 *)PTR_0033696c,0);
-      pvVar2 = _objc_msgSend(cls_NSError,sel_errorWithDomain_code_userInfo_,
-                             *(undefined4 *)PTR_003361ac,0x102,pvVar2);
-      *error = pvVar2;
-      return '\0';
-    }
-    pvVar3 = _objc_msgSend(cls_HSAlert,sel_new,pcVar5,pcVar7,pcVar9);
-    _objc_msgSend(pvVar3,sel_setAlertStyle_,0);
-    _objc_msgSend(pvVar3,sel_setMessageText_,pvVar4);
-    _objc_msgSend(pvVar3,sel_setInformativeText_,pvVar2);
-    uVar10 = 0;
-    uVar8 = 0;
-    uVar6 = 0;
-    _objc_msgSend(pvVar3,sel_beginSheetModalForWindow_modalDelegate_didEndSelector_contextInfo_,
-                  panel,0,0,0);
-  }
-  _objc_msgSend(pvVar3,sel_release,panel,uVar6,uVar8,uVar10);
-  return '\0';
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027c2d2 @ 0027c2d2, 634 bytes * /
-
-BOOL FUN_0027c2d2(HSEditorDocument *self,SEL _cmd,id hyperReadFromFileWrapper,id ofType,id *error)
-
-{
-  BOOL BVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined *self_00;
-  bool bVar4;
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  pvVar2 = _objc_msgSend(ofType,sel_isEqual_,&cfstr_HSDocumentType);
-  if ((char)pvVar2 == '\0') {
-    pvVar2 = _objc_msgSend(ofType,sel_isEqualToString_,&cfstr_HSKeynoteDocumentType);
-    if ((char)pvVar2 != '\0') {
-      pvVar2 = hyperReadFromFileWrapper;
-      pvVar3 = _objc_msgSend(cls_KeynoteImportManager,sel_isKeynote2FileWrapperRepresentation_,
-                             hyperReadFromFileWrapper);
-      if ((char)pvVar3 != '\0') {
-        pvVar2 = _objc_msgSend(self,sel_undoManager,pvVar2);
-        _objc_msgSend(pvVar2,sel_disableUndoRegistration);
-        pvVar2 = _objc_msgSend(cls_KeynoteImportManager,sel_new);
-        pvVar3 = _objc_msgSend(self,sel_fileURL);
-        pvVar3 = _objc_msgSend(pvVar3,sel_path);
-        _objc_msgSend(pvVar2,sel_setPathToDocument_,pvVar3);
-        _objc_msgSend(pvVar2,sel_setFileWrapper_,hyperReadFromFileWrapper);
-        self_00 = _objc_msgSend(pvVar2,sel_presentation);
-        _objc_msgSend(self_00,sel_detailChildren);
-        pvVar3 = _objc_msgSend(pvVar2,sel_shouldImportPresentation);
-        bVar4 = (char)pvVar3 == '\0';
-        if (bVar4) {
-          self_00 = &DAT_00002711;
-          pvVar3 = _objc_msgSend(cls_HSError,sel_errorWithHSCode_,&DAT_00002711);
-          *error = pvVar3;
-        }
-        else {
-          pvVar3 = _objc_msgSend(cls_HSStack,sel_defaultObject,hyperReadFromFileWrapper);
-          _objc_msgSend(self,sel_setStack_,pvVar3);
-          _objc_msgSend(pvVar3,sel_importFromKeynoteObject_,self_00);
-        }
-        _objc_msgSend(pvVar2,sel_release,self_00);
-        pvVar2 = _objc_msgSend(self,sel_undoManager);
-        _objc_msgSend(pvVar2,sel_enableUndoRegistration);
-        return !bVar4;
-      }
-      if (error != (id *)0x0) {
-        pvVar2 = _objc_msgSend(cls_HSError,sel_errorWithHSCode_,0x5026);
-        *error = pvVar2;
-      }
-    }
-    BVar1 = '\0';
-  }
-  else {
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    pvVar2 = _objc_msgSendSuper(&local_1c,sel_hyperReadFromFileWrapper_ofType_error_,
-                                hyperReadFromFileWrapper,ofType,error);
-    BVar1 = (BOOL)pvVar2;
-  }
-  return BVar1;
-}
-
-*/
-- (BOOL)hyperReadFromFileWrapper:(id)aWrapper ofType:(id)aType error:(id *)aError
-{
-    if ([aType isEqual:@"HSDocumentType"]) {
-        return [super hyperReadFromFileWrapper:aWrapper ofType:aType error:aError];
-    }
-    if ([aType isEqualToString:@"HSKeynoteDocumentType"]) {
-        if ([KeynoteImportManager isKeynote2FileWrapperRepresentation:aWrapper]) {
-            [[self undoManager] disableUndoRegistration];
-            KeynoteImportManager *manager = [KeynoteImportManager new];
-            [manager setPathToDocument:[[self fileURL] path]];
-            [manager setFileWrapper:aWrapper];
-            id presentation = [manager presentation];
-            [presentation detailChildren];
-            BOOL imported = [manager shouldImportPresentation];
-            if (!imported) {
-                *aError = [HSError errorWithHSCode:0x2711];
-            } else {
-                HSStack *stack = [HSStack defaultObject];
-                [self setStack:stack];
-                [stack importFromKeynoteObject:presentation];
-            }
-            [manager release];
-            [[self undoManager] enableUndoRegistration];
-            return imported;
-        }
-        if (aError != NULL) {
-            *aError = [HSError errorWithHSCode:0x5026];
-        }
-    }
-    return NO;
-}
-
 - (id)currentWindowController
 {
     return [[self modeSwitcher] activeModeController];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027c586 @ 0027c586, 120 bytes * /
-
-BOOL FUN_0027c586(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_isInStoryboardMode);
-  if ((((char)pvVar1 == '\0') &&
-      (pvVar1 = _objc_msgSend(self,sel_isInPurePlayerMode), (char)pvVar1 == '\0')) &&
-     (pvVar1 = _objc_msgSend(self,sel_isInPresentationMode), (char)pvVar1 == '\0')) {
-    pvVar1 = _objc_msgSend(self,sel_isInIpadExportPreviewMode);
-    return (char)pvVar1 == '\0';
-  }
-  return '\0';
-}
-
-*/
-- (BOOL)isInStandardMode
-{
-    if ([self isInStoryboardMode] || [self isInPurePlayerMode] || [self isInPresentationMode]) {
-        return NO;
-    }
-    return ![self isInIpadExportPreviewMode];
 }
 
 - (BOOL)isInHyperCastingMode
@@ -5937,19 +2232,6 @@ BOOL FUN_0027c586(HSEditorDocument *self,SEL _cmd)
     return bVar2;
 }
 
-- (BOOL)isInPresentationMode
-{
-    BOOL bVar2;
-
-    if (_modeSwitcher == nil) {
-        bVar2 = NO;
-    }
-    else {
-        bVar2 = [self currentWindowController] == _presentationWindowController;
-    }
-    return bVar2;
-}
-
 - (BOOL)isInStoryboardMode
 {
     BOOL bVar2;
@@ -5961,42 +2243,6 @@ BOOL FUN_0027c586(HSEditorDocument *self,SEL _cmd)
         bVar2 = [self currentWindowController] == _storyboardController;
     }
     return bVar2;
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027c743 @ 0027c743, 126 bytes * /
-
-BOOL FUN_0027c743(HSEditorDocument *self,SEL _cmd)
-
-{
-  id pvVar1;
-  bool bVar2;
-  
-  if (self->_modeSwitcher == (HSModeSwitcher *)0x0) {
-    bVar2 = false;
-  }
-  else {
-    pvVar1 = _objc_msgSend(self,sel_currentWindowController);
-    if ((pvVar1 == self->_playerInEditorWindowController) ||
-       (pvVar1 = _objc_msgSend(self,sel_currentWindowController),
-       pvVar1 == self->_purePlayerWindowController)) {
-      bVar2 = true;
-    }
-    else {
-      pvVar1 = _objc_msgSend(self,sel_currentWindowController);
-      bVar2 = pvVar1 == self->_presentationWindowController;
-    }
-  }
-  return bVar2;
-}
-
-*/
-- (BOOL)isInPlayerMode
-{
-    if (_modeSwitcher == nil) {
-        return NO;
-    }
-    return [self currentWindowController] == _playerInEditorWindowController || [self currentWindowController] == _purePlayerWindowController || [self currentWindowController] == _presentationWindowController;
 }
 
 - (id)playerInEditorWindowController
@@ -6019,37 +2265,6 @@ BOOL FUN_0027c743(HSEditorDocument *self,SEL _cmd)
     return [HSEditorWindowController class];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027c8d6 @ 0027c8d6, 398 bytes * /
-
-void FUN_0027c8d6(HSEditorDocument *self,SEL _cmd,id setStack,BOOL notify,BOOL clearChanges)
-
-{
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  if (*(id *)(self->super_HSDocumentStoring + 0x38) != setStack) {
-    _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                  sel_removeObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_,self,
-                  sel_textViewWillBeginScrolling_,0x40,&DAT_00387558,0,2);
-    _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                  sel_removeObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_,self,
-                  sel_textViewWillBeginScrolling_,0x40,&DAT_003875a8,0,2);
-    local_1c = self;
-    local_18 = PTR_s_HSDocumentStoring_00356420;
-    _objc_msgSendSuper(&local_1c,sel_setStack_notify_clearChanges_,setStack,(int)notify,
-                       (int)clearChanges);
-    _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                  sel_addObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_withPriority_
-                  ,self,sel_textViewWillBeginScrolling_,0x40,&DAT_00387558,0,2,0x3f000000);
-    _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                  sel_addObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_withPriority_
-                  ,self,sel_textViewWillBeginScrolling_,0x40,&DAT_003875a8,0,2,0x3f000000);
-  }
-  return;
-}
-
-*/
 - (void)setStack:(id)aStack notify:(BOOL)aNotify clearChanges:(BOOL)aChanges
 {
     if (_stack != aStack) {
@@ -6061,28 +2276,6 @@ void FUN_0027c8d6(HSEditorDocument *self,SEL _cmd,id setStack,BOOL notify,BOOL c
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027ca64 @ 0027ca64, 206 bytes * /
-
-void FUN_0027ca64(HSEditorDocument *self,SEL _cmd)
-
-{
-  HSEditorDocument *local_1c;
-  undefined *local_18;
-  
-  _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                sel_removeObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_,self,
-                sel_textViewWillBeginScrolling_,0x40,&DAT_00387558,0,2);
-  _objc_msgSend(*(id *)(self->super_HSDocumentStoring + 0x38),
-                sel_removeObserver_selector_ofChanges_ofAttribute_ofChildrenInDepthRange_,self,
-                sel_textViewWillBeginScrolling_,0x40,&DAT_003875a8,0,2);
-  local_1c = self;
-  local_18 = PTR_s_HSDocumentStoring_00356420;
-  _objc_msgSendSuper(&local_1c,sel_destoyModel);
-  return;
-}
-
-*/
 - (void)destoyModel
 {
     [_stack removeObserver:self selector:@selector(textViewWillBeginScrolling:) ofChanges:0x40 ofAttribute:@protocol(HSSystemTextViewHorizontalScrollPostionAttribute) ofChildrenInDepthRange:NSMakeRange(0, 2)];
@@ -6090,55 +2283,694 @@ void FUN_0027ca64(HSEditorDocument *self,SEL _cmd)
     [super destoyModel];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0027cb32 @ 0027cb32, 849 bytes * /
-
-void FUN_0027cb32(HSEditorDocument *self,SEL _cmd)
-
+- (BOOL)_shouldShowAutosaveButtonForWindow:(id)aWindow
 {
-  id self_00;
-  HSEditorDocument *local_14;
-  undefined *local_10;
-  
-  _objc_msgSend(self,sel_destoryModelIfNeeded);
-  self_00 = _objc_msgSend(cls_NSNotificationCenter,sel_defaultCenter);
-  _objc_msgSend(self_00,sel_removeObserver_,self);
-  _objc_msgSend(self->_hyperRemovedItemsPaths,sel_release);
-  _objc_msgSend(self->_commitLogMessage,sel_release);
-  _objc_msgSend(self->_documentSharingController,sel_release);
-  _objc_msgSend(self->_editObjectDialogContext,sel_release);
-  _objc_msgSend(self->_animationModeController,sel_release);
-  _objc_msgSend(self->_modeSwitcher,sel_release);
-  _objc_msgSend(self->_exportManager,sel_release);
-  _objc_msgSend(self->_selectionController,sel_setCardView_,0);
-  _objc_msgSend(self->_selectionController,sel_release);
-  _objc_msgSend(self->_storyboardController,sel_release);
-  _objc_msgSend(self->_selectionSync,sel_setCardView_,0);
-  _objc_msgSend(self->_selectionSync,sel_release);
-  _objc_msgSend(self->_stackSelectionHolder,sel_setDocument_,0);
-  _objc_msgSend(self->_stackSelectionHolder,sel_release);
-  _objc_msgSend(self->_playerInEditorWindowController,sel_setStatusbarController_,0);
-  _objc_msgSend(self->_playerInEditorWindowController,sel_release);
-  _objc_msgSend(self->_hyperCastingWindowController,sel_release);
-  _objc_msgSend(self->_purePlayerWindowController,sel_release);
-  _objc_msgSend(self->_presentationWindowController,sel_release);
-  _objc_msgSend(self->_modeHistory,sel_release);
-  _objc_msgSend(self->_playerView,sel_release);
-  _objc_msgSend(self->_invocationsToPerformAfterSwitchToEditMode,sel_release);
-  _objc_msgSend(self->_minimalWindowApplier,sel_release);
-  _objc_msgSend(self->_openWarning,sel_release);
-  _objc_msgSend(self->_palettesToHideInHypercastingMode,sel_release);
-  _objc_msgSend(self->_textViewsToResetScrollPosition,sel_release);
-  _objc_msgSend(self->_iPadStack,sel_release);
-  _objc_msgSend(self->_originalStackStorage,sel_release);
-  _objc_msgSend(self->_iPadUndoManager,sel_release);
-  local_14 = self;
-  local_10 = PTR_s_HSDocumentStoring_00356420;
-  _objc_msgSendSuper(&local_14,sel_dealloc);
-  return;
+    if ([self isTutorialStack]) {
+        return NO;
+    }
+    return [super _shouldShowAutosaveButtonForWindow:aWindow];
 }
 
-*/
+- (id)animatingWindow
+{
+    if (_animatingWindow == nil) {
+        _animatingWindow = [[NSWindow alloc] initWithContentRect:NSZeroRect styleMask:0 backing:NSBackingStoreBuffered defer:NO];
+        [_animatingWindow useOptimizedDrawing:YES];
+        [_animatingWindow setOpaque:NO];
+        [_animatingWindow setReleasedWhenClosed:NO];
+        [_animatingWindow setBackgroundColor:[NSColor clearColor]];
+    }
+    return _animatingWindow;
+}
+
+- (void)applicationWillBecomeActive:(id)aActive
+{
+    if (![[self windowForSheet] isMiniaturized]) {
+        [[self windowForSheet] orderFront:nil];
+        [[self windowForSheet] setLevel:CGWindowLevelForKey(kCGFloatingWindowLevelKey)];
+    }
+}
+
+- (void)applicationWillResignActive:(id)aActive
+{
+    if (![[self windowForSheet] isMiniaturized]) {
+        [[self windowForSheet] setLevel:CGWindowLevelForKey(kCGNormalWindowLevelKey)];
+        [[self windowForSheet] orderBack:nil];
+    }
+}
+
+- (void)autosaveWithImplicitCancellability:(BOOL)aCancellability completionHandler:(id)aHandler
+{
+    if (!aCancellability) {
+        [[self currentWindowController] saveEditingState];
+    }
+    [super autosaveWithImplicitCancellability:aCancellability completionHandler:aHandler];
+}
+
+- (void)beginAnimatingEnteringInPresentationMode
+{
+    NSWindow *window = [self animatingWindow];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:0.8];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        [window close];
+        [self finalizeSwitchingPresentationMode];
+    }];
+    [[window animator] setAlphaValue:0];
+    [NSAnimationContext endGrouping];
+}
+
+- (void)beginAnimatingExitingFromPresentationMode
+{
+    NSWindow *window = [self animatingWindow];
+    NSWindow *editorWindow = [[self currentWindowController] window];
+    [editorWindow setAlphaValue:0.6];
+    [NSAnimationContext beginGrouping];
+    [[NSAnimationContext currentContext] setDuration:1.0];
+    [[NSAnimationContext currentContext] setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+    [[NSAnimationContext currentContext] setCompletionHandler:^{
+        [window close];
+        [[self mainWindowController] restoreFloatingPalettes];
+        [self finalizeSwitchingPresentationMode];
+    }];
+    [[window animator] setAlphaValue:0];
+    [[editorWindow animator] setAlphaValue:1];
+    [NSAnimationContext endGrouping];
+}
+
+- (void)beginEnteringInPresentationMode
+{
+    if ([self isPresentationModeSwitching]) {
+        return;
+    }
+    if ([self isInPurePlayerMode]) {
+        [self exitPurePlayerModeWithAnimation:NO];
+    }
+    NSApplicationPresentationOptions options = [NSApp presentationOptions];
+    _isInPresentationMode = YES;
+    _wasInFullScreenBeforePresentationMode = (options & NSApplicationPresentationFullScreen) != 0;
+    _isPresentationModeSwitching = YES;
+    _willExitFullScreenWhilePresentationMode = NO;
+    _didSwitchToPlayerInEditorWhileEnteringPresentationMode = NO;
+    if (options & NSApplicationPresentationFullScreen) {
+        [[self mainWindowController] hideFloatingPalettes];
+        [self performSelector:@selector(enterPresentationMode) withObject:nil afterDelay:0.2];
+    } else {
+        [self enterPresentationMode];
+    }
+}
+
+- (id)browseUndoManager
+{
+    if (_browseUndoManager == nil) {
+        _browseUndoManager = [NSUndoManager new];
+    }
+    return _browseUndoManager;
+}
+
+- (void)clearBrowseUndoManagerIfNeeded
+{
+    if (_browseUndoManager != nil) {
+        while ([_browseUndoManager canUndo]) {
+            [_browseUndoManager undo];
+        }
+        [_browseUndoManager release];
+        _browseUndoManager = nil;
+    }
+}
+
+- (CGImageRef)createImageForAnimatingPresentationModeSwitching
+{
+    NSRect frame = [self currentWindowFrameForAnimatingPresentationModeSwitching];
+    return CGDisplayCreateImageForRect(CGMainDisplayID(), NSRectToCGRect(frame));
+}
+
+- (NSRect)currentWindowFrameForAnimatingPresentationModeSwitching
+{
+    NSApplicationPresentationOptions options = [[NSApplication sharedApplication] presentationOptions];
+    NSWindow *window = [[self currentWindowController] window];
+    if (options & NSApplicationPresentationFullScreen) {
+        return [[window screen] frame];
+    }
+    return [window frame];
+}
+
+- (BOOL)didSwitchToPlayerInEditorWhileEnteringPresentationMode
+{
+    return _didSwitchToPlayerInEditorWhileEnteringPresentationMode;
+}
+
+- (id)duplicateAndReturnError:(NSError **)aError
+{
+    id controller = [[self windowControllers] extraFirstObject];
+    BOOL assigned = NO;
+    if ([self isInPlayerMode] || [self isInStoryboardMode]) {
+        if ([controller window] == nil) {
+            [controller setWindow:[[self currentWindowController] window]];
+            assigned = YES;
+        }
+    }
+    HSEditorController *documentController = [HSEditorController sharedDocumentController];
+    [documentController setDuplicationInProgress:YES];
+    id result = [super duplicateAndReturnError:aError];
+    [documentController setDuplicationInProgress:NO];
+    if (assigned) {
+        id window = [controller window];
+        [controller setWindow:nil];
+        [window setWindowController:[self currentWindowController]];
+    }
+    return result;
+}
+
+- (void)editWebIcon:(id)aIcon
+{
+    HSWebAppIconEditorDialogController *dialog = [[HSWebAppIconEditorDialogController new] autorelease];
+    [dialog setCards:[[self stack] children]];
+    if ([[NSApplication sharedApplication] runModalForWindow:[dialog window]] == NSModalResponseStop) {
+        [[self stack] setWebAppIcon:[dialog croppedImageWithHorizontalSelection]];
+    }
+}
+
+- (void)enterAppFullScreen_WindowDidEnterFullScreen:(id)aNotification
+{
+    id window = [aNotification object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidEnterFullScreenNotification object:window];
+    if (_selectorToPerformAfterWindowExitFullScreen != NULL) {
+        [self performSelector:_selectorToPerformAfterWindowExitFullScreen withObject:nil];
+    }
+}
+
+- (void)enterAppFullScreen_WindowWillEnterFullScreen:(id)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillEnterFullScreenNotification object:[aNotification object]];
+    if ([self isInPresentationMode]) {
+        [[self mainWindowController] hideAllPalettesAndToolbars];
+    }
+}
+
+- (void)enterPresentationMode
+{
+    NSWindow *window = [[self currentWindowController] window];
+    if (!_wasInFullScreenBeforePresentationMode) {
+        [window disableFlushWindow];
+    }
+    BOOL internalPlayerActive = [self internalPlayerActive];
+    _wasInEditorModeBeforePresentationMode = !internalPlayerActive;
+    if (!internalPlayerActive) {
+        [self synchronizePlayerInEditorCardViewWithEditorForPresentationModeAnimation];
+        [self testCardWithUID:[[self currentCard] hyperUID] animate:NO];
+    } else {
+        [[[self playerInEditorWindowController] cardView] deactivateActiveTextField];
+    }
+    _didSwitchToPlayerInEditorWhileEnteringPresentationMode = YES;
+    [[self playerInEditorWindowController] verifyCardViewZoomFactor];
+    [[[self playerInEditorWindowController] cardView] setRoundsCardCorners:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitAppFullScreen_WindowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:window];
+    if (!_wasInFullScreenBeforePresentationMode) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterAppFullScreen_WindowWillEnterFullScreen:) name:NSWindowWillEnterFullScreenNotification object:window];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(enterAppFullScreen_WindowDidEnterFullScreen:) name:NSWindowDidEnterFullScreenNotification object:window];
+        _selectorToPerformAfterWindowExitFullScreen = @selector(finalizeSwitchingPresentationMode);
+        [window toggleFullScreen:nil];
+        [window enableFlushWindow];
+    } else {
+        [self prepareForAnimatingPresentationModeSwitching];
+        [[self mainWindowController] hideFixedToolbars];
+        [self performSelector:@selector(beginAnimatingEnteringInPresentationMode) withObject:nil afterDelay:0.2];
+    }
+}
+
+- (void)exitAppFullScreenPerformSelectorAtDone:(SEL)aSelector
+{
+    if ([NSApp presentationOptions] & NSApplicationPresentationFullScreen) {
+        NSWindow *window = [[self currentWindowController] window];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitAppFullScreen_WindowDidExitFullScreen:) name:NSWindowDidExitFullScreenNotification object:window];
+        [window toggleFullScreen:nil];
+        _selectorToPerformAfterWindowExitFullScreen = aSelector;
+    }
+}
+
+- (void)exitAppFullScreen_WindowDidExitFullScreen:(id)aNotification
+{
+    id window = [aNotification object];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowDidExitFullScreenNotification object:window];
+    if (_selectorToPerformAfterWindowExitFullScreen != NULL) {
+        [self performSelector:_selectorToPerformAfterWindowExitFullScreen withObject:nil];
+    }
+}
+
+- (void)exitAppFullScreen_WindowWillExitFullScreen:(id)aNotification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSWindowWillExitFullScreenNotification object:[aNotification object]];
+    if ([self isInPresentationMode] && ![self isPresentationModeSwitching]) {
+        _willExitFullScreenWhilePresentationMode = YES;
+        [self exitPresentationMode];
+    }
+}
+
+- (void)exitPresentationMode
+{
+    if ([self isPresentationModeSwitching]) {
+        return;
+    }
+    BOOL wasInFullScreen = _wasInFullScreenBeforePresentationMode;
+    BOOL willExit = _willExitFullScreenWhilePresentationMode;
+    _isInPresentationMode = NO;
+    _isPresentationModeSwitching = YES;
+    if (wasInFullScreen && !willExit) {
+        [self performExitingFromPresentationMode];
+    } else {
+        NSWindow *window = [[self currentWindowController] window];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitAppFullScreen_WindowDidExitFullScreen:) name:NSWindowDidExitFullScreenNotification object:window];
+        _selectorToPerformAfterWindowExitFullScreen = @selector(performExitingFromPresentationMode);
+        if (!_willExitFullScreenWhilePresentationMode) {
+            [window toggleFullScreen:nil];
+        }
+        [[self mainWindowController] restoreAllPalettesAndToolbars];
+        [[self playerInEditorWindowController] verifyCardViewZoomFactor];
+        if (_wasInEditorModeBeforePresentationMode) {
+            [self synchronizePlayerInEditorCardViewWithEditorForPresentationModeAnimation];
+        }
+    }
+    [[[self playerInEditorWindowController] cardView] setRoundsCardCorners:NO];
+}
+
+- (void)exportPanelControllerDidEnd:(id)aController forDocumentWithType:(id)aType
+{
+    NSError *error = nil;
+    BOOL valid = [self panel:[aController window] validateFilename:[aController filename] error:&error];
+    if (!valid && error != nil) {
+        [self runInvalidExportFilenameAlertWithError:error andContextInfo:aType shouldComeback:YES];
+        return;
+    }
+    [self setResourcesWrapper:nil];
+    [[HSMediaValidator mediaValidatorForDocument:self] validateMedia];
+    [HSMediaSaver saveMediaForDocument:self resourcesWrapper:[self resourcesWrapper]];
+    [self reloadDocumentMedia];
+    [[self editorCardView] saveEditingState];
+    [[self exportManager] exportDocumentWithFileName:[aController filename] ofType:aType];
+    [[HSPathsProvider sharedPathsProvider] setHyperStudioDocumentsExportFolder:[aController directory]];
+}
+
+- (void)exportPanelControllerDidEndWithoutComeback:(id)aController returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode != 1) {
+        return;
+    }
+    NSError *error = nil;
+    BOOL valid = [self panel:[aController window] validateFilename:[aController filename] error:&error];
+    if (!valid && error != nil) {
+        [self runInvalidExportFilenameAlertWithError:error andContextInfo:aInfo shouldComeback:NO];
+    } else {
+        [self exportPanelControllerDidEnd:aController forDocumentWithType:(id)aInfo];
+    }
+}
+
+- (void)exportToFTPServer:(id)aServer
+{
+    [self exportToDocumentWithType:@"HSFTPServerDocumentType" inPublishType:5 inFormat:0xb withRequiredFileType:@""];
+}
+
+- (void)exportToWebPage:(id)aPage
+{
+    [self runPublishComboDialogForExportFormat:9 didEndSelector:@selector(publishComboDialogDidEndWithoutComeBack:returnCode:)];
+}
+
+- (void)finalizeSwitchingPresentationMode
+{
+    _isPresentationModeSwitching = NO;
+    if (![self isInPresentationMode] && _shouldEnterPurePlayerAfterExitPresentationMode) {
+        [self togglePlayerMode:nil];
+        _shouldEnterPurePlayerAfterExitPresentationMode = NO;
+    }
+    [[self playerInEditorWindowController] verifyCardViewZoomFactor];
+}
+
+- (void)finishPublishComboDialog:(id)aDialog returnCode:(BOOL)aCode showExportComboDialogIfNeeded:(BOOL)aShow
+{
+    [[aDialog window] orderOut:nil];
+    if (aCode) {
+        [self runExportSessionWithExportFormat:[aDialog exportFormat] publishType:[aDialog publishType]];
+    } else if (aShow) {
+        [self exportTo:nil];
+    }
+    [aDialog autorelease];
+}
+
+- (void)invalidExportFilenameAlertWithoutComebackDidEnd:(id)aAlert returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEndWithoutComeback:returnCode:contextInfo:) contextInfo:aInfo];
+}
+
+- (BOOL)isAddingNewButtonInProcess
+{
+    return _addingNewButtonInProcess;
+}
+
+- (BOOL)isPaused
+{
+    return _isPaused;
+}
+
+- (BOOL)isPresentationModeSwitching
+{
+    return _isPresentationModeSwitching;
+}
+
+- (BOOL)isRecordingMovie
+{
+    return _isRecordingMovie;
+}
+
+- (BOOL)isRecordingSound
+{
+    return _isRecordingSound;
+}
+
+- (void)moveDocument:(id)aDocument
+{
+    NSString *path = [[self fileURL] path];
+    if ([path length] != 0 && [path rangeOfString:[[NSBundle mainBundle] resourcePath]].length != 0) {
+        HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
+        NSString *message = [NSString stringWithFormat:[provider localizedStringForKey:@"HSAMoveStackMessageText" value:@"" table:@"Alerts"], [[self fileURL] lastPathComponent]];
+        NSString *informative = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSAMoveStackInformativeText" value:@"" table:@"Alerts"];
+        NSArray *options = [NSArray arrayWithObjects:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Duplicate" value:@"" table:@"Alerts"], [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"], nil];
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:message, NSLocalizedDescriptionKey, informative, NSLocalizedRecoverySuggestionErrorKey, self, NSRecoveryAttempterErrorKey, options, NSLocalizedRecoveryOptionsErrorKey, nil];
+        NSError *error = [HSError errorWithDomain:HSSpecificErrorDomain code:0x4e38 userInfo:userInfo];
+        [NSApp presentError:error modalForWindow:[self windowForSheet] delegate:self didPresentSelector:NULL contextInfo:NULL];
+        return;
+    }
+    [super moveDocument:aDocument];
+}
+
+- (BOOL)panel:(id)aPanel validateFilename:(id)aFilename error:(NSError **)aError
+{
+    HSExportManager *manager = [self exportManager];
+    id controller = [manager exportPanelController];
+    if (![controller isWindowLoaded]) {
+        return YES;
+    }
+    if ([controller window] != aPanel) {
+        return YES;
+    }
+    if (aFilename == nil) {
+        return NO;
+    }
+    NSInteger format = [manager exportFormat];
+    NSString *messageKey = nil;
+    NSString *informativeKey = nil;
+    if (format == 1) {
+        NSCharacterSet *invalid = [NSCharacterSet characterSetWithCharactersInString:@"?;/"];
+        if (invalid == nil) {
+            return NO;
+        }
+        if ([aFilename rangeOfCharacterFromSet:invalid].location == NSNotFound) {
+            return YES;
+        }
+        messageKey = @"HSInvalidWebExportPanelFilenameMessageText";
+        informativeKey = @"HSInvalidWebExportPanelFilenameInformativeText";
+    } else if (format == 10) {
+        NSString *relative = [[NSURL fileURLWithPath:aFilename isDirectory:NO] relativeString];
+        if (relative == nil) {
+            return NO;
+        }
+        if ([relative isEqualToString:aFilename]) {
+            return YES;
+        }
+        messageKey = @"HSInvalidIBAExportPanelFilenameMessageText";
+        informativeKey = @"HSInvalidIBAExportPanelFilenameInformativeText";
+    } else {
+        return YES;
+    }
+    NSString *message = [NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:messageKey value:@"" table:@"Alerts"], aFilename];
+    if (message != nil && aError != NULL) {
+        NSString *informative = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:informativeKey value:@"" table:@"Alerts"];
+        *aError = [NSError errorWithDomain:NSCocoaErrorDomain code:0x102 userInfo:[NSDictionary dictionaryWithObjectsAndKeys:message, NSLocalizedDescriptionKey, informative, NSLocalizedRecoverySuggestionErrorKey, nil]];
+    }
+    return NO;
+}
+
+- (void)pause
+{
+    if (![[HSApplicationController sharedDocumentController] isPauseResumeEnabled] || [self isPaused]) {
+        return;
+    }
+    _isPaused = YES;
+    id playerView = [self playerView];
+    if ([playerView isPictureShow]) {
+        [playerView pausePictureShow];
+    } else if ([playerView isSlideshow]) {
+        [playerView pauseSlideshowIfNeeded];
+    }
+    [playerView pauseTransition];
+    [[[self navigationController] presentationSync] pause];
+    [[self actionExecutionContext] pauseSpeechRecognition];
+}
+
+- (void)performExitingFromPresentationMode
+{
+    if (_wasInFullScreenBeforePresentationMode && !_willExitFullScreenWhilePresentationMode) {
+        [self prepareForAnimatingPresentationModeSwitching];
+        [[self mainWindowController] restoreFixedToolbars];
+        [[self playerInEditorWindowController] verifyCardViewZoomFactor];
+    }
+    if (_wasInEditorModeBeforePresentationMode) {
+        if ([self isInPurePlayerMode]) {
+            [self exitPurePlayerModeWithAnimation:NO];
+        }
+        [self switchToEditorWithToolTag:1];
+    }
+    [[[self currentWindowController] window] update];
+    if (_wasInFullScreenBeforePresentationMode && !_willExitFullScreenWhilePresentationMode) {
+        [self performSelector:@selector(beginAnimatingExitingFromPresentationMode) withObject:nil afterDelay:0.2];
+    } else {
+        [self finalizeSwitchingPresentationMode];
+    }
+}
+
+- (void)prepareForAnimatingPresentationModeSwitching
+{
+    NSWindow *window = [[self currentWindowController] window];
+    NSWindow *animatingWindow = [self animatingWindow];
+    NSView *view = [self viewForAnimatingPresentationModeSwitching];
+    [animatingWindow setFrame:[self currentWindowFrameForAnimatingPresentationModeSwitching] display:NO];
+    [animatingWindow setContentView:view];
+    [animatingWindow setAlphaValue:1];
+    [window addChildWindow:animatingWindow ordered:NSWindowAbove];
+    [animatingWindow orderFront:nil];
+}
+
+- (void)publishComboDialogDidEndWithComeBack:(id)aDialog returnCode:(NSInteger)aCode
+{
+    [self finishPublishComboDialog:aDialog returnCode:(char)aCode showExportComboDialogIfNeeded:YES];
+}
+
+- (void)publishComboDialogDidEndWithoutComeBack:(id)aDialog returnCode:(NSInteger)aCode
+{
+    [self finishPublishComboDialog:aDialog returnCode:(char)aCode showExportComboDialogIfNeeded:NO];
+}
+
+- (void)publishToDotMac:(id)aSender
+{
+    [self isWritingDisabled];
+}
+
+- (void)renameDocument:(id)aDocument
+{
+    NSString *path = [[self fileURL] path];
+    if ([path length] != 0 && [path rangeOfString:[[NSBundle mainBundle] resourcePath]].length != 0) {
+        HSExecutableResourceProvider *provider = [HSExecutableResourceProvider sharedInstance];
+        NSString *message = [NSString stringWithFormat:[provider localizedStringForKey:@"HSARenameStackMessageText" value:@"" table:@"Alerts"], [[self fileURL] lastPathComponent]];
+        NSString *informative = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSARenameStackInformativeText" value:@"" table:@"Alerts"];
+        NSArray *options = [NSArray arrayWithObjects:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Duplicate" value:@"" table:@"Alerts"], [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"], nil];
+        NSDictionary *userInfo = [NSDictionary dictionaryWithObjectsAndKeys:message, NSLocalizedDescriptionKey, informative, NSLocalizedRecoverySuggestionErrorKey, self, NSRecoveryAttempterErrorKey, options, NSLocalizedRecoveryOptionsErrorKey, nil];
+        NSError *error = [HSError errorWithDomain:HSSpecificErrorDomain code:0x4e38 userInfo:userInfo];
+        [NSApp presentError:error modalForWindow:[self windowForSheet] delegate:self didPresentSelector:NULL contextInfo:NULL];
+        return;
+    }
+    [super renameDocument:aDocument];
+}
+
+- (void)resume
+{
+    if (![self isPaused]) {
+        return;
+    }
+    _isPaused = NO;
+    id playerView = [self playerView];
+    if ([playerView isPictureShow]) {
+        [playerView resumePictureShow];
+    } else if ([playerView isSlideshow]) {
+        [playerView resumeSlideshowIfNeeded];
+    }
+    [playerView resumeTransition];
+    [[[self navigationController] presentationSync] resume];
+    [[self actionExecutionContext] resumeSpeechRecognition];
+}
+
+- (void)runExportSessionWithExportFormat:(NSInteger)aFormat publishType:(NSInteger)aType
+{
+    HSExportManager *manager = [self exportManager];
+    if ([manager isOpenExportSession]) {
+        [manager closeExportSession];
+    }
+    [manager openExportSessionWithDocument:self];
+    [manager setExportFormat:aFormat];
+    [manager setPublishType:aType];
+    NSString *documentType = nil;
+    switch (aFormat) {
+    case 1:
+        documentType = @"HSWebDocumentType";
+        break;
+    case 2:
+        documentType = @"HSMakeStackToGoDocumentType";
+        break;
+    case 3:
+        documentType = @"HSImageSequenceDocumentType";
+        break;
+    case 4:
+        documentType = @"HSQTMovieDocumentType";
+        break;
+    case 5:
+        documentType = @"HSiPodDocumentType";
+        break;
+    case 6:
+        documentType = @"HSiPhoneDocumentType";
+        break;
+    case 8:
+    case 9:
+        documentType = @"HSHTML5DocumentType";
+        break;
+    case 10:
+        documentType = @"HSiBooksAuthorDocumentType";
+        break;
+    case 0xb:
+        documentType = @"HSFTPServerDocumentType";
+        break;
+    }
+    [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEnd:returnCode:contextInfo:) contextInfo:documentType];
+}
+
+- (void)runInvalidExportFilenameAlertWithError:(id)aError andContextInfo:(void *)aInfo shouldComeback:(BOOL)aComeback
+{
+    HSAlert *alert = [HSAlert new];
+    [alert setAlertStyle:NSWarningAlertStyle];
+    [alert setMessageText:[aError localizedDescription]];
+    [alert setInformativeText:[aError localizedRecoverySuggestion]];
+    SEL didEnd = aComeback ? @selector(invalidExportFilenameAlertDidEnd:returnCode:contextInfo:) : @selector(invalidExportFilenameAlertWithoutComebackDidEnd:returnCode:contextInfo:);
+    [alert beginSheetModalForWindow:[self windowForSheet] modalDelegate:self didEndSelector:didEnd contextInfo:aInfo];
+    [alert release];
+}
+
+- (void)runModalExportPanelWithDelegate:(id)aDelegate didSaveSelector:(SEL)aSelector contextInfo:(void *)aInfo
+{
+    id controller = [[self exportManager] exportPanelController];
+    NSString *name = [[[self fileURL] lastPathComponent] stringByDeletingPathExtension];
+    if (name == nil) {
+        name = [self displayName];
+    }
+    name = [[self exportManager] escapeFileNameForExport:name];
+    id directory = [[HSPathsProvider sharedPathsProvider] hyperStudioDocumentsExportFolder];
+    [controller beginSheetForDirectory:directory file:name modalForWindow:[self windowForSheet] modalDelegate:aDelegate didEndSelector:aSelector contextInfo:aInfo];
+}
+
+- (void)runPublishComboDialogForExportFormat:(NSInteger)aFormat didEndSelector:(SEL)aSelector
+{
+    HSPublishComboDialog *dialog = [[HSPublishComboDialog alloc] initWithExportFormat:aFormat];
+    [dialog runForWindow:[self windowForSheet] delegate:self didEndSelector:aSelector];
+}
+
+- (void)setAddingNewButtonInProcess:(BOOL)aProcess
+{
+    _addingNewButtonInProcess = aProcess;
+}
+
+- (void)setIsRecordingMovie:(BOOL)aMovie
+{
+    _isRecordingMovie = aMovie;
+}
+
+- (void)setIsRecordingSound:(BOOL)aSound
+{
+    _isRecordingSound = aSound;
+}
+
+- (BOOL)shouldSaveChangesMadeInBrowseMode
+{
+    return [[self stack] shouldSaveChangesMadeInBrowseMode];
+}
+
+- (void)slideShowAttributesWindowDidEnd:(id)aWindow returnedCode:(NSInteger)aCode
+{
+    id controller = [self playerInEditorWindowController];
+    if (aCode == 1) {
+        id attributes = [[[aWindow slideshowAttributes] retain] autorelease];
+        if (attributes != nil) {
+            [self testCardWithUID:[[self currentCard] hyperUID] animate:NO];
+            [controller startSlideShowWithAttributes:attributes];
+        }
+    }
+    [aWindow autorelease];
+}
+
+- (void)storeDocumentWindowState:(id)aState
+{
+    [[self editorWindowController] storeDocumentWindowState:aState];
+    [_playerInEditorWindowController storeDocumentWindowState:aState];
+    if ([self isInPresentationMode]) {
+        [aState setObject:[NSNumber numberWithBool:_wasInEditorModeBeforePresentationMode] forKey:HSDocumentInEditModeKey];
+    }
+}
+
+- (void)synchronizePlayerInEditorCardViewWithEditorForPresentationModeAnimation
+{
+    [[[self playerInEditorWindowController] cardView] setZoomFactor:[[[self editorWindowController] cardView] zoomFactor]];
+}
+
+- (void)togglePresentationModeButton:(id)aButton
+{
+    SEL action = @selector(togglePresentationMode:);
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"HSPresentationModeButtonSwitchesPlayerMode"]) {
+        action = @selector(togglePlayerMode:);
+    }
+    [NSApp sendAction:action to:nil from:aButton];
+}
+
+- (id)viewForAnimatingPresentationModeSwitching
+{
+    CGImageRef image = [self createImageForAnimatingPresentationModeSwitching];
+    NSView *view = nil;
+    if (image != NULL) {
+        view = [[[NSView alloc] initWithFrame:[self currentWindowFrameForAnimatingPresentationModeSwitching]] autorelease];
+        CALayer *layer = [CALayer layer];
+        [layer setFrame:NSRectToCGRect([view bounds])];
+        [view setLayer:layer];
+        [view setWantsLayer:YES];
+        CALayer *imageLayer = [CALayer layer];
+        [imageLayer setFrame:[layer bounds]];
+        [imageLayer setContents:(id)image];
+        [layer addSublayer:imageLayer];
+        CGImageRelease(image);
+    }
+    return view;
+}
+
++ (BOOL)autosavesInPlace
+{
+    return YES;
+}
+
+- (id)initForURL:(id)aURL withContentsOfURL:(id)aURL2 ofType:(id)aType error:(id *)aError
+{
+    self = [super initForURL:aURL withContentsOfURL:aURL2 ofType:aType error:aError];
+    if (self != nil && [aType length] == 0) {
+        NSString *extension = [[[aURL path] pathExtension] lowercaseString];
+        if (![extension isEqualToString:@"stack"] && ![extension isEqualToString:@"hsa"]) {
+            [self setFileType:[extension isEqualToString:@"key"] ? @"HSKeynoteDocumentType" : @"HSNativeDocumentType"];
+        }
+    }
+    return self;
+}
+
 - (void)dealloc
 {
     [self destoryModelIfNeeded];
@@ -6147,7 +2979,6 @@ void FUN_0027cb32(HSEditorDocument *self,SEL _cmd)
     [_commitLogMessage release];
     [_documentSharingController release];
     [_editObjectDialogContext release];
-    [_animationModeController release];
     [_modeSwitcher release];
     [_exportManager release];
     [_selectionController setCardView:nil];
@@ -6157,7 +2988,6 @@ void FUN_0027cb32(HSEditorDocument *self,SEL _cmd)
     [_selectionSync release];
     [_stackSelectionHolder setDocument:nil];
     [_stackSelectionHolder release];
-    [_playerInEditorWindowController setStatusbarController:nil];
     [_playerInEditorWindowController release];
     [_hyperCastingWindowController release];
     [_purePlayerWindowController release];
@@ -6169,31 +2999,166 @@ void FUN_0027cb32(HSEditorDocument *self,SEL _cmd)
     [_openWarning release];
     [_palettesToHideInHypercastingMode release];
     [_textViewsToResetScrollPosition release];
-    [_iPadStack release];
-    [_originalStackStorage release];
-    [_iPadUndoManager release];
+    [_animatingWindow release];
+    [_browseUndoManager release];
     [super dealloc];
 }
 
-- (id)initForURL:(id)aURL withContentsOfURL:(id)aURL2 ofType:(id)aType error:(id *)aError
+- (BOOL)isInPlayerMode
 {
-    id pcVar3;
-    NSString *pvVar1_3;
+    if (_modeSwitcher == nil) {
+        return NO;
+    }
+    return [[self currentWindowController] isMemberOfClass:[HSDependentPlayerWindowController class]] || [[self currentWindowController] isMemberOfClass:[HSPurePlayerInEditorWindowController class]];
+}
 
-    self = [super initForURL:aURL withContentsOfURL:aURL2 ofType:aType error:aError];
-    if (self != nil) {
-        pvVar1_3 = [[[aURL path] pathExtension] lowercaseString];
-        if (![pvVar1_3 isEqualToString:@"stack"]) {
-            if (![pvVar1_3 isEqualToString:@"key"]) {
-                pcVar3 = @"HSNativeDocumentType";
-            }
-            else {
-                pcVar3 = @"HSKeynoteDocumentType";
-            }
-            [self setFileType:pcVar3];
+- (BOOL)isInPresentationMode
+{
+    return _isInPresentationMode;
+}
+
+- (BOOL)isInStandardMode
+{
+    return ![self isInStoryboardMode] && ![self isInPurePlayerMode] && ![self isInPresentationMode];
+}
+
+- (BOOL)hyperReadFromFileWrapper:(id)aWrapper ofType:(id)aType error:(id *)aError
+{
+    if ([aType isEqual:@"HSDocumentType"] || [aType isEqual:@"HSAiBADocumentType"]) {
+        return [super hyperReadFromFileWrapper:aWrapper ofType:aType error:aError];
+    }
+    if (![aType isEqualToString:@"HSKeynoteDocumentType"]) {
+        return NO;
+    }
+    if ([KeynoteImportManager isKeynote2FileWrapperRepresentation:aWrapper]) {
+        [[self undoManager] disableUndoRegistration];
+        KeynoteImportManager *manager = [KeynoteImportManager new];
+        [manager setPathToDocument:[[self fileURL] path]];
+        [manager setFileWrapper:aWrapper];
+        id presentation = [manager presentation];
+        [presentation detailChildren];
+        BOOL imported = [manager shouldImportPresentation];
+        if (!imported) {
+            *aError = [HSError errorWithHSCode:0x2711];
+        } else {
+            HSStack *stack = [HSStack defaultObject];
+            [self setStack:stack];
+            [stack importFromKeynoteObject:presentation];
+        }
+        [manager release];
+        [[self undoManager] enableUndoRegistration];
+        return imported;
+    }
+    if (aError != NULL) {
+        *aError = [HSError errorWithHSCode:0x5026];
+    }
+    return NO;
+}
+
+- (void)exportPanelControllerDidEnd:(id)aController returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (![(id)aInfo isEqualToString:@"HSDocumentType"] || ![(id)aInfo isEqualToString:@"HSAiBADocumentType"]) {
+        if (aCode == 1) {
+            [self exportPanelControllerDidEnd:aController forDocumentWithType:(id)aInfo];
+        } else {
+            [self exportTo:self];
         }
     }
-    return self;
+}
+
+- (void)invalidExportFilenameAlertDidEnd:(id)aAlert returnCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEnd:returnCode:contextInfo:) contextInfo:aInfo];
+}
+
+- (id)undoManager
+{
+    if ([self isInPlayerMode] && ![self shouldSaveChangesMadeInBrowseMode]) {
+        return [self browseUndoManager];
+    }
+    if (_autosaveUndoManager != nil) {
+        return _autosaveUndoManager;
+    }
+    return [super undoManager];
+}
+
+- (void)takeDataFromDocument:(id)aDocument
+{
+    [self setModeSwitcher:[aDocument modeSwitcher]];
+    if ([aDocument isKindOfClass:[HSEditorDocument class]]) {
+        HSEditorDocument *other = aDocument;
+        [self setModeHistory:[other modeHistory]];
+        BOOL inPresentation = [other isInPresentationMode];
+        _isInPresentationMode = inPresentation;
+        _wasInEditorModeBeforePresentationMode = other->_wasInEditorModeBeforePresentationMode;
+        _wasInFullScreenBeforePresentationMode = other->_wasInFullScreenBeforePresentationMode;
+        _isPresentationModeSwitching = other->_isPresentationModeSwitching;
+        _willExitFullScreenWhilePresentationMode = other->_willExitFullScreenWhilePresentationMode;
+        _shouldEnterPurePlayerAfterExitPresentationMode = other->_shouldEnterPurePlayerAfterExitPresentationMode;
+        _didSwitchToPlayerInEditorWhileEnteringPresentationMode = other->_didSwitchToPlayerInEditorWhileEnteringPresentationMode;
+        _selectorToPerformAfterWindowExitFullScreen = other->_selectorToPerformAfterWindowExitFullScreen;
+        if (inPresentation) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(exitAppFullScreen_WindowWillExitFullScreen:) name:NSWindowWillExitFullScreenNotification object:[[self currentWindowController] window]];
+        }
+    }
+    [super takeDataFromDocument:aDocument];
+}
+
+- (void)editStack:(id)aStack
+{
+    [[self stack] stopPlayingTemporaryObjects];
+    [self switchToEditorWithToolTag:1];
+}
+
+- (void)togglePlayerMode:(id)aMode
+{
+    if (([NSApp presentationOptions] & 0x400) == 0) {
+        if ([self isInPurePlayerMode]) {
+            return;
+        }
+        if ([self isInPurePlayerMode]) {
+            [self exitPurePlayerModeWithAnimation:YES];
+        } else if ([self canTogglePlayEdit]) {
+            [self enterPurePlayerModeWithAnimation:YES];
+        }
+    } else if ([self isInPresentationMode]) {
+        _shouldEnterPurePlayerAfterExitPresentationMode = YES;
+        [[[self currentWindowController] window] toggleFullScreen:nil];
+    } else {
+        [self exitAppFullScreenPerformSelectorAtDone:@selector(togglePlayerMode:)];
+    }
+}
+
+- (void)exportTo:(id)aTo
+{
+    if ([self isWritingDisabled]) {
+        return;
+    }
+    HSExportComboDialog *dialog = [HSExportComboDialog new];
+    if ([dialog runModalWithDelegate:self] == 1) {
+        NSInteger publishType = [dialog publishType];
+        NSInteger format = [dialog exportFormat];
+        if (publishType == 0) {
+            [self runPublishComboDialogForExportFormat:format didEndSelector:@selector(publishComboDialogDidEndWithComeBack:returnCode:)];
+        } else {
+            [self runExportSessionWithExportFormat:format publishType:publishType];
+        }
+    }
+    [dialog release];
+}
+
+- (void)exportToDocumentWithType:(id)aType inPublishType:(NSInteger)aType2 inFormat:(NSInteger)aFormat withRequiredFileType:(id)aType3
+{
+    if (![self isWritingDisabled]) {
+        id manager = [self exportManager];
+        if ([manager isOpenExportSession]) {
+            [manager closeExportSession];
+        }
+        [manager openExportSessionWithDocument:self];
+        [manager setPublishType:aType2];
+        [manager setExportFormat:aFormat];
+        [self runModalExportPanelWithDelegate:self didSaveSelector:@selector(exportPanelControllerDidEndWithoutComeback:returnCode:contextInfo:) contextInfo:aType];
+    }
 }
 
 @end
