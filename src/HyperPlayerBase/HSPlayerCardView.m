@@ -278,7 +278,7 @@
 // within its superview, short of leaving a gap at an edge.
 - (void)scrollWheel:(id)aWheel
 {
-    if ([self enclosingScrollView] || [[[_playerView stack] document] isInPresentationMode]) {
+    if ([self enclosingScrollView]) {
         [super scrollWheel:aWheel];
         return;
     }
