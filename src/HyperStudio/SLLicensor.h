@@ -114,3 +114,69 @@ unsigned int SLDecodeGetBufferSizeForSerialStringLength(unsigned int aLength);
 unsigned int SLDecodeSerialString(char *aText, char *aBuffer, unsigned int aBufferSize, const short *aCRC);
 unsigned int SLEncodeSerialString(const char *aString, char *aBuffer, unsigned int aBufferSize, unsigned short *aCRC);
 int SLValidateEncodedSerialString(const char *aText, short aCRC);
+
+// The licensor data the application ships with, parsed in place; offsets in the blob are turned into pointers.
+typedef struct SLLicensorAnalysis {
+    unsigned int version;
+    unsigned int size;
+    double date;
+    unsigned int sizeA;
+    const unsigned char *baseA;
+    const unsigned char *keyBase;
+    unsigned int pathCount;
+    const unsigned char *pathTable;
+    unsigned int typeCount;
+    const unsigned char *typeTable;
+    unsigned int length11;
+    const unsigned char *pointer12;
+    unsigned int defaultIndex;
+    unsigned int magic;
+    unsigned int codeMapCount;
+    const unsigned char *codeMapTable;
+    double dateB;
+    unsigned int sizeB;
+    const unsigned char *baseB;
+    const unsigned char *keyBaseB;
+    unsigned int restrictionCount;
+    const unsigned char *restrictions;
+    double dateC;
+    unsigned int sizeC;
+    const unsigned char *baseC;
+    const unsigned char *pointerC;
+    unsigned int countC;
+    const unsigned char *tableC;
+    const unsigned char *base;
+} SLLicensorAnalysis;
+
+typedef struct SLLicensor {
+    const unsigned char *bytes;
+    unsigned int size;
+    void *releaseContext;
+    SLReleaseCallBack releaseCallBack;
+    unsigned int rawSerialLength;
+    unsigned int groupSize;
+    unsigned int groupCount;
+    SLLicensorAnalysis analysis;
+} SLLicensor;
+
+typedef struct SLLicensorRestriction {
+    unsigned int identifierLength;
+    const unsigned char *identifier;
+    unsigned int serialCount;
+    unsigned int serialSize;
+    const unsigned char *serials;
+} SLLicensorRestriction;
+
+int SLLicensorIsDataConsistent(const unsigned char *aBytes, unsigned int aSize, SLLicensorAnalysis *aAnalysis);
+int SLLicensor4444InitializeWithBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack);
+int SLLicensor55554InitializeWithBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack);
+unsigned int SLLicensorGetLicensePathAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                             unsigned int aKeyLength, unsigned int aIndex, char *aBuffer,
+                                             unsigned int aSize);
+unsigned int SLLicensorGetLicenseTypeAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                             unsigned int aKeyLength, unsigned int aIndex, char *aBuffer,
+                                             unsigned int aSize);
+int SLLicensorGetRestrictionAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                    unsigned int aKeyLength, unsigned int aIndex, SLLicensorRestriction *aRestriction);

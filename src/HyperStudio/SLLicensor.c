@@ -744,3 +744,290 @@ int SLValidateEncodedSerialString(const char *aText, short aCRC)
     }
     return -1;
 }
+
+#pragma mark - Licensor data
+
+static const unsigned char *SLBlobPointer(const unsigned char *aBase, unsigned int aOffset, unsigned int aSize)
+{
+    return aOffset < aSize ? aBase + aOffset : NULL;
+}
+
+int SLLicensorIsDataConsistent(const unsigned char *aBytes, unsigned int aSize, SLLicensorAnalysis *aAnalysis)
+{
+#define W(i) BE32(aBytes + 4 * (i))
+    if (aSize < 0x7c) {
+        return 0;
+    }
+    SLLicensorAnalysis *a = aAnalysis;
+    a->base = aBytes + 0x7c;
+    a->version = W(0);
+    a->size = W(1);
+    a->sizeA = W(2);
+    a->baseA = SLBlobPointer(a->base, W(3), aSize);
+    a->date = SLGetBEDouble(aBytes + 0x10);
+    a->keyBase = SLBlobPointer(a->base, W(6), aSize);
+    a->pathCount = W(7);
+    a->pathTable = SLBlobPointer(a->base, W(8), aSize);
+    a->typeCount = W(9);
+    a->typeTable = SLBlobPointer(a->base, W(10), aSize);
+    a->length11 = W(11);
+    a->pointer12 = SLBlobPointer(a->base, W(12), aSize);
+    a->defaultIndex = W(13);
+    a->magic = W(14);
+    a->codeMapCount = W(15);
+    a->codeMapTable = SLBlobPointer(a->base, W(16), aSize);
+    a->dateB = SLGetBEDouble(aBytes + 0x44);
+    a->sizeB = W(0x13);
+    a->baseB = SLBlobPointer(a->base, W(0x14), aSize);
+    a->keyBaseB = SLBlobPointer(a->base, W(0x15), aSize);
+    a->restrictionCount = W(0x16);
+    a->restrictions = SLBlobPointer(a->base, W(0x17), aSize);
+    a->dateC = SLGetBEDouble(aBytes + 0x60);
+    a->sizeC = W(0x1a);
+    a->baseC = SLBlobPointer(a->base, W(0x1b), aSize);
+    a->pointerC = SLBlobPointer(a->base, W(0x1c), aSize);
+    a->countC = W(0x1d);
+    a->tableC = SLBlobPointer(a->base, W(0x1e), aSize);
+#undef W
+
+    if (a->version != 1 || a->size == 0 || a->size + 0x7c > aSize || a->date == 0.0 || a->baseA == NULL) {
+        return 0;
+    }
+    unsigned int extra = 0;
+    int hasB = 0, hasC = 0;
+    if (a->dateB != 0.0) {
+        if (a->baseB == NULL || a->keyBaseB == NULL || a->sizeB == 0 || a->date - a->dateB > 120.0 ||
+            a->dateB - a->date > 120.0 || a->restrictionCount == 0 || a->restrictions == NULL) {
+            return 0;
+        }
+        extra = a->sizeB;
+        hasB = 1;
+    }
+    if (a->dateC != 0.0) {
+        if (a->baseC == NULL || a->pointerC == NULL || a->sizeC == 0 || a->date - a->dateC > 120.0 ||
+            a->dateC - a->date > 120.0 || a->countC == 0 || a->tableC == NULL) {
+            return 0;
+        }
+        extra += a->sizeC;
+        hasC = 1;
+    }
+    unsigned int sizeA = a->sizeA;
+    if (sizeA == 0 || extra + sizeA > a->size || a->magic != 0x7369616c || a->pathCount == 0 ||
+        a->pathTable == NULL) {
+        return 0;
+    }
+    if (a->defaultIndex != 0xffffffff &&
+        (a->defaultIndex >= a->pathCount || a->pointer12 == NULL || a->length11 == 0)) {
+        return 0;
+    }
+    if (a->typeCount == 0 || a->typeTable == NULL) {
+        return 0;
+    }
+
+    // Every path and type entry is a length and an offset into the strings.
+    unsigned int pathBytes = a->pathCount * 8;
+    if (pathBytes > sizeA) {
+        return 0;
+    }
+    unsigned int i;
+    for (i = 0; i < a->pathCount && sizeA > 7; i++) {
+        const unsigned char *entry = a->pathTable + i * 8;
+        unsigned int length = BE32(entry), offset = BE32(entry + 4);
+        if (offset >= sizeA || length == 0 || (pathBytes += 1 + length) > sizeA) {
+            break;
+        }
+    }
+    if (i != a->pathCount) {
+        return 0;
+    }
+    unsigned int typeBytes = a->typeCount * 8;
+    if (typeBytes > sizeA) {
+        return 0;
+    }
+    for (i = 0; i < a->typeCount && sizeA > 7; i++) {
+        const unsigned char *entry = a->typeTable + i * 8;
+        unsigned int length = BE32(entry), offset = BE32(entry + 4);
+        if (offset >= sizeA || length == 0 || (typeBytes += 1 + length) > sizeA) {
+            break;
+        }
+    }
+    if (i != a->typeCount || a->codeMapCount == 0 || a->codeMapTable == NULL || sizeA < 0x18) {
+        return 0;
+    }
+
+    unsigned int codeBytes = 0;
+    for (i = 0; i < a->codeMapCount; i++) {
+        const unsigned char *entry = a->codeMapTable + i * 0x18;
+        unsigned int length = BE32(entry), offset = BE32(entry + 4), type = BE32(entry + 8);
+        unsigned int index = BE32(entry + 12), length2 = BE32(entry + 16), offset2 = BE32(entry + 20);
+        const unsigned char *string = SLBlobPointer(a->baseA, offset, sizeA);
+        const unsigned char *string2 = SLBlobPointer(a->baseA, offset2, sizeA);
+        if (length == 0 || string == NULL) {
+            return 0;
+        }
+        if (string2 == NULL ? length2 != 0 : length2 == 0) {
+            return 0;
+        }
+        if (type != 0x2e537552 && type != 0x2e54726c && type != 0x2e4e6574) {
+            return 0;
+        }
+        if (index >= a->pathCount) {
+            return 0;
+        }
+        codeBytes += 0x19 + length2 + length;
+    }
+    unsigned int total = pathBytes + typeBytes + codeBytes;
+    if (a->length11 != 0) {
+        total += 1 + a->length11;
+    }
+    if (total > sizeA) {
+        return 0;
+    }
+
+    if (hasB) {
+        unsigned int accumulated = 0;
+        for (i = 0; i < a->restrictionCount && a->sizeB > 0x13; i++) {
+            const unsigned char *entry = a->restrictions + i * 0x14;
+            unsigned int length = BE32(entry), offset = BE32(entry + 4), count = BE32(entry + 8);
+            unsigned int elementSize = BE32(entry + 12), offset2 = BE32(entry + 16);
+            if (SLBlobPointer(a->baseB, offset, a->sizeB) == NULL || length == 0 ||
+                SLBlobPointer(a->baseB, offset2, a->sizeB) == NULL || count == 0 || elementSize != 4) {
+                break;
+            }
+            accumulated += 0x15 + length + count * 4;
+        }
+        if (i != a->restrictionCount || a->sizeB != accumulated) {
+            return 0;
+        }
+    }
+    if (hasC) {
+        for (i = 0; i < a->countC; i++) {
+            if (a->sizeC < 0x10) {
+                return 0;
+            }
+            const unsigned char *entry = a->tableC + i * 16;
+            unsigned int length = BE32(entry), offset = BE32(entry + 4);
+            unsigned int length2 = BE32(entry + 8), offset2 = BE32(entry + 12);
+            if (SLBlobPointer(a->baseC, offset, a->sizeC) == NULL || length == 0 ||
+                SLBlobPointer(a->baseC, offset2, a->sizeC) == NULL || length2 == 0) {
+                return 0;
+            }
+        }
+    }
+    return 1;
+}
+
+static void SLLicensorReleaseCallBack(void *aContext, void *aObject, size_t aSize)
+{
+    SLLicensor *licensor = aObject;
+    if (licensor != NULL) {
+        if (licensor->releaseCallBack != NULL) {
+            licensor->releaseCallBack(licensor->releaseContext, (void *)licensor->bytes, licensor->size);
+        }
+        SLAllocatorDeallocate(NULL, licensor);
+    }
+}
+
+static int SLLicensorInitializeWithBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                               SLReleaseCallBack aCallBack, unsigned int aGroup,
+                                               unsigned int aRawLength)
+{
+    if (aBytes == NULL || aSize == 0) {
+        return SLResultBadArgument;
+    }
+    if (SLEnvironmentGetLicenseeInfo() != NULL) {
+        return SLResultAlreadyAttached;
+    }
+    SLLicensor *licensor = SLAllocatorAllocate(NULL, sizeof(SLLicensor));
+    if (licensor == NULL) {
+        return SLResultFailed;
+    }
+    memset(licensor, 0, sizeof(*licensor));
+    if (!SLLicensorIsDataConsistent(aBytes, aSize, &licensor->analysis)) {
+        SLAllocatorDeallocate(NULL, licensor);
+        return SLResultInvalidData;
+    }
+    licensor->bytes = aBytes;
+    licensor->size = aSize;
+    licensor->releaseContext = aContext;
+    licensor->releaseCallBack = aCallBack;
+    SLEnvironmentSetLicensorNoCopy(licensor, sizeof(SLLicensor), licensor, SLLicensorReleaseCallBack);
+    licensor->groupSize = aGroup;
+    licensor->groupCount = aGroup;
+    licensor->rawSerialLength = aRawLength;
+    return SLResultOK;
+}
+
+int SLLicensor4444InitializeWithBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack)
+{
+    return SLLicensorInitializeWithBytesNoCopy(aBytes, aSize, aContext, aCallBack, 4, 0x13);
+}
+
+int SLLicensor55554InitializeWithBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack)
+{
+    return SLLicensorInitializeWithBytesNoCopy(aBytes, aSize, aContext, aCallBack, 5, 0x1c);
+}
+
+static unsigned int SLLicensorGetTableString(const SLLicensorAnalysis *aAnalysis, unsigned int aCount,
+                                             const unsigned char *aTable, const unsigned char *aKey,
+                                             unsigned int aKeyLength, unsigned int aIndex, char *aBuffer,
+                                             unsigned int aSize)
+{
+    unsigned int size = aAnalysis->sizeA;
+    if (aIndex >= aCount || aCount * 8 >= size || aTable == NULL || size < 8) {
+        return 0;
+    }
+    const unsigned char *entry = aTable + aIndex * 8;
+    unsigned int length = BE32(entry), offset = BE32(entry + 4);
+    const unsigned char *string = offset < size ? aAnalysis->baseA + offset : NULL;
+    if (string == NULL || length == 0) {
+        return 0;
+    }
+    length++;
+    if (aBuffer == NULL) {
+        return length;
+    }
+    if (length > aSize) {
+        return 0;
+    }
+    SSDecryptBytesWithKey(string, length, (unsigned int)(string - aAnalysis->keyBase), aKey, aKeyLength,
+                          (unsigned char *)aBuffer);
+    return length;
+}
+
+unsigned int SLLicensorGetLicensePathAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                             unsigned int aKeyLength, unsigned int aIndex, char *aBuffer,
+                                             unsigned int aSize)
+{
+    return SLLicensorGetTableString(aAnalysis, aAnalysis->pathCount, aAnalysis->pathTable, aKey, aKeyLength,
+                                    aIndex, aBuffer, aSize);
+}
+
+unsigned int SLLicensorGetLicenseTypeAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                             unsigned int aKeyLength, unsigned int aIndex, char *aBuffer,
+                                             unsigned int aSize)
+{
+    return SLLicensorGetTableString(aAnalysis, aAnalysis->typeCount, aAnalysis->typeTable, aKey, aKeyLength,
+                                    aIndex, aBuffer, aSize);
+}
+
+int SLLicensorGetRestrictionAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
+                                    unsigned int aKeyLength, unsigned int aIndex, SLLicensorRestriction *aRestriction)
+{
+    if (aIndex >= aAnalysis->restrictionCount || aAnalysis->restrictionCount * 0x14 >= aAnalysis->sizeB ||
+        aAnalysis->sizeB < 0x14) {
+        return 0;
+    }
+    const unsigned char *entry = aAnalysis->restrictions + aIndex * 0x14;
+    if (aRestriction == NULL) {
+        return 0x14;
+    }
+    aRestriction->identifierLength = BE32(entry);
+    aRestriction->identifier = SLBlobPointer(aAnalysis->baseB, BE32(entry + 4), aAnalysis->sizeB);
+    aRestriction->serialCount = BE32(entry + 8);
+    aRestriction->serialSize = BE32(entry + 12);
+    aRestriction->serials = SLBlobPointer(aAnalysis->baseB, BE32(entry + 16), aAnalysis->sizeB);
+    return 0x14;
+}
