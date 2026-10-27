@@ -36,5 +36,8 @@
 - (BOOL)areLinkedStacksInDocument:(id)aDocument;
 - (id)exportRepresentation;
 - (void)dealloc;
+- (id)defaultExportSettings;
+- (id)requiredFileType;
+- (id)webAppIconWrapperForDocument:(id)aDocument;
 @end
 

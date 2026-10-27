@@ -9,6 +9,7 @@
     NSMutableDictionary *_groupUIDs;
     NSMutableDictionary *_mediaUIDs;
     NSMutableDictionary *_shapeUIDs;
+    NSMutableArray *_exportedMovieObjects;
     HSHTML5LinkedStacksContext *_linkedStacksContext;
     unsigned int _shouldTerminateExport:1;
 }
@@ -29,5 +30,8 @@
 - (id)documentType;
 - (void)dealloc;
 - (id)initWithDocument:(id)aDocument ofType:(id)aType linkedStacksContext:(id)aContext;
+- (id)exportedMovieObjects;
+- (void)addExportedMovieObject:(id)aObject withMediaName:(id)aName;
+- (id)mediaNameForExportedMovieObject:(id)aObject;
 @end
 

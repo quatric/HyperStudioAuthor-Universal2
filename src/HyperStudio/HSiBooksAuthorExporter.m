@@ -141,4 +141,14 @@ done:
     return [[super exportedDocumentName] stringByAppendingFormat:@".%@", @"wdgt"];
 }
 
+- (id)escapeFileNameForExport:(id)aName
+{
+    return [[[NSURL fileURLWithPath:aName isDirectory:NO] relativeString] extraStringByReplacingURLEscapedSymbolsWithUnderscores];
+}
+
+- (id)requiredFileType
+{
+    return @"wdgt";
+}
+
 @end

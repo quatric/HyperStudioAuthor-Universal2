@@ -547,5 +547,25 @@ ulonglong FUN_00260abc(HSVideoExporter *self,SEL _cmd)
     [super dealloc];
 }
 
+- (id)defaultExportSettings
+{
+    NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithDictionary:[super defaultExportSettings]];
+    [settings setValue:[NSNumber numberWithDouble:10.0] forKey:HSVideoExportFramesPerSecondKey];
+    [settings setValue:[NSNumber numberWithInt:0] forKey:HSVideoExportDeviceKey];
+    return settings;
+}
+
+- (id)exportSettingsValueForKey:(id)aKey
+{
+    id value = [super exportSettingsValueForKey:aKey];
+    if (value != nil)
+        return value;
+    if ([aKey isEqualToString:HSVideoExportFrameSizeKey])
+        return [NSValue valueWithSize:[[self dataSource] videoFrameSize]];
+    if ([aKey isEqualToString:HSVideoExportAllowsNarrationKey])
+        return [NSNumber numberWithBool:[[self dataSource] canExportDocumentAsVideoWithNarration]];
+    return nil;
+}
+
 @end
 

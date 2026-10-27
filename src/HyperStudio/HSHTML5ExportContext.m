@@ -128,4 +128,28 @@
     return self;
 }
 
+- (id)exportedMovieObjects
+{
+    if (_exportedMovieObjects == nil)
+        _exportedMovieObjects = [NSMutableArray new];
+    return _exportedMovieObjects;
+}
+
+- (void)addExportedMovieObject:(id)aObject withMediaName:(id)aName
+{
+    if ([self mediaNameForExportedMovieObject:aObject] == nil)
+        [[self exportedMovieObjects] addObject:[NSDictionary dictionaryWithObjectsAndKeys:aObject, kHSHTML5ExportMovieObjectKey, aName, kHSHTML5ExportMovieNameKey, nil]];
+}
+
+// The name an equal movie object (same media, geometry and effect) was exported under.
+- (id)mediaNameForExportedMovieObject:(id)aObject
+{
+    for (NSDictionary *entry in [self exportedMovieObjects]) {
+        id exported = [entry objectForKey:kHSHTML5ExportMovieObjectKey];
+        if ([[[[exported media] mediaUID] stringValue] isEqualToString:[[[aObject media] mediaUID] stringValue]] && [aObject isGeometryEqualToMovieObjectGeometry:exported] && [aObject isEffectEqualToMovieObjectEffect:exported])
+            return [entry objectForKey:kHSHTML5ExportMovieNameKey];
+    }
+    return nil;
+}
+
 @end

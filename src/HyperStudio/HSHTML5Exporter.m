@@ -2679,5 +2679,32 @@ id FUN_0028e001(HSHTML5Exporter *self,SEL _cmd)
     [super dealloc];
 }
 
+- (id)defaultExportSettings
+{
+    NSMutableDictionary *settings = [NSMutableDictionary dictionaryWithDictionary:[super defaultExportSettings]];
+    id document = [[NSDocumentController sharedDocumentController] currentDocument];
+    [settings setValue:[NSNumber numberWithBool:[self areLinkedStacksInDocument:document]] forKey:HSHTML5ExportDocumentContainsLinkedStacksKey];
+    [settings setValue:[NSNumber numberWithInt:1] forKey:HSHTML5ExportLinkedStacksLevelKey];
+    return settings;
+}
+
+- (id)requiredFileType
+{
+    return @"";
+}
+
+// The stack's web app icon drawn at 160 x 160 as icon.png.
+- (id)webAppIconWrapperForDocument:(id)aDocument
+{
+    NSImage *icon = [[aDocument stack] webAppIcon];
+    NSImage *image = [[[NSImage alloc] initWithSize:NSMakeSize(160.0, 160.0)] autorelease];
+    [image lockFocus];
+    [icon drawInRect:NSMakeRect(0, 0, [image size].width, [image size].height) fromRect:NSMakeRect(0, 0, [icon size].width, [icon size].height) operation:NSCompositingOperationSourceOver fraction:1.0];
+    [image unlockFocus];
+    NSFileWrapper *wrapper = [[[NSFileWrapper alloc] initRegularFileWithContents:[image hyperPNGRepresentation]] autorelease];
+    [wrapper setPreferredFilename:@"icon.png"];
+    return wrapper;
+}
+
 @end
 

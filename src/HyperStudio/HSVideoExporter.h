@@ -62,5 +62,7 @@
 - (NSInteger)videoExportFormat;
 - (void)setDataSource:(id)aSource;
 - (void)dealloc;
+- (id)defaultExportSettings;
+- (id)exportSettingsValueForKey:(id)aKey;
 @end
 

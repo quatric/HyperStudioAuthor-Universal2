@@ -11,5 +11,7 @@
 - (id)infoPlistDataForDocument:(id)aDocument;
 - (id)progressSheetDescription;
 - (id)exportedDocumentName;
+- (id)escapeFileNameForExport:(id)aName;
+- (id)requiredFileType;
 @end
 

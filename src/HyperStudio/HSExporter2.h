@@ -7,6 +7,7 @@
     id<HSExporterDelegate> _delegate;
     id _dataSource;
     double _framesPerSecondLimit;
+    NSMutableDictionary *_exportSettings;
     NSFileWrapper *_exportRepresentation;
     HSExportAccessoryViewController *_exportAccessoryViewController;
     unsigned int _shouldTerminateExport:1;
@@ -41,5 +42,11 @@
 - (id)exportedDocumentName;
 - (void)dealloc;
 - (id)init;
+- (id)defaultExportSettings;
+- (id)exportSettings;
+- (id)exportSettingsValueForKey:(id)aKey;
+- (void)setExportSettingsValue:(id)aValue forKey:(id)aKey;
+- (id)requiredFileType;
+- (id)escapeFileNameForExport:(id)aName;
 @end
 

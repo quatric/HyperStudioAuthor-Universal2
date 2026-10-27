@@ -641,5 +641,38 @@ id FUN_00252e6e(HSExporter2 *self,SEL _cmd)
 }
 
 */
+- (id)defaultExportSettings
+{
+    return [NSDictionary dictionary];
+}
+
+- (id)exportSettings
+{
+    if (_exportSettings == nil)
+        _exportSettings = [[NSMutableDictionary alloc] initWithDictionary:[self defaultExportSettings]];
+    return _exportSettings;
+}
+
+- (id)exportSettingsValueForKey:(id)aKey
+{
+    return [[self exportSettings] valueForKey:aKey];
+}
+
+- (void)setExportSettingsValue:(id)aValue forKey:(id)aKey
+{
+    if (aKey != nil)
+        [[self exportSettings] setValue:aValue forKey:aKey];
+}
+
+- (id)requiredFileType
+{
+    return nil;
+}
+
+- (id)escapeFileNameForExport:(id)aName
+{
+    return aName;
+}
+
 @end
 
