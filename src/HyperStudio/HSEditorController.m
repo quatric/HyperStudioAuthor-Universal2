@@ -1726,17 +1726,21 @@ static BOOL sLastTextFieldTamerThisCard;
     }
     [[HSSubmitRequest sharedInstance] submitInformationDictionary:nil];
     [self HSEditorController_validateApplicationLicenseWithInteraction:YES forced:NO];
-    [[HSSplashScreenWindowController sharedSplashWindow] showSplashWithMinimalTimeout:3.0];
     _applicationWillFinishCriticalLaunching = NO;
     [self configureObjectsMenu];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"HSExportToIPadEnabled"]) {
+        NSMenuItem *item = [[[[NSApp mainMenu] itemWithTag:3] submenu] itemWithTag:6];
+        [[item menu] removeItem:item];
+    }
     [self HSEditorController_setMenuVisible:YES];
     if (_filesToOpen != nil) {
         [self application:NSApp openFiles:_filesToOpen];
         [_filesToOpen release];
         _filesToOpen = nil;
-    } else if ([[self documents] count] == 0 && (_applicationOpenUntitledFilePending || showedEULA)
-               && ![self applicationOpenUntitledFile:NSApp]) {
-        [self newDocument:nil];
+    } else if (![self wasWindowRestoration]) {
+        if ([[self documents] count] == 0 && ![self applicationOpenUntitledFile:NSApp] && (_applicationOpenUntitledFilePending || showedEULA)) {
+            [self newDocument:nil];
+        }
     }
     [super applicationDidFinishLaunching:aLaunching];
     [self setAutosaving];
@@ -1753,7 +1757,6 @@ static BOOL sLastTextFieldTamerThisCard;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSEditorController_HSUIModeSettingsDidChangeNotification:) name:HSUIModeSettingsDidChangeNotification object:[HSUI sharedUI]];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSEditorController_HSUIModeSettingsDidChangeNotification:) name:HSUIModeDidChangeNotification object:[HSUI sharedUI]];
     [NSApp setServicesProvider:self];
-    [[HSSplashScreenWindowController sharedSplashWindow] hideSplashWaitUntilTimeout:YES];
     [HSCrayonsView setDefaultDataSourceClass:[HSSystemCrayonsDataSource class]];
 }
 
