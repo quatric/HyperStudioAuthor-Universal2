@@ -1308,13 +1308,17 @@ static id sDAT_00342a50;
         }
     }
     [[HSEditorController sharedDocumentController] sharedPurePlayerWindowControllerHandled];
-    if ([self fileURL] == nil) {
+    if ([self isNewAndNotChanged]) {
         [[HSCoachingHelpManager sharedCoachingHelpManager] addObject:[self stack] forStack:[self stack]];
         if (!NSEqualSizes([HSStack newStackCardSize], NSZeroSize)) {
             HSNewStackCoachingPane *pane = [HSNewStackCoachingPane new];
             [[HSCoachingHelpManager sharedCoachingHelpManager] pushAdditionalCoachingPane:pane forObject:[self stack]];
             [pane release];
         }
+    }
+    if ([self isTutorialStack]) {
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillBecomeActive:) name:NSApplicationWillBecomeActiveNotification object:NSApp];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationWillResignActive:) name:NSApplicationWillResignActiveNotification object:NSApp];
     }
 }
 
