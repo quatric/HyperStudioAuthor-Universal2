@@ -206,6 +206,7 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSRegistrationUserDefaults;
 @class HSArduinoSetupActionAssistantPane;
 @class HSArduinoSetupActionPaneApplier;
 @class HSArduinoWatcherActionAssistantPane;

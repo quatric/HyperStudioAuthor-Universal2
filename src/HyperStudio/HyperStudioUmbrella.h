@@ -38,6 +38,7 @@
 #import "HSAnimationSetupView.h"
 #import "HSAnotherCardActionAssistantPane.h"
 #import "HSApplicationLicensor.h"
+#import "HSRegistrationUserDefaults.h"
 #import "HSArduinoSetupActionAssistantPane.h"
 #import "HSArduinoWatcherActionAssistantPane.h"
 #import "HSArduinoWatcherActionConfigurationAssistantPane.h"
