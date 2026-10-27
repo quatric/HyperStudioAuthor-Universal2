@@ -52,5 +52,7 @@
 - (void)setShouldOpenInSeparateWindow:(BOOL)aOpen;
 - (BOOL)shouldOpenInSeparateWindow;
 - (id)initialURL;
+- (void)HSOpenStackAction_validateURL;
+- (id)initWithExtraDictionary:(id)aDictionary codingContext:(id)aContext;
 @end
 

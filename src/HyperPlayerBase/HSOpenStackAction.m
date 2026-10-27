@@ -239,6 +239,7 @@
 // relative to this stack.
 - (id)URL
 {
+    [self HSOpenStackAction_validateURL];
     if (_URL == nil)
         return nil;
     if ([_URL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[_URL path]])
@@ -384,6 +385,57 @@
 - (id)initialURL
 {
     return _URL;
+}
+
+// A missing stack of the default home stack is looked up in the tutorials
+// and sample projects folders; the URL is replaced by the one found there.
+- (void)HSOpenStackAction_validateURL
+{
+    if (_URL == nil)
+        return;
+    NSString *path = [_URL path];
+    if ([[NSFileManager defaultManager] fileExistsAtPath:path])
+        return;
+    if (![[[self stack] document] isDefaultHomeStack])
+        return;
+    HSPathsProvider *paths = [HSPathsProvider sharedPathsProvider];
+    NSString *folder = [paths defaultTutorialsFolder];
+    NSString *found = [HSNavigationController findFile:path base:folder];
+    if (found == nil || [found rangeOfString:folder].location == NSNotFound) {
+        folder = [paths sampleProjectsFolder];
+        found = [HSNavigationController findFile:path base:folder];
+        if (found == nil || [found rangeOfString:folder].location == NSNotFound)
+            return;
+    }
+    if (![found isEqualToString:path]) {
+        [_URL release];
+        _URL = [[NSURL fileURLWithPath:found isDirectory:NO] retain];
+    }
+}
+
+// A stack that is not reachable by its stored URL but ships in the
+// application bundle is taken from there. The decompile hides what is done
+// with the bundle URL; replacing the stored one is inferred.
+- (id)initWithExtraDictionary:(id)aDictionary codingContext:(id)aContext
+{
+    self = [super initWithExtraDictionary:aDictionary codingContext:aContext];
+    NSURL *initial = [self initialURL];
+    NSBundle *bundle = [NSBundle mainBundle];
+    NSURL *bundled = [bundle URLForResource:[[initial URLByDeletingPathExtension] path] withExtension:[initial pathExtension]];
+    if (bundled == nil) {
+        NSArray *components = [initial pathComponents];
+        if ([components count] == 2)
+            bundled = [bundle URLForResource:[[components lastObject] stringByDeletingPathExtension] withExtension:[[components lastObject] pathExtension] subdirectory:[components extraFirstObject]];
+        if (bundled != nil && ![bundled isEqual:_URL]) {
+            [_URL release];
+            _URL = [bundled retain];
+        }
+        if ([[initial path] length] == 0) {
+            [self release];
+            return nil;
+        }
+    }
+    return self;
 }
 
 @end
