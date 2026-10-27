@@ -368,7 +368,6 @@ id FUN_00241391(HSHyperCastingWindowController *self,SEL _cmd)
         [_stackRecorder setDelegate:self];
         [_stackRecorder setDataSource:[self playerView]];
         [_stackRecorder setFramesPerSecondLimit:10.0];
-        [_stackRecorder setLazyMovieCreation:NO];
     }
     return _stackRecorder;
     return 0;

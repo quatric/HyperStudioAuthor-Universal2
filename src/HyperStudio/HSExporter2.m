@@ -615,8 +615,8 @@ LAB_00253fbf:
 {
     [_exportedDocumentName release];
     [_exportRepresentation release];
-    [_exportAccessoryViewController detachFromExporter];
     [_exportAccessoryViewController release];
+    [_exportSettings release];
     [super dealloc];
 }
 
