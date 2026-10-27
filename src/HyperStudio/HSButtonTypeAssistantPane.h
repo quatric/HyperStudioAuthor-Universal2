@@ -47,5 +47,6 @@
 - (BOOL)isAttributesNotificationPostingDisabled;
 - (id)scriptController;
 - (void)viewWillAppear:(BOOL)aAppear;
+- (void)dismiss:(BOOL)aDismiss slide:(BOOL)aSlide;
 @end
 

@@ -795,5 +795,12 @@ void FUN_0020d8cf(HSButtonTypeAssistantPane *self,SEL _cmd,id setInformativeText
     [[self object] setSupport:self];
 }
 
+- (void)dismiss:(BOOL)aDismiss slide:(BOOL)aSlide
+{
+    [[self object] setSupport:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"HSButtonObjectAssistantPaneDidDoneNotification" object:[self object]];
+    [super dismiss:aDismiss slide:aSlide];
+}
+
 @end
 

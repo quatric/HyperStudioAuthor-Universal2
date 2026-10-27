@@ -125,4 +125,10 @@
         [self HSSelectImagePartPane_paneDidCancel];
 }
 
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSSelectImagePartPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[[[[self stack] document] cardView] window]];
+    [super viewWillAppear:aAppear];
+}
+
 @end

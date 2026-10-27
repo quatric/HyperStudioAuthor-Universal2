@@ -192,4 +192,26 @@
     return self;
 }
 
+- (void)imageCaptureDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    id media = nil;
+    if (aCode == 1) {
+        id image = [aDialog capturedImage];
+        [image setScalesWhenResized:YES];
+        media = [HSNewMedia mediaWithImage:image];
+    }
+    [self anotherImageObjectWithMedia:media];
+    [aDialog autorelease];
+}
+
+- (void)cropImageDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    id delegate = [aDialog delegate];
+    if (aCode == 1)
+        [(id)aInfo cropImageObjectWithPath:[delegate borderPath]];
+    [(id)aInfo release];
+    [delegate autorelease];
+    [aDialog orderOut:nil];
+}
+
 @end
