@@ -858,6 +858,7 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSDocumentLoadingIndicatorController;
 @class HSFluidSwipe;
 @class HSFluidSwipeTracker;
 @class HSPauseView;

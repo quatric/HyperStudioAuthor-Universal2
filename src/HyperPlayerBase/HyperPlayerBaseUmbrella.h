@@ -775,3 +775,4 @@
 #import "HSToolbarPopUpButton.h"
 #import "HSFluidSwipe.h"
 #import "HSFluidSwipeTracker.h"
+#import "HSDocumentLoadingIndicatorController.h"
