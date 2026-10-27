@@ -62,5 +62,9 @@
 - (void)clearUnsupportedTransitions;
 - (id)unsupportedTransitions;
 - (id)HTML5UnsupportedFunctionalityDescriptionForTransitionName:(id)aName;
+- (id)allObjectsToPauseResume;
+- (void)pause;
+- (void)resume;
+- (void)didConnectToDocument;
 @end
 

@@ -10,7 +10,7 @@
     int _scrollDirection;
     int _scrollUnits;
     NSTimer *_timer;
-    NSDate *_timerStartDate;
+    NSDate *_timerTickDate;
     double _timePassedSinceTimerStart;
     BOOL _ignoreMouseClicks;
 }
@@ -50,5 +50,11 @@
 - (id)XMLElementRepresentationInContext:(id)aContext;
 - (BOOL)canBeStoredAsXMLElement;
 - (BOOL)supportedInIPad;
+- (void)pause;
+- (void)resume;
+- (void)didConnectToDocument;
+- (void)willDisconnectFromDocument;
+- (void)cardChildrenAttributeDidChange:(id)aChange;
+- (void)rotatableAttributeDidChange:(id)aChange;
 @end
 

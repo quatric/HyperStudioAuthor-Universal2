@@ -754,4 +754,46 @@ static NSString *HSShowHideHTML5Effect(NSDictionary *aSettings)
     return [NSString stringWithFormat:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureTransition" value:@"" table:@"Export"], [[HSTransitionEffectProvider sharedTransitionEffectProvider] displayNameForTransitionEffectWithName:aName]];
 }
 
+- (id)allObjectsToPauseResume
+{
+    NSMutableArray *objects = [NSMutableArray array];
+    for (id uids in [NSArray arrayWithObjects:[self objectsToShow], [self objectsToHide], [self objectsToToggle], nil]) {
+        for (id uid in uids) {
+            id object = [[self objectForUID:uid] queryHyperInterface:@protocol(HSShowHideTransitionAttributes)];
+            if (object != nil && [object transition] != nil)
+                [objects addObject:object];
+        }
+    }
+    return objects;
+}
+
+- (void)pause
+{
+    if (_runningCount != 0)
+        [[self allObjectsToPauseResume] makeObjectsPerformSelector:@selector(pauseTransition)];
+}
+
+- (void)resume
+{
+    if (_runningCount != 0)
+        [[self allObjectsToPauseResume] makeObjectsPerformSelector:@selector(resumeTransition)];
+}
+
+// Re-keys the object to action map with the UIDs of the connected stack's objects.
+- (void)didConnectToDocument
+{
+    if ([[self objectUIDsToActionMap] count] != 0 && [self stack] != nil) {
+        NSEnumerator *enumerator = [[self stack] hyperDeepEnumerator];
+        NSMutableDictionary *map = [NSMutableDictionary new];
+        id object;
+        while ((object = [enumerator nextObject]) != nil) {
+            id action = [[self objectUIDsToActionMap] objectForKey:[object hyperUID]];
+            if (action != nil)
+                [map setObject:action forKey:[object hyperUID]];
+        }
+        [_objectUIDsToActionMap release];
+        _objectUIDsToActionMap = map;
+    }
+}
+
 @end

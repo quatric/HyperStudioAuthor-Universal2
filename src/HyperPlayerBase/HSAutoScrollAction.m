@@ -221,7 +221,9 @@ static BOOL HSAutoScrollPositionAtEnd(float aPosition)
 // catches up. Zero steps means scroll until the end.
 - (void)fireTimer:(id)aTimer
 {
-    _timePassedSinceTimerStart = [[NSDate date] timeIntervalSinceDate:_timerStartDate];
+    _timePassedSinceTimerStart = _timePassedSinceTimerStart - [_timerTickDate timeIntervalSinceNow];
+    [_timerTickDate release];
+    _timerTickDate = [[NSDate date] retain];
     SEL scrollSelector = _scrollDirection == 0 ? @selector(scrollTextViewVertically:) : @selector(scrollTextViewHorizontally:);
     NSEnumerator *e = [HSAutoScrollTextViewsWithUIDs(self) objectEnumerator];
     id textView;
@@ -306,8 +308,20 @@ static BOOL HSAutoScrollPositionAtEnd(float aPosition)
     id textView;
     while ((textView = [e nextObject]) != nil)
         [self prepareSystemTextView:textView];
+    _timePassedSinceTimerStart = 0.0;
+    [self resume];
+}
+
+- (void)pause
+{
     [self invalidateTimer];
-    _timerStartDate = [[NSDate date] retain];
+}
+
+// Restarts the ticking; the time passed so far is kept.
+- (void)resume
+{
+    [self invalidateTimer];
+    _timerTickDate = [[NSDate date] retain];
     _timer = [[NSTimer scheduledTimerWithTimeInterval:(double)(1.0f / 30.0f) target:[[self NSE_newWeakProxy] autorelease]
                                              selector:@selector(fireTimer:) userInfo:nil repeats:YES] retain];
 }
@@ -398,8 +412,8 @@ static BOOL HSAutoScrollPositionAtEnd(float aPosition)
     [_timer invalidate];
     [_timer release];
     _timer = nil;
-    [_timerStartDate release];
-    _timerStartDate = nil;
+    [_timerTickDate release];
+    _timerTickDate = nil;
 }
 
 - (id)XMLElementName
@@ -429,6 +443,39 @@ static BOOL HSAutoScrollPositionAtEnd(float aPosition)
     if ([[self textViewUIDs] count] != 0)
         [element addAttribute:[NSXMLNode attributeWithName:@"textObjectUID" stringValue:[[[self textViewUIDs] objectAtIndex:0] stringValue]]];
     return element;
+}
+
+- (void)didConnectToDocument
+{
+    [[[self stack] queryHyperInterface:@protocol(HSNodeContainer)] addObserver:self selector:@selector(cardChildrenAttributeDidChange:) ofChanges:2 ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    [super didConnectToDocument];
+}
+
+- (void)willDisconnectFromDocument
+{
+    [[[self stack] queryHyperInterface:@protocol(HSNodeContainer)] removeObserver:self selector:@selector(cardChildrenAttributeDidChange:) ofChanges:2 ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    [super willDisconnectFromDocument];
+}
+
+// Re-validates when a text object that cannot rotate is added to or removed from the card.
+- (void)cardChildrenAttributeDidChange:(id)aChange
+{
+    if (![[aChange object] isEqual:[self card]])
+        return;
+    NSMutableSet *children = [NSMutableSet set];
+    [children unionSet:[[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"]];
+    [children unionSet:[[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"]];
+    for (id child in children) {
+        BOOL isText = [child implementsHyperInterface:@protocol(HSSystemTextViewAttributes)];
+        BOOL rotatable = [[child queryHyperInterface:@protocol(HSSystemTextViewTypeAttribute)] isRotatableText];
+        if (isText && !rotatable)
+            [self updateActionValidationStatus];
+    }
+}
+
+- (void)rotatableAttributeDidChange:(id)aChange
+{
+    [self updateActionValidationStatus];
 }
 
 @end
