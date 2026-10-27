@@ -2144,4 +2144,12 @@ static NSSet *sTextImplementationInterfaces;
     return _textObject;
 }
 
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange
+{
+    NSMutableAttributedString *text = [[NSMutableAttributedString alloc] initWithAttributedString:[_textObject hyperText]];
+    [text replaceCharactersInRange:aRange withString:aString];
+    [_textObject setHyperText:text];
+    [text release];
+}
+
 @end

@@ -345,4 +345,12 @@ static BOOL HSViewIsMouseEventType(NSEventType aType)
     [super dealloc];
 }
 
+// Identity as in -userSpaceToViewSpaceTransform; subclasses with a zoom
+// override it.
+- (CGAffineTransform)userSpaceToViewSpaceCGAffineTransformForZoomFactor:(CGFloat)aFactor
+{
+    NSAffineTransformStruct transform = [[NSAffineTransform transform] transformStruct];
+    return CGAffineTransformMake(transform.m11, transform.m12, transform.m21, transform.m22, transform.tX, transform.tY);
+}
+
 @end

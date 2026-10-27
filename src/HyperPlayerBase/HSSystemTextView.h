@@ -228,5 +228,6 @@
 - (id)init;
 - (id)initWithExplicitNodeDataProvider:(id)aProvider sharedNodeDataUID:(id)aUID;
 - (id)textObject;
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange;
 @end
 

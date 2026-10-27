@@ -68,5 +68,8 @@
 - (id)attributeToNotificationMapForCodingOperation:(id)aOperation;
 - (id)keysForExtraLoadingWithCodingContext:(id)aContext;
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
+- (id)objectString;
+- (void)setObjectString:(id)aString;
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange;
 @end
 

@@ -55,5 +55,6 @@
 - (CGAffineTransform)userSpaceToViewSpaceCGAffineTransform;
 - (id)userSpaceToViewSpaceTransform;
 - (void)dealloc;
+- (CGAffineTransform)userSpaceToViewSpaceCGAffineTransformForZoomFactor:(CGFloat)aFactor;
 @end
 

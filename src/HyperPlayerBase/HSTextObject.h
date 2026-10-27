@@ -88,5 +88,6 @@
 - (id)queryNewHyperInterface:(id)aInterface;
 - (id)init;
 - (BOOL)canBeExportedToHTML5DocumentType:(id)aType;
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange;
 @end
 

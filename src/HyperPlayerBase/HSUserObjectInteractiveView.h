@@ -63,6 +63,9 @@
 - (id)rootCanvasLayerCreateIfNeeded:(BOOL)aNeeded;
 - (id)initWithFrame:(NSRect)aFrame ignoreCreateRootCanvasLayer:(BOOL)aLayer;
 - (void)dealloc;
+- (BOOL)handleMagnificationGesture:(id)aGesture;
+- (BOOL)handleRotationGesture:(id)aGesture;
+- (BOOL)handleSwipeGesture:(id)aGesture;
 @end
 
 @interface HSUserObjectInteractiveView (HSUserObjectInteractiveViewStateInfo)

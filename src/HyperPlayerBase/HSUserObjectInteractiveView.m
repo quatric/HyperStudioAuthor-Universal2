@@ -130,30 +130,43 @@ static NSMutableArray *HSMenuShortcuts = nil;
 // signature here and forwarded nothing.
 - (void)swipeWithEvent:(id)aEvent
 {
-    if ([[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleSwipeGesture:aEvent])
+    if ([self handleSwipeGesture:aEvent])
         return;
 }
 
 - (void)rotateWithEvent:(id)aEvent
 {
-    _countOfRotateEvents++;
-    if (_gestureBeingHandled == nil)
-        _gestureBeingHandled = @"rotate";
-    if (![_gestureBeingHandled isEqual:@"rotate"])
-        return;
-    if ([[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleRotationGesture:aEvent])
+    if ([self handleRotationGesture:aEvent])
         return;
 }
 
 - (void)magnifyWithEvent:(id)aEvent
 {
+    if ([self handleMagnificationGesture:aEvent])
+        return;
+}
+
+// The first gesture of a kind to arrive owns the interaction until all
+// current gestures end.
+- (BOOL)handleMagnificationGesture:(id)aGesture
+{
     _countOfZoomEvents++;
     if (_gestureBeingHandled == nil)
         _gestureBeingHandled = @"zoom";
-    if (![_gestureBeingHandled isEqual:@"zoom"])
-        return;
-    if ([[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleMagnificationGesture:aEvent])
-        return;
+    return [_gestureBeingHandled isEqual:@"zoom"] && [[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleMagnificationGesture:aGesture];
+}
+
+- (BOOL)handleRotationGesture:(id)aGesture
+{
+    _countOfRotateEvents++;
+    if (_gestureBeingHandled == nil)
+        _gestureBeingHandled = @"rotate";
+    return [_gestureBeingHandled isEqual:@"rotate"] && [[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleRotationGesture:aGesture];
+}
+
+- (BOOL)handleSwipeGesture:(id)aGesture
+{
+    return [[self rootCanvasLayer] isRunning] && [[self rootCanvasLayer] handleSwipeGesture:aGesture];
 }
 
 - (void)endGestureWithEvent:(id)aEvent

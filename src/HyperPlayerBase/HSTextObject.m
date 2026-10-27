@@ -668,4 +668,11 @@ static BOOL HSTextObjectFloatsAreEqual(float aValue, float aValue2)
     return YES;
 }
 
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange
+{
+    id text = [self queryHyperInterface:@protocol(HSTextObjectAttributes)];
+    if (text != nil)
+        [text hyperReplaceTextWithString:aString inRange:aRange];
+}
+
 @end

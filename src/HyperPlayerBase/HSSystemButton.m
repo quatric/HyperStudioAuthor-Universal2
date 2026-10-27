@@ -453,4 +453,21 @@
     return keys;
 }
 
+- (id)objectString
+{
+    return [self title];
+}
+
+- (void)setObjectString:(id)aString
+{
+    [self setTitle:aString];
+}
+
+- (void)replaceObjectString:(id)aString inRange:(NSRange)aRange
+{
+    NSMutableString *string = [NSMutableString stringWithString:[self title]];
+    [string replaceCharactersInRange:aRange withString:aString];
+    [self setTitle:string];
+}
+
 @end
