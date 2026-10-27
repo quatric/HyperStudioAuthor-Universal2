@@ -57,10 +57,9 @@ static BOOL HSSystemInitialized = NO;
 
 - (NSInteger)quickTimeVersion
 {
-    static SInt32 version = -1;
-    if (version == -1 && Gestalt(gestaltQuickTime, &version) != noErr)
-        version = 0;
-    return version;
+    // QuickTime 7 no longer exists; the port plays and captures through
+    // AVFoundation (HSQTKit), so report the last QuickTime release.
+    return 0x07800000;
 }
 
 - (BOOL)isQTKitCapturingAvailable

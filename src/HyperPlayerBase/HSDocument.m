@@ -1052,7 +1052,7 @@ static NSString *sPlatformInformation;
         *aError = nil;
     _isNewAndNotChanged = NO;
     BOOL result = NO;
-    if (([aType isEqual:@"HSDocumentType"] || [aType isEqual:@"HSWebDocumentType"])
+    if (([aType isEqual:@"HSDocumentType"] || [aType isEqual:@"HSWebDocumentType"] || [aType isEqual:@"HSAiBADocumentType"])
         && [[HSErrorManager sharedErrorManager] isCorrectDocumentFileWrapper:aWrapper]) {
         NSMutableDictionary *wrappers = [NSMutableDictionary dictionaryWithDictionary:[aWrapper fileWrappers]];
         NSEnumerator *keys = [[[aWrapper fileWrappers] allKeys] objectEnumerator];
@@ -1179,7 +1179,7 @@ static NSString *sPlatformInformation;
     BOOL native = [aType isEqualToString:@"HSNativeDocumentType"];
     [[self currentWindowController] saveEditingState];
     HSDefaultSavePanelAccessoryViewController *accessory = [self defaultSavePanelAccessoryViewController];
-    NSString *type = native ? @"HSDocumentType" : aType;
+    NSString *type = native ? @"HSAiBADocumentType" : aType;
     if ([accessory shouldChangeHomeStackURL])
         [[HSHomeStackController sharedHomeStackController] setHomeStackURL:aURL];
     [self setResourcesWrapper:nil];
@@ -1191,7 +1191,7 @@ static NSString *sPlatformInformation;
     [[self currentWindowController] saveEditingState];
     NSString *fileType = [self fileType];
     NSString *stackPath = [[[[self fileURL] path] stringByDeletingPathExtension] stringByAppendingPathExtension:@"stack"];
-    if ([fileType isEqual:@"HSDocumentType"]) {
+    if ([fileType isEqual:@"HSAiBADocumentType"]) {
         NSString *path = [[self fileURL] path];
         BOOL isHome = [path isEqual:[[HSPathsProvider sharedPathsProvider] defaultHomeStackPath]];
         [[self defaultSavePanelAccessoryViewController] setShouldChangeHomeStackURL:isHome];
@@ -1208,11 +1208,11 @@ static NSString *sPlatformInformation;
     } else if ([fileType isEqual:@"HSNativeDocumentType"] && stackPath != nil
                && ![[NSFileManager defaultManager] fileExistsAtPath:stackPath]) {
         // A converted classic stack is saved next to the original.
-        [self setFileType:@"HSDocumentType"];
-        [self saveToURL:[NSURL fileURLWithPath:stackPath] ofType:@"HSDocumentType" forSaveOperation:NSSaveAsOperation
+        [self setFileType:@"HSAiBADocumentType"];
+        [self saveToURL:[NSURL fileURLWithPath:stackPath] ofType:@"HSAiBADocumentType" forSaveOperation:NSSaveAsOperation
                delegate:aDelegate didSaveSelector:aSelector contextInfo:aInfo];
     } else {
-        [self setFileType:@"HSDocumentType"];
+        [self setFileType:@"HSAiBADocumentType"];
         [self runModalSavePanelForSaveOperation:NSSaveAsOperation delegate:aDelegate didSaveSelector:aSelector contextInfo:aInfo];
         [self setFileType:fileType];
     }

@@ -26,7 +26,7 @@
     if (action == @selector(revertDocumentToSaved:)) {
         if (animating || !valid || [self isInPresentationMode] || ![self isDocumentEdited])
             return NO;
-        return [[self fileType] isEqualToString:@"HSDocumentType"];
+        return [[self fileType] isEqualToString:@"HSAiBADocumentType"];
     }
     if (action != @selector(saveDocument:))
         return valid;

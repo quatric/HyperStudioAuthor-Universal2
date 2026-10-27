@@ -811,6 +811,8 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
             type = @"HSDocumentType";
         else if ([@"'Stak'" isEqualToString:fileType])
             type = @"HSNativeDocumentType";
+        else if ([@"hsa" isEqualToString:fileType])
+            type = @"HSAiBADocumentType";
         succeeded = [_document readFromURL:url ofType:type error:&error];
         if (succeeded)
             [[_document actionExecutionContext] shutDownSpeechRecognition];
@@ -915,7 +917,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 - (void)pushCurrentCardInHistoryIfNeededWithTransition:(id)aTransition isGoingToAnotherStack:(BOOL)aStack
 {
     NSString *fileType = [[self document] fileType];
-    if ([[self document] fileURL] == nil || !([fileType isEqualToString:@"HSDocumentType"] || [[[self document] fileType] isEqualToString:@"HSWebDocumentType"])) {
+    if ([[self document] fileURL] == nil || !([fileType isEqualToString:@"HSDocumentType"] || [fileType isEqualToString:@"HSWebDocumentType"] || [fileType isEqualToString:@"HSAiBADocumentType"])) {
         if (aStack)
             [[self historyStack] removeStack:[[self document] stack]];
         return;

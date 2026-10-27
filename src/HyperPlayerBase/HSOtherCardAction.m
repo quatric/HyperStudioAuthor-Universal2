@@ -174,7 +174,7 @@
     HSDocumentStoring *storing = [HSDocumentStoring new];
     [storing setSuppressAlerts:YES];
     NSString *fileType = [[NSFileManager defaultManager] hyperFileTypeAtPath:[URL path]];
-    NSString *type = [fileType isEqualToString:@"'Stak'"] || [fileType isEqualToString:@"stk"] ? @"HSNativeDocumentType" : @"HSDocumentType";
+    NSString *type = [fileType isEqualToString:@"'Stak'"] || [fileType isEqualToString:@"stk"] ? @"HSNativeDocumentType" : @"HSAiBADocumentType";
     if (![storing readFromURL:URL ofType:type error:NULL] && [storing isCanceledByUser])
         [aContext setShouldTerminateExport:YES];
     id stack = [[storing stack] retain];

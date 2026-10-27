@@ -103,7 +103,7 @@
 
 - (id)fileWrapperOfType:(id)aType error:(id *)aError
 {
-    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"]) {
+    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"] || [aType isEqualToString:@"HSAiBADocumentType"]) {
         NSFileWrapper *directory = [self hyperFileWrapperOfType:aType error:aError];
         HSZipWrapper *zipWrapper = [[HSZipWrapper alloc] initDirectoryWithFileWrappers:[directory fileWrappers]];
         if (zipWrapper != nil) {
@@ -127,7 +127,7 @@
 - (id)hyperFileWrapperOfType:(id)aType error:(id *)aError
 {
     NSMutableDictionary *wrappers = [NSMutableDictionary dictionary];
-    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"])
+    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"] || [aType isEqualToString:@"HSAiBADocumentType"])
         [wrappers setObject:[self contentsWrapper] forKey:@"Contents"];
     else if ([aType isEqualToString:@"HSDocumentWithoutResourcesType"])
         [wrappers setObject:[self contentsWithoutResourcesWrapper] forKey:@"Contents"];
@@ -199,7 +199,7 @@
     NSEnumerator *documentTypes = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDocumentTypes"] objectEnumerator];
     NSMutableArray *types = [NSMutableArray array];
     if (aOperation == NSAutosaveOperation) {
-        [types addObject:@"HSDocumentType"];
+        [types addObject:@"HSAiBADocumentType"];
     } else if (aOperation == NSSaveToOperation) {
         NSDictionary *documentType;
         while ((documentType = [documentTypes nextObject]) != nil) {
@@ -317,7 +317,7 @@
 
 - (BOOL)hyperReadFromWorkcopy:(id)aWorkcopy ofType:(id)aType error:(id *)aError
 {
-    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"]) {
+    if ([aType isEqualToString:@"HSDocumentType"] || [aType isEqualToString:@"HSWebDocumentType"] || [aType isEqualToString:@"HSAiBADocumentType"]) {
         HSZipWrapper *wrapper = [[HSZipWrapper alloc] initWithPath:aWorkcopy withDelegate:self];
         if (wrapper != nil) {
             BOOL result = [self hyperReadFromFileWrapper:wrapper ofType:aType error:aError];
