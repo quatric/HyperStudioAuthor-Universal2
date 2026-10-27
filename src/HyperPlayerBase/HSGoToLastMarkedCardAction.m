@@ -44,7 +44,7 @@
 }
 - (id)createNavigationOperation
 {
-    return [[[HSHistoryStack sharedHistoryStack] lastMarkedCard] createNavigationOperationWithTransition:[self transition]];
+    return [[[[_context document] historyStack] lastMarkedCard] createNavigationOperationWithTransition:[self transition]];
 }
 - (void)dealloc
 {

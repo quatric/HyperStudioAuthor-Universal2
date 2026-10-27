@@ -60,7 +60,9 @@
 }
 - (id)mediaData
 {
-    return [[self image] hyperPNGRepresentation];
+    if ([[self mediaType] isEqualToString:@"png"])
+        return [[self image] hyperPNGRepresentation];
+    return [[self image] hyperTIFFRepresentation];
 }
 - (id)image
 {

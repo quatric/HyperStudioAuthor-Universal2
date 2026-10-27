@@ -912,6 +912,8 @@ done:
 - (void)didConnectToDocument
 {
     [[self actor] didConnectToDocument];
+    if ([[HSApplicationController sharedDocumentController] exportCompatibilityChecker] != nil)
+        [self verifyUnsupportedFeatures];
 }
 
 - (void)willDisconnectFromSupport

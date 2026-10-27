@@ -261,22 +261,15 @@ static BOOL HSMoviePlaybackItemFloatsAreEqual(float aValue1, float aValue2)
 // goes just above the last temporary playable object at the bottom.
 - (void)applyMoviePositionForMovieObject:(id)aObject
 {
-    _originalIndex = (unsigned int)[aObject hyperIndex];
-    if ([self playOverObjects]) {
-        [aObject moveToHyperEnd];
-        return;
-    }
     if (![aObject isTemporary])
         return;
-    if (!_actionExecutionContext) {
-        [aObject setHyperIndex:0];
-        return;
+    NSInteger index = 0;
+    if (_actionExecutionContext) {
+        index = [_actionExecutionContext bottomPositionOfLastTemporaryPlayableObject] + 1;
+        if (index < 0)
+            index = 0;
     }
-    NSInteger bottom = [_actionExecutionContext bottomPositionOfLastTemporaryPlayableObject];
-    NSInteger index = bottom + 1;
-    if ((NSInteger)[aObject hyperIndex] < index)
-        index = bottom;
-    [aObject setHyperIndex:MAX(index, 0)];
+    [aObject setHyperIndex:index];
 }
 
 - (void)cleanupPlayableMovieObject

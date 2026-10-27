@@ -394,6 +394,7 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_sharedMainWindowController release];
     [super dealloc];
 }
