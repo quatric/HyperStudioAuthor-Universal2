@@ -1031,3 +1031,2008 @@ int SLLicensorGetRestrictionAtIndex(const SLLicensorAnalysis *aAnalysis, const u
     aRestriction->serials = SLBlobPointer(aAnalysis->baseB, BE32(entry + 16), aAnalysis->sizeB);
     return 0x14;
 }
+
+#pragma mark - License types and serials
+
+unsigned int SLLicenseTypeCodeToString(int aCode, char *aBuffer, unsigned int aSize)
+{
+    const char *string;
+    switch (aCode) {
+    case 0x2e537552: string = "LOCAL_MACHINE"; break;
+    case 0x2e54726c: string = "LOCAL_MACHINE_TRIAL"; break;
+    case 0x2e4e6574: string = "LIMITED_NETWORK"; break;
+    default: return 0;
+    }
+    unsigned int length = (unsigned int)strlen(string) + 1;
+    if (aBuffer == NULL || aSize == 0) {
+        return length;
+    }
+    if (aSize >= length) {
+        memcpy(aBuffer, string, length);
+    }
+    return length;
+}
+
+int SLLicenseTypeStringToCode(const char *aString)
+{
+    if (strcmp(aString, "LOCAL_MACHINE") == 0) {
+        return 0x2e537552;
+    }
+    if (strcmp(aString, "LIMITED_NETWORK") == 0) {
+        return 0x2e4e6574;
+    }
+    if (strcmp(aString, "LOCAL_MACHINE_TRIAL") == 0) {
+        return 0x2e54726c;
+    }
+    return 0;
+}
+
+int SLLicenseIsSerialSame(const SLLicense *aLicense, const char *aSerial)
+{
+    unsigned int encodedLength = SLEncodeSerialString(aSerial, NULL, 0, NULL);
+    if (encodedLength == 0) {
+        return 0;
+    }
+    unsigned int registrationLength = aLicense->descriptor.registrationLength;
+    char *buffer = SLAllocatorAllocate(NULL, encodedLength + registrationLength + 1);
+    if (buffer == NULL) {
+        return 0;
+    }
+    int same = 0;
+    if (SLEncodeSerialString(aSerial, buffer, encodedLength, NULL) != 0 &&
+        SLLicenseGetBytes(&aLicense->descriptor, aLicense->descriptor.registration, registrationLength + 1,
+                          buffer + encodedLength) != 0) {
+        same = strcmp(buffer, buffer + encodedLength) == 0;
+    }
+    SLAllocatorDeallocate(NULL, buffer);
+    return same;
+}
+
+static int SLLicenseIsSerialPresentInBase(const SLLicenseDescriptor *aDescriptor, const char *aSerial,
+                                          const struct SLBannedIdentifier *aItems, unsigned int aCount)
+{
+    if ((SLLicenseDescriptorBytesEncryptedFlag & aDescriptor->flags) == 0) {
+        for (unsigned int i = 0; i < aCount; i++) {
+            const char *identifier = (const char *)aItems[i].data;
+            int result = (aItems[i].flags & 0x80) == 0 ? strcmp(aSerial, identifier)
+                                                        : SLLicenseCompareIdentifiers(aSerial, identifier);
+            if (result == 0) {
+                return 7;
+            }
+        }
+        return 0;
+    }
+    char *buffer = NULL;
+    unsigned int capacity = 0;
+    int status = 0;
+    for (unsigned int i = 0; i < aCount && status == 0; i++) {
+        if (capacity < aItems[i].length + 1) {
+            if (buffer != NULL) {
+                SLAllocatorDeallocate(NULL, buffer);
+            }
+            capacity = aItems[i].length + 1;
+            buffer = SLAllocatorAllocate(NULL, capacity);
+            if (buffer == NULL) {
+                return 1;
+            }
+        }
+        if (SLLicenseGetBytes(aDescriptor, aItems[i].data, aItems[i].length + 1, buffer) == 0) {
+            status = 1;
+            break;
+        }
+        int result = (aItems[i].flags & 0x80) == 0 ? strcmp(aSerial, buffer)
+                                                    : SLLicenseCompareIdentifiers(aSerial, buffer);
+        if (result == 0) {
+            status = 7;
+        }
+    }
+    if (buffer != NULL) {
+        SLAllocatorDeallocate(NULL, buffer);
+    }
+    return status;
+}
+
+int SLLicenseIsSerialBanned(const SLLicense *aLicense, const char *aSerial)
+{
+    if (aLicense == NULL) {
+        return 1;
+    }
+    const SLLicenseDescriptor *descriptor = &aLicense->descriptor;
+    if (descriptor->bannedLength == 0 || descriptor->banned == NULL) {
+        return 0;
+    }
+    unsigned int count = 0;
+    int result = SLLicenseGetBannedIdentifiers(descriptor, 2, NULL, &count, NULL);
+    if (result != 0) {
+        return result;
+    }
+    if (count == 0) {
+        return 0;
+    }
+    struct SLBannedIdentifier *items = SLAllocatorAllocate(NULL, count * sizeof(*items));
+    if (items == NULL) {
+        return 1;
+    }
+    result = SLLicenseGetBannedIdentifiers(descriptor, 2, items, &count, NULL);
+    if (result == 0) {
+        result = SLLicenseIsSerialPresentInBase(descriptor, aSerial, items, count);
+    }
+    SLAllocatorDeallocate(NULL, items);
+    return result;
+}
+
+void SLLicenseMakeIdentifier(const char *aSerial, char *aIdentifier)
+{
+    char *target = aIdentifier != NULL ? aIdentifier : (char *)aSerial;
+    for (; *aSerial != '\0'; aSerial++, target++) {
+        // The serial alphabet (no 0, 1, I or O) is numbered 0 to 31 and written as a to z followed by 0 to 5.
+        signed char offset = (signed char)(*aSerial - 0x32);
+        signed char high = (signed char)((unsigned short)(offset * 0x10093) >> 8);
+        unsigned char index = (unsigned char)((offset + ((offset >> 7) - offset / 0x1d)) -
+                                              (signed char)((short)(offset * 0x100b3) >> 0xc) + (high >> 3) * -7 +
+                                              (high >> 4) * 7);
+        *target = (char)(index + 0x61 + (index / 0x1a) * -0x4b);
+    }
+    *target = '\0';
+}
+
+int SLLicenseUpdateOtherData(const SLLicense *aLicense, const char *aSerial, unsigned char *aBuffer,
+                             unsigned int *aSize)
+{
+    const SLLicenseDescriptor *descriptor = &aLicense->descriptor;
+    unsigned int flag = descriptor->codeInfo != 0 ? 0x80 : 0;
+    unsigned int existing = descriptor->bannedLength;
+    unsigned int identifierLength = descriptor->identifierLength;
+    if (existing == 0 || descriptor->banned == NULL) {
+        unsigned int needed = identifierLength + 0xd;
+        if (aBuffer == NULL) {
+            *aSize = needed;
+            return 0;
+        }
+        if (*aSize < needed ||
+            SLLicenseGetBytes(descriptor, descriptor->identifier, identifierLength + 1, aBuffer + 12) == 0) {
+            return 1;
+        }
+        if (SLLicenseCompareIdentifiers(aSerial, (const char *)aBuffer + 12) == 0) {
+            return 10;
+        }
+        SLPutBE32(aBuffer, 1);
+        SLPutBE32(aBuffer + 4, flag << 24);
+        SLPutBE32(aBuffer + 8, identifierLength);
+        *aSize = needed;
+        return 0;
+    }
+    unsigned int needed = existing + 9 + identifierLength;
+    if (aBuffer == NULL) {
+        *aSize = needed;
+        return 0;
+    }
+    if (*aSize < needed) {
+        return 1;
+    }
+    unsigned char *entry = aBuffer + existing;
+    if (SLLicenseGetBytes(descriptor, descriptor->identifier, identifierLength + 1, entry + 8) == 0) {
+        return 1;
+    }
+    if (SLLicenseCompareIdentifiers(aSerial, (const char *)entry + 8) == 0) {
+        return 10;
+    }
+    if (SLLicenseGetBytes(descriptor, descriptor->banned, existing, aBuffer) == 0) {
+        return 1;
+    }
+    SLPutBE32(aBuffer, BE32(aBuffer) + 1);
+    SLPutBE32(entry, flag << 24);
+    SLPutBE32(entry + 4, identifierLength);
+    *aSize = needed;
+    return 0;
+}
+
+int SLLicenseGetOldIdentifiers(const SLLicense *aLicense, unsigned int *aBuffer, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    if (aLicense == NULL) {
+        aLicense = SLEnvironmentGetLicense();
+        if (aLicense == NULL) {
+            return 1;
+        }
+    }
+    unsigned int count = 0;
+    int stringsLength = 0;
+    int result = SLLicenseGetBannedIdentifiers(&aLicense->descriptor, 0, NULL, &count, &stringsLength);
+    if (result != 0) {
+        return result;
+    }
+    if (count == 0) {
+        *aSize = 0;
+        return 0;
+    }
+    if (stringsLength == 0) {
+        return 1;
+    }
+    // The result is a count followed by pointers to the strings, which follow the pointers.
+    size_t needed = sizeof(void *) + count * sizeof(char *) + stringsLength;
+    if (aBuffer == NULL) {
+        *aSize = (unsigned int)needed;
+        return 0;
+    }
+    if (needed > *aSize) {
+        return 1;
+    }
+    struct SLBannedIdentifier *items = SLAllocatorAllocate(NULL, count * sizeof(*items));
+    if (items == NULL) {
+        return 1;
+    }
+    result = SLLicenseGetBannedIdentifiers(&aLicense->descriptor, 0, items, &count, NULL);
+    if (result == 0) {
+        size_t *countSlot = (size_t *)aBuffer;
+        char **pointers = (char **)(countSlot + 1);
+        char *string = (char *)(pointers + count);
+        unsigned int i;
+        for (i = 0; i < count; i++) {
+            if (SLLicenseGetBytes(&aLicense->descriptor, items[i].data, items[i].length + 1, string) == 0) {
+                break;
+            }
+            pointers[i] = string;
+            string += items[i].length + 1;
+        }
+        if (i == count) {
+            *countSlot = count;
+            result = 0;
+        } else {
+            result = 1;
+        }
+    }
+    SLAllocatorDeallocate(NULL, items);
+    return result;
+}
+
+#pragma mark - License creation
+
+int SLLicenseCreateWithBytesNoCopy(const SLAllocatorContext *aAllocator, const char *aKey, const char *aVersion,
+                                   const char *aShortVersion, const char *aTrialSign,
+                                   const SLLicenseCheckContext *aContext, const void *aBytes, unsigned int aSize,
+                                   void *aReleaseContext, SLReleaseCallBack aReleaseCallBack, SLLicense **aLicense)
+{
+    SLLicense *license = SLAllocatorAllocate(aAllocator, sizeof(SLLicense));
+    if (license == NULL) {
+        return 1;
+    }
+    memset(license, 0, sizeof(*license));
+    license->allocator = aAllocator;
+    SLLicenseDescriptor *d = &license->descriptor;
+    if (SLLicenseValidateLicense(aBytes, aSize, aKey, d) != 0) {
+        SLAllocatorDeallocate(aAllocator, license);
+        return 1;
+    }
+    d->flags |= SLLicenseDescriptorBytesEncryptedFlag;
+    if (d->dates[0] > aContext->dates[0] || d->dates[1] > aContext->dates[1] || d->dates[2] > aContext->dates[2]) {
+        SLAllocatorDeallocate(aAllocator, license);
+        return 1;
+    }
+
+    unsigned int largest = d->typeLength > d->pathLength ? d->typeLength : d->pathLength;
+    if (largest < d->field84) largest = d->field84;
+    if (largest < d->registrationLength) largest = d->registrationLength;
+    if (largest < d->field96) largest = d->field96;
+    if (largest < d->versionLength) largest = d->versionLength;
+    if (largest < d->shortVersionLength) largest = d->shortVersionLength;
+    unsigned int encodedLength = (d->field84 * 8 + 5) / 6;
+    char *buffer = SLAllocatorAllocate(NULL, largest + 2 + encodedLength);
+    int result = 1;
+    int type = 0;
+    if (buffer != NULL &&
+        SLLicenseGetBytes(d, d->field100, d->field96 + 1, buffer) != 0 && strcmp(buffer, aKey) == 0 &&
+        (d->version2 == NULL ||
+         (SLLicenseGetBytes(d, d->version2, d->versionLength + 1, buffer) != 0 && strcmp(buffer, aVersion) == 0)) &&
+        (d->shortVersion == NULL ||
+         (SLLicenseGetBytes(d, d->shortVersion, d->shortVersionLength + 1, buffer) != 0 &&
+          strcmp(buffer, aShortVersion) == 0)) &&
+        SLLicenseGetBytes(d, d->registration, d->registrationLength + 1, buffer) != 0 &&
+        SLValidateEncodedSerialString(buffer, (short)d->registrationCRC) == 0 &&
+        SLLicenseGetBytes(d, d->type, d->typeLength + 1, buffer) != 0 &&
+        (type = SLLicenseTypeStringToCode(buffer)) != 0) {
+        int proceed = 0;
+        const unsigned char *pathSource = d->path;
+        unsigned int pathLength = d->pathLength;
+        unsigned int stringLength;
+        if (d->codeInfo == 0) {
+            if (aTrialSign != NULL && type == 0x2e54726c &&
+                SLLicenseGetBytes(d, d->field88, d->field84 + 1, buffer) != 0 && strcmp(aTrialSign, buffer) == 0) {
+                stringLength = d->field84;
+                proceed = 1;
+            }
+        } else if (type != 0x2e54726c && d->codeLimit != 0 && (type != 0x2e537552 || d->codeLimit >= 2) &&
+                   SLLicenseGetBytes(d, d->field88, d->field84 + 1, buffer) != 0 &&
+                   buffer[d->field84] == '\0') {
+            int count = 0;
+            if (type != 0x2e4e6574 ||
+                (SSDecomposeNetworkSignature(buffer, d->field84, &count) == 0 && d->codeLimit == (unsigned int)count)) {
+                char *encoded = buffer + d->field84 + 1;
+                if (SSEncodeBytes((const unsigned char *)buffer, (int)d->field84, encoded, encodedLength) == 0) {
+                    buffer[encodedLength + d->field84 + 1] = '\0';
+                    if (aContext->isBanned(aContext->context, encoded, d->codeInfo) != 0) {
+                        SLAllocatorDeallocate(aAllocator, license);
+                        SLAllocatorDeallocate(NULL, buffer);
+                        return 7;
+                    }
+                    memmove(buffer, encoded, encodedLength + 1);
+                    stringLength = encodedLength;
+                    proceed = 1;
+                }
+            }
+        }
+        if (proceed &&
+            SLLicenseGetBytes(d, pathSource, pathLength + 1, buffer + stringLength + 1) != 0 &&
+            aContext->checkSettings(aContext->context, type, buffer, buffer + stringLength + 1) != 0) {
+            license->bytes = (void *)aBytes;
+            license->bytesSize = aSize;
+            license->releaseContext = aReleaseContext;
+            license->releaseCallBack = aReleaseCallBack;
+            SLAllocatorDeallocate(NULL, buffer);
+            if (aLicense != NULL) {
+                *aLicense = license;
+            } else {
+                SLAllocatorDeallocate(aAllocator, license);
+            }
+            return 0;
+        }
+    }
+    SLAllocatorDeallocate(aAllocator, license);
+    if (buffer != NULL) {
+        SLAllocatorDeallocate(NULL, buffer);
+    }
+    return result;
+}
+
+static unsigned char *SLLicenseAppendString(unsigned char *aTarget, const char *aString, unsigned int *aLength,
+                                            const unsigned char **aPointer)
+{
+    size_t length = strlen(aString);
+    strcpy((char *)aTarget, aString);
+    *aLength = (unsigned int)length;
+    *aPointer = aTarget;
+    return aTarget + length + 1;
+}
+
+int SLLicenseCreateWithSerial(const SLAllocatorContext *aAllocator, const char *aSerial, const char *aSerialString,
+                              unsigned int aCodeInfo, unsigned int aCodeLimit, const char *aKey,
+                              const char *aVersion, const char *aShortVersion,
+                              const SLLicenseCreationContext *aContext, SLLicense **aLicense)
+{
+    size_t serialLength = strlen(aSerial);
+    unsigned int encodedSize;
+    if (serialLength == 0 || (encodedSize = SLEncodeSerialString(aSerial, NULL, 0, NULL)) == 0 ||
+        aContext->pathLength == 0 || aContext->typeLength == 0) {
+        return 1;
+    }
+    SLLicense *current = SLEnvironmentGetLicense();
+    unsigned int otherLength = 0;
+    if (current != NULL) {
+        int status = SLLicenseUpdateOtherData(current, aSerial, NULL, &otherLength);
+        if (status != 0) {
+            return status;
+        }
+    }
+    size_t keyLength = strlen(aKey), serialStringLength = strlen(aSerialString);
+    size_t shortLength = aShortVersion != NULL ? strlen(aShortVersion) : 0;
+    size_t versionLength = aVersion != NULL ? strlen(aVersion) : 0;
+    size_t total = keyLength + 3 + serialLength + encodedSize + aContext->typeLength + aContext->pathLength +
+                   serialStringLength + aContext->userDataLength + aContext->serialUserDataLength + otherLength +
+                   (aShortVersion != NULL ? shortLength + 1 : 0) + (aVersion != NULL ? versionLength + 1 : 0) + 8;
+    SLLicense *license = SLAllocatorAllocate(aAllocator, sizeof(SLLicense) + total);
+    if (license == NULL) {
+        return 1;
+    }
+    memset(license, 0, sizeof(*license));
+    unsigned char *base = (unsigned char *)(license + 1);
+    SLLicenseDescriptor d;
+    memset(&d, 0, sizeof(d));
+    d.creationDate = SLLicenseGetSystemTime();
+    memcpy(d.dates, aContext->dates, sizeof(d.dates));
+    d.codeInfo = aCodeInfo;
+    d.codeLimit = aCodeLimit;
+    d.base = base;
+
+    unsigned short crc = 0;
+    unsigned int encoded = SLEncodeSerialString(aSerial, (char *)base, encodedSize, &crc);
+    int status = 1;
+    if (encoded != 0) {
+        d.registrationLength = encoded;
+        d.registration = base;
+        d.registrationCRC = crc;
+        unsigned char *cursor = base + encoded + 1;
+        d.identifierLength = (unsigned int)serialLength;
+        d.identifier = cursor;
+        if (aCodeInfo == 0) {
+            strcpy((char *)cursor, aSerial);
+        } else {
+            SLLicenseMakeIdentifier(aSerial, (char *)cursor);
+        }
+        cursor += serialLength + 1;
+        unsigned int length = aContext->getType(aContext->context, (char *)cursor, aContext->typeLength);
+        if (length == aContext->typeLength) {
+            d.type = cursor;
+            d.typeLength = length - 1;
+            cursor += length;
+            length = aContext->getPath(aContext->context, (char *)cursor, aContext->pathLength);
+            if (length == aContext->pathLength) {
+                d.path = cursor;
+                d.pathLength = length - 1;
+                cursor += length;
+                cursor = SLLicenseAppendString(cursor, aSerialString, &d.field84, &d.field88);
+                cursor = SLLicenseAppendString(cursor, aKey, &d.field96, &d.field100);
+                if (aShortVersion != NULL) {
+                    cursor = SLLicenseAppendString(cursor, aShortVersion, &d.shortVersionLength, &d.shortVersion);
+                }
+                if (aVersion != NULL) {
+                    cursor = SLLicenseAppendString(cursor, aVersion, &d.versionLength, &d.version2);
+                }
+                int ok = 1;
+                if (aContext->userDataLength != 0 && aContext->getUserData != NULL) {
+                    ok = aContext->getUserData(aContext->context, cursor, aContext->userDataLength) ==
+                         aContext->userDataLength;
+                    if (ok) {
+                        d.userDataLength = aContext->userDataLength;
+                        d.userData = cursor;
+                        cursor += aContext->userDataLength;
+                    }
+                }
+                if (ok && aContext->serialUserDataLength != 0 && aContext->getSerialUserData != NULL) {
+                    ok = aContext->getSerialUserData(aContext->context, cursor, aContext->serialUserDataLength) ==
+                         aContext->serialUserDataLength;
+                    if (ok) {
+                        d.serialUserDataLength = aContext->serialUserDataLength;
+                        d.serialUserData = cursor;
+                        cursor += aContext->serialUserDataLength;
+                    }
+                }
+                if (ok) {
+                    status = 0;
+                    if (otherLength != 0) {
+                        status = SLLicenseUpdateOtherData(current, aSerial, cursor, &otherLength);
+                        if (status == 0) {
+                            d.bannedLength = otherLength;
+                            d.banned = cursor;
+                            cursor += otherLength;
+                        }
+                    }
+                    if (status == 0) {
+                        d.contentSize = (unsigned int)(cursor - base);
+                        license->allocator = aAllocator;
+                        license->descriptor = d;
+                        license->bytes = base;
+                        license->bytesSize = d.contentSize;
+                        *aLicense = license;
+                        return 0;
+                    }
+                }
+            }
+        }
+    }
+    SLAllocatorDeallocate(aAllocator, license);
+    *aLicense = NULL;
+    return status;
+}
+
+#pragma mark - License storage
+
+#include <fcntl.h>
+#include <unistd.h>
+#include <errno.h>
+#include <sys/stat.h>
+
+#define SLStoragePrefixLocalApplicationSupport "$(LOCAL_APP_SUPPORT)"
+#define SLStoragePrefixApplicationInstallPath "$(APP_INSTALL_PATH)"
+
+// The path of a license file; the prefix of the stored path stands for a folder that depends on the machine.
+static char *SLLicenseStorageCreatePath(const char *aPath, const char *aInstallPath)
+{
+    const char *prefixes[2] = { SLStoragePrefixLocalApplicationSupport, SLStoragePrefixApplicationInstallPath };
+    size_t length = strlen(aPath);
+    for (int i = 0; i < 2; i++) {
+        size_t prefixLength = strlen(prefixes[i]);
+        if (prefixLength > length || strncmp(aPath, prefixes[i], prefixLength) != 0) {
+            continue;
+        }
+        const char *folder = i == 0 ? "/Library/Application Support" : aInstallPath;
+        if (folder == NULL) {
+            return NULL;
+        }
+        const char *rest = aPath + prefixLength;
+        if (*rest == '/') {
+            rest++;
+        }
+        size_t size = strlen(folder) + strlen(rest) + 2;
+        char *result = malloc(size);
+        if (result != NULL) {
+            snprintf(result, size, "%s/%s", folder, rest);
+        }
+        return result;
+    }
+    return strdup(aPath);
+}
+
+void *SLLicenseStorageCopyBytes(const char *aPath, const char *aInstallPath, size_t *aSize)
+{
+    char *path = SLLicenseStorageCreatePath(aPath, aInstallPath);
+    if (path == NULL) {
+        return NULL;
+    }
+    void *bytes = NULL;
+    int file = open(path, O_RDONLY);
+    free(path);
+    if (file >= 0) {
+        struct stat info;
+        if (fstat(file, &info) == 0) {
+            off_t size = lseek(file, 0, SEEK_END);
+            if (size > 0 && lseek(file, 0, SEEK_SET) == 0) {
+                bytes = SLAllocatorAllocate(NULL, (size_t)size);
+                if (bytes != NULL) {
+                    if (read(file, bytes, (size_t)size) == size) {
+                        if (aSize != NULL) {
+                            *aSize = (size_t)size;
+                        }
+                    } else {
+                        SLAllocatorDeallocate(NULL, bytes);
+                        bytes = NULL;
+                    }
+                }
+            }
+        }
+        close(file);
+    }
+    return bytes;
+}
+
+static int SLLicenseStorageRestorePath(const char *aPath)
+{
+    struct stat info;
+    if (stat(aPath, &info) == 0) {
+        return 0;
+    }
+    if (errno == EACCES) {
+        return 9;
+    }
+    char *parent = strdup(aPath);
+    if (parent == NULL) {
+        return 1;
+    }
+    char *slash = strrchr(parent, '/');
+    if (slash == NULL || slash == parent) {
+        free(parent);
+        return 1;
+    }
+    *slash = '\0';
+    int result = SLLicenseStorageRestorePath(parent);
+    free(parent);
+    if (result != 0) {
+        return result;
+    }
+    if (mkdir(aPath, 0775) != 0) {
+        if (errno == EACCES) {
+            return 9;
+        }
+        if (errno != EEXIST) {
+            return 1;
+        }
+    }
+    return chmod(aPath, 0775) == 0 ? 0 : 9;
+}
+
+static int SLLicenseStorageSaveLicenseAtPath(const void *aBytes, size_t aSize, const char *aPath)
+{
+    FILE *file = fopen(aPath, "wb");
+    if (file == NULL) {
+        if (errno == EACCES) {
+            return 9;
+        }
+        struct stat info;
+        if (stat(aPath, &info) == 0 || errno == EACCES) {
+            return 9;
+        }
+        char *parent = strdup(aPath);
+        if (parent == NULL) {
+            return 1;
+        }
+        char *slash = strrchr(parent, '/');
+        if (slash != NULL) {
+            *slash = '\0';
+        }
+        int result = SLLicenseStorageRestorePath(parent);
+        free(parent);
+        if (result != 0) {
+            return result;
+        }
+        file = fopen(aPath, "wb");
+        if (file == NULL) {
+            return errno == EACCES ? 9 : 1;
+        }
+    }
+    size_t written = fwrite(aBytes, 1, aSize, file);
+    fclose(file);
+    if (written != aSize) {
+        return 1;
+    }
+    if (chmod(aPath, 0775) != 0) {
+        return errno == EACCES || errno == EPERM ? 9 : 1;
+    }
+    return 0;
+}
+
+int SLLicenseStorageSaveData(const char *aPath, const char *aInstallPath, const void *aBytes, size_t aSize)
+{
+    char *path = SLLicenseStorageCreatePath(aPath, aInstallPath);
+    if (path == NULL) {
+        return 1;
+    }
+    int result = SLLicenseStorageSaveLicenseAtPath(aBytes, aSize, path);
+    free(path);
+    return result;
+}
+
+int SLLicenseStorageCleanup(const char *aPath, const char *aInstallPath)
+{
+    char *path = SLLicenseStorageCreatePath(aPath, aInstallPath);
+    if (path == NULL) {
+        return 1;
+    }
+    int result = 0;
+    if (unlink(path) != 0 && errno != ENOENT && errno != ENOTDIR) {
+        result = errno == EACCES ? 9 : 1;
+    }
+    free(path);
+    return result;
+}
+
+#define SLStorageHeaderKey CFSTR("SLUtilityLicenseDataHeader")
+#define SLStorageDataKey CFSTR("SLUtilityLicenseData")
+#define SLStorageMagic 0x534c4c64
+
+// A stored license is a property list with a 12 byte header (magic, revision, size) and the license bytes.
+static CFDataRef SLLicenseStorageCreateDataItem(unsigned int aRevision, const void *aBytes, unsigned int aSize)
+{
+    unsigned char header[12];
+    SLPutBE32(header, SLStorageMagic);
+    SLPutBE32(header + 4, aRevision);
+    SLPutBE32(header + 8, aSize);
+    CFDataRef headerData = CFDataCreateWithBytesNoCopy(NULL, header, 12, kCFAllocatorNull);
+    if (headerData == NULL) {
+        return NULL;
+    }
+    CFDataRef bytesData = CFDataCreateWithBytesNoCopy(NULL, aBytes, aSize, kCFAllocatorNull);
+    CFDataRef result = NULL;
+    if (bytesData != NULL) {
+        const void *keys[2] = { SLStorageHeaderKey, SLStorageDataKey };
+        const void *values[2] = { headerData, bytesData };
+        CFDictionaryRef dictionary = CFDictionaryCreate(NULL, keys, values, 2, &kCFTypeDictionaryKeyCallBacks,
+                                                        &kCFTypeDictionaryValueCallBacks);
+        CFRelease(bytesData);
+        if (dictionary != NULL) {
+            SSUtilityCreateDataWithPropertyList(NULL, dictionary, &result);
+            CFRelease(dictionary);
+        }
+    }
+    CFRelease(headerData);
+    return result;
+}
+
+static int SLLicenseStorageValidateDataHeader(CFTypeRef aData, unsigned int *aRevision, CFDataRef *aBytes)
+{
+    if (CFGetTypeID(aData) != CFDataGetTypeID()) {
+        return 1;
+    }
+    CFPropertyListRef list = SSUtilityCreatePropertyListWithBytes(NULL, CFDataGetBytePtr(aData), CFDataGetLength(aData));
+    if (list == NULL) {
+        return 1;
+    }
+    int result = 1;
+    if (CFGetTypeID(list) == CFDictionaryGetTypeID()) {
+        CFTypeRef header = CFDictionaryGetValue(list, SLStorageHeaderKey);
+        if (header != NULL && CFGetTypeID(header) == CFDataGetTypeID() && CFDataGetLength(header) == 12) {
+            const unsigned char *bytes = CFDataGetBytePtr(header);
+            CFTypeRef data = CFDictionaryGetValue(list, SLStorageDataKey);
+            if (BE32(bytes) == SLStorageMagic && data != NULL && CFGetTypeID(data) == CFDataGetTypeID() &&
+                BE32(bytes + 8) == (unsigned int)CFDataGetLength(data)) {
+                if (aRevision != NULL) {
+                    *aRevision = BE32(bytes + 4);
+                }
+                if (aBytes != NULL) {
+                    *aBytes = CFRetain(data);
+                }
+                result = 0;
+            }
+        }
+    }
+    CFRelease(list);
+    return result;
+}
+
+static CFDictionaryRef SLLicenseStorageCopyExternalDomain(CFStringRef aDomain, CFStringRef aKey)
+{
+    CFArrayRef keys = CFArrayCreate(NULL, (const void **)&aKey, 1, &kCFTypeArrayCallBacks);
+    if (keys == NULL) {
+        return NULL;
+    }
+    CFPreferencesSynchronize(aDomain, kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
+    CFDictionaryRef values = CFPreferencesCopyMultiple(keys, aDomain, kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
+    CFRelease(keys);
+    return values;
+}
+
+static CFStringRef SLLicenseStorageCreateItemKey(const char *aVersion, const char *aShortVersion, const char *aName)
+{
+    return CFStringCreateWithFormat(NULL, NULL, CFSTR("%s-%s-%s"), aVersion != NULL ? aVersion : "SLGeneric",
+                                    aShortVersion != NULL ? aShortVersion : "SLGeneric", aName);
+}
+
+void *SLLicenseStorageCopyExternal(const char *aDomain, unsigned int aRevision, const char *aName,
+                                   const char *aVersion, const char *aShortVersion, size_t *aSize)
+{
+    void *result = NULL;
+    CFStringRef domain = CFStringCreateWithCStringNoCopy(NULL, aDomain, kCFStringEncodingUTF8, kCFAllocatorNull);
+    if (domain == NULL) {
+        return NULL;
+    }
+    CFStringRef revision = CFStringCreateWithFormat(NULL, NULL, CFSTR("%u"), aRevision);
+    if (revision != NULL) {
+        CFDictionaryRef values = SLLicenseStorageCopyExternalDomain(domain, revision);
+        if (values != NULL) {
+            CFTypeRef item = CFDictionaryGetValue(values, revision);
+            if (item != NULL && CFGetTypeID(item) == CFDictionaryGetTypeID()) {
+                CFStringRef key = SLLicenseStorageCreateItemKey(aVersion, aShortVersion, aName);
+                if (key != NULL) {
+                    CFTypeRef stored = CFDictionaryGetValue(item, key);
+                    CFRelease(key);
+                    unsigned int storedRevision = 0;
+                    CFDataRef bytes = NULL;
+                    if (stored != NULL && SLLicenseStorageValidateDataHeader(stored, &storedRevision, &bytes) == 0) {
+                        if (storedRevision == aRevision) {
+                            size_t length = (size_t)CFDataGetLength(bytes);
+                            result = SLAllocatorAllocate(NULL, length);
+                            if (result != NULL) {
+                                memcpy(result, CFDataGetBytePtr(bytes), length);
+                                if (aSize != NULL) {
+                                    *aSize = length;
+                                }
+                            }
+                        }
+                        CFRelease(bytes);
+                    }
+                }
+            }
+            CFRelease(values);
+        }
+        CFRelease(revision);
+    }
+    CFRelease(domain);
+    return result;
+}
+
+int SLLicenseStorageUpdateExternal(const char *aDomain, unsigned int aRevision, const char *aName,
+                                   const char *aVersion, const char *aShortVersion, const void *aBytes,
+                                   size_t aSize)
+{
+    int failed = 1;
+    CFStringRef domain = CFStringCreateWithCStringNoCopy(NULL, aDomain, kCFStringEncodingUTF8, kCFAllocatorNull);
+    CFStringRef revision = CFStringCreateWithFormat(NULL, NULL, CFSTR("%u"), aRevision);
+    if (domain != NULL && revision != NULL) {
+        CFDictionaryRef values = SLLicenseStorageCopyExternalDomain(domain, revision);
+        if (values != NULL) {
+            int remove = aSize == 0;
+            CFMutableDictionaryRef item = NULL;
+            CFTypeRef existing = CFDictionaryGetValue(values, revision);
+            if (existing == NULL) {
+                if (!remove) {
+                    item = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks,
+                                                     &kCFTypeDictionaryValueCallBacks);
+                }
+            } else if (CFGetTypeID(existing) == CFDictionaryGetTypeID()) {
+                item = CFDictionaryCreateMutableCopy(NULL, 0, existing);
+            } else if (remove) {
+                item = NULL;
+            } else {
+                item = CFDictionaryCreateMutable(NULL, 0, &kCFTypeDictionaryKeyCallBacks,
+                                                 &kCFTypeDictionaryValueCallBacks);
+            }
+            if (item != NULL) {
+                CFStringRef key = SLLicenseStorageCreateItemKey(aVersion, aShortVersion, aName);
+                if (key != NULL) {
+                    unsigned int storedRevision = 0;
+                    CFTypeRef stored = CFDictionaryGetValue(item, key);
+                    // Only an older revision of the same item is replaced.
+                    if (stored == NULL || SLLicenseStorageValidateDataHeader(stored, &storedRevision, NULL) != 0 ||
+                        storedRevision <= aRevision) {
+                        if (remove) {
+                            CFDictionaryRemoveValue(item, key);
+                            failed = 0;
+                        } else {
+                            CFDataRef data = SLLicenseStorageCreateDataItem(aRevision, aBytes, (unsigned int)aSize);
+                            if (data != NULL) {
+                                CFDictionarySetValue(item, key, data);
+                                CFRelease(data);
+                                failed = 0;
+                            }
+                        }
+                    }
+                    CFRelease(key);
+                }
+                if (!failed) {
+                    const void *keys[1] = { revision };
+                    const void *entries[1] = { item };
+                    CFDictionaryRef update = CFDictionaryCreate(NULL, keys, entries, 1, &kCFTypeDictionaryKeyCallBacks,
+                                                                &kCFTypeDictionaryValueCallBacks);
+                    if (update != NULL) {
+                        CFPreferencesSetMultiple(update, NULL, domain, kCFPreferencesAnyUser,
+                                                 kCFPreferencesCurrentHost);
+                        failed = !CFPreferencesSynchronize(domain, kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
+                        CFRelease(update);
+                    }
+                }
+                CFRelease(item);
+            } else {
+                failed = !remove;
+            }
+            CFRelease(values);
+        }
+    }
+    if (revision != NULL) {
+        CFRelease(revision);
+    }
+    if (domain != NULL) {
+        CFRelease(domain);
+    }
+    return failed;
+}
+
+int SLLicenseStorageGetEnvironmentRepresentationForLicensor(const SLLicensorAnalysis *aAnalysis,
+                                                            const char *aSecret, unsigned int aRevision,
+                                                            const char *aKey, unsigned int aKeyLength,
+                                                            const char *aName, const char *aCurrentPath,
+                                                            unsigned char *aBuffer, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    size_t secretLength = strlen(aSecret);
+    unsigned int total = (unsigned int)secretLength + 0xd;
+    for (unsigned int i = 0; i < aAnalysis->pathCount; i++) {
+        total += SLLicensorGetLicensePathAtIndex(aAnalysis, (const unsigned char *)aKey, aKeyLength, i, NULL, 0);
+    }
+    if (aBuffer != NULL) {
+        if (*aSize < total) {
+            return 1;
+        }
+        unsigned char *content = aBuffer + 12;
+        strcpy((char *)content, aSecret);
+        unsigned int index = 0xffffffff;
+        unsigned int used = (unsigned int)secretLength + 1;
+        char *cursor = (char *)content + used;
+        for (unsigned int i = 0; i < aAnalysis->pathCount; i++) {
+            unsigned int length = SLLicensorGetLicensePathAtIndex(aAnalysis, (const unsigned char *)aKey, aKeyLength,
+                                                                  i, cursor, total - used);
+            if (length == 0) {
+                return 1;
+            }
+            if (index == 0xffffffff && aCurrentPath != NULL && strcmp(cursor, aCurrentPath) == 0) {
+                index = i;
+            }
+            used += length;
+            cursor += length;
+        }
+        SLPutBE32(aBuffer, aRevision);
+        SLPutBE32(aBuffer + 4, aAnalysis->pathCount);
+        SLPutBE32(aBuffer + 8, index);
+        SSEncryptBytesWithKeyAndOffset(content, used, (const unsigned char *)aName, (unsigned int)strlen(aName), 0,
+                                       NULL);
+    }
+    *aSize = total;
+    return 0;
+}
+
+int SLLicenseStorageValidateEnvironmentRepresentation(const unsigned char *aBytes, unsigned int aSize,
+                                                      const char *aKey, SLStorageEnvironment *aEnvironment,
+                                                      unsigned int *aEnvironmentSize)
+{
+    if (aSize < 0xd) {
+        return 8;
+    }
+    if (BE32(aBytes) != 6) {
+        return 1;
+    }
+    unsigned int count = BE32(aBytes + 4);
+    size_t keyLength = strlen(aKey);
+    unsigned int needed = (unsigned int)(sizeof(SLStorageEnvironment) + count * sizeof(char *) + aSize - 12 + keyLength + 1);
+    if (aEnvironment == NULL) {
+        *aEnvironmentSize = needed;
+        return 0;
+    }
+    if (needed > *aEnvironmentSize) {
+        return 1;
+    }
+    char *strings = (char *)aEnvironment->paths + count * sizeof(char *);
+    SSDecryptBytesWithKey(aBytes + 12, (int)(aSize - 12), 0, (const unsigned char *)aKey, (unsigned int)keyLength,
+                          (unsigned char *)strings);
+    if (strings[aSize - 12 - 1] != '\0' || strlen(strings) == 0) {
+        return 1;
+    }
+    char *cursor = strings + strlen(strings) + 1;
+    aEnvironment->secret = strings;
+    for (unsigned int i = 0; i < count; i++) {
+        size_t length = strlen(cursor);
+        if (length == 0) {
+            return 1;
+        }
+        aEnvironment->paths[i] = cursor;
+        cursor += length + 1;
+    }
+    aEnvironment->key = cursor;
+    memmove(cursor, aKey, keyLength + 1);
+    aEnvironment->revision = 6;
+    aEnvironment->count = count;
+    aEnvironment->index = BE32(aBytes + 8);
+    return 0;
+}
+
+#pragma mark - Licensor
+
+#define SLLicensorHostDomain ".com.mackiev.licensor.host"
+
+int SLLicensorGetCodeMapItemForKey(const SLLicensorAnalysis *aAnalysis, const char *aEncoded, const char *aKey,
+                                   unsigned int aKeyLength, SLCodeMapItem *aItem)
+{
+    if (aAnalysis->codeMapCount == 0 || aAnalysis->codeMapTable == NULL) {
+        return 0;
+    }
+    char *buffer = NULL;
+    unsigned int capacity = 0;
+    int found = 0;
+    for (unsigned int i = 0; i < aAnalysis->codeMapCount; i++) {
+        unsigned int size = aAnalysis->sizeA;
+        const unsigned char *entry = aAnalysis->codeMapTable + i * 0x18;
+        if (size < 0x18) {
+            break;
+        }
+        unsigned int length = BE32(entry);
+        const unsigned char *string = SLBlobPointer(aAnalysis->baseA, BE32(entry + 4), size);
+        if (length == 0 || string == NULL) {
+            found = 1;
+            break;
+        }
+        length++;
+        if (capacity < length) {
+            if (buffer != NULL) {
+                SLAllocatorDeallocate(NULL, buffer);
+            }
+            buffer = SLAllocatorAllocate(NULL, length);
+            capacity = length;
+        }
+        SSDecryptBytesWithKey(string, length, (unsigned int)(string - aAnalysis->keyBase),
+                              (const unsigned char *)aKey, aKeyLength, (unsigned char *)buffer);
+        if (strcmp(buffer, aEncoded) == 0) {
+            if (aItem != NULL) {
+                aItem->type = BE32(entry + 8);
+                aItem->index = BE32(entry + 12);
+                aItem->length = BE32(entry + 16);
+                aItem->data = SLBlobPointer(aAnalysis->baseA, BE32(entry + 20), size);
+            }
+            found = 1;
+            break;
+        }
+    }
+    if (buffer != NULL) {
+        SLAllocatorDeallocate(NULL, buffer);
+    }
+    return found;
+}
+
+unsigned int SLLicensorGetSerialUserData(const SLLicensorAnalysis *aAnalysis, const char *aEncoded,
+                                         unsigned int aValue, const char *aKey, unsigned int aKeyLength,
+                                         const unsigned char **aData)
+{
+    size_t length = strlen(aEncoded);
+    if (length == 0 || aAnalysis->countC * 16 >= aAnalysis->sizeC) {
+        return 0;
+    }
+    char *buffer = SLAllocatorAllocate(NULL, length + 1);
+    if (buffer == NULL) {
+        return 0;
+    }
+    const unsigned char *items = NULL;
+    unsigned int itemCount = 0;
+    unsigned int i;
+    int found = 0;
+    for (i = 0; i < aAnalysis->countC; i++) {
+        const unsigned char *entry = aAnalysis->tableC + i * 16;
+        if (aAnalysis->sizeC < 0x10) {
+            break;
+        }
+        const unsigned char *string = SLBlobPointer(aAnalysis->baseC, BE32(entry + 4), aAnalysis->sizeC);
+        itemCount = BE32(entry + 8);
+        items = SLBlobPointer(aAnalysis->baseC, BE32(entry + 12), aAnalysis->sizeC);
+        if (length == BE32(entry) && string != NULL) {
+            SSDecryptBytesWithKey(string, (int)length, (unsigned int)(string - aAnalysis->pointerC),
+                                  (const unsigned char *)aKey, aKeyLength, (unsigned char *)buffer);
+            // The compared text carries no terminator of its own.
+            buffer[length] = '\0';
+            if (strcmp(buffer, aEncoded) == 0) {
+                found = 1;
+                break;
+            }
+        }
+    }
+    SLAllocatorDeallocate(NULL, buffer);
+    if (!found || items == NULL) {
+        return 0;
+    }
+    for (unsigned int j = 0; j < itemCount; j++) {
+        unsigned char item[12];
+        SSDecryptBytesWithKey(items, 12, (unsigned int)(items - aAnalysis->pointerC), (const unsigned char *)aKey,
+                              aKeyLength, item);
+        if (aAnalysis->sizeC < 0xc) {
+            return 0;
+        }
+        unsigned int value = BE32(item), itemLength = BE32(item + 4);
+        const unsigned char *data = SLBlobPointer(aAnalysis->baseC, BE32(item + 8), aAnalysis->sizeC);
+        items += 12;
+        if (value == aValue) {
+            if (aData != NULL) {
+                *aData = data;
+            }
+            return itemLength;
+        }
+    }
+    return 0;
+}
+
+int SLLicensorGetRawSerialString(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                 const char *aSerial, char *aBuffer, unsigned int aSize)
+{
+    if (aLength - aGroupCount + 2 > aSize) {
+        return -1;
+    }
+    int result;
+    unsigned int groups = 0;
+    for (;;) {
+        const char *dash = strchr(aSerial, '-');
+        if (dash == NULL) {
+            result = 0;
+            break;
+        }
+        if ((unsigned int)(dash - aSerial) != aGroupSize) {
+            result = -1;
+            break;
+        }
+        strncpy(aBuffer, aSerial, aGroupCount);
+        aBuffer += aGroupCount;
+        groups++;
+        aSerial += aGroupCount + 1;
+    }
+    *aBuffer = '\0';
+    if (result == 0 && groups < aGroupCount) {
+        strcpy(aBuffer, aSerial);
+    }
+    return result;
+}
+
+int SLLicensorMakeFullSerialString(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                   const char *aRaw, char *aBuffer, unsigned int aSize)
+{
+    if (aLength + 1 > aSize) {
+        return -1;
+    }
+    for (unsigned int i = 0; i < aGroupCount - 1; i++) {
+        strncpy(aBuffer, aRaw, aGroupSize);
+        aBuffer += aGroupSize;
+        aRaw += aGroupSize;
+        *aBuffer++ = '-';
+    }
+    strcpy(aBuffer, aRaw);
+    return 0;
+}
+
+unsigned int SLLicensorGetTrialSign(const SLLicensorAnalysis *aAnalysis, const char *aKey, unsigned int aKeyLength,
+                                    char *aBuffer, unsigned int aSize)
+{
+    if (aAnalysis->defaultIndex == 0xffffffff || aAnalysis->pointer12 == NULL || aAnalysis->length11 == 0) {
+        return 0;
+    }
+    unsigned int length = aAnalysis->length11 + 1;
+    if (aBuffer == NULL) {
+        return length;
+    }
+    if (length > aSize) {
+        return 0;
+    }
+    SSDecryptBytesWithKey(aAnalysis->pointer12, (int)length, (unsigned int)(aAnalysis->pointer12 - aAnalysis->keyBase),
+                          (const unsigned char *)aKey, aKeyLength, (unsigned char *)aBuffer);
+    return length;
+}
+
+int SLLicensorIsRawSerialProbablyTrial(const char *aRaw, const char *aKey, const char *aPrefix)
+{
+    size_t keyLength = strlen(aKey), prefixLength = strlen(aPrefix), length = strlen(aRaw);
+    if (keyLength + 5 + prefixLength > length) {
+        return 1;
+    }
+    if (prefixLength != 0 && strncmp(aRaw, aPrefix, prefixLength) != 0) {
+        return 1;
+    }
+    aRaw += prefixLength;
+    if (strncmp(aRaw, aKey, keyLength) != 0) {
+        return 1;
+    }
+    return strncmp(aRaw + keyLength, "TRIAL", 5) == 0 ? 0 : 1;
+}
+
+int SLLicensorMakeRawTrialSerial(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                 const char *aKey, const char *aPrefix, char *aBuffer, unsigned int aSize)
+{
+    unsigned int size = aLength - aGroupCount + 2;
+    if (size > aSize) {
+        return 1;
+    }
+    size_t keyLength = strlen(aKey), prefixLength = strlen(aPrefix);
+    if (keyLength + 6 + prefixLength > size) {
+        return 1;
+    }
+    strcpy(aBuffer, aPrefix);
+    strcpy(aBuffer + prefixLength, aKey);
+    aBuffer += keyLength + prefixLength;
+    unsigned int remaining = size - (unsigned int)(keyLength + prefixLength) - 1;
+    unsigned int filled = 0, left = remaining;
+    while (filled != remaining) {
+        filled += 5;
+        if (left < 5) {
+            strncpy(aBuffer, "TRIAL", left);
+            aBuffer[left] = '\0';
+            return 0;
+        }
+        memcpy(aBuffer, "TRIAL", 6);
+        left -= 5;
+        aBuffer += 5;
+    }
+    return 0;
+}
+
+int SLLicensorFillRawTrialSerial(SLLicenseeInfo *aInfo, unsigned int aLength, unsigned int aGroupSize,
+                                 unsigned int aGroupCount)
+{
+    if (*aInfo->trialSign == '\0') {
+        return 1;
+    }
+    if (*aInfo->trialSerial != '\0') {
+        return 0;
+    }
+    return SLLicensorMakeRawTrialSerial(aLength, aGroupSize, aGroupCount, aInfo->key, aInfo->trialSign,
+                                        aInfo->trialSerial, aLength - aGroupCount + 2) != 0;
+}
+
+int SLLicensorIsSerialBanned(const SLLicensorAnalysis *aAnalysis, const char *aKey, unsigned int aKeyLength,
+                             const char *aEncoded, unsigned int aValue)
+{
+    if (aAnalysis->restrictionCount == 0 || aAnalysis->baseB == NULL) {
+        return 0;
+    }
+    char *buffer = NULL;
+    unsigned int capacity = 0;
+    SLLicensorRestriction restriction;
+    unsigned int i;
+    int banned = 0, found = 0;
+    for (i = 0; i < aAnalysis->restrictionCount; i++) {
+        if (!SLLicensorGetRestrictionAtIndex(aAnalysis, (const unsigned char *)aKey, aKeyLength, i, &restriction) ||
+            restriction.identifierLength == 0) {
+            goto done;
+        }
+        unsigned int length = restriction.identifierLength + 1;
+        if (capacity < length) {
+            if (buffer != NULL) {
+                SLAllocatorDeallocate(NULL, buffer);
+            }
+            buffer = SLAllocatorAllocate(NULL, length);
+            capacity = length;
+        }
+        SSDecryptBytesWithKey(restriction.identifier, (int)length,
+                              (unsigned int)(restriction.identifier - aAnalysis->keyBaseB),
+                              (const unsigned char *)aKey, aKeyLength, (unsigned char *)buffer);
+        if (strcmp(buffer, aEncoded) == 0) {
+            found = 1;
+            break;
+        }
+    }
+    if (found && restriction.serialCount != 0 && restriction.serialSize == 4 && restriction.serials != NULL) {
+        const unsigned char *serial = restriction.serials;
+        for (unsigned int j = 0; j < restriction.serialCount; j++, serial += 4) {
+            unsigned char value[4];
+            SSDecryptBytesWithKey(serial, 4, (unsigned int)(serial - aAnalysis->keyBaseB), (const unsigned char *)aKey,
+                                  aKeyLength, value);
+            if (BE32(value) == aValue) {
+                banned = 1;
+                break;
+            }
+        }
+    }
+done:
+    if (buffer != NULL) {
+        SLAllocatorDeallocate(NULL, buffer);
+    }
+    return banned;
+}
+
+int SLLicensorCreateSerialInfoWithRawSerial(const SLAllocatorContext *aAllocator, const SLLicensorAnalysis *aAnalysis,
+                                            const char *aKey, const char *aRaw, SLSerialInfo **aInfo)
+{
+    size_t rawLength = strlen(aRaw);
+    if (rawLength == 0) {
+        return 8;
+    }
+    size_t keyLength = strlen(aKey);
+    unsigned int infoLength = 0;
+    if (SSDecoderExtractUserInfo(NULL, (int)rawLength, (int)aAnalysis->magic, NULL, &infoLength, NULL) != 0 ||
+        infoLength <= keyLength) {
+        return 1;
+    }
+    unsigned int userLength = infoLength - (unsigned int)keyLength;
+    unsigned int encodedLength = (userLength * 8 + 5) / 6;
+    SLSerialInfo *info = SLAllocatorAllocate(aAllocator, sizeof(SLSerialInfo) + userLength * 2 + infoLength +
+                                                             encodedLength + 8);
+    if (info == NULL) {
+        return 1;
+    }
+    memset(info, 0, sizeof(*info));
+    char *data = (char *)(info + 1);
+    unsigned int value = 0;
+    int result = 1;
+    if (SSDecoderExtractUserInfo(aRaw, (int)rawLength, (int)aAnalysis->magic, (unsigned char *)data, &infoLength,
+                                 &value) == 0) {
+        data[infoLength] = '\0';
+        if (strncmp(data, aKey, keyLength) == 0) {
+            char *user = data + keyLength;
+            char *encoded = user + userLength + 1;
+            if (SSEncodeBytes((const unsigned char *)user, (int)userLength, encoded, encodedLength) == 0) {
+                char *end = encoded + encodedLength;
+                *end = '\0';
+                int count = -1;
+                SLCodeMapItem item = { 0, 0, 0, NULL };
+                int matched = SLLicensorGetCodeMapItemForKey(aAnalysis, encoded, aKey, (unsigned int)keyLength, &item);
+                int resolved = matched;
+                if (!matched) {
+                    char *copy = end + 1;
+                    memcpy(copy, user, userLength + 1);
+                    if (SSDecomposeNetworkSignature(copy, userLength, &count) == 0 && count != 0 && count != -1 &&
+                        SSEncodeBytes((const unsigned char *)copy, (int)userLength, encoded, encodedLength) == 0) {
+                        *end = '\0';
+                        resolved = SLLicensorGetCodeMapItemForKey(aAnalysis, encoded, aKey, (unsigned int)keyLength,
+                                                                  &item) && item.type == 0x2e4e6574;
+                    }
+                }
+                if (resolved && item.type != 0 && item.index < aAnalysis->pathCount) {
+                    unsigned int typeIndex = 0;
+                    char *typeString = NULL;
+                    unsigned int typeCapacity = 0;
+                    unsigned int length;
+                    while (typeIndex < aAnalysis->typeCount &&
+                           (length = SLLicensorGetLicenseTypeAtIndex(aAnalysis, (const unsigned char *)aKey,
+                                                                     (unsigned int)keyLength, typeIndex, NULL, 0)) != 0) {
+                        if (typeCapacity < length) {
+                            if (typeString != NULL) {
+                                SLAllocatorDeallocate(NULL, typeString);
+                            }
+                            typeString = SLAllocatorAllocate(NULL, length);
+                            typeCapacity = length;
+                            if (typeString == NULL) {
+                                break;
+                            }
+                        }
+                        if (SLLicensorGetLicenseTypeAtIndex(aAnalysis, (const unsigned char *)aKey,
+                                                            (unsigned int)keyLength, typeIndex, typeString,
+                                                            typeCapacity) == 0 ||
+                            SLLicenseTypeStringToCode(typeString) == (int)item.type) {
+                            break;
+                        }
+                        typeIndex++;
+                    }
+                    if (typeString != NULL) {
+                        SLAllocatorDeallocate(NULL, typeString);
+                    }
+                    if (typeIndex != aAnalysis->typeCount) {
+                        if (SLLicensorIsSerialBanned(aAnalysis, aKey, (unsigned int)keyLength, encoded, value)) {
+                            result = 7;
+                        } else if (aInfo != NULL) {
+                            info->value = value;
+                            info->typeCode = item.type;
+                            info->pathIndex = item.index;
+                            info->count = count == -1 ? 1 : (unsigned int)count;
+                            info->codeLength = item.length;
+                            info->code = item.data;
+                            info->encoded = encoded;
+                            memmove(data, user, userLength + 1);
+                            *aInfo = info;
+                            return 0;
+                        } else {
+                            result = 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    SLAllocatorDeallocate(aAllocator, info);
+    return result;
+}
+
+int SLLicensorCreateSerialInfo(const SLAllocatorContext *aAllocator, const char *aSerial, unsigned int aLength,
+                               unsigned int aGroupSize, unsigned int aGroupCount,
+                               const SLLicensorAnalysis *aAnalysis, const char *aKey, const char *aTrialSerial,
+                               char *aRawBuffer, unsigned int aRawSize, SLSerialInfo **aInfo)
+{
+    size_t length = strlen(aSerial);
+    if (length != aLength ||
+        SLLicensorGetRawSerialString((unsigned int)length, aGroupSize, aGroupCount, aSerial, aRawBuffer,
+                                     aRawSize) != 0) {
+        return 1;
+    }
+    SLLicense *current = SLEnvironmentGetLicense();
+    if (current != NULL) {
+        if (SLLicenseIsSerialSame(current, aRawBuffer)) {
+            return 10;
+        }
+        if (SLLicenseIsSerialBanned(current, aRawBuffer) == 7) {
+            return 7;
+        }
+    }
+    if (aTrialSerial != NULL && *aTrialSerial != '\0' && strcmp(aTrialSerial, aRawBuffer) == 0) {
+        if (aInfo != NULL) {
+            unsigned int signLength = aAnalysis->length11 + 1;
+            SLSerialInfo *info = SLAllocatorAllocate(aAllocator, sizeof(SLSerialInfo) + 1 + signLength);
+            *aInfo = info;
+            if (info != NULL) {
+                memset(info, 0, sizeof(*info));
+                info->typeCode = 0x2e54726c;
+                info->pathIndex = aAnalysis->defaultIndex;
+                info->count = 0xffffffff;
+                char *sign = (char *)(info + 1) + 1;
+                ((char *)(info + 1))[0] = '\0';
+                info->encoded = sign;
+                SLLicensorGetTrialSign(aAnalysis, aKey, (unsigned int)strlen(aKey), sign, signLength);
+            }
+        }
+        return 0;
+    }
+    return SLLicensorCreateSerialInfoWithRawSerial(aAllocator, aAnalysis, aKey, aRawBuffer, aInfo);
+}
+
+#pragma mark - Environment
+
+typedef struct SLLicensorCheckState {
+    SLLicenseeInfo *info;
+    const SLLicensorAnalysis *analysis;
+    int external;
+} SLLicensorCheckState;
+
+static int SLLicensorLicenseValidationCheckForBanning(void *aContext, const char *aEncoded, unsigned int aValue)
+{
+    SLLicensorCheckState *state = aContext;
+    if (aEncoded == NULL) {
+        return 1;
+    }
+    return SLLicensorIsSerialBanned(state->analysis, state->info->key, (unsigned int)strlen(state->info->key),
+                                    aEncoded, aValue);
+}
+
+static int SLLicensorLicenseValidationCheckSettings(void *aContext, int aType, const char *aEncoded,
+                                                    const char *aPath)
+{
+    SLLicensorCheckState *state = aContext;
+    if (aEncoded == NULL || aType == 0) {
+        return 0;
+    }
+    SLLicenseeInfo *info = state->info;
+    const SLLicensorAnalysis *analysis = state->analysis;
+    unsigned int keyLength = (unsigned int)strlen(info->key);
+    size_t pathLength = strlen(aPath);
+    unsigned int fallback = 0xffffffff, index;
+    int lookup = 1;
+    if (aType == 0x2e537552 && state->external) {
+        fallback = analysis->defaultIndex;
+    } else if (aType == 0x2e54726c) {
+        if (strcmp(aEncoded, info->trialSign) != 0) {
+            return 0;
+        }
+        index = analysis->defaultIndex;
+        lookup = 0;
+    }
+    if (lookup) {
+        SLCodeMapItem item = { 0, 0, 0, NULL };
+        if (!SLLicensorGetCodeMapItemForKey(analysis, aEncoded, info->key, keyLength, &item) ||
+            (int)item.type != aType) {
+            return 0;
+        }
+        index = item.index;
+        if (fallback == index) {
+            index = fallback;
+            fallback = 0xffffffff;
+        }
+    } else {
+        fallback = 0xffffffff;
+    }
+    if (index == 0xffffffff) {
+        return 0;
+    }
+    unsigned int size = (unsigned int)pathLength + 1;
+    char *buffer = SLAllocatorAllocate(NULL, size);
+    if (buffer == NULL) {
+        return 0;
+    }
+    int matches = SLLicensorGetLicensePathAtIndex(analysis, (const unsigned char *)info->key, keyLength, index, buffer,
+                                                  size) == size;
+    if (fallback != 0xffffffff && !matches) {
+        matches = SLLicensorGetLicensePathAtIndex(analysis, (const unsigned char *)info->key, keyLength, fallback,
+                                                  buffer, size) == size;
+    }
+    int result = matches && buffer[pathLength] == '\0' && strcmp(buffer, aPath) == 0;
+    SLAllocatorDeallocate(NULL, buffer);
+    return result;
+}
+
+static void SLLicensorLicenseReleaseCallBack(void *aContext, void *aObject, size_t aSize)
+{
+    SLLicenseDestroy(aObject);
+}
+
+static void SLLicensorMemoryReleaseBytesCallBack(void *aContext, void *aObject, size_t aSize)
+{
+    SLAllocatorDeallocate(NULL, aObject);
+}
+
+static int SLLicensorAnalyzeRealLicenseData(const void *aBytes, unsigned int aSize, void *aContext,
+                                            SLReleaseCallBack aCallBack, SLLicenseeInfo *aInfo,
+                                            const SLLicensorAnalysis *aAnalysis, int aExternal)
+{
+    if (aBytes == NULL || aSize == 0) {
+        return 1;
+    }
+    SLLicensorCheckState state = { aInfo, aAnalysis, aExternal };
+    SLLicenseCheckContext check;
+    check.context = &state;
+    check.dates[0] = aAnalysis->date;
+    check.dates[1] = aAnalysis->dateB;
+    check.dates[2] = aAnalysis->dateC;
+    check.isBanned = SLLicensorLicenseValidationCheckForBanning;
+    check.checkSettings = SLLicensorLicenseValidationCheckSettings;
+    SLLicense *license = NULL;
+    int result = SLLicenseCreateWithBytesNoCopy(NULL, aInfo->name, aInfo->version, aInfo->shortVersion,
+                                                aInfo->trialSign, &check, aBytes, aSize, aContext, aCallBack,
+                                                &license);
+    if (license != NULL) {
+        SLEnvironmentSetLicenseNoCopy(license, 0, NULL, SLLicensorLicenseReleaseCallBack);
+    }
+    return result;
+}
+
+int SLLicensorAttach(const char *aKey, const char *aName, const char *aShortVersion, const char *aVersion)
+{
+    if (aKey == NULL || aName == NULL) {
+        return 8;
+    }
+    size_t keyLength = strlen(aKey), nameLength = strlen(aName);
+    if (keyLength == 0 || nameLength == 0) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    if (SLEnvironmentGetLicenseeInfo() != NULL) {
+        return 5;
+    }
+    size_t shortLength = aShortVersion != NULL ? strlen(aShortVersion) + 1 : 0;
+    size_t versionLength = aVersion != NULL ? strlen(aVersion) + 1 : 0;
+    unsigned int rawSize = licensor->rawSerialLength - licensor->groupCount + 2;
+    unsigned int signLength = SLLicensorGetTrialSign(&licensor->analysis, aKey, (unsigned int)keyLength, NULL, 0);
+    size_t total = sizeof(SLLicenseeInfo) + rawSize + 3 + shortLength + versionLength + nameLength + 1 + keyLength +
+                   rawSize + signLength + 1 + (signLength != 0 ? rawSize : 0);
+    SLLicenseeInfo *info = SLAllocatorAllocate(NULL, total);
+    if (info == NULL) {
+        return 1;
+    }
+    memset(info, 0, sizeof(*info));
+    char *cursor = (char *)(info + 1);
+    if (aShortVersion != NULL) {
+        info->shortVersion = cursor;
+        strcpy(cursor, aShortVersion);
+        cursor += shortLength;
+    }
+    if (aVersion != NULL) {
+        info->version = cursor;
+        strcpy(cursor, aVersion);
+        cursor += versionLength;
+    }
+    info->name = cursor;
+    strcpy(cursor, aName);
+    cursor += nameLength + 1;
+    info->key = cursor;
+    strcpy(cursor, aKey);
+    cursor += keyLength + 1;
+    info->rawSerial = cursor;
+    cursor += rawSize;
+    int result = 0;
+    if (signLength != 0) {
+        info->trialSign = cursor;
+        cursor += rawSize;
+        if (SLLicensorGetTrialSign(&licensor->analysis, aKey, (unsigned int)keyLength, info->trialSign, signLength) ==
+            signLength) {
+            info->trialSerial = info->trialSign + signLength;
+            *info->trialSerial = '\0';
+        } else {
+            SLAllocatorDeallocate(NULL, info);
+            info = NULL;
+            result = 1;
+        }
+    }
+    SLEnvironmentSetLicenseeInfoNoCopy(info, total, NULL, SLLicensorMemoryReleaseBytesCallBack);
+    return result;
+}
+
+void SLLicensorDestroy(void)
+{
+    SLEnvironmentCleanUp();
+}
+
+int SLLicensorGetLicense(SLLicense **aLicense)
+{
+    if (aLicense == NULL) {
+        return 8;
+    }
+    if (SLEnvironmentGetLicensor() == NULL) {
+        return 3;
+    }
+    if (SLEnvironmentGetLicenseeInfo() == NULL) {
+        return 4;
+    }
+    *aLicense = SLEnvironmentGetLicense();
+    return 0;
+}
+
+int SLLicensorSetLicense(SLLicense *aLicense)
+{
+    if (aLicense == NULL) {
+        return 8;
+    }
+    if (SLEnvironmentGetLicensor() == NULL) {
+        return 3;
+    }
+    if (SLEnvironmentGetLicenseeInfo() == NULL) {
+        return 4;
+    }
+    SLEnvironmentSetLicenseNoCopy(aLicense, 0, NULL, SLLicensorLicenseReleaseCallBack);
+    return 0;
+}
+
+void SLLicensorDestroyLicense(SLLicense *aLicense)
+{
+    if (aLicense != NULL && aLicense != SLEnvironmentGetLicense()) {
+        SLLicenseDestroy(aLicense);
+    }
+}
+
+int SLLicensorGetLicenseInfo(const SLLicense *aLicense, void *aBytes, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    if (SLEnvironmentGetLicensor() == NULL) {
+        return 3;
+    }
+    if (SLEnvironmentGetLicenseeInfo() == NULL) {
+        return 4;
+    }
+    if (aLicense == NULL) {
+        aLicense = SLEnvironmentGetLicense();
+        if (aLicense == NULL) {
+            return 1;
+        }
+    }
+    return SLLicenseSerialize(aLicense, aBytes, aSize);
+}
+
+int SLLicensorLoadLicenseInfoFromBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack)
+{
+    if (aBytes == NULL || aSize == 0) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    return SLLicensorAnalyzeRealLicenseData(aBytes, aSize, aContext, aCallBack, info, &licensor->analysis, 0);
+}
+
+int SLLicensorLoadLicenseInfo(const char *aInstallPath)
+{
+    if (aInstallPath == NULL || strlen(aInstallPath) == 0) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    const SLLicensorAnalysis *analysis = &licensor->analysis;
+    unsigned int keyLength = (unsigned int)strlen(info->key);
+    size_t size = 0;
+    void *bytes = NULL;
+    char *path = NULL;
+    unsigned int capacity = 0;
+    for (unsigned int i = 0;; i++) {
+        unsigned int length = SLLicensorGetLicensePathAtIndex(analysis, (const unsigned char *)info->key, keyLength, i,
+                                                              NULL, 0);
+        if (length == 0) {
+            break;
+        }
+        if (capacity < length) {
+            if (path != NULL) {
+                SLAllocatorDeallocate(NULL, path);
+            }
+            path = SLAllocatorAllocate(NULL, length);
+            capacity = length;
+            if (path == NULL) {
+                break;
+            }
+        }
+        if (SLLicensorGetLicensePathAtIndex(analysis, (const unsigned char *)info->key, keyLength, i, path,
+                                            length) != length) {
+            break;
+        }
+        bytes = SLLicenseStorageCopyBytes(path, aInstallPath, &size);
+        if (bytes != NULL) {
+            break;
+        }
+    }
+    if (path != NULL) {
+        SLAllocatorDeallocate(NULL, path);
+    }
+    int result = 1;
+    for (int external = 0;; external = 1) {
+        if (bytes != NULL) {
+            result = SLLicensorAnalyzeRealLicenseData(bytes, (unsigned int)size, NULL,
+                                                      SLLicensorMemoryReleaseBytesCallBack, info, analysis, external);
+            if (result == 0) {
+                return 0;
+            }
+            SLAllocatorDeallocate(NULL, bytes);
+        }
+        if (external) {
+            break;
+        }
+        bytes = SLLicenseStorageCopyExternal(SLLicensorHostDomain, 6, info->name, info->version, info->shortVersion,
+                                             &size);
+        if (bytes == NULL) {
+            bytes = SLLicenseStorageCopyExternal(SLLicensorHostDomain, 4, info->name, info->version,
+                                                 info->shortVersion, &size);
+        }
+    }
+    return result;
+}
+
+int SLLicensorCleanupLicenses(const SLLicensorAnalysis *aAnalysis, const char *aInstallPath, const char *aKey,
+                              unsigned int aKeyLength, const char *aCurrentPath)
+{
+    char *path = NULL;
+    unsigned int capacity = 0;
+    int result = 0;
+    for (unsigned int i = 0; i < aAnalysis->pathCount; i++) {
+        unsigned int length = SLLicensorGetLicensePathAtIndex(aAnalysis, (const unsigned char *)aKey, aKeyLength, i,
+                                                              NULL, 0);
+        if (length == 0) {
+            break;
+        }
+        if (capacity < length) {
+            if (path != NULL) {
+                SLAllocatorDeallocate(NULL, path);
+            }
+            path = SLAllocatorAllocate(NULL, length);
+            capacity = length;
+            if (path == NULL) {
+                return 1;
+            }
+        }
+        if (SLLicensorGetLicensePathAtIndex(aAnalysis, (const unsigned char *)aKey, aKeyLength, i, path,
+                                            capacity) != capacity) {
+            break;
+        }
+        if (strcmp(aCurrentPath, path) != 0) {
+            result = SLLicenseStorageCleanup(path, aInstallPath);
+            if (result != 0) {
+                break;
+            }
+        }
+    }
+    if (path != NULL) {
+        SLAllocatorDeallocate(NULL, path);
+    }
+    return result;
+}
+
+int SLLicensorSaveLicenseInfo(const char *aInstallPath)
+{
+    if (aInstallPath == NULL) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    SLLicense *license = SLEnvironmentGetLicense();
+    if (license == NULL) {
+        return 1;
+    }
+    unsigned int serializedSize = 0;
+    if (SLLicenseSerialize(license, NULL, &serializedSize) != 0 || serializedSize == 0) {
+        return 1;
+    }
+    unsigned int pathSize = 0;
+    if (SLLicenseGetStoragePath(NULL, &pathSize) != 0) {
+        return 1;
+    }
+    unsigned char *buffer = SLAllocatorAllocate(NULL, serializedSize + pathSize);
+    if (buffer == NULL) {
+        return 1;
+    }
+    int result = 1;
+    if (SLLicenseGetStoragePath((char *)buffer, &pathSize) == 0) {
+        unsigned char *serialized = buffer + pathSize;
+        if (SLLicenseSerialize(license, serialized, &serializedSize) == 0) {
+            result = SLLicenseStorageSaveData((const char *)buffer, aInstallPath, serialized, serializedSize);
+            if (result == 0) {
+                result = SLLicensorCleanupLicenses(&licensor->analysis, aInstallPath, info->key,
+                                                   (unsigned int)strlen(info->key), (const char *)buffer);
+                if (result == 0) {
+                    SLLicenseStorageUpdateExternal(SLLicensorHostDomain, 6, info->name, info->version,
+                                                   info->shortVersion, serialized, serializedSize);
+                }
+            }
+        }
+    }
+    SLAllocatorDeallocate(NULL, buffer);
+    return result;
+}
+
+#pragma mark - License creation callbacks
+
+typedef struct SLLicensorCreationState {
+    SLLicensor *licensor;
+    SLLicenseeInfo *info;
+    SLSerialInfo *serial;
+    unsigned int pathIndex;
+    unsigned int licenseDataLength;
+    const unsigned char *licenseData;
+} SLLicensorCreationState;
+
+static unsigned int SLLicensorCreationContextGetTypeString(void *aContext, char *aBuffer, unsigned int aSize)
+{
+    SLLicensorCreationState *state = aContext;
+    return SLLicenseTypeCodeToString((int)state->serial->typeCode, aBuffer, aSize);
+}
+
+static unsigned int SLLicensorCreationContextGetPathString(void *aContext, char *aBuffer, unsigned int aSize)
+{
+    SLLicensorCreationState *state = aContext;
+    return SLLicensorGetLicensePathAtIndex(&state->licensor->analysis, (const unsigned char *)state->info->key,
+                                           (unsigned int)strlen(state->info->key), state->pathIndex, aBuffer, aSize);
+}
+
+static unsigned int SLLicensorCreationContextGetLicenseData(void *aContext, void *aBuffer, unsigned int aSize)
+{
+    SLLicensorCreationState *state = aContext;
+    if (state->licenseData == NULL || state->licenseDataLength == 0 || aSize < state->licenseDataLength) {
+        return 0;
+    }
+    SSDecryptBytesWithKey(state->licenseData, (int)state->licenseDataLength,
+                          (unsigned int)(state->licenseData - state->licensor->analysis.pointerC),
+                          (const unsigned char *)state->info->key, (unsigned int)strlen(state->info->key), aBuffer);
+    return state->licenseDataLength;
+}
+
+static unsigned int SLLicensorCreationContextGetCodeData(void *aContext, void *aBuffer, unsigned int aSize)
+{
+    SLLicensorCreationState *state = aContext;
+    const unsigned char *code = state->serial->code;
+    unsigned int length = state->serial->codeLength;
+    if (code == NULL || length == 0 || aSize < length) {
+        return 0;
+    }
+    SSDecryptBytesWithKey(code, (int)length, (unsigned int)(code - state->licensor->analysis.keyBase),
+                          (const unsigned char *)state->info->key, (unsigned int)strlen(state->info->key), aBuffer);
+    return length;
+}
+
+int SLLicensorCreateLicenseForSerial(const SLAllocatorContext *aAllocator, const char *aSerial, SLLicense **aLicense)
+{
+    if (aSerial == NULL || *aSerial == '\0' || aLicense == NULL) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    SLSerialInfo *serial = NULL;
+    SLLicensorCreationState state = { licensor, info, NULL, 0xffffffff, 0, NULL };
+    int result = 0;
+    if (info->trialSign == NULL || SLLicensorFillRawTrialSerial(info, licensor->rawSerialLength,
+                                                                  licensor->groupSize, licensor->groupCount) == 0) {
+        result = SLLicensorCreateSerialInfo(NULL, aSerial, licensor->rawSerialLength, licensor->groupSize,
+                                            licensor->groupCount, &licensor->analysis, info->key, info->trialSerial,
+                                            info->rawSerial, licensor->rawSerialLength - licensor->groupCount + 2,
+                                            &serial);
+        if (result == 0) {
+            if (serial == NULL) {
+                return 0;
+            }
+            const char *dataString;
+            if (serial->typeCode == 0x2e54726c || serial->value == 0) {
+                state.pathIndex = licensor->analysis.defaultIndex;
+                dataString = info->trialSign;
+            } else {
+                state.pathIndex = serial->pathIndex;
+                dataString = (const char *)(serial + 1);
+            }
+            unsigned int keyLength = (unsigned int)strlen(info->key);
+            state.serial = serial;
+            SLLicenseCreationContext creation;
+            memset(&creation, 0, sizeof(creation));
+            creation.context = &state;
+            creation.dates[0] = licensor->analysis.date;
+            creation.dates[1] = licensor->analysis.dateB;
+            creation.dates[2] = licensor->analysis.dateC;
+            creation.getType = SLLicensorCreationContextGetTypeString;
+            creation.getPath = SLLicensorCreationContextGetPathString;
+            creation.getUserData = SLLicensorCreationContextGetLicenseData;
+            creation.getSerialUserData = SLLicensorCreationContextGetCodeData;
+            creation.typeLength = SLLicenseTypeCodeToString((int)serial->typeCode, NULL, 0);
+            creation.pathLength = SLLicensorGetLicensePathAtIndex(&licensor->analysis,
+                                                                  (const unsigned char *)info->key, keyLength,
+                                                                  state.pathIndex, NULL, 0);
+            if (creation.typeLength == 0 || creation.pathLength == 0) {
+                result = 1;
+            } else {
+                creation.userDataLength = SLLicensorGetSerialUserData(&licensor->analysis, serial->encoded,
+                                                                      serial->value, info->key, keyLength,
+                                                                      &state.licenseData);
+                state.licenseDataLength = creation.userDataLength;
+                creation.serialUserDataLength = serial->codeLength;
+                result = SLLicenseCreateWithSerial(aAllocator, info->rawSerial, dataString, serial->value,
+                                                   serial->count, info->name, info->version, info->shortVersion,
+                                                   &creation, aLicense);
+            }
+        }
+    } else {
+        result = 1;
+    }
+    if (serial != NULL) {
+        SLAllocatorDeallocate(NULL, serial);
+    }
+    return result;
+}
+
+int SLLicensorMakeLicenseForSerial(const char *aSerial, SLLicense **aLicense)
+{
+    return SLLicensorCreateLicenseForSerial(NULL, aSerial, aLicense);
+}
+
+int SLLicensorGetTrialSerial(char *aBuffer, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    unsigned int needed = licensor->rawSerialLength + 1;
+    if (aBuffer == NULL) {
+        *aSize = needed;
+        return 0;
+    }
+    if (info->trialSign != NULL && needed <= *aSize) {
+        int result = SLLicensorFillRawTrialSerial(info, licensor->rawSerialLength, licensor->groupSize,
+                                                  licensor->groupCount);
+        if (result != 0) {
+            return result;
+        }
+        if (SLLicensorMakeFullSerialString(licensor->rawSerialLength, licensor->groupSize, licensor->groupCount,
+                                           info->trialSerial, aBuffer, *aSize) == 0) {
+            *aSize = needed;
+            return 0;
+        }
+    }
+    return 1;
+}
+
+int SLLicensorIsTrialLicenseAvailable(void)
+{
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    if (info->trialSign == NULL) {
+        return 1;
+    }
+    int result = SLLicensorFillRawTrialSerial(info, licensor->rawSerialLength, licensor->groupSize,
+                                              licensor->groupCount);
+    if (result == 0) {
+        SLLicense *license = SLEnvironmentGetLicense();
+        if (license != NULL) {
+            result = SLLicenseIsSerialBanned(license, info->trialSerial);
+        }
+    }
+    return result;
+}
+
+int SLLicensorGetStorageEnvironment(unsigned char *aBuffer, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    SLLicense *license = SLEnvironmentGetLicense();
+    const char *path = license != NULL ? (const char *)license->descriptor.path : NULL;
+    return SLLicenseStorageGetEnvironmentRepresentationForLicensor(&licensor->analysis, SLLicensorHostDomain, 6,
+                                                                   info->key, (unsigned int)strlen(info->key),
+                                                                   info->name, path, aBuffer, aSize);
+}
+
+int SLLicensorGenerateIdentifierWithBytes(const void *aBytes, unsigned char aLength, char *aResult, unsigned int *aSize)
+{
+    if (aSize == NULL) {
+        return 8;
+    }
+    SLLicensor *licensor = SLEnvironmentGetLicensor();
+    if (licensor == NULL) {
+        return 3;
+    }
+    SLLicenseeInfo *info = SLEnvironmentGetLicenseeInfo();
+    if (info == NULL) {
+        return 4;
+    }
+    unsigned int size = *aSize;
+    int result = SSUDGenerateUniqueDataString(aBytes, aLength, info->key, info->name, NULL, NULL,
+                                              (int)licensor->analysis.magic, aResult, &size);
+    if (result == 0) {
+        *aSize = size;
+        return 0;
+    }
+    return result == 3 ? 8 : 1;
+}

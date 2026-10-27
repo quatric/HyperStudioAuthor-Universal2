@@ -180,3 +180,140 @@ unsigned int SLLicensorGetLicenseTypeAtIndex(const SLLicensorAnalysis *aAnalysis
                                              unsigned int aSize);
 int SLLicensorGetRestrictionAtIndex(const SLLicensorAnalysis *aAnalysis, const unsigned char *aKey,
                                     unsigned int aKeyLength, unsigned int aIndex, SLLicensorRestriction *aRestriction);
+
+// The identity of the application the licensor is attached to; the strings follow the structure in one block.
+typedef struct SLLicenseeInfo {
+    const char *name;
+    const char *shortVersion;
+    const char *version;
+    const char *key;
+    void *reserved;
+    char *rawSerial;
+    char *trialSign;
+    char *trialSerial;
+} SLLicenseeInfo;
+
+// What a serial decodes to; the encoded form of the serial follows in the same block.
+typedef struct SLSerialInfo {
+    unsigned int value;
+    unsigned int pathIndex;
+    unsigned int typeCode;
+    unsigned int count;
+    unsigned int codeLength;
+    const unsigned char *code;
+    const char *encoded;
+} SLSerialInfo;
+
+typedef struct SLCodeMapItem {
+    unsigned int type;
+    unsigned int index;
+    unsigned int length;
+    const unsigned char *data;
+} SLCodeMapItem;
+
+typedef struct SLLicenseCheckContext {
+    void *context;
+    double dates[3];
+    int (*isBanned)(void *aContext, const char *aEncoded, unsigned int aValue);
+    int (*checkSettings)(void *aContext, int aType, const char *aEncoded, const char *aPath);
+} SLLicenseCheckContext;
+
+typedef struct SLLicenseCreationContext {
+    void *context;
+    double dates[3];
+    unsigned int typeLength;
+    unsigned int pathLength;
+    unsigned int userDataLength;
+    unsigned int serialUserDataLength;
+    unsigned int (*getType)(void *aContext, char *aBuffer, unsigned int aSize);
+    unsigned int (*getPath)(void *aContext, char *aBuffer, unsigned int aSize);
+    unsigned int (*getUserData)(void *aContext, void *aBuffer, unsigned int aSize);
+    unsigned int (*getSerialUserData)(void *aContext, void *aBuffer, unsigned int aSize);
+} SLLicenseCreationContext;
+
+unsigned int SLLicenseTypeCodeToString(int aCode, char *aBuffer, unsigned int aSize);
+int SLLicenseTypeStringToCode(const char *aString);
+int SLLicenseIsSerialSame(const SLLicense *aLicense, const char *aSerial);
+int SLLicenseIsSerialBanned(const SLLicense *aLicense, const char *aSerial);
+void SLLicenseMakeIdentifier(const char *aSerial, char *aIdentifier);
+int SLLicenseUpdateOtherData(const SLLicense *aLicense, const char *aSerial, unsigned char *aBuffer,
+                             unsigned int *aSize);
+int SLLicenseGetOldIdentifiers(const SLLicense *aLicense, unsigned int *aBuffer, unsigned int *aSize);
+int SLLicenseCreateWithBytesNoCopy(const SLAllocatorContext *aAllocator, const char *aKey, const char *aVersion,
+                                   const char *aShortVersion, const char *aTrialSign,
+                                   const SLLicenseCheckContext *aContext, const void *aBytes, unsigned int aSize,
+                                   void *aReleaseContext, SLReleaseCallBack aReleaseCallBack, SLLicense **aLicense);
+int SLLicenseCreateWithSerial(const SLAllocatorContext *aAllocator, const char *aSerial, const char *aSerialString,
+                              unsigned int aCodeInfo, unsigned int aCodeLimit, const char *aKey,
+                              const char *aVersion, const char *aShortVersion,
+                              const SLLicenseCreationContext *aContext, SLLicense **aLicense);
+
+void *SLLicenseStorageCopyBytes(const char *aPath, const char *aInstallPath, size_t *aSize);
+int SLLicenseStorageSaveData(const char *aPath, const char *aInstallPath, const void *aBytes, size_t aSize);
+int SLLicenseStorageCleanup(const char *aPath, const char *aInstallPath);
+void *SLLicenseStorageCopyExternal(const char *aDomain, unsigned int aRevision, const char *aName,
+                                   const char *aVersion, const char *aShortVersion, size_t *aSize);
+int SLLicenseStorageUpdateExternal(const char *aDomain, unsigned int aRevision, const char *aName,
+                                   const char *aVersion, const char *aShortVersion, const void *aBytes,
+                                   size_t aSize);
+typedef struct SLStorageEnvironment {
+    const char *secret;
+    const char *key;
+    unsigned int revision;
+    unsigned int index;
+    unsigned int count;
+    const char *paths[1];
+} SLStorageEnvironment;
+
+int SLLicenseStorageValidateEnvironmentRepresentation(const unsigned char *aBytes, unsigned int aSize,
+                                                      const char *aKey, SLStorageEnvironment *aEnvironment,
+                                                      unsigned int *aEnvironmentSize);
+int SLLicenseStorageGetEnvironmentRepresentationForLicensor(const SLLicensorAnalysis *aAnalysis,
+                                                            const char *aSecret, unsigned int aRevision,
+                                                            const char *aKey, unsigned int aKeyLength,
+                                                            const char *aName, const char *aCurrentPath,
+                                                            unsigned char *aBuffer, unsigned int *aSize);
+
+int SLLicensorGetCodeMapItemForKey(const SLLicensorAnalysis *aAnalysis, const char *aEncoded, const char *aKey,
+                                   unsigned int aKeyLength, SLCodeMapItem *aItem);
+unsigned int SLLicensorGetSerialUserData(const SLLicensorAnalysis *aAnalysis, const char *aEncoded,
+                                         unsigned int aValue, const char *aKey, unsigned int aKeyLength,
+                                         const unsigned char **aData);
+int SLLicensorGetRawSerialString(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                 const char *aSerial, char *aBuffer, unsigned int aSize);
+int SLLicensorMakeFullSerialString(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                   const char *aRaw, char *aBuffer, unsigned int aSize);
+unsigned int SLLicensorGetTrialSign(const SLLicensorAnalysis *aAnalysis, const char *aKey, unsigned int aKeyLength,
+                                    char *aBuffer, unsigned int aSize);
+int SLLicensorIsRawSerialProbablyTrial(const char *aRaw, const char *aKey, const char *aPrefix);
+int SLLicensorMakeRawTrialSerial(unsigned int aLength, unsigned int aGroupSize, unsigned int aGroupCount,
+                                 const char *aKey, const char *aPrefix, char *aBuffer, unsigned int aSize);
+int SLLicensorFillRawTrialSerial(SLLicenseeInfo *aInfo, unsigned int aLength, unsigned int aGroupSize,
+                                 unsigned int aGroupCount);
+int SLLicensorCreateSerialInfoWithRawSerial(const SLAllocatorContext *aAllocator, const SLLicensorAnalysis *aAnalysis,
+                                            const char *aKey, const char *aRaw, SLSerialInfo **aInfo);
+int SLLicensorCreateSerialInfo(const SLAllocatorContext *aAllocator, const char *aSerial, unsigned int aLength,
+                               unsigned int aGroupSize, unsigned int aGroupCount,
+                               const SLLicensorAnalysis *aAnalysis, const char *aKey, const char *aTrialSerial,
+                               char *aRawBuffer, unsigned int aRawSize, SLSerialInfo **aInfo);
+int SLLicensorIsSerialBanned(const SLLicensorAnalysis *aAnalysis, const char *aKey, unsigned int aKeyLength,
+                             const char *aEncoded, unsigned int aValue);
+
+int SLLicensorAttach(const char *aKey, const char *aName, const char *aShortVersion, const char *aVersion);
+void SLLicensorDestroy(void);
+int SLLicensorGetLicense(SLLicense **aLicense);
+int SLLicensorSetLicense(SLLicense *aLicense);
+void SLLicensorDestroyLicense(SLLicense *aLicense);
+int SLLicensorGetLicenseInfo(const SLLicense *aLicense, void *aBytes, unsigned int *aSize);
+int SLLicensorLoadLicenseInfo(const char *aInstallPath);
+int SLLicensorLoadLicenseInfoFromBytesNoCopy(const void *aBytes, unsigned int aSize, void *aContext,
+                                             SLReleaseCallBack aCallBack);
+int SLLicensorSaveLicenseInfo(const char *aInstallPath);
+int SLLicensorCreateLicenseForSerial(const SLAllocatorContext *aAllocator, const char *aSerial, SLLicense **aLicense);
+int SLLicensorMakeLicenseForSerial(const char *aSerial, SLLicense **aLicense);
+int SLLicensorGetTrialSerial(char *aBuffer, unsigned int *aSize);
+int SLLicensorIsTrialLicenseAvailable(void);
+int SLLicensorGetStorageEnvironment(unsigned char *aBuffer, unsigned int *aSize);
+int SLLicensorCleanupLicenses(const SLLicensorAnalysis *aAnalysis, const char *aInstallPath, const char *aKey,
+                              unsigned int aKeyLength, const char *aCurrentPath);
+int SLLicensorGenerateIdentifierWithBytes(const void *aBytes, unsigned char aLength, char *aResult, unsigned int *aSize);
