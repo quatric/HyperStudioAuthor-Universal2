@@ -31,7 +31,7 @@
         return YES;
     if (visibility == 1 || (visibility == 2 && [object isHiddenInPlayer]))
         return NO;
-    return [object isVisibleInEditor];
+    return YES;
 }
 
 @end

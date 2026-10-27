@@ -918,7 +918,7 @@ BOOL FUN_00093be6(HSAuxiliaryIconsCanvasItem *self,SEL _cmd,NSPoint hitTestPoint
             return NO;
         }
     }
-    if ([[[self userObject] queryHyperInterface:@protocol(HSCardObjectAttributes)] isVisibleInEditor]) {
+    {
         id view = [[aLayer context] renderingView];
         NSEnumerator *rects = [[self traitRectsInView:view] objectEnumerator];
         id value;
@@ -1254,7 +1254,7 @@ void FUN_00094394(HSAuxiliaryIconsCanvasItem *self,SEL _cmd,NSRect renderRect,id
             }
         }
     }
-    if ([[[self userObject] queryHyperInterface:@protocol(HSCardObjectAttributes)] isVisibleInEditor] && _traits != nil) {
+    if (_traits != nil) {
         id context = [aLayer context];
         id rects = [self traitRectsInView:[context renderingView]];
         [_traits renderIconsInRects:rects clipRect:aRect inView:[context renderingView]];

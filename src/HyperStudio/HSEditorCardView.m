@@ -2833,19 +2833,15 @@ LAB_00008555:
         return;
     }
     BOOL show;
-    if (![attributes isVisibleInEditor]) {
-        show = NO;
+    NSInteger mode = (NSInteger)[[[self card] stack] cardObjectsVisibility];
+    if (mode == 0) {
+        show = YES;
+    } else if (mode == 2) {
+        show = ![attributes isHiddenInPlayer] || [[[[self selection] selectedObject] allHyperInterfaces] containsObject:child];
+    } else if (mode == 1) {
+        show = [[[[self selection] selectedObject] allHyperInterfaces] containsObject:child];
     } else {
-        NSInteger mode = (NSInteger)[[[self card] stack] cardObjectsVisibility];
-        if (mode == 0) {
-            show = YES;
-        } else if (mode == 2) {
-            show = ![attributes isHiddenInPlayer] || [[[[self selection] selectedObject] allHyperInterfaces] containsObject:child];
-        } else if (mode == 1) {
-            show = [[[[self selection] selectedObject] allHyperInterfaces] containsObject:child];
-        } else {
-            return;
-        }
+        return;
     }
     if (show) {
         [self showCardChildIfHidden:child invalidate:aInvalidate];
