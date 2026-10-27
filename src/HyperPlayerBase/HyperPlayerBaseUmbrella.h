@@ -771,3 +771,5 @@
 #import "_HSMultiItemsProxy.h"
 #import "HyperPlayerBaseData.h"
 #import "HSFunctions.h"
+#import "HSPauseView.h"
+#import "HSToolbarPopUpButton.h"

@@ -858,6 +858,8 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSPauseView;
+@class HSToolbarPopUpButton;
 @class AUInputDevice;
 @class AUInputDeviceFile;
 @class AUOutputDevice;
