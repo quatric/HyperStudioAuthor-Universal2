@@ -934,5 +934,21 @@ LAB_000c58d7:
     return self;
 }
 
+- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRange:(NSRange)aRange
+{
+    if ([self currentItem] == nil)
+        return NO;
+    id stringAttribute = [[self currentItem] queryHyperInterface:@protocol(HSGenericObjectStringAttribute)];
+    if (stringAttribute == nil)
+        return NO;
+    if ([[[self currentItem] queryHyperInterface:@protocol(HSCardObjectLockedAttribute)] isLocked])
+        return NO;
+    [stringAttribute replaceObjectString:aItem inRange:aRange];
+    id selected = [[_windowController cardView] selectedHyperObject];
+    if ([selected respondsToSelector:@selector(updateEmbeddedViewWithEditingObject)])
+        [selected updateEmbeddedViewWithEditingObject];
+    return YES;
+}
+
 @end
 

@@ -35,5 +35,6 @@
 - (BOOL)shouldDismissWhenDisappearedByDefault;
 - (id)cardView;
 - (void)dealloc;
+- (void)HSDrawButtonShapeAssistantPane_windowDidResignMain:(id)aResign;
 @end
 

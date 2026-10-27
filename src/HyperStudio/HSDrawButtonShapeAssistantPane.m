@@ -491,5 +491,17 @@ void FUN_001961ad(HSDrawButtonShapeAssistantPane *self,SEL _cmd,id buttonShapeCr
     [super dealloc];
 }
 
+- (void)HSDrawButtonShapeAssistantPane_windowDidResignMain:(id)aResign
+{
+    id current = [[HSEditorController sharedDocumentController] currentDocument];
+
+    if (current != nil && current != [[self stack] document]) {
+        [[HSObjectAssistantController sharedAssistantController] setLocked:NO delegate:nil];
+        [[self cardView] setOccupiedByTool:NO];
+        [[HSToolManager sharedToolManager] selectToolWithTag:0];
+        [[self buttonObjectInterface] setHiddenInEditor:NO];
+    }
+}
+
 @end
 

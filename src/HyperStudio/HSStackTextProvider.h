@@ -48,5 +48,6 @@
 - (void)setSelectionController:(id)aController;
 - (void)dealloc;
 - (id)initWithWindowController:(id)aController selectionController:(id)aController2;
+- (BOOL)hyperReplaceTextForCurrentItem:(id)aItem inRange:(NSRange)aRange;
 @end
 

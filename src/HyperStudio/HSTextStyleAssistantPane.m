@@ -1050,5 +1050,17 @@ LAB_00175a68:
     return self;
 }
 
+- (void)validateBackgroundColorControls
+{
+    BOOL transparent = ((BOOL (*)(id, SEL))objc_msgSend)([[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)], @selector(isTransparent));
+    id runTimeEditor = [_observedTextAttributes queryHyperInterface:@protocol(HSRunTimeEditor)];
+    BOOL enabled = NO;
+    if (!transparent)
+        enabled = _observedTextAttributes != runTimeEditor;
+    [_backgroundColorWell setEnabled:enabled];
+    [_backgroundColorWell setColor:[_observedTextAttributes backgroundColor]];
+    [_backgroundTextField setTextColor:transparent ? [NSColor disabledControlTextColor] : [NSColor blackColor]];
+}
+
 @end
 

@@ -71,5 +71,6 @@
 - (BOOL)isEnabled;
 - (void)dealloc;
 - (id)init;
+- (void)validateBackgroundColorControls;
 @end
 
