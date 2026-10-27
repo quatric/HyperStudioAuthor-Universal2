@@ -215,6 +215,7 @@
 @class HSAFTPServerExporter;
 @class HSAFTPServerExportPanelController;
 @class HSATemplateChooser;
+@class HSWebAppIconEditorDialogController;
 @class HSAExportPanelController;
 @class HSPublishComboDialog;
 @class HSHypertextLinksInspectorController;
