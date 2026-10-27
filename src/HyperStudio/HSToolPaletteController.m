@@ -842,10 +842,14 @@ void FUN_000d6d34(HSToolPaletteController *self,SEL _cmd,id validateView)
         return;
     }
     for (NSView *subview in [aView subviews]) {
-        if ([[subview subviews] count] != 0) {
+        // Controls are the palette items. Current AppKit gives buttons private
+        // subviews of their own, which the original never saw, so only plain
+        // containers are searched and anything else without a cell is skipped.
+        BOOL isControl = [subview isKindOfClass:[NSControl class]];
+        if (!isControl && [[subview subviews] count] != 0) {
             [self validateView:subview];
         }
-        else {
+        else if (isControl) {
             [[(NSControl *)subview cell] setRepresentedObject:NSStringFromSelector(@selector(toolPaletteSwitchTool:))];
             [self validatePaletteItem:subview];
         }
