@@ -1691,22 +1691,28 @@ static BOOL sLastTextFieldTamerThisCard;
 
 - (BOOL)applicationOpenUntitledFile:(id)aFile
 {
-    _applicationOpenUntitledFilePending = NO;
     BOOL result = [super applicationOpenUntitledFile:aFile];
-    NSInteger action = [[NSUserDefaults standardUserDefaults] integerForKey:HSStartupActionKey];
-    if (!result && action == 0) {
-        result = [[self defaultNavigationControllerClass] goToHomeStack];
+    NSInteger option = [[HSPreferencesController sharedPreferencesController] getStartupPreferencesOption];
+    if (!result && option == 0) {
+        result = [[self defaultNavigationControllerClass] goToHomeStackInNewDocument:YES];
+    }
+    if (result) {
+        _applicationOpenUntitledFilePending = NO;
     }
     return result;
 }
 
 - (BOOL)applicationShouldOpenUntitledFile:(id)aFile
 {
-    if (![super applicationShouldOpenUntitledFile:aFile] || [self resolvingError]) {
+    BOOL result = [super applicationShouldOpenUntitledFile:aFile];
+    if (!result)
         return NO;
+    if (![self resolvingError]) {
+        if ([[HSPreferencesController sharedPreferencesController] getStartupPreferencesOption] > 2)
+            return NO;
     }
     if (!_applicationWillFinishCriticalLaunching) {
-        return YES;
+        return result;
     }
     _applicationOpenUntitledFilePending = YES;
     return NO;

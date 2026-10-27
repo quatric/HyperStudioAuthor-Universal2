@@ -2896,3 +2896,35 @@ NSRect * FUN_00102224(NSRect *__return_storage_ptr__,HSObjectAssistantController
 
 @end
 
+
+@implementation HSObjectAssistantController (HSObjectAssistantControllerDocumentChangesHelper)
+
+- (BOOL)hasCurrentAssistantPaneUnappliedChanges
+{
+    id modal = [[[self objectAssistant] currentPane] modalViewController];
+    if (![modal isKindOfClass:[HSObjectAssistantNavigationController class]])
+        return NO;
+    return [[modal topViewController] hasAssistantPaneUnappliedChanges];
+}
+
+- (void)applyChangesInCurrentAssistantPaneIfNeeded
+{
+    id modal = [[[self objectAssistant] currentPane] modalViewController];
+    if ([modal isKindOfClass:[HSObjectAssistantNavigationController class]])
+        [[modal topViewController] applyChangesIfNeeded];
+}
+
+@end
+
+@implementation HSObjectAssistantPane (HSObjectAssistantPaneStackChangesHelper)
+
+- (BOOL)hasAssistantPaneUnappliedChanges
+{
+    return NO;
+}
+
+- (void)applyChangesIfNeeded
+{
+}
+
+@end

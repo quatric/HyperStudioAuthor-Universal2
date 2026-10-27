@@ -791,9 +791,10 @@ static id sDAT_00342a50;
 {
     if ([self shouldHandleToolSwitching] && [self canTogglePlayEdit]) {
         if ([self internalPlayerActive]) {
-            if ([self isInPurePlayerMode] || [self isInPresentationMode]) {
+            if ([self isInPurePlayerMode])
                 [self exitPurePlayerModeWithAnimation:NO];
-            }
+            else if ([self isInPresentationMode])
+                [self exitPresentationMode];
             [self switchToEditorWithToolTag:1];
         } else {
             [self testCard:aEdit];
@@ -2110,9 +2111,13 @@ chain:
     BOOL bVar3;
     BOOL pvVar1_2;
 
-    pvVar1_2 = [[HSObjectAssistantController sharedAssistantController] isRecordingSound];
+    id assistant = [HSObjectAssistantController sharedAssistantController];
+    BOOL unapplied = [assistant hasCurrentAssistantPaneUnappliedChanges];
+    if (unapplied)
+        [assistant applyChangesInCurrentAssistantPaneIfNeeded];
+    pvVar1_2 = [assistant isRecordingSound];
     if (![super isDocumentEdited]) {
-        bVar3 = (_wasOptimizedAndNotSaved & 1) != 0 || pvVar1_2;
+        bVar3 = (_wasOptimizedAndNotSaved & 1) != 0 || unapplied || pvVar1_2;
     }
     else {
         bVar3 = YES;
