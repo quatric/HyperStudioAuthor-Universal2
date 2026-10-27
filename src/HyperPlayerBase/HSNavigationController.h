@@ -13,6 +13,12 @@
 }
 + (BOOL)goToHomeStack;
 + (BOOL)goToHomeStackAtURL:(id)aURL;
++ (BOOL)goToHomeStackInNewDocument:(BOOL)aNewDocument;
++ (BOOL)goToTutorialsPage;
++ (BOOL)goToHomeStackAtURL:(id)aURL createNewDocument:(BOOL)aNewDocument;
++ (BOOL)goToHomeStackAtURL:(id)aURL withPageIndex:(NSUInteger)aPageIndex createNewDocument:(BOOL)aNewDocument;
++ (BOOL)goToHomeStack:(BOOL)aDefault withPageIndex:(NSUInteger)aPageIndex inNewDocument:(BOOL)aNewDocument;
+- (id)HSNavigationController_openedTutorialDocumentWithURL:(id)aURL;
 + (BOOL)documentCanGoHome:(id)aHome;
 + (id)findFile:(id)aFile base:(id)aBase;
 + (id)findURLUsingActionURL:(id)aURL baseURL:(id)aURL2;

@@ -43,6 +43,112 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 // user) when the configured one is missing or unreadable.
 // Navigates the current document there when it may go home, otherwise opens
 // the home stack as a document of its own.
++ (BOOL)goToHomeStack
+{
+    return [self goToHomeStackInNewDocument:NO];
+}
+
++ (BOOL)goToHomeStackAtURL:(id)aURL
+{
+    return [self goToHomeStackAtURL:aURL createNewDocument:NO];
+}
+
++ (BOOL)goToHomeStackInNewDocument:(BOOL)aNewDocument
+{
+    return [self goToHomeStack:NO withPageIndex:NSIntegerMax inNewDocument:aNewDocument];
+}
+
++ (BOOL)goToTutorialsPage
+{
+    BOOL notOpen = [[HSApplicationController sharedDocumentController] documentForURL:[[HSHomeStackController sharedHomeStackController] defaultHomeStackURL]] == nil;
+    return [self goToHomeStack:YES withPageIndex:2 inNewDocument:notOpen];
+}
+
++ (BOOL)goToHomeStackAtURL:(id)aURL createNewDocument:(BOOL)aNewDocument
+{
+    return [[self class] goToHomeStackAtURL:aURL withPageIndex:NSIntegerMax createNewDocument:aNewDocument];
+}
+
++ (BOOL)goToHomeStackAtURL:(id)aURL withPageIndex:(NSUInteger)aPageIndex createNewDocument:(BOOL)aNewDocument
+{
+    id document = [[HSApplicationController sharedDocumentController] currentDocument];
+    if (document != nil && !aNewDocument && [[document navigationControllerClass] documentCanGoHome:document]) {
+        HSNavigationController *navigation = [document navigationController];
+        if (aPageIndex == NSIntegerMax)
+            aPageIndex = [[HSHomeStackController sharedHomeStackController] defaultCardIndex];
+        if (![navigation canGoToCardAtIndex:aPageIndex inStackAtURL:aURL])
+            return NO;
+        [navigation goToCardAtIndex:aPageIndex inStackAtURL:aURL withTransition:nil];
+        return YES;
+    }
+    __block BOOL result = YES;
+    [[HSApplicationController sharedDocumentController] openDocumentWithContentsOfURL:aURL display:YES completionHandler:^(NSDocument *aDocument, BOOL aAlreadyOpen, NSError *aError) {
+        if (aError == nil) {
+            if (aPageIndex != NSIntegerMax) {
+                id stack = [(id)aDocument stack];
+                NSUInteger index = aPageIndex < [stack hyperCount] ? aPageIndex : 0;
+                [(id)aDocument setCurrentCard:[stack hyperChildAtIndex:index]];
+            }
+        } else {
+            [[HSErrorManager sharedErrorManager] presentError:aError];
+            result = NO;
+        }
+    }];
+    return result;
+}
+
++ (BOOL)goToHomeStack:(BOOL)aDefault withPageIndex:(NSUInteger)aPageIndex inNewDocument:(BOOL)aNewDocument
+{
+    HSHomeStackController *controller = [HSHomeStackController sharedHomeStackController];
+    NSURL *homeURL = aDefault ? [controller defaultHomeStackURL] : [controller homeStackURL];
+    NSString *path = [homeURL path];
+    if ([path length] == 0) {
+        HSAlert *alert = [HSAlert new];
+        [alert setAlertStyle:NSCriticalAlertStyle];
+        [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotGoToHomeStackAlertTitle" value:@"" table:@"Alerts"]];
+        [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotGoToHomeStackAlertMessage" value:@"" table:@"Alerts"]];
+        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotGoToHomeStackAlertDefaultButton" value:@"" table:@"Alerts"]];
+        [alert runModal];
+        [alert release];
+        return NO;
+    }
+    NSString *found = [self findFile:path base:[path stringByDeletingLastPathComponent]];
+    NSFileManager *manager = [NSFileManager defaultManager];
+    if (![manager fileExistsAtPath:found] || ![manager isReadableFileAtPath:found]) {
+        HSAlert *alert = [HSAlert new];
+        [alert setAlertStyle:NSCriticalAlertStyle];
+        [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotOpenHomeStackAlertTitle" value:@"" table:@"Alerts"]];
+        [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotOpenHomeStackAlertMessage" value:@"" table:@"Alerts"]];
+        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"CannotOpenHomeStackAlertDefaultButton" value:@"" table:@"Alerts"]];
+        [alert runModal];
+        [alert release];
+        NSURL *defaultURL = [controller defaultHomeStackURL];
+        NSString *defaultPath = [defaultURL path];
+        if (defaultURL == nil || defaultPath == nil || ![manager fileExistsAtPath:defaultPath] || ![manager isReadableFileAtPath:defaultPath])
+            return NO;
+        BOOL result = [[self class] goToHomeStackAtURL:defaultURL createNewDocument:aNewDocument];
+        [controller setHomeStackURL:defaultURL];
+        return result;
+    }
+    return [[self class] goToHomeStackAtURL:[NSURL fileURLWithPath:found] withPageIndex:aPageIndex createNewDocument:aNewDocument];
+}
+
+// The open tutorial document with the given URL, if any.
+- (id)HSNavigationController_openedTutorialDocumentWithURL:(id)aURL
+{
+    if (![[HSPathsProvider sharedPathsProvider] isTutorialURL:aURL])
+        return nil;
+    __block id found = nil;
+    [[NSApp windows] enumerateObjectsUsingBlock:^(id aWindow, NSUInteger aIndex, BOOL *aStop) {
+        id document = [[aWindow windowController] document];
+        if ([[document fileURL] isEqualTo:aURL]) {
+            found = document;
+            *aStop = YES;
+        }
+    }];
+    return found;
+}
+
 + (BOOL)documentCanGoHome:(id)aHome
 {
     return YES;
