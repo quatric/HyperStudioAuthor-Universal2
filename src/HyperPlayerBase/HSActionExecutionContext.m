@@ -130,26 +130,13 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
     id stack = [[self stack] queryHyperInterface:@protocol(HSMutableStackAttributes)];
     [stack restoreObjectsVisibility];
     [stack restoreMovieObjectsCurrentTime];
-    [self setKeyMappings:nil];
-    [self setArduinoWatchers:nil];
-
-    // Animations that leave a trail need the card redrawn once stopped.
+    [[[self stack] allActionsOfType:@protocol(HSPlayMovieActionAttributes) shouldLoadChildren:NO] makeObjectsPerformSelector:@selector(restoreMovieObjectVisibilityInContext:) withObject:self];
     id animationController = [self animationController];
-    BOOL needsDisplay = NO;
-    for (id animation in [animationController playingAnimations])
-    {
-        if ([[animation animatedObject] dontErase])
-        {
-            needsDisplay = YES;
-            break;
-        }
-    }
     [animationController stopAllPlayingAnimations];
-    if (needsDisplay)
-        [[self cardView] setNeedsDisplay:YES];
-
-    if (![manager areAnyActionsRunningForEvent:[HSActionEvent actionEventOfType:kHSArriveActionEventType]])
-        [[[[self document] navigationController] presentationSync] runAutomaticTimersAndArrivingActions];
+    [animationController presentationIsStarting];
+    id arriveEvent = [HSActionEvent actionEventOfType:kHSArriveActionEventType];
+    if (![manager areAnyActionsRunningForEvent:arriveEvent])
+        [[manager automaticTimerManager] runAutomaticActionTimersForCard:[self card] withContext:self actionEvent:arriveEvent];
 }
 
 - (void)HSActionExecutionContext_undoManagerDidOpenUndoGroup:(id)aGroup
