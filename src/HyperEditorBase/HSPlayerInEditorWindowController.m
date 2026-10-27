@@ -163,6 +163,8 @@
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_pauseView setDelegate:nil];
+    [_pauseView release];
     [super dealloc];
 }
 

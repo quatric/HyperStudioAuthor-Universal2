@@ -87,7 +87,6 @@
 
 - (BOOL)cancelOperation
 {
-    [self cancelOperation:nil];
     return YES;
 }
 
@@ -143,11 +142,6 @@
 // Hides the system UI unless the pure player shows the menu.
 - (void)setupUIMode
 {
-    id document = [self document];
-    if ([document currentWindowController] != self)
-        return;
-    BOOL hides = ![document isInPurePlayerMode] || ![self isMenuShown];
-    [[HSSystemUI sharedSystemUI] setupWithMode:hides ? 3 : 0 options:hides ? 1 : 0];
 }
 
 - (void)coverDesktopAttributesDidChange

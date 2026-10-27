@@ -67,6 +67,7 @@
     _scaleFactor = aFactor;
     [self HSImageCropView_updateFrameSize];
     [self setNeedsDisplay:YES];
+    [[self delegate] scaleFactorDidChangeInView:self];
 }
 
 - (void)setFrameSize:(NSSize)aSize

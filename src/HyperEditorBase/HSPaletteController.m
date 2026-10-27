@@ -161,6 +161,7 @@
 - (void)didLoadNib
 {
     [_window setFrameAutosaveName:[[self class] frameAutosaveName]];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(documentWindowDidBecomeMain:) name:HSDocumentWindowDidBecomeMainNotification object:nil];
 }
 
 - (id)nibName
@@ -216,10 +217,7 @@
 
 - (void)hidePalette
 {
-    if (_window != nil && [self isPaletteVisible]) {
-        [_window close];
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:[[self class] visibilityKeyForDefaults]];
-    }
+    [self hidePaletteWithSaveToDefaults:YES];
 }
 
 // Shown if it was visible last time (or only marked to be, when the
@@ -264,6 +262,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [_window setDelegate:nil];
     [_window release];
     [_storedVisibilityStates release];

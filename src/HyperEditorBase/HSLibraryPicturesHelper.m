@@ -15,7 +15,7 @@
 
 + (id)patternsFileTypes
 {
-    return [NSArray arrayWithObject:@"png"];
+    return [NSArray arrayWithObjects:@"png", @"tiff", nil];
 }
 
 + (id)patternsFolders

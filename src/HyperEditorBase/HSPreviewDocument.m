@@ -22,7 +22,7 @@
 - (id)initForExportWithDocument:(id)aDocument
 {
     if ((self = [super init])) {
-        [self readFromFileWrapper:[aDocument hyperFileWrapperOfType:@"HSDocumentWithoutResourcesType" error:NULL] ofType:@"HSDocumentType" error:NULL];
+        [self readFromFileWrapper:[aDocument hyperFileWrapperOfType:@"HSDocumentWithoutResourcesType" error:NULL] ofType:@"HSAiBADocumentType" error:NULL];
         _originalDocument = aDocument;
     }
     return self;
