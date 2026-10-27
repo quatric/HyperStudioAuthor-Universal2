@@ -82,13 +82,37 @@ void FUN_0017aa7d(HSTextAppearanceAssistantPane *self,SEL _cmd)
 */
 - (void)validateUI
 {
-    [self validateSystemTextViewUI];
-    [self validateObjectName];
+    id textView = [[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)];
+    [_textColorWell setGradientSupportEnabled:YES];
+    [_textColorWell setPatternSupportEnabled:YES];
+    if (textView != nil) {
+        [_textTypeMatrix selectCellWithTag:![textView isRotatableText]];
+        [self validateScrollBoxControls:[textView isRotatableText]];
+        [_drawFrameButton setState:[textView borderType]];
+        [_drawScrollBarButton setState:[textView hasVerticalScroller]];
+        [_readOnlyButton setState:![textView isEditable]];
+        [_scrollableButton setState:[textView isScrollable]];
+        [_textColorWell setColor:[textView textColor]];
+        if ([textView isScrollable]) {
+            [_textColorWell setGradientSupportEnabled:NO];
+            [_textColorWell setPatternSupportEnabled:NO];
+        }
+        NSColor *background = [textView backgroundColor];
+        if (background != nil)
+            [_backgroundColorWell setColor:background];
+        BOOL transparent = [textView isTransparent];
+        [_hasBackgroundColorButton setState:!transparent];
+        [_backgroundColorWell setEnabled:!transparent];
+        [_backgroundTextField setTextColor:transparent ? [NSColor disabledControlTextColor] : [NSColor blackColor]];
+    }
+    id naming = [[[self assistant] object] queryHyperInterface:@protocol(HSObjectNaming)];
+    if (naming != nil && [_nameTextField currentEditor] == nil)
+        [_nameTextField setStringValue:[naming hyperName]];
 }
 
 - (void)validateUIWithNotification:(id)aNotification
 {
-    [self validateObjectName];
+    [self validateUI];
 }
 
 - (void)setHasBackgroundColor:(id)aColor
@@ -240,7 +264,7 @@ void FUN_0017b0f4(HSTextAppearanceAssistantPane *self,SEL _cmd,id getFile)
     [super viewWillDisappear:aDisappear];
     pvVar2_4 = [[[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)] attributeObservingController];
     uVar1 = HSActualDidAttributeChanges;
-    [pvVar2_4 removeObserver:self selector:@selector(validateSystemTextViewUIWithNotification:) ofChanges:uVar1 ofAttributesOfHyperInterface:@protocol(HSSystemTextViewAttributes)];
+    [pvVar2_4 removeObserver:self selector:@selector(validateUIWithNotification:) ofChanges:uVar1 ofAttributesOfHyperInterface:@protocol(HSSystemTextViewAttributes)];
     [[[[[self assistant] object] queryHyperInterface:@protocol(HSMutableObjectAttributes)] attributeObservingController] removeObserver:self selector:@selector(validateUIWithNotification:) ofChanges:uVar1 ofAttributesOfHyperInterface:@protocol(HSMutableObjectAttributes)];
 }
 
@@ -282,7 +306,7 @@ void FUN_0017b5fe(HSTextAppearanceAssistantPane *self,SEL _cmd,BOOL viewWillAppe
     id objectAttributes = [[[self assistant] object] queryHyperInterface:@protocol(HSMutableObjectAttributes)];
     [[objectAttributes attributeObservingController] addObserver:self selector:@selector(validateUIWithNotification:) ofChanges:HSActualDidAttributeChanges ofAttributesOfHyperInterface:@protocol(HSMutableObjectAttributes) withPriority:-0.25];
     id textAttributes = [[[self assistant] object] queryHyperInterface:@protocol(HSSystemTextViewAttributes)];
-    [[textAttributes attributeObservingController] addObserver:self selector:@selector(validateSystemTextViewUIWithNotification:) ofChanges:HSActualDidAttributeChanges ofAttributesOfHyperInterface:@protocol(HSSystemTextViewAttributes) withPriority:-0.25];
+    [[textAttributes attributeObservingController] addObserver:self selector:@selector(validateUIWithNotification:) ofChanges:HSActualDidAttributeChanges ofAttributesOfHyperInterface:@protocol(HSSystemTextViewAttributes) withPriority:-0.25];
     [self validateUI];
 }
 

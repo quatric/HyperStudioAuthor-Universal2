@@ -1854,7 +1854,6 @@ void FUN_002a8ea3(HSDropOffOptionsAssistansPane *self,SEL _cmd,BOOL viewWillAppe
     double maxRange;
 
     [super viewWillAppear:aAppear];
-    [self updateDropOffTarget];
     center = [NSNotificationCenter defaultCenter];
     [center addObserver:self selector:@selector(HSDropOffOptionsAssistantPane_toolDidChange:) name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
     [center addObserver:self selector:@selector(HSDropOffOptionsAssistantPane_currentCardWillChange:) name:HSCurrentCardInCardViewWillChange object:_cardView];
@@ -2132,7 +2131,6 @@ void FUN_002a962b(HSDropOffOptionsAssistansPane *self,SEL _cmd,id setCardView)
 
     [super setObject:aObject];
     if (aObject != nil) {
-        [self updateDropOffTarget];
         [_initialDropOffTarget release];
         _initialDropOffTarget = nil;
         pvVar1 = [self dropOffTarget];

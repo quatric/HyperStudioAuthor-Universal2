@@ -76,7 +76,6 @@
             return;
         }
     }
-    [aContext cancelIfPresentSequencerActionWithObject:[[self owner] hyperObjectForAction:self]];
     [aContext displayAlert:[self missingObjectsAlert] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:NULL];
 }
 

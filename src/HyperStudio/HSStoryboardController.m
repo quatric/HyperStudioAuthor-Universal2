@@ -367,7 +367,6 @@ BOOL FUN_0015e728(HSStoryboardController *self,SEL _cmd,id validateUserInterface
 
 - (void)didLoadNib
 {
-    [self prepareUI];
 }
 
 - (void)didBecomeNonWorkingInModeSwitcher:(id)aSwitcher
@@ -573,7 +572,6 @@ void FUN_0015e931(HSStoryboardController *self,SEL _cmd,id willBecomeWorkingInMo
 
 - (void)windowDidLoad
 {
-    [self prepareUI];
     [_storyboardView setAllowEmptySelection:NO];
 }
 
