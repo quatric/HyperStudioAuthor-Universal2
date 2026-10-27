@@ -115,7 +115,7 @@ static NSString *HSPathsProviderDocumentsFolder = nil;
 - (id)defaultHomeStackPath
 {
     if (_directoriesCache.defaultHomeStackPath == nil)
-        _directoriesCache.defaultHomeStackPath = [[[NSBundle mainBundle] pathForResource:@"Home Stack" ofType:@"stack"] retain];
+        _directoriesCache.defaultHomeStackPath = [[[NSBundle mainBundle] pathForResource:@"Home Stack" ofType:@"hsa"] retain];
     return _directoriesCache.defaultHomeStackPath;
 }
 

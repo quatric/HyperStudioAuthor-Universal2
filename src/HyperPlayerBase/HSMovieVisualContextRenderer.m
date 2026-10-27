@@ -184,7 +184,10 @@ static void HSMovieVisualContextRendererImageAvailable(QTVisualContextRef aConte
 {
     if (!_isMovieInvalidationPending) {
         _isMovieInvalidationPending = 1;
-        [self performSelectorOnMainThread:@selector(HSMovieVisualContextRenderer_invalidateMovie) withObject:nil waitUntilDone:NO];
+        if ([self isSynchronous])
+            [self HSMovieVisualContextRenderer_invalidateMovie];
+        else
+            [self performSelectorOnMainThread:@selector(HSMovieVisualContextRenderer_invalidateMovie) withObject:nil waitUntilDone:NO];
     }
 }
 

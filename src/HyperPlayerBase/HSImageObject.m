@@ -827,11 +827,8 @@ static CGAffineTransform HSImageObjectObjectToImageTransform(NSRect aRelativeIma
 
 - (void)dropOldFormatBorderPath
 {
-    id nodeData = [self nodeData];
-    if ([nodeData owner] == self) {
-        [nodeData setBorderPath:nil];
-        [nodeData setRelativeBorderPath:nil];
-    }
+    [[self nodeData] setBorderPath:nil];
+    [[self nodeData] setRelativeBorderPath:nil];
 }
 
 // An old format border path becomes a clip path once the border unit has

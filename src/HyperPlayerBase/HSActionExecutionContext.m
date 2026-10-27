@@ -949,6 +949,7 @@ static void HSActionExecutionContextSendSheetDidEnd(id aDelegate, SEL aSelector,
 
 - (void)runModalSavePanelForSaveOperation:(NSUInteger)aOperation delegate:(id)aDelegate didSaveSelector:(SEL)aSelector contextInfo:(void *)aInfo
 {
+    [[self document] setFileType:@"HSAiBADocumentType"];
     [[self document] runModalSavePanelForSaveOperation:aOperation delegate:aDelegate didSaveSelector:aSelector contextInfo:aInfo];
 }
 

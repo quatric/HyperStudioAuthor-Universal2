@@ -35,8 +35,10 @@ static NSSet *HSTransitionQCTransitionNames = nil;
 
 - (id)HTML5UnsupportedFeaturesForDocumentType:(id)aType
 {
-    NSString *format = [[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSHTML5UnsupportedFeatureTransition" value:@"" table:@"Export"];
-    return [NSSet setWithObject:[NSString stringWithFormat:format, [self displayName]]];
+    NSMutableSet *features = [NSMutableSet set];
+    if ([self effect] == nil)
+        [features addObject:[self HTML5UnsupportedFunctionalityDescription]];
+    return features;
 }
 
 - (BOOL)hasUnsupportedHTML5FeaturesForDocumentType:(id)aType

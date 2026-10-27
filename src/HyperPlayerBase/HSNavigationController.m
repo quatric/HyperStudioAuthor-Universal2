@@ -269,6 +269,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 
 - (void)willBeClosedWithDocument
 {
+    [self updateLastMarkedCardDocumentPath];
     [self pushCurrentCardInHistoryIfNeededWithTransition:nil isGoingToAnotherStack:YES];
     if (_currentNavigationOperation == nil)
         [[self presentationSync] endPresentation];
@@ -697,6 +698,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
 
 - (void)continueNavigationToDestinationStack
 {
+    [[self presentationSync] navigationOperationCompleted];
     [_currentNavigationOperation setStage:HSNavigationStageMoveToStack];
     [self continueNavigationOperation:_currentNavigationOperation];
 }
