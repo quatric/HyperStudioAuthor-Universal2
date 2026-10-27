@@ -206,6 +206,10 @@
 @class HSAnotherCardActionAssistantPane;
 @class HSAppearanceButtonCell;
 @class HSApplicationLicensor;
+@class HSANewSoundDropHelpPane;
+@class HSATutorialWindow;
+@class HSWebAppIconPreviewView;
+@class HSWebAppIconShadowView;
 @class HSRegistrationUserDefaults;
 @class HSArduinoSetupActionAssistantPane;
 @class HSArduinoSetupActionPaneApplier;
