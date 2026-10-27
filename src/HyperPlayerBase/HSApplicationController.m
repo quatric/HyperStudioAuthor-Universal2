@@ -326,6 +326,8 @@ static NSError *HSApplicationControllerHyperError(NSError *aError)
         return @"HSDocumentType";
     if ([@"'Stak'" isEqualToString:fileType])
         return @"HSNativeDocumentType";
+    if ([@"hsa" isEqualToString:fileType])
+        return @"HSAiBADocumentType";
     return [super typeForContentsOfURL:aURL error:aError];
 }
 

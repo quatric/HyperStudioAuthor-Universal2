@@ -468,8 +468,13 @@ static id HSPlayerViewDefaultSlideshowAttributes = nil;
 {
     if (_navigationOperation == nil)
         return;
-    if ([_navigationOperation stage] != HSPlayerViewNavigationStageCancelled)
-        [[_delegate navigationControllerForPlayerView:self] finishNavigationOperation:_navigationOperation];
+    if ([_navigationOperation stage] != HSPlayerViewNavigationStageCancelled) {
+        id navigationController = [_delegate navigationControllerForPlayerView:self];
+        if ([self canceledWithSwipe])
+            [navigationController cancelNavigationOperation:_navigationOperation];
+        else
+            [navigationController finishNavigationOperation:_navigationOperation];
+    }
     [_navigationOperation release];
     _navigationOperation = nil;
     if ([_delegate respondsToSelector:@selector(navigationOperationDidFinishInPlayerView:)])

@@ -14,15 +14,13 @@
     if ([aEvent isARepeat])
         return nil;
     NSUInteger flags = [aEvent modifierFlags];
-    NSString *characters = [aEvent characters];
-    if ((flags & 0xff0c0000) != 0 || [characters length] != 1)
+    NSString *characters = [aEvent charactersIgnoringModifiers];
+    if ((flags & 0xff0d0000) != 0 || [characters length] != 1)
         return nil;
     unichar c = [characters characterAtIndex:0];
-    BOOL shift = (flags & (NSEventModifierFlagShift | NSEventModifierFlagCapsLock)) != 0
-              && (unsigned short)(c - '*') >= 2;
     return [[[self alloc] initWithCharacter:c
-                              useCommandKey:(flags & NSEventModifierFlagCommand) != 0
-                                useShiftKey:shift] autorelease];
+                              useCommandKey:(flags >> 0x14) & 1
+                                useShiftKey:(flags >> 0x11) & 1] autorelease];
 }
 - (id)copyWithZone:(NSZone *)aZone
 {
