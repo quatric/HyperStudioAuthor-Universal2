@@ -271,18 +271,15 @@
 {
     if (![self canBeStopped])
         return;
-    [self updateURL];
     NSURL *URL = [self URL];
     if (![URL isFileURL]) {
         [self downloadFile:URL];
         URL = [self URL];
     }
-    if (URL != nil && !([URL isFileURL] && [[NSFileManager defaultManager] fileExistsAtPath:[URL path]])) {
+    if (![[NSFileManager defaultManager] fileExistsAtPath:[URL path]])
         [aContext displayAlert:[self stackNotFoundAlert] modalDelegate:self didEndSelector:@selector(alertDidEnd:returnCode:contextInfo:) contextInfo:aContext];
-        return;
-    }
-    [[[aContext navigationController] presentationSync] prepareForUserInitiatedNavigationOperation];
-    [super startInContext:aContext];
+    else
+        [super startInContext:aContext];
 }
 
 - (BOOL)supportedInStackToGo

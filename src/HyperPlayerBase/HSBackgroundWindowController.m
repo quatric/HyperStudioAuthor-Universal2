@@ -69,7 +69,7 @@ static HSBackgroundWindowController *sBackgroundWindowController;
     id source = [HSUI sharedUI];
     if ([controller areDocumentSpecificPresentationSettingsActive]) {
         HSDocument *document = [controller currentDocument];
-        if ([document isInPresentationMode] || [document isInPurePlayerMode])
+        if ([document isInPresentationMode])
             source = [(HSDocument *)[controller currentDocument] stack];
     }
     id graphics = [source backgroundGraphics];
