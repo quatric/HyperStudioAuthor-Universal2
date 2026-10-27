@@ -5,13 +5,13 @@
     id highlightLayer = [self expandableRenderLayerWithIdentifier:@"HSHighlightRenderLayerIdentifier"
                                                precreateSelector:@selector(precreateHighlightRenderLayerForVisualizationOptions:)
                                             visualizationOptions:aOptions];
-    if (highlightLayer != nil) {
-        id subtree = [super expandedShadowAndOpacityRenderLayerSubtreeWithVisualizationOptions:aOptions];
-        if (subtree != nil)
-            [highlightLayer addRenderSublayer:subtree forRole:@"HSEffectRenderLayerRole" asRoot:NO addingTransparencyLayerRequirement:YES];
-    }
-    // The original always returns nil here.
-    return nil;
+    if (highlightLayer == nil)
+        return nil;
+    id subtree = [super expandedShadowAndOpacityRenderLayerSubtreeWithVisualizationOptions:aOptions];
+    if (subtree == nil)
+        return nil;
+    [highlightLayer addRenderSublayer:subtree forRole:@"HSEffectRenderLayerRole" asRoot:NO addingTransparencyLayerRequirement:YES];
+    return highlightLayer;
 }
 - (id)precreateHighlightRenderLayerForVisualizationOptions:(id)aOptions
 {
