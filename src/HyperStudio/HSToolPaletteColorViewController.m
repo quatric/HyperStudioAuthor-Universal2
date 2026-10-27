@@ -142,7 +142,7 @@ LAB_0014f175:
         color = [_workColorWell color];
     }
     else {
-        color = [self newColorFromColor:[_workColorWell color] withAlphaComponent:alpha];
+        color = [_workColorWell color];
     }
     [[self delegate] colorViewController:self changedColorTo:color];
 }
@@ -612,10 +612,9 @@ void FUN_0014f879(HSToolPaletteColorViewController *self,SEL _cmd,id colorChange
     [_colorPickingActivateButton setState:NSControlStateValueOff];
     previousWell = _workColorWell;
     previousColor = [_color retain];
-    color = [self newColorFromColor:[aChanged color] withAlphaComponent:(float)[[_workColorWell color] alphaComponent]];
-    if ([[self delegate] respondsToSelector:@selector(colorViewController:changedColorTo:)]) {
-        [[self delegate] colorViewController:self changedColorTo:color];
-    }
+    color = [aChanged color];
+    [_workColorWell setColor:color];
+    [[self delegate] colorViewController:self changedColorTo:color];
     if (previousWell != _workColorWell && _color != nil) {
         if ([previousWell isActive]) {
             [previousWell deactivate];
