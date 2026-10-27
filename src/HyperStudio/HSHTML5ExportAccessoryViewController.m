@@ -72,4 +72,38 @@
         [self updateWebAppIconWithImage:[dialog croppedImageWithHorizontalSelection]];
 }
 
+- (void)updateWebAppIconWithImage:(id)aImage
+{
+    [[self stack] setWebAppIcon:aImage];
+    CALayer *layer = [_webAppIconPreviewView layer];
+    CGSize layerSize = layer != nil ? [layer bounds].size : CGSizeZero;
+    [layer setContents:[[self class] webAppContentLayerImageFromImage:[[self stack] webAppIcon] forContentLayerSize:layerSize]];
+}
+
+- (void)configureWebIconPreviewView
+{
+    CALayer *layer = [CALayer layer];
+    [layer setMasksToBounds:YES];
+    CGRect bounds = _webAppIconPreviewView != nil ? [_webAppIconPreviewView bounds] : CGRectZero;
+    [layer setFrame:bounds];
+    [layer setCornerRadius:[[self class] webAppContentLayerCornerRadiusForLayerSize:bounds.size]];
+    [layer setBorderWidth:1.0];
+    CGColorRef borderColor = [[NSColor controlShadowColor] newHyperCGColor];
+    [layer setBorderColor:borderColor];
+    CGColorRelease(borderColor);
+    CGSize layerSize = layer != nil ? [layer bounds].size : CGSizeZero;
+    [layer setContents:[[self class] webAppContentLayerImageFromImage:[[self stack] webAppIcon] forContentLayerSize:layerSize]];
+    [_webAppIconPreviewView setLayer:layer];
+    [_webAppIconPreviewView setWantsLayer:YES];
+}
+
++ (id)webAppContentLayerImageFromImage:(id)aImage forContentLayerSize:(NSSize)aSize
+{
+    NSImage *result = [[[NSImage alloc] initWithSize:aSize] autorelease];
+    [result lockFocus];
+    [aImage drawInRect:NSMakeRect(0, 0, [result size].width, [result size].height) fromRect:NSMakeRect(0, 0, [aImage size].width, [aImage size].height) operation:NSCompositingOperationSourceOver fraction:1.0];
+    [result unlockFocus];
+    return result;
+}
+
 @end

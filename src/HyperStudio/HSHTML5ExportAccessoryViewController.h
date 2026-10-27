@@ -8,6 +8,9 @@
     NSTextField *_linkedStacksDepthTextField;
     NSStepper *_linkedStacksDepthStepper;
     NSTextField *_explanationText;
+    NSView *_webAppIconPreviewView;
+    NSView *_webAppIconEditContainerView;
+    NSView *_linkedStacksContainerView;
 }
 - (void)controlTextDidChange:(id)aChange;
 - (void)linkedStacksDepthChanged:(id)aChanged;
@@ -20,5 +23,8 @@
 - (id)stack;
 + (CGFloat)webAppContentLayerCornerRadiusForLayerSize:(CGSize)aSize;
 - (void)editWebAppIcon:(id)aSender;
+- (void)updateWebAppIconWithImage:(id)aImage;
+- (void)configureWebIconPreviewView;
++ (id)webAppContentLayerImageFromImage:(id)aImage forContentLayerSize:(NSSize)aSize;
 @end
 
