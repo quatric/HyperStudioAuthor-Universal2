@@ -665,13 +665,13 @@ void FUN_0014d9ba(HSToolPaletteColorViewController *self,SEL _cmd,id orderFrontC
   op = sel_close;
   if ((char)pvVar1 != '\0') goto LAB_0014da05;
   if (self->_workColorWell == self->_gradientsColorWell) {
-    pvVar1 = _objc_msgSend(cls_HSEditorApplication,sel_sharedHyperApplication);
+    pvVar1 = _objc_msgSend(cls_HSAEditorApplication,sel_sharedHyperApplication);
     uVar2 = 8;
 LAB_0014da7d:
     _objc_msgSend(pvVar1,sel_setColorPickerMode_,uVar2);
   }
   else if (self->_workColorWell == self->_texturesColorWell) {
-    pvVar1 = _objc_msgSend(cls_HSEditorApplication,sel_sharedHyperApplication);
+    pvVar1 = _objc_msgSend(cls_HSAEditorApplication,sel_sharedHyperApplication);
     uVar2 = 9;
     goto LAB_0014da7d;
   }
@@ -691,10 +691,10 @@ LAB_0014da05:
         return;
     }
     if (_workColorWell == _gradientsColorWell) {
-        [[HSEditorApplication sharedHyperApplication] setColorPickerMode:8];
+        [[HSAEditorApplication sharedHyperApplication] setColorPickerMode:8];
     }
     else if (_workColorWell == _texturesColorWell) {
-        [[HSEditorApplication sharedHyperApplication] setColorPickerMode:9];
+        [[HSAEditorApplication sharedHyperApplication] setColorPickerMode:9];
     }
     [_workColorWell activate:YES];
 }

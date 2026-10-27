@@ -20,7 +20,6 @@ static id sDAT_00342944;
 static id sDAT_00342948;
 static id sDAT_0034294c;
 
-
 @implementation HSAnimationSetupMainAssistantPane
 
 /* i386 ivar offsets: _delegate=0x5c, _navigationPaneSwitcher=0x60, _isMovieAnimation=0x64, _segmentedControl=0x68, _optionsView=0x6c, _mainOptionsView=0x70, _pathOptionsView=0x74, _showFirstFrameButton=0x78, _eraseWhenDoneButton=0x7c, _matchToMovementMatrix=0x80, _allowClonesButton=0x84, _movieSpeedTextField=0x88, _movieSpeedStepper=0x8c, _playForPopUpButton=0x90, _playForValueTextField=0x94, _playForValueStepper=0x98, _horizontalFlipButton=0x9c, _verticalFlipButton=0xa0, _transparentColorPickerButton=0xa4, _transparentColorButton=0xa8, _mainPlayStopButton=0xac, _newPathButton=0xb0, _getNewSourceButton=0xb4, _beginArrowButton=0xb8, _endArrowButton=0xbc, _horizontalFlipAtStartButton=0xc0, _verticalFlipAtStartButton=0xc4, _horizontalFlipAtFinishButton=0xc8, _verticalFlipAtFinishButton=0xcc, _startFromBeginButton=0xd0, _startFromEndButton=0xd4, _goingImageView=0xd8, _returningImageView=0xdc, _floatOverGoingButton=0xe0, _floatOverReturningButton=0xe4, _dontEraseGoingButton=0xe8, _dontEraseReturningButton=0xec, _movePopUpButton=0xf0, _moveValueTextField=0xf4, _moveValueStepper=0xf8, _secondsLabel=0xfc, _moveValuePopUpButton=0x100, _layerPopUpButton=0x104, _pathPlayStopButton=0x108, _helpIsActive=0x10c, _helpDrawer=0x110, _actionHelpView=0x114, _helpTextView=0x118 */
@@ -99,27 +98,6 @@ static id sDAT_0034294c;
     return [[HSPlaybackControlImagesProvider sharedPlaybackControlsImagesProvider] playbackImageOfType:@"Play" state:@"N" size:@"M" tint:@"A"];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012d509 @ 0012d509, 124 bytes * /
-
-void FUN_0012d509(HSAnimationSetupMainAssistantPane *self,SEL _cmd,BOOL setPlayTryItAnimation)
-
-{
-  id pvVar1;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_class);
-  op = sel_stopAnimationImage;
-  if (setPlayTryItAnimation != '\0') {
-    op = sel_playAnimationImage;
-  }
-  pvVar1 = _objc_msgSend(pvVar1,op);
-  _objc_msgSend(self,sel_setPlayStopImage_,pvVar1);
-  _objc_msgSend(self,sel_setOptionsEnabled_,(int)setPlayTryItAnimation);
-  return;
-}
-
-*/
 - (void)setPlayTryItAnimation:(BOOL)aAnimation
 {
     [self setPlayStopImage:(aAnimation ? [[self class] playAnimationImage] : [[self class] stopAnimationImage])];
@@ -179,36 +157,6 @@ void FUN_0012d509(HSAnimationSetupMainAssistantPane *self,SEL _cmd,BOOL setPlayT
     [self hideHelpNeedsRelayout:YES];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012d940 @ 0012d940, 335 bytes * /
-
-void FUN_0012d940(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id showHelp)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined1 local_24 [8];
-  undefined4 local_1c;
-  undefined4 local_18;
-  
-  pvVar1 = _objc_msgSend(self,sel_assistant);
-  pvVar2 = _objc_msgSend(self,sel_actionHelpView);
-  _objc_msgSend_stret(local_24,pvVar2,sel_frame);
-  _objc_msgSend(pvVar1,sel_toggleDrawerModeWithDrawerSize_,local_1c,local_18);
-  pvVar1 = _objc_msgSend(self,sel_actionHelpView);
-  _objc_msgSend(self,sel_setFooterView_,pvVar1);
-  pvVar1 = _objc_msgSend(self->_helpTextView,sel_textStorage);
-  pvVar2 = _objc_msgSend(cls_HSNBAHelpProvider,sel_sharedNBAHelpProvider);
-  pvVar3 = _objc_msgSend(cls_HSPlayAnimationAction,sel_actionType);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedHelpForActionOfType_,pvVar3);
-  _objc_msgSend(pvVar1,sel_setAttributedString_,pvVar2);
-  _objc_msgSend(self,sel_layoutIfNeeded);
-  self->_helpIsActive = '\x01';
-  return;
-}
-
-*/
 - (void)showHelp:(id)aHelp
 {
     [[self assistant] toggleDrawerModeWithDrawerSize:[[self actionHelpView] frame].size];
@@ -218,33 +166,6 @@ void FUN_0012d940(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id showHelp)
     _helpIsActive = YES;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012da8f @ 0012da8f, 189 bytes * /
-
-void FUN_0012da8f(HSAnimationSetupMainAssistantPane *self,SEL _cmd,BOOL hideHelpNeedsRelayout)
-
-{
-  id self_00;
-  id self_01;
-  undefined4 uVar1;
-  undefined1 local_24 [8];
-  undefined4 local_1c;
-  undefined4 local_18;
-  
-  uVar1 = 0;
-  _objc_msgSend(self,sel_setFooterView_,0);
-  if (hideHelpNeedsRelayout != '\0') {
-    _objc_msgSend(self,sel_layoutIfNeeded,uVar1);
-  }
-  self->_helpIsActive = '\0';
-  self_00 = _objc_msgSend(self,sel_assistant,uVar1);
-  self_01 = _objc_msgSend(self,sel_actionHelpView);
-  _objc_msgSend_stret(local_24,self_01,sel_frame);
-  _objc_msgSend(self_00,sel_toggleDrawerModeWithDrawerSize_,local_1c,local_18);
-  return;
-}
-
-*/
 - (void)hideHelpNeedsRelayout:(BOOL)aRelayout
 {
     [self setFooterView:nil];
@@ -282,209 +203,6 @@ void FUN_0012da8f(HSAnimationSetupMainAssistantPane *self,SEL _cmd,BOOL hideHelp
     return _helpIsActive;
 }
 
-- (void)paneDidCancel:(id)aCancel
-{
-    [_delegate cancelFromAnimationSetupMainAssistantPane:self];
-}
-
-- (void)paneDidOK:(id)aOK
-{
-    [_delegate doneFromAnimationSetupMainAssistantPane:self];
-}
-
-- (void)playStop:(id)aStop
-{
-    [_delegate playStopFromAnimationSetupMainAssistantPane:self];
-}
-
-- (void)getNewSource:(id)aSource
-{
-    [_delegate getNewSourceFromAnimationSetupMainAssistantPane:self];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012cc7a @ 0012cc7a, 605 bytes * /
-
-void FUN_0012cc7a(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id newPath)
-
-{
-  undefined4 uVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined4 uVar4;
-  
-  pvVar2 = _objc_msgSend(cls_NSUserDefaults,sel_standardUserDefaults);
-  uVar1 = *(undefined4 *)PTR_003365b4;
-  uVar4 = uVar1;
-  pvVar2 = _objc_msgSend(pvVar2,sel_objectForKey_,uVar1);
-  if ((pvVar2 == (id)0x0) || (pvVar2 = _objc_msgSend(pvVar2,sel_intValue,uVar4), pvVar2 != (id)0x0))
-  {
-    pvVar2 = _objc_msgSend(cls_HSDontShowAgainAlert,sel_new,uVar4);
-    _objc_msgSend(pvVar2,sel_setShowAlertKey_,uVar1);
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSNewAnimationPathMessageText,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(pvVar2,sel_setMessageText_,pvVar3);
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSNewAnimationPathInformativeText,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(pvVar2,sel_setInformativeText_,pvVar3);
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,
-                           &cfstr_HSNewAnimationPathCreateButtonTitle,&cfstr_empty,&cfstr_Alerts);
-    _objc_msgSend(pvVar2,sel_addButtonWithTitle_,pvVar3);
-    pvVar3 = _objc_msgSend(cls_HSExecutableResourceProvider,sel_sharedInstance);
-    pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_Cancel,&cfstr_empty,
-                           &cfstr_Alerts);
-    _objc_msgSend(pvVar2,sel_addButtonWithTitle_,pvVar3);
-    pvVar3 = _objc_msgSend(pvVar2,sel_runModal);
-    _objc_msgSend(pvVar2,sel_release);
-    if (pvVar3 == (id)0x3e9) {
-      return;
-    }
-  }
-  _objc_msgSend(self->_delegate,sel_newPathFromAnimationSetupMainAssistantPane_,self);
-  return;
-}
-
-*/
-- (void)newPath:(id)aPath
-{
-    id showAlert = [[NSUserDefaults standardUserDefaults] objectForKey:HSShowNewPathAlertKey];
-    if (showAlert == nil || [showAlert intValue] != 0) {
-        HSDontShowAgainAlert *alert = [HSDontShowAgainAlert new];
-        [alert setShowAlertKey:HSShowNewPathAlertKey];
-        [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathMessageText" value:@"" table:@"Alerts"]];
-        [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathInformativeText" value:@"" table:@"Alerts"]];
-        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathCreateButtonTitle" value:@"" table:@"Alerts"]];
-        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"]];
-        NSInteger result = [alert runModal];
-        [alert release];
-        if (result == NSAlertSecondButtonReturn) {
-            return;
-        }
-    }
-    [_delegate newPathFromAnimationSetupMainAssistantPane:self];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012db4c @ 0012db4c, 1768 bytes * /
-
-void FUN_0012db4c(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  id self_00;
-  id pvVar1;
-  id pvVar2;
-  float *pfVar3;
-  undefined *puVar4;
-  double dVar5;
-  SEL op;
-  undefined4 uVar6;
-  
-  _objc_msgSend(self,sel_updateBeginAndEndArrows);
-  _objc_msgSend(self,sel_updateFlipsUI);
-  self_00 = _objc_msgSend(self,sel_animation);
-  pvVar1 = _objc_msgSend(self_00,sel_animatedObject);
-  _objc_msgSend(self->_pathPlayStopButton,sel_setEnabled_,(uint)(pvVar1 != (id)0x0));
-  pvVar1 = _objc_msgSend(self_00,sel_playbackDirection);
-  _objc_msgSend(self->_startFromBeginButton,sel_setState_,pvVar1 == (id)0x1 ^ 1);
-  _objc_msgSend(self->_startFromEndButton,sel_setState_,(uint)(pvVar1 == (id)0x1));
-  _objc_msgSend(self,sel_HSAnimationSetupMainAssistantPane_validateGoingAbsoluteLayerGUI);
-  _objc_msgSend(self,sel_HSAnimationSetupMainAssistantPane_validateReturningAbsoluteLayerGUI);
-  pvVar1 = self->_floatOverReturningButton;
-  pvVar2 = _objc_msgSend(self_00,sel_playBackAndForth);
-  _objc_msgSend(pvVar1,sel_setEnabled_,(int)(char)pvVar2);
-  pvVar1 = self->_dontEraseReturningButton;
-  pvVar2 = _objc_msgSend(self_00,sel_playBackAndForth);
-  _objc_msgSend(pvVar1,sel_setEnabled_,(int)(char)pvVar2);
-  pvVar1 = self->_dontEraseGoingButton;
-  pvVar2 = _objc_msgSend(self_00,sel_dontEraseGoing);
-  _objc_msgSend(pvVar1,sel_setState_,(uint)((char)pvVar2 != '\0'));
-  pvVar1 = self->_dontEraseReturningButton;
-  pvVar2 = _objc_msgSend(self_00,sel_dontEraseReturning);
-  _objc_msgSend(pvVar1,sel_setState_,(uint)((char)pvVar2 != '\0'));
-  pvVar1 = self->_layerPopUpButton;
-  pvVar2 = _objc_msgSend(self_00,sel_layer);
-  _objc_msgSend(pvVar1,sel_selectItemWithTag_,pvVar2);
-  pvVar1 = _objc_msgSend(self_00,sel_speedMode);
-  _objc_msgSend(self,sel_movePopUpButtonSelectItemWithTag_,pvVar1);
-  if (pvVar1 == (id)0x0) {
-    _objc_msgSend(self->_moveValueTextField,sel_setHidden_,1);
-    _objc_msgSend(self->_moveValueStepper,sel_setHidden_,1);
-    _objc_msgSend(self->_moveValuePopUpButton,sel_setHidden_,0);
-    _objc_msgSend(self->_secondsLabel,sel_setHidden_,1);
-    puVar4 = (undefined *)0x0;
-    pfVar3 = (float *)&DAT_00335300;
-    while( true ) {
-      if ((undefined *)0x4 < puVar4) {
-        return;
-      }
-      dVar5 = _objc_msgSend_fpret(self_00,sel_speedMultiplier);
-      if (((float)dVar5 == *pfVar3) && (!NAN((float)dVar5) && !NAN(*pfVar3))) break;
-      pfVar3 = pfVar3 + 1;
-      puVar4 = puVar4 + 1;
-    }
-    pvVar1 = self->_moveValuePopUpButton;
-    op = sel_selectItemWithTag_;
-    goto LAB_0012e21c;
-  }
-  if (pvVar1 == (id)0x2) {
-    _objc_msgSend(self->_moveValueTextField,sel_setHidden_,0);
-    _objc_msgSend(self->_moveValueStepper,sel_setHidden_,0);
-    _objc_msgSend(self->_moveValuePopUpButton,sel_setHidden_,1);
-    _objc_msgSend(self->_secondsLabel,sel_setHidden_,1);
-    pvVar1 = _objc_msgSend(self->_moveValueTextField,sel_formatter);
-    pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,1);
-    _objc_msgSend(pvVar1,sel_setMinimum_,pvVar2);
-    pvVar1 = _objc_msgSend(self->_moveValueTextField,sel_formatter);
-    pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,99);
-    _objc_msgSend(pvVar1,sel_setMaximum_,pvVar2);
-    _objc_msgSend(self->_moveValueStepper,sel_setMaxValue_,0,0x4058c000);
-    uVar6 = 0x3ff00000;
-    _objc_msgSend(self->_moveValueStepper,sel_setMinValue_,0,0x3ff00000);
-    puVar4 = _objc_msgSend(self_00,sel_timesPerSecond);
-    if ((int)puVar4 < 100) goto joined_r0x0012e144;
-    puVar4 = (undefined *)0x63;
-  }
-  else {
-    if (pvVar1 != (id)0x1) {
-      return;
-    }
-    _objc_msgSend(self->_moveValueTextField,sel_setHidden_,0);
-    _objc_msgSend(self->_moveValueStepper,sel_setHidden_,0);
-    _objc_msgSend(self->_moveValuePopUpButton,sel_setHidden_,1);
-    _objc_msgSend(self->_secondsLabel,sel_setHidden_,0);
-    pvVar1 = _objc_msgSend(self->_moveValueTextField,sel_formatter);
-    pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,1);
-    _objc_msgSend(pvVar1,sel_setMinimum_,pvVar2);
-    pvVar1 = _objc_msgSend(self->_moveValueTextField,sel_formatter);
-    pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,&DAT_0000270f);
-    _objc_msgSend(pvVar1,sel_setMaximum_,pvVar2);
-    _objc_msgSend(self->_moveValueStepper,sel_setMinValue_,0,0x3ff00000);
-    uVar6 = 0x40c38780;
-    _objc_msgSend(self->_moveValueStepper,sel_setMaxValue_,0,0x40c38780);
-    dVar5 = _objc_msgSend_fpret(self_00,sel_clampedDuration);
-    puVar4 = (undefined *)(int)dVar5;
-    if ((int)puVar4 < 10000) {
-joined_r0x0012e144:
-      if ((int)puVar4 < 1) {
-        puVar4 = (undefined *)0x1;
-      }
-    }
-    else {
-      puVar4 = &DAT_0000270f;
-    }
-  }
-  _objc_msgSend(self->_moveValueTextField,sel_setIntValue_,puVar4,uVar6);
-  pvVar1 = self->_moveValueStepper;
-  op = sel_setIntValue_;
-LAB_0012e21c:
-  _objc_msgSend(pvVar1,op,puVar4);
-  return;
-}
-
-*/
 - (void)updatePathOptionsUI
 {
     [self updateBeginAndEndArrows];
@@ -555,110 +273,6 @@ LAB_0012e21c:
     [_moveValueStepper setIntValue:value];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012c918 @ 0012c918, 866 bytes * /
-
-void FUN_0012c918(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  bool bVar1;
-  bool bVar2;
-  char cVar3;
-  id pvVar4;
-  id pvVar5;
-  undefined4 uVar6;
-  bool bVar7;
-  uint uVar8;
-  
-  pvVar4 = _objc_msgSend(self,sel_animation);
-  pvVar4 = _objc_msgSend(pvVar4,sel_animatedObject);
-  pvVar4 = _objc_msgSend(pvVar4,sel_queryHyperInterface_,&DAT_003726f8);
-  pvVar5 = _objc_msgSend(pvVar4,sel_canFlipHorizontally);
-  pvVar4 = _objc_msgSend(pvVar4,sel_canFlipVertically);
-  cVar3 = (char)pvVar4;
-  pvVar4 = _objc_msgSend(self,sel_animation);
-  pvVar4 = _objc_msgSend(pvVar4,sel_playBackAndForth);
-  if ((char)pvVar4 == '\0') {
-LAB_0012c9ef:
-    bVar1 = false;
-  }
-  else {
-    pvVar4 = _objc_msgSend(self,sel_animation);
-    pvVar4 = _objc_msgSend(pvVar4,sel_playbackDirection);
-    if (pvVar4 != (id)0x1) goto LAB_0012c9ef;
-    bVar1 = true;
-  }
-  pvVar4 = _objc_msgSend(self,sel_animation);
-  pvVar4 = _objc_msgSend(pvVar4,sel_playBackAndForth);
-  if ((char)pvVar4 == '\0') {
-LAB_0012ca4f:
-    bVar2 = false;
-  }
-  else {
-    pvVar4 = _objc_msgSend(self,sel_animation);
-    pvVar4 = _objc_msgSend(pvVar4,sel_playbackDirection);
-    if (pvVar4 != (id)0x0) goto LAB_0012ca4f;
-    bVar2 = true;
-  }
-  bVar7 = (char)pvVar5 == '\0';
-  _objc_msgSend(self->_horizontalFlipAtStartButton,sel_setEnabled_,(uint)(bVar1 && !bVar7));
-  _objc_msgSend(self->_verticalFlipAtStartButton,sel_setEnabled_,bVar1 && cVar3 != '\0');
-  _objc_msgSend(self->_horizontalFlipAtFinishButton,sel_setEnabled_,
-                CONCAT11(bVar2,!bVar7 && bVar2) & 0xff);
-  uVar8 = (uint)(bVar2 && cVar3 != '\0');
-  _objc_msgSend(self->_verticalFlipAtFinishButton,sel_setEnabled_,uVar8);
-  pvVar4 = self->_horizontalFlipAtStartButton;
-  if ((bool)(bVar1 ^ 1U) || bVar7) {
-LAB_0012cb43:
-    uVar6 = 0;
-  }
-  else {
-    pvVar5 = _objc_msgSend(self,sel_animation,uVar8);
-    pvVar5 = _objc_msgSend(pvVar5,sel_horizontalFlipAtStart);
-    if ((char)pvVar5 == '\0') goto LAB_0012cb43;
-    uVar6 = 1;
-  }
-  _objc_msgSend(pvVar4,sel_setState_,uVar6);
-  pvVar4 = self->_verticalFlipAtStartButton;
-  if ((bool)(bVar1 ^ 1U) || cVar3 == '\0') {
-LAB_0012cba2:
-    uVar6 = 0;
-  }
-  else {
-    pvVar5 = _objc_msgSend(self,sel_animation,uVar6);
-    pvVar5 = _objc_msgSend(pvVar5,sel_verticalFlipAtStart);
-    if ((char)pvVar5 == '\0') goto LAB_0012cba2;
-    uVar6 = 1;
-  }
-  _objc_msgSend(pvVar4,sel_setState_,uVar6);
-  pvVar4 = self->_horizontalFlipAtFinishButton;
-  if (bVar7 || (bool)(bVar2 ^ 1U)) {
-LAB_0012cc02:
-    uVar6 = 0;
-  }
-  else {
-    pvVar5 = _objc_msgSend(self,sel_animation,uVar6);
-    pvVar5 = _objc_msgSend(pvVar5,sel_horizontalFlipAtFinish);
-    if ((char)pvVar5 == '\0') goto LAB_0012cc02;
-    uVar6 = 1;
-  }
-  _objc_msgSend(pvVar4,sel_setState_,uVar6);
-  pvVar4 = self->_verticalFlipAtFinishButton;
-  if (!(bool)(bVar2 ^ 1U) && cVar3 != '\0') {
-    pvVar5 = _objc_msgSend(self,sel_animation,uVar6);
-    pvVar5 = _objc_msgSend(pvVar5,sel_verticalFlipAtFinish);
-    if ((char)pvVar5 != '\0') {
-      uVar6 = 1;
-      goto LAB_0012cc5c;
-    }
-  }
-  uVar6 = 0;
-LAB_0012cc5c:
-  _objc_msgSend(pvVar4,sel_setState_,uVar6);
-  return;
-}
-
-*/
 - (void)updateFlipsUI
 {
     id geometry = [[[self animation] animatedObject] queryHyperInterface:@protocol(HSGeometryBehaviorAttributes)];
@@ -677,85 +291,6 @@ LAB_0012cc5c:
     [_verticalFlipAtFinishButton setState:(atFinish && canFlipVertically && [[self animation] verticalFlipAtFinish]) ? 1 : 0];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012c5ad @ 0012c5ad, 875 bytes * /
-
-void FUN_0012c5ad(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  id pvVar4;
-  id pvVar5;
-  id self_00;
-  SEL pcVar6;
-  cfstringStruct *pcVar7;
-  cfstringStruct *pcVar8;
-  cfstringStruct *pcVar9;
-  
-  pvVar1 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pcVar8 = &cfstr_empty;
-  pvVar1 = _objc_msgSend(pvVar1,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationBeginPathToolTip,&cfstr_empty,&cfstr_AssistantPanes);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pcVar9 = &cfstr_AssistantPanes;
-  pcVar7 = &cfstr_HSAnimationEndPathToolTip;
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,
-                         &cfstr_HSAnimationEndPathToolTip,&cfstr_empty,&cfstr_AssistantPanes);
-  pvVar3 = _objc_msgSend(self,sel_animation);
-  pvVar3 = _objc_msgSend(pvVar3,sel_playbackDirection);
-  if (pvVar3 == (id)0x0) {
-    pvVar3 = self->_beginArrowButton;
-    pvVar4 = _objc_msgSend(self,sel_class,pcVar7,pcVar8,pcVar9);
-    pvVar4 = _objc_msgSend(pvVar4,sel_leftStartImage);
-    _objc_msgSend(pvVar3,sel_setImage_,pvVar4);
-    pvVar3 = self->_endArrowButton;
-    pvVar5 = _objc_msgSend(self,sel_animation);
-    pvVar5 = _objc_msgSend(pvVar5,sel_playBackAndForth);
-    self_00 = _objc_msgSend(self,sel_class);
-    pcVar6 = sel_rightEndImage;
-    if ((char)pvVar5 != '\0') {
-      pcVar6 = sel_rightTurnImage;
-    }
-    pvVar4 = _objc_msgSend(self_00,pcVar6,pvVar4);
-    _objc_msgSend(pvVar3,sel_setImage_,pvVar4);
-    _objc_msgSend(self->_beginArrowButton,sel_setEnabled_,0);
-    _objc_msgSend(self->_endArrowButton,sel_setEnabled_,1);
-    _objc_msgSend(self->_beginArrowButton,sel_setToolTip_,pvVar1);
-    pvVar3 = self->_endArrowButton;
-    pvVar1 = pvVar2;
-  }
-  else {
-    pvVar3 = _objc_msgSend(self,sel_animation,pcVar7,pcVar8,pcVar9);
-    pvVar3 = _objc_msgSend(pvVar3,sel_playbackDirection);
-    if (pvVar3 != (id)0x1) {
-      return;
-    }
-    pvVar3 = self->_beginArrowButton;
-    pvVar4 = _objc_msgSend(self,sel_animation);
-    pvVar4 = _objc_msgSend(pvVar4,sel_playBackAndForth);
-    pvVar5 = _objc_msgSend(self,sel_class);
-    pcVar6 = sel_leftEndImage;
-    if ((char)pvVar4 != '\0') {
-      pcVar6 = sel_leftTurnImage;
-    }
-    pvVar4 = _objc_msgSend(pvVar5,pcVar6);
-    _objc_msgSend(pvVar3,sel_setImage_,pvVar4);
-    pvVar3 = self->_endArrowButton;
-    pvVar4 = _objc_msgSend(self,sel_class);
-    pvVar4 = _objc_msgSend(pvVar4,sel_rightStartImage);
-    _objc_msgSend(pvVar3,sel_setImage_,pvVar4);
-    _objc_msgSend(self->_beginArrowButton,sel_setEnabled_,1);
-    _objc_msgSend(self->_endArrowButton,sel_setEnabled_,0);
-    _objc_msgSend(self->_beginArrowButton,sel_setToolTip_,pvVar2);
-    pvVar3 = self->_endArrowButton;
-  }
-  _objc_msgSend(pvVar3,sel_setToolTip_,pvVar1);
-  return;
-}
-
-*/
 - (void)updateBeginAndEndArrows
 {
     NSString *beginToolTip = [[NSBundle mainBundle] localizedStringForKey:@"HSAnimationBeginPathToolTip" value:@"" table:@"AssistantPanes"];
@@ -779,34 +314,6 @@ void FUN_0012c5ad(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012c456 @ 0012c456, 343 bytes * /
-
-void FUN_0012c456(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int setLayer)
-
-{
-  id pvVar1;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_Change_Options,
-                         &cfstr_empty,&cfstr_UndoManager);
-  _objc_msgSend(pvVar1,sel_setActionName_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_prepareWithInvocationTarget_,self);
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_layer);
-  _objc_msgSend(pvVar1,sel_setLayer_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoHelper);
-  _objc_msgSend(pvVar1,sel_duplicateAction);
-  pvVar1 = _objc_msgSend(self,sel_allAnimations);
-  _objc_msgSend(pvVar1,sel_setLayer_,setLayer);
-  _objc_msgSend(self,sel_updatePathOptionsUI);
-  return;
-}
-
-*/
 - (void)setLayer:(NSInteger)aLayer
 {
     [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
@@ -834,81 +341,11 @@ void FUN_0012c456(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int setLayer)
     [self updatePathOptionsUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012c363 @ 0012c363, 94 bytes * /
-
-void FUN_0012c363(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMoveValueFromPopUpButton
-                 )
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(changeMoveValueFromPopUpButton,sel_selectedItem);
-  pvVar1 = _objc_msgSend(pvVar1,sel_tag);
-  _objc_msgSend(self,sel_setSpeedMultiplier_,(&DAT_00335300)[(int)pvVar1]);
-  return;
-}
-
-*/
 - (void)changeMoveValueFromPopUpButton:(id)aButton
 {
     [self setSpeedMultiplier:HSAnimationSetupSpeedMultipliers[[[aButton selectedItem] tag]]];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012e38f @ 0012e38f, 499 bytes * /
-
-void FUN_0012e38f(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int setClampedDuration,
-                 int timesPerSecond)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id self_00;
-  double dVar3;
-  undefined8 uVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_Change_Options,
-                         &cfstr_empty,&cfstr_UndoManager);
-  _objc_msgSend(pvVar1,sel_setActionName_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_prepareWithInvocationTarget_,self);
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_timesPerSecond);
-  self_00 = _objc_msgSend(self,sel_animation);
-  dVar3 = _objc_msgSend_fpret(self_00,sel_clampedDuration);
-  uVar4 = CONCAT44(pvVar2,(int)dVar3);
-  _objc_msgSend(pvVar1,sel_setClampedDuration_timesPerSecond_,(int)dVar3,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoHelper);
-  _objc_msgSend(pvVar1,sel_duplicateAction);
-  if (setClampedDuration < 10000) {
-    if (setClampedDuration < 1) {
-      setClampedDuration = 1;
-    }
-  }
-  else {
-    setClampedDuration = (int)&DAT_0000270f;
-  }
-  pvVar1 = _objc_msgSend(self,sel_allAnimations,uVar4);
-  dVar3 = (double)setClampedDuration;
-  _objc_msgSend(pvVar1,sel_setClampedDuration_,dVar3);
-  if (timesPerSecond < 100) {
-    if (timesPerSecond < 1) {
-      timesPerSecond = 1;
-    }
-  }
-  else {
-    timesPerSecond = 99;
-  }
-  pvVar1 = _objc_msgSend(self,sel_allAnimations,dVar3);
-  _objc_msgSend(pvVar1,sel_setTimesPerSecond_,timesPerSecond);
-  _objc_msgSend(self,sel_updatePathOptionsUI);
-  return;
-}
-
-*/
 - (void)setClampedDuration:(NSInteger)aDuration timesPerSecond:(NSInteger)aSecond
 {
     [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
@@ -933,41 +370,6 @@ void FUN_0012e38f(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int setClampe
     [self updatePathOptionsUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012e582 @ 0012e582, 328 bytes * /
-
-void FUN_0012e582(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMoveValue)
-
-{
-  id pvVar1;
-  id pvVar2;
-  double dVar3;
-  id local_28;
-  
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  dVar3 = _objc_msgSend_fpret(pvVar1,sel_clampedDuration);
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  local_28 = _objc_msgSend(pvVar1,sel_timesPerSecond);
-  pvVar1 = (id)(int)dVar3;
-  if (self->_moveValueStepper != changeMoveValue) {
-    _objc_msgSend(self->_moveValuePopUpButton,sel_takeIntValueFrom_,changeMoveValue);
-  }
-  if (self->_moveValueTextField != changeMoveValue) {
-    _objc_msgSend(self->_moveValueTextField,sel_takeIntValueFrom_,changeMoveValue);
-  }
-  pvVar2 = _objc_msgSend(self->_movePopUpButton,sel_selectedCell);
-  pvVar2 = _objc_msgSend(pvVar2,sel_tag);
-  if (pvVar2 == (id)0x1) {
-    pvVar1 = _objc_msgSend(changeMoveValue,sel_intValue);
-  }
-  else if (pvVar2 == (id)0x2) {
-    local_28 = _objc_msgSend(changeMoveValue,sel_intValue);
-  }
-  _objc_msgSend(self,sel_setClampedDuration_timesPerSecond_,pvVar1,local_28);
-  return;
-}
-
-*/
 - (void)changeMoveValue:(id)aValue
 {
     NSInteger duration = (int)[[self animation] clampedDuration];
@@ -996,11 +398,6 @@ void FUN_0012e582(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMove
     [[self undoHelper] duplicateAction];
     [[self allAnimations] setSpeedMode:aMode];
     [self updatePathOptionsUI];
-}
-
-- (void)changeMove:(id)aMove
-{
-    [self setSpeedMode:[[aMove selectedCell] tag]];
 }
 
 - (void)setDontEraseReturning:(BOOL)aReturning
@@ -1045,36 +442,6 @@ void FUN_0012e582(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMove
     [self HSAnimationSetupMainAssistantPane_validateReturningAbsoluteLayerGUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012bbf9 @ 0012bbf9, 238 bytes * /
-
-void FUN_0012bbf9(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar1,sel_returningAbsoluteLayer);
-  pvVar1 = self->_returningImageView;
-  pvVar3 = _objc_msgSend(self,sel_class);
-  op = sel_noFloatOverImage;
-  if (pvVar2 != (id)0x0) {
-    op = sel_floatOverImage;
-  }
-  pvVar3 = _objc_msgSend(pvVar3,op);
-  _objc_msgSend(pvVar1,sel_setImage_,pvVar3);
-  _objc_msgSend(self->_floatOverReturningButton,sel_selectItemWithTag_,pvVar2);
-  pvVar1 = self->_floatOverReturningButton;
-  pvVar2 = _objc_msgSend(pvVar1,sel_selectedItem);
-  pvVar2 = _objc_msgSend(pvVar2,sel_toolTip);
-  _objc_msgSend(pvVar1,sel_setToolTip_,pvVar2);
-  return;
-}
-
-*/
 - (void)HSAnimationSetupMainAssistantPane_validateReturningAbsoluteLayerGUI
 {
     NSInteger layer = [[self animation] returningAbsoluteLayer];
@@ -1097,36 +464,6 @@ void FUN_0012bbf9(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
     [self HSAnimationSetupMainAssistantPane_validateGoingAbsoluteLayerGUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012b961 @ 0012b961, 238 bytes * /
-
-void FUN_0012b961(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar1,sel_goingAbsoluteLayer);
-  pvVar1 = self->_goingImageView;
-  pvVar3 = _objc_msgSend(self,sel_class);
-  op = sel_noFloatOverImage;
-  if (pvVar2 != (id)0x0) {
-    op = sel_floatOverImage;
-  }
-  pvVar3 = _objc_msgSend(pvVar3,op);
-  _objc_msgSend(pvVar1,sel_setImage_,pvVar3);
-  _objc_msgSend(self->_floatOverGoingButton,sel_selectItemWithTag_,pvVar2);
-  pvVar1 = self->_floatOverGoingButton;
-  pvVar2 = _objc_msgSend(pvVar1,sel_selectedItem);
-  pvVar2 = _objc_msgSend(pvVar2,sel_toolTip);
-  _objc_msgSend(pvVar1,sel_setToolTip_,pvVar2);
-  return;
-}
-
-*/
 - (void)HSAnimationSetupMainAssistantPane_validateGoingAbsoluteLayerGUI
 {
     NSInteger layer = [[self animation] goingAbsoluteLayer];
@@ -1147,7 +484,7 @@ void FUN_0012b961(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
     [[self undoHelper] duplicateAction];
     [[self allAnimations] setPlaybackDirection:aDirection];
     [self updatePathOptionsUI];
-    [_delegate updatePathInEditPathTool];
+    [self updatePathInEditPathTool];
 }
 
 - (void)toggleStartHere:(id)aHere
@@ -1235,476 +572,11 @@ void FUN_0012b961(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012e6ca @ 0012e6ca, 2455 bytes * /
-
-void FUN_0012e6ca(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  char cVar1;
-  id pvVar2;
-  id pvVar3;
-  undefined4 uVar4;
-  id pvVar5;
-  int iVar6;
-  uint uVar7;
-  char cVar8;
-  uint uVar9;
-  int iVar10;
-  double dVar11;
-  SEL op;
-  undefined8 in_stack_ffffffbc;
-  longlong lVar12;
-  undefined8 uVar13;
-  ulonglong uVar14;
-  undefined4 uVar15;
-  
-  uVar15 = (undefined4)((ulonglong)in_stack_ffffffbc >> 0x20);
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_playMovie);
-  cVar8 = (char)pvVar2;
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_isOnePointPathAnimation);
-  cVar1 = (char)pvVar2;
-  uVar7 = (uint)(cVar1 == '\0');
-  lVar12 = CONCAT44(uVar15,uVar7);
-  _objc_msgSend(self->_segmentedControl,sel_setEnabled_,uVar7);
-  if (cVar1 != '\0') {
-    pvVar2 = self->_mainOptionsView;
-    _objc_msgSend(self->_optionsView,sel_replaceSubview_with_,self->_pathOptionsView,pvVar2);
-    lVar12 = ZEXT48(pvVar2) << 0x20;
-    _objc_msgSend(self->_segmentedControl,sel_selectCellWithTag_,0);
-  }
-  pvVar2 = _objc_msgSend(self,sel_animation,lVar12);
-  uVar15 = (undefined4)((ulonglong)lVar12 >> 0x20);
-  pvVar2 = _objc_msgSend(pvVar2,sel_animatedObject);
-  uVar9 = (uint)(pvVar2 != (id)0x0);
-  _objc_msgSend(self->_mainPlayStopButton,sel_setEnabled_,uVar9);
-  uVar13 = CONCAT44(uVar15,uVar9);
-  _objc_msgSend(self->_newPathButton,sel_setEnabled_,uVar9);
-  if (pvVar2 == (id)0x0) {
-LAB_0012e841:
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    uVar4 = 1;
-  }
-  else {
-    pvVar3 = _objc_msgSend(self,sel_animation,uVar13);
-    pvVar3 = _objc_msgSend(pvVar3,sel_hideOnFirstFrame);
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    if ((char)pvVar3 == '\0') goto LAB_0012e841;
-    uVar4 = 0;
-  }
-  _objc_msgSend(self->_showFirstFrameButton,sel_setState_,uVar4);
-  uVar13 = CONCAT44(uVar15,uVar9);
-  _objc_msgSend(self->_showFirstFrameButton,sel_setEnabled_,uVar9);
-  if (pvVar2 == (id)0x0) {
-LAB_0012e8b6:
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    uVar4 = 0;
-  }
-  else {
-    pvVar3 = _objc_msgSend(self,sel_animation,uVar13);
-    pvVar3 = _objc_msgSend(pvVar3,sel_hideOnLastFrame);
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    if ((char)pvVar3 == '\0') goto LAB_0012e8b6;
-    uVar4 = 1;
-  }
-  _objc_msgSend(self->_eraseWhenDoneButton,sel_setState_,uVar4);
-  _objc_msgSend(self->_eraseWhenDoneButton,sel_setEnabled_,uVar9);
-  pvVar3 = _objc_msgSend(self->_matchToMovementMatrix,sel_cellWithTag_,0);
-  _objc_msgSend(pvVar3,sel_setEnabled_,(uint)(cVar1 == '\0' && (pvVar2 != (id)0x0 && cVar8 != '\0'))
-               );
-  pvVar3 = _objc_msgSend(self->_matchToMovementMatrix,sel_cellWithTag_,1);
-  iVar6 = (int)cVar8;
-  uVar13 = CONCAT44(uVar15,iVar6);
-  _objc_msgSend(pvVar3,sel_setEnabled_,iVar6,uVar15,iVar6);
-  pvVar3 = self->_matchToMovementMatrix;
-  if (cVar8 == '\0') {
-LAB_0012e992:
-    uVar9 = 1;
-  }
-  else {
-    pvVar5 = _objc_msgSend(self,sel_animation,uVar13);
-    pvVar5 = _objc_msgSend(pvVar5,sel_matchToMovement);
-    if ((char)pvVar5 == '\0') goto LAB_0012e992;
-    uVar9 = 0;
-  }
-  uVar14 = (ulonglong)uVar9;
-  _objc_msgSend(pvVar3,sel_selectCellAtRow_column_,uVar9,0);
-  if ((pvVar2 == (id)0x0) || (cVar1 != '\0')) {
-LAB_0012ea0d:
-    uVar15 = (undefined4)(uVar14 >> 0x20);
-    cVar1 = '\0';
-  }
-  else {
-    pvVar3 = _objc_msgSend(self,sel_isMovieAnimation,uVar14);
-    uVar15 = (undefined4)(uVar14 >> 0x20);
-    if ((char)pvVar3 != '\0') goto LAB_0012ea0d;
-    cVar1 = '\x01';
-  }
-  _objc_msgSend(self->_allowClonesButton,sel_setEnabled_,(int)cVar1);
-  pvVar3 = self->_allowClonesButton;
-  pvVar5 = _objc_msgSend(self,sel_animation);
-  pvVar5 = _objc_msgSend(pvVar5,sel_useClones);
-  uVar9 = (uint)((char)pvVar5 != '\0');
-  uVar13 = CONCAT44(uVar15,uVar9);
-  _objc_msgSend(pvVar3,sel_setState_,uVar9);
-  if (pvVar2 != (id)0x0 && cVar8 != '\0') {
-    pvVar3 = _objc_msgSend(self,sel_animation,uVar13);
-    pvVar3 = _objc_msgSend(pvVar3,sel_matchToMovement);
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    if ((char)pvVar3 != '\0') goto LAB_0012eab0;
-    cVar8 = '\x01';
-  }
-  else {
-LAB_0012eab0:
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    cVar8 = '\0';
-  }
-  iVar10 = (int)cVar8;
-  _objc_msgSend(self->_movieSpeedTextField,sel_setEnabled_,iVar10);
-  uVar13 = CONCAT44(uVar15,iVar10);
-  _objc_msgSend(self->_movieSpeedStepper,sel_setEnabled_,iVar10);
-  if (cVar8 == '\0') {
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    _objc_msgSend(self->_movieSpeedTextField,sel_setStringValue_,&cfstr_empty);
-  }
-  else {
-    pvVar3 = _objc_msgSend(self,sel_animation,uVar13);
-    dVar11 = _objc_msgSend_fpret(pvVar3,sel_movieSpeed);
-    _objc_msgSend(self->_movieSpeedTextField,sel_setDoubleValue_,dVar11);
-    _objc_msgSend(self->_movieSpeedStepper,sel_setDoubleValue_,dVar11);
-    uVar15 = (undefined4)((ulonglong)dVar11 >> 0x20);
-  }
-  pvVar3 = self->_playForPopUpButton;
-  pvVar5 = _objc_msgSend(pvVar3,sel_indexOfItemWithTag_,2);
-  pvVar3 = _objc_msgSend(pvVar3,sel_itemAtIndex_,pvVar5);
-  _objc_msgSend(pvVar3,sel_setEnabled_,iVar6);
-  pvVar3 = self->_playForPopUpButton;
-  pvVar5 = _objc_msgSend(pvVar3,sel_indexOfItemWithTag_,1);
-  pvVar3 = _objc_msgSend(pvVar3,sel_itemAtIndex_,pvVar5);
-  uVar13 = CONCAT44(uVar15,uVar7);
-  _objc_msgSend(pvVar3,sel_setEnabled_,uVar7);
-  if (pvVar2 == (id)0x0) {
-LAB_0012ec6a:
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    cVar8 = '\0';
-  }
-  else {
-    pvVar2 = _objc_msgSend(self,sel_animation,uVar13);
-    pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    if (pvVar2 == (id)0x1) goto LAB_0012ec6a;
-    cVar8 = '\x01';
-  }
-  iVar6 = (int)cVar8;
-  _objc_msgSend(self->_playForValueTextField,sel_setEnabled_,iVar6);
-  uVar13 = CONCAT44(uVar15,iVar6);
-  _objc_msgSend(self->_playForValueStepper,sel_setEnabled_,iVar6);
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-  if (pvVar2 == (id)0x3) {
-    uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-    _objc_msgSend(self,sel_playForPopUpButtonSelectItemWithTag_,0);
-    pvVar2 = self->_playForValueTextField;
-    pvVar3 = _objc_msgSend(self,sel_animation);
-    dVar11 = _objc_msgSend_fpret(pvVar3,sel_loopSeconds);
-    uVar13 = CONCAT44(uVar15,(int)dVar11);
-    _objc_msgSend(pvVar2,sel_setIntValue_,(int)dVar11);
-    goto LAB_0012ef60;
-  }
-  pvVar2 = _objc_msgSend(self,sel_animation,uVar13);
-  pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-  if (pvVar2 == (id)0x0) {
-LAB_0012ed95:
-    uVar13 = CONCAT44((int)((ulonglong)uVar13 >> 0x20),1);
-    _objc_msgSend(self,sel_playForPopUpButtonSelectItemWithTag_,1);
-    pvVar2 = _objc_msgSend(self,sel_animation);
-    pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-    if (pvVar2 == (id)0x0) {
-      pvVar2 = self->_playForValueTextField;
-      uVar13 = CONCAT44((int)((ulonglong)uVar13 >> 0x20),1);
-      op = sel_setIntValue_;
-    }
-    else {
-      pvVar2 = _objc_msgSend(self,sel_animation,uVar13);
-      pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-      if (pvVar2 != (id)0x2) goto LAB_0012ef60;
-      pvVar2 = self->_playForValueTextField;
-      pvVar3 = _objc_msgSend(self,sel_animation);
-      uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-      pvVar3 = _objc_msgSend(pvVar3,sel_loopPathRepeats);
-      uVar13 = CONCAT44(uVar15,pvVar3);
-      op = sel_setIntValue_;
-    }
-  }
-  else {
-    pvVar2 = _objc_msgSend(self,sel_animation);
-    pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-    if (pvVar2 == (id)0x2) goto LAB_0012ed95;
-    pvVar2 = _objc_msgSend(self,sel_animation);
-    pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-    if (pvVar2 == (id)0x4) {
-      uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-      _objc_msgSend(self,sel_playForPopUpButtonSelectItemWithTag_,2);
-      pvVar2 = self->_playForValueTextField;
-      pvVar3 = _objc_msgSend(self,sel_animation);
-      pvVar3 = _objc_msgSend(pvVar3,sel_loopFrameRepeats);
-      uVar13 = CONCAT44(uVar15,pvVar3);
-      op = sel_setIntValue_;
-    }
-    else {
-      pvVar2 = _objc_msgSend(self,sel_animation);
-      pvVar2 = _objc_msgSend(pvVar2,sel_loopMode);
-      if (pvVar2 != (id)0x1) goto LAB_0012ef60;
-      uVar15 = (undefined4)((ulonglong)uVar13 >> 0x20);
-      _objc_msgSend(self,sel_playForPopUpButtonSelectItemWithTag_,3);
-      pvVar2 = self->_playForValueTextField;
-      uVar13 = CONCAT44(uVar15,&cfstr_empty);
-      op = sel_setStringValue_;
-    }
-  }
-  _objc_msgSend(pvVar2,op,uVar13);
-LAB_0012ef60:
-  pvVar2 = self->_playForValueStepper;
-  pvVar3 = _objc_msgSend(self->_playForValueTextField,sel_intValue,uVar13);
-  _objc_msgSend(pvVar2,sel_setIntValue_,pvVar3);
-  _objc_msgSend(self,sel_transparentColorValidate);
-  pvVar2 = _objc_msgSend(self,sel_animation);
-  pvVar2 = _objc_msgSend(pvVar2,sel_animatedObject);
-  pvVar3 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_003726f8);
-  pvVar2 = self->_horizontalFlipButton;
-  pvVar5 = _objc_msgSend(pvVar3,sel_canFlipHorizontally);
-  _objc_msgSend(pvVar2,sel_setEnabled_,(int)(char)pvVar5);
-  pvVar2 = self->_verticalFlipButton;
-  pvVar3 = _objc_msgSend(pvVar3,sel_canFlipVertically);
-  _objc_msgSend(pvVar2,sel_setEnabled_,(int)(char)pvVar3);
-  return;
-}
-
-*/
-- (void)updateMainOptionsUI
-{
-    BOOL playMovie = [[self animation] playMovie];
-    BOOL onePoint = [[self animation] isOnePointPathAnimation];
-    [_segmentedControl setEnabled:!onePoint];
-    if (onePoint) {
-        [_optionsView replaceSubview:_pathOptionsView with:_mainOptionsView];
-        [_segmentedControl selectCellWithTag:0];
-    }
-    id animatedObject = [[self animation] animatedObject];
-    BOOL hasObject = animatedObject != nil;
-    [_mainPlayStopButton setEnabled:hasObject];
-    [_newPathButton setEnabled:hasObject];
-    [_showFirstFrameButton setState:(hasObject && [[self animation] hideOnFirstFrame]) ? 0 : 1];
-    [_showFirstFrameButton setEnabled:hasObject];
-    [_eraseWhenDoneButton setState:(hasObject && [[self animation] hideOnLastFrame]) ? 1 : 0];
-    [_eraseWhenDoneButton setEnabled:hasObject];
-    [[_matchToMovementMatrix cellWithTag:0] setEnabled:!onePoint && hasObject && playMovie];
-    [[_matchToMovementMatrix cellWithTag:1] setEnabled:playMovie];
-    [_matchToMovementMatrix selectCellAtRow:(playMovie && [[self animation] matchToMovement]) ? 0 : 1 column:0];
-    [_allowClonesButton setEnabled:hasObject && !onePoint && ![self isMovieAnimation]];
-    [_allowClonesButton setState:[[self animation] useClones] ? 1 : 0];
-    BOOL editsSpeed = hasObject && playMovie && ![[self animation] matchToMovement];
-    [_movieSpeedTextField setEnabled:editsSpeed];
-    [_movieSpeedStepper setEnabled:editsSpeed];
-    if (editsSpeed) {
-        double speed = [[self animation] movieSpeed];
-        [_movieSpeedTextField setDoubleValue:speed];
-        [_movieSpeedStepper setDoubleValue:speed];
-    }
-    else {
-        [_movieSpeedTextField setStringValue:@""];
-    }
-    [[_playForPopUpButton itemAtIndex:[_playForPopUpButton indexOfItemWithTag:2]] setEnabled:playMovie];
-    [[_playForPopUpButton itemAtIndex:[_playForPopUpButton indexOfItemWithTag:1]] setEnabled:!onePoint];
-    BOOL editsPlayFor = hasObject && [[self animation] loopMode] != 1;
-    [_playForValueTextField setEnabled:editsPlayFor];
-    [_playForValueStepper setEnabled:editsPlayFor];
-    // Loop modes: 0 none, 1 forever, 2 path repeats, 3 seconds, 4 frame repeats.
-    NSInteger loopMode = [[self animation] loopMode];
-    if (loopMode == 3) {
-        [self playForPopUpButtonSelectItemWithTag:0];
-        [_playForValueTextField setIntValue:(int)[[self animation] loopSeconds]];
-    }
-    else if (loopMode == 0 || loopMode == 2) {
-        [self playForPopUpButtonSelectItemWithTag:1];
-        if ([[self animation] loopMode] == 0) {
-            [_playForValueTextField setIntValue:1];
-        }
-        else if ([[self animation] loopMode] == 2) {
-            [_playForValueTextField setIntValue:(int)[[self animation] loopPathRepeats]];
-        }
-    }
-    else if (loopMode == 4) {
-        [self playForPopUpButtonSelectItemWithTag:2];
-        [_playForValueTextField setIntValue:(int)[[self animation] loopFrameRepeats]];
-    }
-    else if (loopMode == 1) {
-        [self playForPopUpButtonSelectItemWithTag:3];
-        [_playForValueTextField setStringValue:@""];
-    }
-    [_playForValueStepper setIntValue:[_playForValueTextField intValue]];
-    [self transparentColorValidate];
-    id geometry = [[[self animation] animatedObject] queryHyperInterface:@protocol(HSGeometryBehaviorAttributes)];
-    [_horizontalFlipButton setEnabled:[geometry canFlipHorizontally]];
-    [_verticalFlipButton setEnabled:[geometry canFlipVertically]];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012ac83 @ 0012ac83, 637 bytes * /
-
-void FUN_0012ac83(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  id pvVar1;
-  id pvVar2;
-  undefined *puVar3;
-  undefined4 uVar4;
-  
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  pvVar1 = _objc_msgSend(pvVar1,sel_animatedObject);
-  pvVar2 = _objc_msgSend(pvVar1,sel_implementsHyperInterface_,&DAT_0037243c);
-  if ((char)pvVar2 == '\0') {
-LAB_0012ae5c:
-    _objc_msgSend(self->_transparentColorPickerButton,sel_setEnabled_,0);
-    _objc_msgSend(self->_transparentColorPickerButton,sel_setState_,0);
-    pvVar1 = self->_transparentColorPickerButton;
-    pvVar2 = _objc_msgSend(self->_transparentColorButton,sel_title);
-    _objc_msgSend(pvVar1,sel_setTitle_,pvVar2);
-    _objc_msgSend(self->_transparentColorPickerButton,sel_sizeToFit);
-    pvVar1 = self->_transparentColorButton;
-  }
-  else {
-    puVar3 = &DAT_003724f0;
-    pvVar1 = _objc_msgSend(pvVar1,sel_queryHyperInterface_,&DAT_003724f0);
-    if (pvVar1 != (id)0x0) {
-      pvVar2 = _objc_msgSend(pvVar1,sel_isHyperQTVR,puVar3);
-      if ((char)pvVar2 == '\0') {
-        pvVar1 = _objc_msgSend(pvVar1,sel_isHyperPanoramaObject,puVar3);
-        if ((char)pvVar1 == '\0') goto LAB_0012ad35;
-      }
-      goto LAB_0012ae5c;
-    }
-LAB_0012ad35:
-    pvVar1 = _objc_msgSend(self,sel_allAnimations,puVar3);
-    pvVar1 = _objc_msgSend(pvVar1,sel_usesTransparentColor);
-    if ((char)pvVar1 != '\0') {
-      _objc_msgSend(self->_transparentColorPickerButton,sel_setState_,1);
-      _objc_msgSend(self->_transparentColorPickerButton,sel_setTitle_,&cfstr_empty);
-      _objc_msgSend(self->_transparentColorPickerButton,sel_sizeToFit);
-      pvVar1 = self->_transparentColorButton;
-      uVar4 = 0;
-      goto LAB_0012ae4f;
-    }
-    _objc_msgSend(self->_transparentColorPickerButton,sel_setState_,0);
-    pvVar1 = self->_transparentColorPickerButton;
-    pvVar2 = _objc_msgSend(self->_transparentColorButton,sel_title);
-    _objc_msgSend(pvVar1,sel_setTitle_,pvVar2);
-    _objc_msgSend(self->_transparentColorPickerButton,sel_sizeToFit);
-    pvVar1 = self->_transparentColorButton;
-  }
-  uVar4 = 1;
-LAB_0012ae4f:
-  _objc_msgSend(pvVar1,sel_setHidden_,uVar4);
-  return;
-}
-
-*/
-- (void)transparentColorValidate
-{
-    id animatedObject = [[self animation] animatedObject];
-    BOOL supported = [animatedObject implementsHyperInterface:@protocol(HSTransparentColorAttributes)];
-    if (supported) {
-        id movie = [animatedObject queryHyperInterface:@protocol(HSMovieObjectAttributes)];
-        if (movie != nil && ([movie isHyperQTVR] || [movie isHyperPanoramaObject])) {
-            supported = NO;
-        }
-    }
-    if (!supported) {
-        [_transparentColorPickerButton setEnabled:NO];
-        [_transparentColorPickerButton setState:0];
-        [_transparentColorPickerButton setTitle:[_transparentColorButton title]];
-        [_transparentColorPickerButton sizeToFit];
-        [_transparentColorButton setHidden:YES];
-        return;
-    }
-    if ([[self allAnimations] usesTransparentColor]) {
-        [_transparentColorPickerButton setState:1];
-        [_transparentColorPickerButton setTitle:@""];
-        [_transparentColorPickerButton sizeToFit];
-        [_transparentColorButton setHidden:NO];
-    }
-    else {
-        [_transparentColorPickerButton setState:0];
-        [_transparentColorPickerButton setTitle:[_transparentColorButton title]];
-        [_transparentColorPickerButton sizeToFit];
-        [_transparentColorButton setHidden:YES];
-    }
-}
-
 - (void)toggleTransparentColor:(id)aColor
 {
     [self toggleTransparentColorToValue:(unsigned int)([aColor state] == 0x1)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012aa38 @ 0012aa38, 513 bytes * /
-
-void FUN_0012aa38(HSAnimationSetupMainAssistantPane *self,SEL _cmd,
-                 BOOL toggleTransparentColorToValue)
-
-{
-  bool bVar1;
-  id pvVar2;
-  id pvVar3;
-  HSAnimationSetupMainAssistantPane *self_00;
-  SEL op;
-  undefined4 uVar4;
-  
-  if (toggleTransparentColorToValue != '\0') {
-    pvVar2 = _objc_msgSend(self,sel_allAnimations);
-    pvVar2 = _objc_msgSend(pvVar2,sel_transparentColor);
-    if (pvVar2 == (id)0x0) {
-      bVar1 = false;
-      goto LAB_0012ab7a;
-    }
-  }
-  pvVar2 = _objc_msgSend(self,sel_undoManager);
-  pvVar3 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar3 = _objc_msgSend(pvVar3,sel_localizedStringForKey_value_table_,&cfstr_Change_Options,
-                         &cfstr_empty,&cfstr_UndoManager);
-  _objc_msgSend(pvVar2,sel_setActionName_,pvVar3);
-  pvVar2 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(pvVar2,sel_prepareWithInvocationTarget_,self);
-  _objc_msgSend(pvVar2,sel_toggleTransparentColorToValue_,
-                (uint)(toggleTransparentColorToValue == '\0'));
-  pvVar2 = _objc_msgSend(self,sel_undoHelper);
-  _objc_msgSend(pvVar2,sel_duplicateAction);
-  _objc_msgSend(self,sel_disableAnimationsUndo);
-  bVar1 = true;
-LAB_0012ab7a:
-  self_00 = _objc_msgSend(self,sel_allAnimations);
-  op = sel_setUsesTransparentColor_;
-  if ((toggleTransparentColorToValue == '\0') ||
-     (pvVar2 = _objc_msgSend(self_00,sel_transparentColor), self_00 = self,
-     op = sel_changeTransparentColor_, pvVar2 == (id)0x0)) {
-    uVar4 = 0;
-  }
-  else {
-    self_00 = _objc_msgSend(self,sel_allAnimations);
-    uVar4 = 1;
-    op = sel_setUsesTransparentColor_;
-  }
-  _objc_msgSend(self_00,op,uVar4);
-  if (bVar1) {
-    _objc_msgSend(self,sel_enableAnimationsUndo,uVar4);
-  }
-  _objc_msgSend(self,sel_transparentColorValidate,uVar4);
-  return;
-}
-
-*/
 - (void)toggleTransparentColorToValue:(BOOL)aValue
 {
     BOOL registeredUndo = NO;
@@ -1730,52 +602,6 @@ LAB_0012ab7a:
     [self transparentColorValidate];
 }
 
-- (void)changeTransparentColor:(id)aColor
-{
-    [_delegate transparentColorFromAnimationSetupMainAssistantPane:self];
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012a843 @ 0012a843, 456 bytes * /
-
-void FUN_0012a843(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id flipVertically)
-
-{
-  id pvVar1;
-  id pvVar2;
-  int iVar3;
-  id local_14;
-  
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_Change_Options,
-                         &cfstr_empty,&cfstr_UndoManager);
-  _objc_msgSend(pvVar1,sel_setActionName_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_prepareWithInvocationTarget_,self);
-  _objc_msgSend(pvVar1,sel_flipVertically_,flipVertically);
-  pvVar1 = _objc_msgSend(self,sel_undoHelper);
-  _objc_msgSend(pvVar1,sel_duplicateAction);
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  local_14 = _objc_msgSend(self,sel_tryItAnimation);
-  iVar3 = 0;
-  while( true ) {
-    pvVar2 = _objc_msgSend(pvVar1,sel_animatedObject);
-    pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-    _objc_msgSend(pvVar2,sel_disableUndoRegistration);
-    _objc_msgSend(pvVar1,sel_flipAnimatedObjectVertically);
-    pvVar1 = _objc_msgSend(pvVar1,sel_animatedObject);
-    pvVar1 = _objc_msgSend(pvVar1,sel_undoManager);
-    _objc_msgSend(pvVar1,sel_enableUndoRegistration);
-    if (iVar3 == 1) break;
-    pvVar1 = (&local_14)[iVar3];
-    iVar3 = iVar3 + 1;
-  }
-  _objc_msgSend(self,sel_updateMainOptionsUI);
-  return;
-}
-
-*/
 - (void)flipVertically:(id)aVertically
 {
     [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
@@ -1790,47 +616,6 @@ void FUN_0012a843(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id flipVertic
     [self updateMainOptionsUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012a67b @ 0012a67b, 456 bytes * /
-
-void FUN_0012a67b(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id flipHorizontally)
-
-{
-  id pvVar1;
-  id pvVar2;
-  int iVar3;
-  id local_14;
-  
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar2 = _objc_msgSend(cls_NSBundle,sel_mainBundle);
-  pvVar2 = _objc_msgSend(pvVar2,sel_localizedStringForKey_value_table_,&cfstr_Change_Options,
-                         &cfstr_empty,&cfstr_UndoManager);
-  _objc_msgSend(pvVar1,sel_setActionName_,pvVar2);
-  pvVar1 = _objc_msgSend(self,sel_undoManager);
-  pvVar1 = _objc_msgSend(pvVar1,sel_prepareWithInvocationTarget_,self);
-  _objc_msgSend(pvVar1,sel_flipHorizontally_,flipHorizontally);
-  pvVar1 = _objc_msgSend(self,sel_undoHelper);
-  _objc_msgSend(pvVar1,sel_duplicateAction);
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  local_14 = _objc_msgSend(self,sel_tryItAnimation);
-  iVar3 = 0;
-  while( true ) {
-    pvVar2 = _objc_msgSend(pvVar1,sel_animatedObject);
-    pvVar2 = _objc_msgSend(pvVar2,sel_undoManager);
-    _objc_msgSend(pvVar2,sel_disableUndoRegistration);
-    _objc_msgSend(pvVar1,sel_flipAnimatedObjectHorizntally);
-    pvVar1 = _objc_msgSend(pvVar1,sel_animatedObject);
-    pvVar1 = _objc_msgSend(pvVar1,sel_undoManager);
-    _objc_msgSend(pvVar1,sel_enableUndoRegistration);
-    if (iVar3 == 1) break;
-    pvVar1 = (&local_14)[iVar3];
-    iVar3 = iVar3 + 1;
-  }
-  _objc_msgSend(self,sel_updateMainOptionsUI);
-  return;
-}
-
-*/
 - (void)flipHorizontally:(id)aHorizontally
 {
     [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
@@ -1877,42 +662,6 @@ void FUN_0012a67b(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id flipHorizo
     return YES;
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012a0bd @ 0012a0bd, 406 bytes * /
-
-void FUN_0012a0bd(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changePlayForValue)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  
-  pvVar1 = _objc_msgSend(self->_playForPopUpButton,sel_selectedItem);
-  pvVar1 = _objc_msgSend(pvVar1,sel_tag);
-  pvVar2 = _objc_msgSend(changePlayForValue,sel_intValue);
-  if ((int)pvVar2 < 1) {
-    _objc_msgSend(self->_playForValueTextField,sel_setIntValue_,1);
-  }
-  pvVar2 = _objc_msgSend(self,sel_oldOptions);
-  pvVar3 = _objc_msgSend(pvVar2,sel_mutableCopy);
-  pvVar3 = _objc_msgSend(pvVar3,sel_autorelease);
-  if (pvVar1 == (id)0x1) {
-    pvVar1 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,2);
-    _objc_msgSend(pvVar3,sel_replaceObjectAtIndex_withObject_,0,pvVar1);
-  }
-  self_00 = cls_NSNumber;
-  pvVar1 = _objc_msgSend(changePlayForValue,sel_intValue);
-  pvVar1 = _objc_msgSend(self_00,sel_numberWithInt_,pvVar1);
-  _objc_msgSend(pvVar3,sel_replaceObjectAtIndex_withObject_,1,pvVar1);
-  pvVar1 = _objc_msgSend(self,sel_optionsDiffer__,pvVar2,pvVar3);
-  if ((char)pvVar1 != '\0') {
-    _objc_msgSend(self,sel_changePlayForTypeOptionsFrom_to_,pvVar2,pvVar3);
-  }
-  return;
-}
-
-*/
 - (void)changePlayForValue:(id)aValue
 {
     NSInteger type = [[_playForPopUpButton selectedItem] tag];
@@ -1930,114 +679,6 @@ void FUN_0012a0bd(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changePlay
     }
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00129f8a @ 00129f8a, 307 bytes * /
-
-void FUN_00129f8a(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changePlayForType)
-
-{
-  id pvVar1;
-  id self_00;
-  id pvVar2;
-  undefined4 uVar3;
-  
-  pvVar1 = _objc_msgSend(self->_playForPopUpButton,sel_selectedItem);
-  pvVar1 = _objc_msgSend(pvVar1,sel_tag);
-  self_00 = _objc_msgSend(self,sel_oldOptions);
-  pvVar2 = _objc_msgSend(self_00,sel_mutableCopy);
-  pvVar2 = _objc_msgSend(pvVar2,sel_autorelease);
-  if (pvVar1 == (id)0x2) {
-    uVar3 = 4;
-  }
-  else if (pvVar1 == (id)0x1) {
-    uVar3 = 2;
-  }
-  else if (pvVar1 == (id)0x0) {
-    uVar3 = 3;
-  }
-  else if (pvVar1 == (id)0x3) {
-    uVar3 = 1;
-  }
-  else {
-    uVar3 = 0xffffffff;
-  }
-  pvVar1 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,uVar3);
-  _objc_msgSend(pvVar2,sel_replaceObjectAtIndex_withObject_,0,pvVar1);
-  pvVar1 = _objc_msgSend(self,sel_optionsDiffer__,self_00,pvVar2);
-  if ((char)pvVar1 != '\0') {
-    _objc_msgSend(self,sel_changePlayForTypeOptionsFrom_to_,self_00,pvVar2);
-  }
-  return;
-}
-
-*/
-- (void)changePlayForType:(id)aType
-{
-    NSInteger type = [[_playForPopUpButton selectedItem] tag];
-    NSArray *oldOptions = [self oldOptions];
-    NSMutableArray *newOptions = [[oldOptions mutableCopy] autorelease];
-    int loopMode;
-    switch (type) {
-        case 0: loopMode = 3; break;
-        case 1: loopMode = 2; break;
-        case 2: loopMode = 4; break;
-        case 3: loopMode = 1; break;
-        default: loopMode = -1; break;
-    }
-    [newOptions replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:loopMode]];
-    if ([self optionsDiffer:oldOptions :newOptions]) {
-        [self changePlayForTypeOptionsFrom:oldOptions to:newOptions];
-    }
-}
-
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012f061 @ 0012f061, 315 bytes * /
-
-id FUN_0012f061(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  undefined *self_00;
-  id pvVar1;
-  id pvVar2;
-  id pvVar3;
-  double dVar4;
-  SEL op;
-  
-  pvVar1 = _objc_msgSend(self,sel_animation);
-  pvVar1 = _objc_msgSend(pvVar1,sel_loopMode);
-  if (pvVar1 == (id)0x3) {
-    pvVar2 = _objc_msgSend(self,sel_animation);
-    dVar4 = _objc_msgSend_fpret(pvVar2,sel_loopSeconds);
-    pvVar2 = (id)(int)dVar4;
-  }
-  else {
-    if ((int)pvVar1 - 1U < 2) {
-      pvVar2 = _objc_msgSend(self,sel_animation);
-      op = sel_loopPathRepeats;
-    }
-    else {
-      if (pvVar1 != (id)0x4) {
-        pvVar2 = (id)0x1;
-        goto LAB_0012f122;
-      }
-      pvVar2 = _objc_msgSend(self,sel_animation);
-      op = sel_loopFrameRepeats;
-    }
-    pvVar2 = _objc_msgSend(pvVar2,op);
-  }
-LAB_0012f122:
-  self_00 = cls_NSArray;
-  pvVar3 = (id)0x2;
-  if (pvVar1 != (id)0x0) {
-    pvVar3 = pvVar1;
-  }
-  pvVar1 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,pvVar2);
-  pvVar2 = _objc_msgSend(cls_NSNumber,sel_numberWithInt_,pvVar3);
-  pvVar1 = _objc_msgSend(self_00,sel_arrayWithObjects_,pvVar2,pvVar1,0);
-  return pvVar1;
-}
-
-*/
 - (id)oldOptions
 {
     NSInteger loopMode = [[self animation] loopMode];
@@ -2067,26 +708,6 @@ LAB_0012f122:
     [self updateMainOptionsUI];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012f2f7 @ 0012f2f7, 133 bytes * /
-
-void FUN_0012f2f7(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMovieSpeeed)
-
-{
-  double dVar1;
-  double dVar2;
-  
-  dVar2 = _objc_msgSend_fpret(changeMovieSpeeed,sel_doubleValue);
-  dVar1 = 1.0;
-  if ((1.0 <= dVar2) && (dVar1 = dVar2, 100.0 < dVar2)) {
-    dVar1 = 100.0;
-  }
-  _objc_msgSend(self,sel_setMovieSpeed_,dVar1);
-  _objc_msgSend(self,sel_updateMainOptionsUI);
-  return;
-}
-
-*/
 - (void)changeMovieSpeeed:(id)aSpeeed
 {
     double speed = [aSpeeed doubleValue];
@@ -2156,36 +777,6 @@ void FUN_0012f2f7(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id changeMovi
     [self setHideOnFirstFrame:(unsigned int)([aFrame state] != 0x1)];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_001298f1 @ 001298f1, 138 bytes * /
-
-void FUN_001298f1(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int switchToOptionView)
-
-{
-  SEL op;
-  id pvVar1;
-  id pvVar2;
-  
-  if (switchToOptionView == 1) {
-    pvVar1 = self->_mainOptionsView;
-    pvVar2 = self->_pathOptionsView;
-    _objc_msgSend(self->_optionsView,sel_replaceSubview_with_,pvVar1,pvVar2);
-    op = sel_updatePathOptionsUI;
-  }
-  else {
-    if (switchToOptionView != 0) {
-      return;
-    }
-    pvVar1 = self->_pathOptionsView;
-    pvVar2 = self->_mainOptionsView;
-    _objc_msgSend(self->_optionsView,sel_replaceSubview_with_,pvVar1,pvVar2);
-    op = sel_updateMainOptionsUI;
-  }
-  _objc_msgSend(self,op,pvVar1,pvVar2);
-  return;
-}
-
-*/
 - (void)switchToOptionView:(NSInteger)aView
 {
     if (aView == 1) {
@@ -2215,111 +806,6 @@ void FUN_001298f1(HSAnimationSetupMainAssistantPane *self,SEL _cmd,int switchToO
     [[[[self tryItAnimation] animatedObject] undoManager] disableUndoRegistration];
 }
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00129680 @ 00129680, 206 bytes * /
-
-id FUN_00129680(HSAnimationSetupMainAssistantPane *self,SEL _cmd)
-
-{
-  undefined *puVar1;
-  id pvVar2;
-  undefined *self_00;
-  SEL op;
-  cfstringStruct *pcVar3;
-  
-  pvVar2 = _objc_msgSend(self,sel_assistant);
-  pvVar2 = _objc_msgSend(pvVar2,sel_object);
-  pcVar3 = (cfstringStruct *)&DAT_00372338;
-  pvVar2 = _objc_msgSend(pvVar2,sel_queryHyperInterface_,&DAT_00372338);
-  puVar1 = cls_NSString;
-  self_00 = cls_HSPlayAnimationAction;
-  op = sel_localizedNameInInspector;
-  if (pvVar2 != (id)0x0) {
-    _objc_msgSend(cls_HSPlayAnimationAction,sel_localizedNameInInspector,pcVar3);
-    _objc_msgSend(pvVar2,sel_hyperName);
-    pcVar3 = &cfstr________;
-    self_00 = puVar1;
-    op = sel_stringWithFormat_;
-  }
-  pvVar2 = _objc_msgSend(self_00,op,pcVar3);
-  return pvVar2;
-}
-
-*/
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_00129609 @ 00129609, 119 bytes * /
-
-void FUN_00129609(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id controlTextDidChange)
-
-{
-  id pvVar1;
-  SEL op;
-  id pvVar2;
-  
-  pvVar1 = _objc_msgSend(controlTextDidChange,sel_object);
-  pvVar2 = self->_movieSpeedTextField;
-  op = sel_framesPerSecondChanged_;
-  if (((pvVar1 == pvVar2) ||
-      (pvVar2 = self->_playForValueTextField, op = sel_changePlayForValue_, pvVar1 == pvVar2)) ||
-     (pvVar2 = self->_moveValueTextField, op = sel_changeMoveValue_, pvVar1 == pvVar2)) {
-    _objc_msgSend(self,op,pvVar2);
-  }
-  return;
-}
-
-*/
-- (void)controlTextDidChange:(id)aChange
-{
-    id field = [aChange object];
-    if (field == _movieSpeedTextField) {
-        [self framesPerSecondChanged:_movieSpeedTextField];
-    }
-    else if (field == _playForValueTextField) {
-        [self changePlayForValue:_playForValueTextField];
-    }
-    else if (field == _moveValueTextField) {
-        [self changeMoveValue:_moveValueTextField];
-    }
-}
-
-- (void)viewWillDisappear:(BOOL)aDisappear
-{
-    if ([self isHelpVisible]) {
-        [self hideHelpNeedsRelayout:YES];
-    }
-    [super viewWillDisappear:aDisappear];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:_playForValueTextField];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:_movieSpeedTextField];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:NSControlTextDidChangeNotification object:_moveValueTextField];
-}
-
-- (void)viewWillAppear:(BOOL)aAppear
-{
-    id pvVar2_4;
-
-    [super viewWillAppear:aAppear];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_movieSpeedTextField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_playForValueTextField];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_moveValueTextField];
-    pvVar2_4 = _layerPopUpButton;
-    [pvVar2_4 setToolTip:[[pvVar2_4 selectedItem] toolTip]];
-    [self transparentColorValidate];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    [_segmentedControl setBackgroundRenderer:[HSAnimationOptionsControlBackgroundRenderer sharedBackgroundRenderer]];
-    [_segmentedControl setPrototype:[_segmentedControl cellAtRow:0 column:1]];
-    [_optionsView addSubview:_mainOptionsView];
-    [self setPlayStopImage:[[self class] playAnimationImage]];
-    [[_beginArrowButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_endArrowButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_startFromBeginButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
-    [[_startFromEndButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
-    [_playForPopUpButton setAutoenablesItems:NO];
-}
-
 - (id)navigationPaneSwitcher
 {
     HSNBAAssistantNavigationPaneSwitcher *pHVar1;
@@ -2340,41 +826,12 @@ void FUN_00129609(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id controlTex
     return YES;
 }
 
-- (id)undoHelper
-{
-    return [_delegate undoHelperForAnimationSetupMainAssistantPane:self];
-}
-
-- (id)undoManager
-{
-    return [_delegate undoManagerForAnimationSetupMainAssistantPane:self];
-}
-
 - (id)allAnimations
 {
     id pvVar1;
 
     pvVar1 = [self tryItAnimation];
     return [_HSAnimationsProxy proxyWithObjects:[NSArray arrayWithObjects:[self animation], pvVar1, nil]];
-}
-
-- (id)tryItAnimation
-{
-    id pvVar1;
-
-    pvVar1 = [_delegate tryItAnimationForAnimationSetupMainAssistantPane:self]
-    ;
-    return pvVar1;
-}
-
-- (id)animation
-{
-    return [_delegate animationForAnimationSetupMainAssistantPane:self];
-}
-
-- (void)setIsMovieAnimation:(BOOL)aAnimation
-{
-    _isMovieAnimation = aAnimation;
 }
 
 - (BOOL)isMovieAnimation
@@ -2387,18 +844,1917 @@ void FUN_00129609(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id controlTex
     return YES;
 }
 
-- (void)dealloc
-{
-    [_navigationPaneSwitcher release];
-    [_helpDrawer release];
-    [_actionHelpView release];
-    [super dealloc];
-}
-
 - (id)init
 {
     self = [super initWithNibName:@"AnimationSetupMainPane"];
+    if (self != nil) {
+        _isBlockingUndoRegistration = NO;
+        _initialInspectorSupportsSOTSMode = NO;
+        _didFinishAndApply = NO;
+    }
     return self;
+}
+
+- (void)dealloc
+{
+    if ([[HSToolManager sharedToolManager] selectedToolTag] == 0x37) {
+        id tool = [[HSToolManager sharedToolManager] currentTool];
+        if ([tool delegate] == self) {
+            [self resetToolToDefault];
+        }
+    }
+    [self setObject:nil];
+    [_navigationController release];
+    [_navigationPaneSwitcher release];
+    [_helpDrawer release];
+    [_actionHelpView release];
+    [_storedPath release];
+    [_storedKeyFrames release];
+    [_undoHelper finishDuplicating:NO];
+    [_undoHelper release];
+    [_undoManager release];
+    [_dummyUndoManager release];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [_actionEvents release];
+    [_animation release];
+    [_initialAnimation release];
+    [_tryItAnimation release];
+    [_pickImageAssistantPane setDelegate:nil];
+    [_pickImageAssistantPane release];
+    [_drawPathAssistantPane setDelegate:nil];
+    [_drawPathAssistantPane release];
+    [_transparentColorAssistantPane setDelegate:nil];
+    [_transparentColorAssistantPane release];
+    [_cardView release];
+    [super dealloc];
+}
+
+- (id)animation
+{
+    return _animation;
+}
+
+- (id)tryItAnimation
+{
+    return _tryItAnimation;
+}
+
+- (id)undoHelper
+{
+    return _undoHelper;
+}
+
+- (id)undoManager
+{
+    if (_undoManager == nil) {
+        _undoManager = [HSUndoManager new];
+    }
+    return _undoManager;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    [_segmentedControl setBackgroundRenderer:[HSAnimationOptionsControlBackgroundRenderer sharedBackgroundRenderer]];
+    [_segmentedControl setPrototype:[_segmentedControl cellAtRow:0 column:1]];
+    [_optionsView addSubview:_mainOptionsView];
+    [self setPlayStopImage:[[self class] playAnimationImage]];
+    [[_beginArrowButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
+    [[_endArrowButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
+    [[_startFromBeginButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
+    [[_startFromEndButton cell] setBackgroundRenderer:[HSAssistantPaneControlBackgroundRenderer sharedBackgroundRenderer]];
+    [_playForPopUpButton setAutoenablesItems:NO];
+    [[_playForPopUpButton menu] removeItemAtIndex:0];
+    [[_playForPopUpButton menu] removeItemAtIndex:1];
+}
+
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [super viewWillAppear:aAppear];
+    [self setState:2];
+    if ([self animation] == nil) {
+        [self setUpAnimation];
+    }
+    [self lockAssistantIfNeeded];
+    if (_tryItAnimation == nil) {
+        [self setUpTryItAnimation];
+    }
+    [self runEditPath];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_movieSpeedTextField];
+    [center addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_playForValueTextField];
+    [center addObserver:self selector:@selector(controlTextDidChange:) name:NSControlTextDidChangeNotification object:_moveValueTextField];
+    [center addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_toolDidChange:) name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+    [center addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_currentCardWillChange:) name:HSCurrentCardInCardViewWillChange object:_cardView];
+    [center addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[_cardView window]];
+    id stack = [[self document] stack];
+    [stack addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    [stack addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute) withPriority:-0.25];
+    [_layerPopUpButton setToolTip:[[_layerPopUpButton selectedItem] toolTip]];
+    [_movePopUpButton setToolTip:[[_playForPopUpButton selectedItem] toolTip]];
+    [self updateUI:YES];
+    [self transparentColorValidate];
+    [self cleanupTemporaryAnimationAssistantPanes];
+    [_drawPathAssistantPane setDelegate:nil];
+    [_drawPathAssistantPane release];
+    _drawPathAssistantPane = nil;
+    [_pickImageAssistantPane setDelegate:nil];
+    [_pickImageAssistantPane release];
+    _pickImageAssistantPane = nil;
+}
+
+- (void)viewWillDisappear:(BOOL)aDisappear
+{
+    if (!_didFinishAndApply) {
+        [self cleanUpAnimation:YES];
+    }
+    if ([self isHelpVisible]) {
+        [self hideHelpNeedsRelayout:YES];
+    }
+    [super viewWillDisappear:aDisappear];
+    if (_transparentColorAssistantPane == nil) {
+        [self cleanUpTryItAnimation];
+    }
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:NSControlTextDidChangeNotification object:_playForValueTextField];
+    [center removeObserver:self name:NSControlTextDidChangeNotification object:_movieSpeedTextField];
+    [center removeObserver:self name:NSControlTextDidChangeNotification object:_moveValueTextField];
+    [center removeObserver:self name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+    [center removeObserver:self name:HSCurrentCardInCardViewWillChange object:_cardView];
+    [center removeObserver:self name:NSWindowDidResignMainNotification object:[_cardView window]];
+    id stack = [[self document] stack];
+    [stack removeObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_cardsWillChange:) ofChanges:HSActualWillAttributeChanges ofAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+    [stack removeObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_objectsWillChange:) ofChanges:HSActualWillAttributeChanges ofChildrenAttribute:@protocol(HSNodeContainerChildrenAttribute)];
+}
+
+- (void)controlTextDidChange:(id)aChange
+{
+    id object = [aChange object];
+    if (object == _movieSpeedTextField) {
+        [self framesPerSecondChanged:object];
+    } else if (object == _playForValueTextField) {
+        [self changePlayForValue:object];
+    } else if (object == _moveValueTextField) {
+        [self changeMoveValue:object];
+    }
+}
+
+- (void)setIsMovieAnimation:(BOOL)aAnimation
+{
+    if ([_animation useClones]) {
+        [_animation setUseClones:!aAnimation];
+    }
+    if (_initialAnimation == nil) {
+        [_animation setLoopMode:(aAnimation ? 2 : 0) + 2];
+    }
+    _isMovieAnimation = aAnimation;
+    [self updateAnimationForCurrentPath];
+}
+
+- (void)getNewSource:(id)aSource
+{
+    [self updateAnimatedObjectFromTryItAnimation];
+    [self setState:3];
+    [self runPickImage];
+}
+
+- (void)playStop:(id)aStop
+{
+    if (![[self tryItAnimation] isPlaying]) {
+        _initialInspectorSupportsSOTSMode = [[HSObjectAssistantController sharedAssistantController] supportsSettingsOnTheSpotMode];
+        [[HSObjectAssistantController sharedAssistantController] setSupportsSettingsOnTheSpotMode:NO];
+        if ([_tryItAnimation playMovie]) {
+            id playable = [[_tryItAnimation animatedObject] queryHyperInterface:@protocol(HSPlayableObjectAttributes)];
+            if (playable != nil) {
+                struct HSTimeRange range = [playable hyperPlayRange];
+                [playable setHyperCurrentTime:range.location];
+            }
+        }
+        [_cardView selectHyperObjects:nil];
+        [self selectToolWithTag:0x38];
+        [_cardView setOccupiedByTool:YES];
+        [self updateAnimatedObjectFromTryItAnimation];
+        [_tryItAnimation setSuppressDontErase:NO];
+        [[self undoManager] disableUndoRegistration];
+        [self disableAnimationsUndo];
+        [[[self card] animationController] changeObjectIndexOnStartingAnimation:_tryItAnimation inAbsoluteLayer:[_tryItAnimation goingAbsoluteLayer] forActingObject:[self object]];
+        [_tryItAnimation start:YES];
+        [[self undoManager] enableUndoRegistration];
+        [self enableAnimationsUndo];
+        [self updateUI:NO];
+    } else {
+        [[self tryItAnimation] stop];
+        [self runEditPath];
+    }
+}
+
+- (void)newPath:(id)aPath
+{
+    NSNumber *show = [[NSUserDefaults standardUserDefaults] objectForKey:HSShowNewPathAlertKey];
+    if (show == nil || [show intValue] != 0) {
+        HSDontShowAgainAlert *alert = [HSDontShowAgainAlert new];
+        [alert setShowAlertKey:HSShowNewPathAlertKey];
+        [alert setMessageText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathMessageText" value:@"" table:@"Alerts"]];
+        [alert setInformativeText:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathInformativeText" value:@"" table:@"Alerts"]];
+        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"HSNewAnimationPathCreateButtonTitle" value:@"" table:@"Alerts"]];
+        [alert addButtonWithTitle:[[HSExecutableResourceProvider sharedInstance] localizedStringForKey:@"Cancel" value:@"" table:@"Alerts"]];
+        NSInteger result = [alert runModal];
+        [alert release];
+        if (result == NSAlertSecondButtonReturn) {
+            return;
+        }
+    }
+    [self updateAnimatedObjectFromTryItAnimation];
+    [self cleanUpTryItAnimation];
+    [self setState:4];
+    [_animation setTimesPerSecond:[HSAnimationOptions undefinedTimesPerSecond]];
+    [self runDrawPath];
+}
+
+- (void)changeMove:(id)aMove
+{
+    [self setSpeedMode:[[aMove selectedCell] tag]];
+    [_movePopUpButton setToolTip:[[_movePopUpButton selectedItem] toolTip]];
+}
+
+- (void)changeTransparentColor:(id)aColor
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+    [self resetToolToDefault];
+    _transparentColorAssistantPane = [[HSTransparentColorAssistantPane alloc] init];
+    [_transparentColorAssistantPane setDelegate:self];
+    [_transparentColorAssistantPane setWindowTitle:[self windowTitle]];
+    [self pushAnimationViewController:_transparentColorAssistantPane];
+}
+
+- (void)paneDidOK:(id)aOK
+{
+    [self finishAndApplyChanges:YES];
+}
+
+- (void)paneDidCancel:(id)aCancel
+{
+    [self finishAndApplyChanges:NO];
+}
+
+- (void)transparentColorValidate
+{
+    id animatedObject = [[self animation] animatedObject];
+    BOOL enabled = NO;
+    if ([animatedObject implementsHyperInterface:@protocol(HSTransparentColorAttributes)]
+        && [animatedObject queryHyperInterface:@protocol(HSMovieObjectAttributes)] == nil) {
+        enabled = YES;
+    }
+    if (enabled && [[self allAnimations] usesTransparentColor]) {
+        [_transparentColorPickerButton setState:1];
+        [_transparentColorPickerButton setTitle:@""];
+        [_transparentColorPickerButton sizeToFit];
+        [_transparentColorButton setHidden:NO];
+        return;
+    }
+    if (!enabled) {
+        [_transparentColorPickerButton setEnabled:NO];
+    }
+    [_transparentColorPickerButton setState:0];
+    [_transparentColorPickerButton setTitle:[_transparentColorButton title]];
+    [_transparentColorPickerButton sizeToFit];
+    [_transparentColorButton setHidden:YES];
+}
+
+- (void)changePlayForType:(id)aType
+{
+    NSInteger tag = [[_playForPopUpButton selectedItem] tag];
+    NSArray *oldOptions = [self oldOptions];
+    NSMutableArray *newOptions = [[oldOptions mutableCopy] autorelease];
+    int loopMode = 2;
+    if (tag != 1) {
+        loopMode = (tag == 3) ? 1 : -1;
+    }
+    [newOptions replaceObjectAtIndex:0 withObject:[NSNumber numberWithInt:loopMode]];
+    if ([self optionsDiffer:oldOptions :newOptions]) {
+        [self changePlayForTypeOptionsFrom:oldOptions to:newOptions];
+    }
+}
+
+- (void)updateMainOptionsUI
+{
+    BOOL playMovie = [[self animation] playMovie];
+    BOOL onePoint = [[self animation] isOnePointPathAnimation];
+    [_segmentedControl setEnabled:!onePoint];
+    if (onePoint) {
+        [_optionsView replaceSubview:_pathOptionsView with:_mainOptionsView];
+        [_segmentedControl selectCellWithTag:0];
+    }
+    BOOL hasObject = [[self animation] animatedObject] != nil;
+    [_mainPlayStopButton setEnabled:hasObject];
+    [_newPathButton setEnabled:hasObject];
+    BOOL hideFirst = hasObject && [[self animation] hideOnFirstFrame];
+    [_showFirstFrameButton setState:!hideFirst];
+    [_showFirstFrameButton setEnabled:hasObject];
+    BOOL hideLast = hasObject && [[self animation] hideOnLastFrame];
+    [_eraseWhenDoneButton setState:hideLast];
+    [_eraseWhenDoneButton setEnabled:hasObject];
+    [[_matchToMovementMatrix cellWithTag:0] setEnabled:(!onePoint && playMovie && hasObject)];
+    [[_matchToMovementMatrix cellWithTag:1] setEnabled:playMovie];
+    BOOL matchToMovement = playMovie && [[self animation] matchToMovement];
+    [_matchToMovementMatrix selectCellAtRow:!matchToMovement column:0];
+    BOOL allowClones = NO;
+    if (!onePoint && hasObject) {
+        allowClones = ![self isMovieAnimation];
+    }
+    [_allowClonesButton setEnabled:allowClones];
+    [_allowClonesButton setState:[[self animation] useClones] ? 1 : 0];
+    BOOL speedEnabled = NO;
+    if (hasObject && playMovie) {
+        speedEnabled = ![[self animation] matchToMovement];
+    }
+    [_movieSpeedTextField setEnabled:speedEnabled];
+    [_movieSpeedStepper setEnabled:speedEnabled];
+    if (speedEnabled) {
+        double speed = [[self animation] movieSpeed];
+        [_movieSpeedTextField setDoubleValue:speed];
+        [_movieSpeedStepper setDoubleValue:speed];
+    } else {
+        [_movieSpeedTextField setStringValue:@""];
+    }
+    [[_playForPopUpButton itemAtIndex:[_playForPopUpButton indexOfItemWithTag:1]] setEnabled:!onePoint];
+    BOOL playForEnabled = hasObject && [[self animation] loopMode] != 1;
+    [_playForValueTextField setEnabled:playForEnabled];
+    [_playForValueStepper setEnabled:playForEnabled];
+    NSInteger loopMode = [[self animation] loopMode];
+    if (loopMode == 0 || loopMode == 2) {
+        [self setPlayForItemWithTag:1];
+        if ([[self animation] loopMode] == 0) {
+            [_playForValueTextField setIntValue:1];
+        } else if ([[self animation] loopMode] == 2) {
+            [_playForValueTextField setIntValue:(int)[[self animation] loopPathRepeats]];
+        }
+    } else if (loopMode == 1) {
+        [self setPlayForItemWithTag:3];
+        [_playForValueTextField setStringValue:@""];
+    }
+    [_playForValueStepper setIntValue:[_playForValueTextField intValue]];
+    [self transparentColorValidate];
+    id geometry = [[[self animation] animatedObject] queryHyperInterface:@protocol(HSGeometryBehaviorAttributes)];
+    [_horizontalFlipButton setEnabled:[geometry canFlipHorizontally]];
+    [_verticalFlipButton setEnabled:[geometry canFlipVertically]];
+}
+
+- (void)HSAnimationSetupMainAssistantPane_animationAbsoluteLayerDidChange:(id)aChange
+{
+    [self recreateTryItAnimationOnAnimationOptionsChange];
+}
+
+- (void)HSAnimationSetupMainAssistantPane_cardsWillChange:(id)aChange
+{
+    NSSet *removed = [[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"];
+    if ([[[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"] count] == 0 && ![removed containsObject:[self card]]) {
+        return;
+    }
+    [self unlockAssistantAndResetTool];
+}
+
+- (void)HSAnimationSetupMainAssistantPane_currentCardWillChange:(id)aChange
+{
+    [self cleanUpTryItAnimation];
+    [self unlockAssistantAndResetTool];
+}
+
+- (void)HSAnimationSetupMainAssistantPane_nameAttributesDidChange:(id)aChange
+{
+    [self refreshWindowTitle];
+    id top = [_navigationController topViewController];
+    if (top != self) {
+        [top setWindowTitle:[self windowTitle]];
+        if ([top isVisible]) {
+            [[top assistant] updateInspectorName];
+        }
+    }
+}
+
+- (void)HSAnimationSetupMainAssistantPane_objectsWillChange:(id)aChange
+{
+    NSSet *removed = [[aChange userInfo] objectForKey:@"HSNodeChildrenForRemoval"];
+    NSSet *added = [[aChange userInfo] objectForKey:@"HSNodeChildrenForAddition"];
+    for (id object in added) {
+        if (![object isTemporary]) {
+            [self unlockAssistantAndResetTool];
+            return;
+        }
+    }
+    if ([removed containsObject:[self object]] || [removed containsObject:[_tryItAnimation animatedObject]]) {
+        [self unlockAssistantAndResetTool];
+    }
+}
+
+- (void)HSAnimationSetupMainAssistantPane_toolDidChange:(id)aChange
+{
+    NSInteger tag = [[HSToolManager sharedToolManager] selectedToolTag];
+    if ((NSUInteger)(tag - 0x37) > 1 && tag != 0x35) {
+        [self cleanUpTryItAnimation];
+        [self unlockAssistantIfNeeded];
+        [[_cardView selection] removeAllNodes];
+        [[self assistant] deactivate];
+    }
+}
+
+- (void)HSAnimationSetupMainAssistantPane_windowDidResignMain:(id)aResign
+{
+    [self cleanUpTryItAnimation];
+    [self unlockAssistantAndResetTool];
+    [self restoreSelectonAfterExit];
+    [self setNeedsActiveToolLater:YES];
+}
+
+- (void)HSAnimationSetupMainAssistantPane_windowWillClose:(id)aClose
+{
+    if ([aClose object] != [_cardView window]) {
+        return;
+    }
+    [self unlockAssistantIfNeeded];
+    HSToolManager *manager = [HSToolManager sharedToolManager];
+    NSInteger tag = [manager selectedToolTag];
+    if (tag == 0x35) {
+        [[manager currentTool] cancelPathCreationForDrawPathCanvasLayer:nil];
+    } else if ((NSUInteger)(tag - 0x31) <= 3 || tag == 0x37 || tag == 0x38) {
+        [self resetToolToDefault];
+    }
+}
+
+- (id)actingObjectForEditPathTool:(id)aTool
+{
+    return [self object];
+}
+
+- (id)actor
+{
+    return [[self object] queryHyperInterface:@protocol(HSActor)];
+}
+
+- (void)addAnimatedObjectToCardForDrawPathTool:(id)aTool
+{
+    id object = [_animation animatedObject];
+    if ([[[self card] children] indexOfObject:object] == NSNotFound) {
+        _initialInspectorSupportsSOTSMode = [[HSObjectAssistantController sharedAssistantController] supportsSettingsOnTheSpotMode];
+        [[HSObjectAssistantController sharedAssistantController] setSupportsSettingsOnTheSpotMode:NO];
+        [self addTemporaryObjectToCard:object];
+        [[[object queryHyperInterface:@protocol(HSGeometryAttributes)] attributeObservingController] beginContinuousChangeOfAttributeSet:[NSEProtocolSet protocolSetWithProtocols:@protocol(HSHorizontalOffsetAttribute), @protocol(HSVerticalOffsetAttribute), nil]];
+    }
+}
+
+- (void)addTemporaryObjectToCard:(id)aObject
+{
+    id card = [self card];
+    [[card undoManager] disableUndoRegistration];
+    [card addTemporaryHyperChild:aObject];
+    [[card undoManager] enableUndoRegistration];
+}
+
+- (void)animationEditModePickTool:(id)aTool pickedObject:(id)aObject event:(id)aEvent
+{
+    [aTool setDelegate:nil];
+    [self setIsMovieAnimation:NO];
+    [_cardView setOccupiedByTool:NO];
+    id copy = [[aObject localCopyIncludingNodeUnits:YES] autorelease];
+    id previous = [[[_animation animatedObject] retain] autorelease];
+    if ([aObject hyperParent] != nil && [aObject implementsHyperInterface:@protocol(HSButtonObjectAttributes)]) {
+        [copy setInteractiveInAnimation:YES];
+    }
+    [_animation setAnimatedObject:copy];
+    HSObjectAssistantNavigationController *navigation = nil;
+    if (_state == 0) {
+        navigation = _navigationController;
+        id top = [navigation topViewController];
+        if ([top isKindOfClass:[HSAnimationSetupCoachingAssistantPane class]]) {
+            [_navigationController changeIdentifierForViewController:top toIdentifier:@"identifierForViewControllerToRemove"];
+        }
+    }
+    [self didSetAnimatedObject];
+    [navigation removeAllViewControllersWithIdentifier:@"identifierForViewControllerToRemove"];
+    if (previous != nil) {
+        [self replaceAnimatedObject:previous with:copy undoRegistrationOnly:YES];
+    }
+}
+
+- (void)animationEditPathHelpPaneDidDone:(id)aPane contextInfo:(void *)aInfo
+{
+    [_cardView setOccupiedByTool:NO];
+    if (_state == 1) {
+        [self pushAnimationViewController:self withIdentifier:HSAnimationModePane];
+    } else {
+        [_navigationController popAllTopViewControllersWithIdentifier:HSAnimationModeTempPane animate:YES];
+    }
+}
+
+- (id)animationForDrawPathTool:(id)aTool
+{
+    return _animation;
+}
+
+- (id)animationForEditPathTool:(id)aTool
+{
+    return [self animation];
+}
+
+- (void)animationPlaybackDidEnd:(id)aEnd
+{
+    [_cardView setOccupiedByTool:NO];
+    [self runEditPath];
+    [_tryItAnimation prepareAnimation];
+    [self updateUI:YES];
+    [[HSObjectAssistantController sharedAssistantController] setSupportsSettingsOnTheSpotMode:_initialInspectorSupportsSOTSMode];
+}
+
+- (void)animationPlaybackDirectionDidChange:(id)aChange
+{
+    [self recreateTryItAnimationOnAnimationOptionsChange];
+}
+
+- (void)applyChangesIfNeeded
+{
+    if ([self hasAssistantPaneUnappliedChanges]) {
+        [[[self document] undoManager] disableUndoRegistration];
+        [self cleanUpAnimation:YES];
+        [[[self document] undoManager] enableUndoRegistration];
+    }
+}
+
+- (void)applyPathAndKeyFramesChanges
+{
+    [self replacePath:_storedPath keyFrames:_storedKeyFrames withPath:[[[[self animation] path] copy] autorelease] keyFrames:[[[[self animation] pathKeyFrames] copy] autorelease] undoRegistrationOnly:YES];
+}
+
+- (id)assistantPaneUndoManager
+{
+    switch (_state) {
+    case 0:
+        return [[self document] undoManager];
+    case 2:
+        return [self undoManager];
+    case 1:
+    case 3:
+    case 4:
+        return [self dummyUndoManager];
+    default:
+        return nil;
+    }
+}
+
+- (void)cancelFromPickImageTool
+{
+    [self resetToolToDefault];
+    [self unlockAssistantIfNeeded];
+    [_cardView setOccupiedByTool:NO];
+    [_navigationController popViewControllerAnimated:YES];
+}
+
+- (void)cancelFromPickObjectTool:(id)aTool
+{
+    [aTool setDelegate:nil];
+    [self cancelFromPickImageTool];
+}
+
+- (id)card
+{
+    return [_cardView card];
+}
+
+- (id)cardViewForPickImageAssistantPane:(id)aPane
+{
+    return _cardView;
+}
+
+- (id)cardViewForPickPartOfCardAssistantPane:(id)aPane
+{
+    return _cardView;
+}
+
+- (void)editingFinishedForTransparentAssistantPane:(id)aPane apply:(BOOL)aApply
+{
+    if (aApply) {
+        [[self undoManager] setMultipleActionsName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
+        id copy = [[[_tryItAnimation animatedObject] localCopyIncludingNodeUnits:YES] autorelease];
+        [self replaceAnimatedObject:[_animation animatedObject] with:copy undoRegistrationOnly:NO];
+    }
+    id layer = [_cardView rootCanvasLayer];
+    [layer setEnabledSublayerIdentifiers:[layer vectorToolsIdentifiers]];
+    [_transparentColorAssistantPane setDelegate:nil];
+    [_transparentColorAssistantPane release];
+    _transparentColorAssistantPane = nil;
+}
+
+- (void)editingWillBeginForEditPathTool:(id)aTool
+{
+    [self storeCurrentPathAndKeyFrames];
+}
+
+- (void)finishAndApplyChanges:(BOOL)aApply
+{
+    _didFinishAndApply = YES;
+    [_tryItAnimation stop];
+    [self updateAnimatedObjectFromTryItAnimation];
+    [self cleanUpTryItAnimation];
+    [_undoHelper finishDuplicating:aApply];
+    [_undoHelper release];
+    _undoHelper = nil;
+    [[self undoManager] removeAllActions];
+    [[self dummyUndoManager] removeAllActions];
+    [self cleanUpAnimation:aApply];
+    [self restoreSelectonAfterExit];
+    [_navigationController removeAllViewControllersWithIdentifier:HSAnimationModeTempPane];
+    if ([[_navigationController viewControllers] count] == 1) {
+        [[_navigationController topViewController] dismissModalViewControllerAnimated:YES];
+    } else {
+        [_navigationController popAllTopViewControllersWithIdentifier:HSAnimationModePane animate:YES];
+    }
+    [self resetToolToDefault];
+    [self unlockAssistantIfNeeded];
+    [self setActionEvents:nil];
+}
+
+- (void)checkActionsForAllEventsAreEqual
+{
+    id actor = [self actor];
+    id first = nil;
+    for (id event in _actionEvents) {
+        id actions = [actor hyperActionsOfType:[HSPlayAnimationAction actionType] forEvent:event];
+        if (first != nil) {
+            for (NSUInteger i = 0; i < [actions count]; i++) {
+            }
+        } else {
+            first = actions;
+        }
+    }
+}
+
+- (void)cleanUpAnimation:(BOOL)aApply
+{
+    id actor = [self actor];
+    id actions = [actor hyperActionsOfType:[HSPlayAnimationAction actionType] forEvent:[_actionEvents lastObject]];
+    NSUInteger count = [actions count];
+    if (!aApply) {
+        if (count == 1) {
+            [[[self document] undoManager] disableUndoRegistration];
+            id action = [actions objectAtIndex:0];
+            if (_initialAnimation == nil) {
+                for (id event in _actionEvents) {
+                    [actor removeHyperAction:action forEvent:event];
+                }
+            } else {
+                [action setAnimation:_initialAnimation];
+            }
+            [[[self document] undoManager] enableUndoRegistration];
+        }
+        return;
+    }
+    if (count == 1) {
+        if ([_initialAnimation isEqual:_animation]) {
+            return;
+        }
+        [actor replaceHyperAction:[actions objectAtIndex:0] withAction:[self playAnimationAction] forEvents:_actionEvents];
+    } else if (count == 0) {
+        [actor addHyperAction:[self playAnimationAction] forEvent:[_actionEvents objectAtIndex:0]];
+    }
+}
+
+- (void)cleanUpTryItAnimation
+{
+    if (_tryItAnimation == nil) {
+        return;
+    }
+    id object = [_tryItAnimation animatedObject];
+    [_tryItAnimation stop];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center removeObserver:self name:HSAnimationPlaybackDidEndNotification object:_tryItAnimation];
+    [center removeObserver:self name:HSAnimationAbsoluteLayerDidChangeNotification object:_tryItAnimation];
+    [center removeObserver:self name:HSAnimationPlaybackDirectionDidChangeNotification object:_tryItAnimation];
+    [object removeObserver:self selector:@selector(tryItAnimatedObjectGeometryChanged:) ofChanges:HSAllAttributeChanges ofAttribute:@protocol(HSGeometryAttribute)];
+    if (_isBlockingUndoRegistration) {
+        [[object undoManager] enableUndoRegistration];
+        _isBlockingUndoRegistration = NO;
+    }
+    [_tryItAnimation release];
+    _tryItAnimation = nil;
+    [[[object card] animationController] cleanUpAfterTryIt];
+}
+
+- (void)cleanupTemporaryAnimationAssistantPanes
+{
+    [_navigationController removeAllViewControllersWithIdentifier:HSAnimationModeTempPane];
+}
+
+- (void)coachingAssistantGoBackFromPane:(id)aPane
+{
+    [_cardView setOccupiedByTool:NO];
+    [self resetToolToDefault];
+    [self unlockAssistantIfNeeded];
+    [aPane dismiss:YES];
+}
+
+- (void)configureAnimatedObjectAndAnimation
+{
+    [self disableAnimatedObjectShadow];
+    [self updateAnimationPlayMovie];
+    [self makeAnimatedObjectButtonBorderless];
+}
+
+- (void)createCelAnimationWithOptions:(id)aOptions croppingPath:(CGPathRef)aPath
+{
+    if (aPath != NULL && !CGPathIsEmpty(aPath)) {
+        id bezierPath = [NSBezierPath hyperBezierPathWithCGPath:aPath];
+        NSMutableDictionary *options = [aOptions mutableCopy];
+        [options setObject:bezierPath forKey:HSPickImageCroppingPathOptionKey];
+        aOptions = [options autorelease];
+    }
+    id movie = [HSAnimationSetupPickImageAssistantPane movieForCelAnimationWithOptions:aOptions];
+    if (movie == nil) {
+        [self cancelFromPickImageTool];
+        return;
+    }
+    NSValue *transformValue = [aOptions objectForKey:HSPickImageAffineTransformOptionKey];
+    if (transformValue != nil) {
+        id applier = [[movie queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier];
+        if (applier != nil) {
+            CGAffineTransform transform = CGAffineTransformIdentity;
+            [transformValue getValue:&transform];
+            CGFloat scaleX = hypot(transform.a, transform.b);
+            CGFloat scaleY = hypot(transform.c, transform.d);
+            CGFloat inverseX = scaleX != 0 ? 1 / scaleX : 1;
+            CGFloat inverseY = scaleY != 0 ? 1 / scaleY : 1;
+            transform.a *= inverseX;
+            transform.b *= inverseX;
+            transform.c *= inverseY;
+            transform.d *= inverseY;
+            [applier resizeFrameBy:NSMakeSize(scaleX, scaleY) aboutRelativePoint:NSZeroPoint withLayoutGuidingContext:nil];
+            [applier setAffineTransform:transform withLayoutGuidingContext:nil];
+        }
+    }
+    [self animationEditModePickTool:nil pickedObject:movie event:nil];
+    [self setIsMovieAnimation:NO];
+    if (_state != 0) {
+        return;
+    }
+    [self setState:1];
+    [self runDrawPath];
+}
+
+- (void)createCelAnimationWithOptions:(id)aOptions croppingPath:(CGPathRef)aPath assistantPane:(id)aPane
+{
+    [self lockAssistantIfNeeded];
+    if (_state == 0) {
+        [self setUpAnimation];
+    }
+    [self createCelAnimationWithOptions:aOptions croppingPath:aPath];
+}
+
+- (void)createImageAnimationWithOptions:(id)aOptions image:(id)aImage
+{
+    id media = [HSNewMedia mediaWithImage:aImage];
+    [self createObjectAnimationWithOptions:aOptions object:[HSDocument userObjectWithMedia:media]];
+}
+
+- (void)createObjectAnimationWithOptions:(id)aOptions object:(id)aObject
+{
+    NSValue *transformValue = [aOptions objectForKey:HSPickImageAffineTransformOptionKey];
+    if (transformValue != nil) {
+        CGAffineTransform transform = CGAffineTransformIdentity;
+        [transformValue getValue:&transform];
+        id applier = [[aObject queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier];
+        if (applier != nil) {
+            [applier setAffineTransform:transform withLayoutGuidingContext:nil];
+        }
+    }
+    id previous = [[[_animation animatedObject] retain] autorelease];
+    [_animation setAnimatedObject:aObject];
+    [self setIsMovieAnimation:NO];
+    [self didSetAnimatedObject];
+    if (previous != nil) {
+        [self replaceAnimatedObject:previous with:aObject undoRegistrationOnly:YES];
+    }
+}
+
+- (void)cropTemporaryObject:(id)aObject options:(id)aOptions forAssistantPane:(id)aPane shouldProceedWithMode:(NSInteger)aMode
+{
+    if (_state == 0) {
+        [self setUpAnimation];
+    }
+    [self runCropForTemporaryObject:aObject options:aOptions withMode:aMode temporaryObjectOwner:aPane];
+}
+
+- (void)didSetAnimatedObject
+{
+    [self configureAnimatedObjectAndAnimation];
+    [self resetToolToDefault];
+    if (_state == 3) {
+        [self setUpTryItAnimation];
+        [_navigationController popAllTopViewControllersWithIdentifier:HSAnimationModeTempPane animate:YES];
+    } else {
+        [self setState:1];
+        [self runDrawPath];
+    }
+}
+
+- (void)disableAnimatedObjectShadow
+{
+    id shadow = [[_animation animatedObject] queryHyperInterface:@protocol(HSMutableShadowAttributes)];
+    if (shadow != nil) {
+        [[[_animation animatedObject] undoManager] disableUndoRegistration];
+        [shadow setHyperShadowEnabled:NO];
+        [[[_animation animatedObject] undoManager] enableUndoRegistration];
+    }
+}
+
+- (id)document
+{
+    return [[self card] document];
+}
+
+- (id)documentForAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    return [self document];
+}
+
+- (id)documentForPickImageAssistantPane:(id)aPane
+{
+    return [self document];
+}
+
+- (void)documentUndoManagerDidRemoveAllActions:(id)aActions
+{
+}
+
+- (void)documentUndoManagerWillRegisterUndo:(id)aUndo
+{
+}
+
+- (void)drawPathShouldCancelFromDrawPathAssistantPane:(id)aPane
+{
+    [[[HSToolManager sharedToolManager] currentTool] cancelPathCreationForDrawPathCanvasLayer:nil];
+}
+
+- (void)drawPathShouldFinishFromDrawPathAssistantPane:(id)aPane
+{
+    [[[HSToolManager sharedToolManager] currentTool] finishPathCreationForDrawPathCanvasLayer:nil];
+}
+
+- (void)drawPathTool:(id)aTool setAnimatedObjectPosition:(NSPoint)aPosition
+{
+    [self setAnimatedObjectPosition:aPosition];
+}
+
+- (void)drawingCanceledForDrawPathTool:(id)aTool
+{
+    [[[HSToolManager sharedToolManager] currentTool] setDelegate:nil];
+    if (_state == 1) {
+        [self setState:0];
+        [self removeAnimatedObjectFromCard];
+        [self resetToolToDefault];
+        [self restoreSelectonAfterExit];
+        [self unlockAssistantIfNeeded];
+    }
+    [_cardView setOccupiedByTool:NO];
+    [_drawPathAssistantPane dismiss:YES];
+    [_drawPathAssistantPane setDelegate:nil];
+    [_drawPathAssistantPane release];
+    _drawPathAssistantPane = nil;
+}
+
+- (void)drawingFinishedForDrawPathTool:(id)aTool
+{
+    [aTool setDelegate:nil];
+    [_cardView setOccupiedByTool:NO];
+    if (_state == 4) {
+        [[self undoManager] setMultipleActionsName:[[NSBundle mainBundle] localizedStringForKey:@"New Path" value:@"" table:@"UndoManager"]];
+        [self applyPathAndKeyFramesChanges];
+    }
+    [_animation setLoopMode:2];
+    [self updateAnimationForCurrentPath];
+    [self setUpTryItAnimation];
+    HSAnimationSetupEditPathAssistantPane *pane = [HSAnimationSetupEditPathAssistantPane paneWithCoachingKey:@"AnimationEditPath"];
+    if (![pane needsToShow]) {
+        if (_state != 1) {
+            [_navigationController popAllTopViewControllersWithIdentifier:HSAnimationModeTempPane animate:YES];
+            return;
+        }
+        [self pushAnimationViewController:self withIdentifier:HSAnimationModePane];
+        return;
+    }
+    [pane setWindowTitle:[self windowTitle]];
+    [pane setDidDoneDelegate:self didDoneSelector:@selector(animationEditPathHelpPaneDidDone:contextInfo:) contextInfo:NULL];
+    [pane setDelegate:self];
+    [pane setShouldDismissWhenDisappeared:NO];
+    [pane setShouldDismissOnOkFromSwitcher:NO];
+    [self pushAnimationViewController:pane];
+}
+
+- (id)dummyUndoManager
+{
+    if (_dummyUndoManager == nil) {
+        _dummyUndoManager = [NSUndoManager new];
+        [_dummyUndoManager disableUndoRegistration];
+    }
+    return _dummyUndoManager;
+}
+
+- (void)editingDidEndForEditPathTool:(id)aTool
+{
+    [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Edit Path" value:@"" table:@"UndoManager"]];
+    [self applyPathAndKeyFramesChanges];
+}
+
+- (void)goBackFromAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    [self cleanUpTryItAnimation];
+    id tool = [self selectToolWithTag:0x35];
+    [tool setDelegate:self];
+    [tool run];
+    [_navigationController popViewControllerAnimated:YES slide:YES];
+}
+
+- (BOOL)hasAssistantPaneUnappliedChanges
+{
+    return ![_initialAnimation isEqual:_animation];
+}
+
+- (void)lockAssistantIfNeeded
+{
+    HSObjectAssistantController *controller = [HSObjectAssistantController sharedAssistantController];
+    if (![controller isLocked]) {
+        [controller setLocked:YES delegate:self];
+    }
+}
+
+- (void)lockAssistantIfNeededForTransparentColorAssistantPane:(id)aPane
+{
+    [self lockAssistantIfNeeded];
+}
+
+- (id)lockedObjectAssistantController:(id)aController paneHistoryForObject:(id)aObject
+{
+    switch (_state) {
+    case 0:
+    case 3:
+        [self setPickImageAssistantPane:[[HSAnimationSetupPickImageAssistantPane new] autorelease]];
+        return [NSArray arrayWithObject:_pickImageAssistantPane];
+    case 1:
+    case 4:
+        [self recreateDrawPathAssistantPaneWithKey:@"AnimationDrawPath"];
+        return [NSArray arrayWithObject:_drawPathAssistantPane];
+    case 2:
+        return [NSArray arrayWithObject:self];
+    default:
+        return [NSArray array];
+    }
+}
+
+- (id)mainWindowForAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    return [_cardView window];
+}
+
+- (void)makeAnimatedObjectButtonBorderless
+{
+    if ([[_animation animatedObject] queryHyperInterface:@protocol(HSButtonObjectAttributes)] != nil) {
+        id border = [[_animation animatedObject] queryHyperInterface:@protocol(HSBorderAttributes)];
+        if (border != nil) {
+            [[[_animation animatedObject] undoManager] disableUndoRegistration];
+            [border setIsBorderless:YES];
+            [[[_animation animatedObject] undoManager] enableUndoRegistration];
+        }
+    }
+}
+
+- (BOOL)needObserveStackChangesForPickImageAssistantPane:(id)aPane
+{
+    return _state == 3;
+}
+
+- (BOOL)needObserveStackChangesForPickPartOfCardAssistantPane:(id)aPane
+{
+    return _state == 3;
+}
+
+- (void)pathStateIsUpdatedForDrawPathTool:(id)aTool
+{
+    [_drawPathAssistantPane setPathCreationCanBeFinished:YES];
+}
+
+- (void)pickCardObjectForAssistantPane:(id)aPane temporaryObject:(id)aObject
+{
+    if (aObject != nil) {
+        id card = [self card];
+        [[card undoManager] disableUndoRegistration];
+        [card removeHyperChild:aObject];
+        [[card undoManager] enableUndoRegistration];
+        if ([aPane respondsToSelector:@selector(releaseTemporaryObject)]) {
+            [aPane releaseTemporaryObject];
+        }
+    }
+    if (_state == 0) {
+        [self setUpAnimation];
+    }
+    [self runPickCardObjectWithAssistant:[aPane assistant]];
+}
+
+- (void)pickMovie:(id)aMovie name:(id)aName forPickImageAssistantPane:(id)aPane
+{
+    QTMovie *source = [aMovie QTMovie];
+    QTTime duration = source != nil ? [source duration] : QTZeroTime;
+    QTMovie *movie = [[QTMovie alloc] initWithMovie:source timeRange:QTMakeTimeRange(QTZeroTime, duration) error:NULL];
+    if (movie != nil) {
+        id object = [HSMovieObject new];
+        if (object != nil) {
+            [object setSupport:[self document]];
+            id objectUndoManager = [[object undoManager] retain];
+            [objectUndoManager disableUndoRegistration];
+            [[self undoManager] disableUndoRegistration];
+            [object setHyperMovie:movie name:aName];
+            [object setHyperName:aName];
+            if (_state == 0) {
+                [[HSObjectAssistantController sharedAssistantController] setSelectedInModelObjectAndBringAssistantToFront:[self object]];
+                [[HSObjectAssistantController sharedAssistantController] setActive:YES explicitlyByUser:NO];
+                [self lockAssistantIfNeeded];
+                [self setUpAnimation];
+                [_animation setAnimatedObject:object];
+                [self configureAnimatedObjectAndAnimation];
+            }
+            [self animationEditModePickTool:nil pickedObject:object event:nil];
+            id path = [[[aMovie queryHyperInterface:@protocol(HSMediaAttributes)] media] fullPathToMediaFileCreateIfNeeded:YES];
+            BOOL isMovieAnimation = NO;
+            if (![HSLibraryContentHelper shouldFileBeCreatedAsAnimationAtPath:path]) {
+                isMovieAnimation = ![aMovie isAnimatedGifMovie];
+            }
+            [object setMedia:nil];
+            [object setSupport:nil];
+            [object release];
+            [self setIsMovieAnimation:isMovieAnimation];
+            [objectUndoManager enableUndoRegistration];
+            [[self undoManager] enableUndoRegistration];
+            [objectUndoManager release];
+        }
+        [movie release];
+    }
+}
+
+- (id)playAnimationAction
+{
+    id action = [[[self actor] createActionOfType:[HSPlayAnimationAction actionType] forEvent:[_actionEvents extraFirstObject]] autorelease];
+    [action setEvents:_actionEvents];
+    [action setAnimation:_animation];
+    return action;
+}
+
+- (id)prepareToCroppingForAssistantPane:(id)aPane image:(id)aImage options:(id)aOptions
+{
+    id object = [HSDocument userObjectWithMedia:[HSNewMedia mediaWithImage:aImage]];
+    if (object != nil) {
+        [[object undoManager] disableUndoRegistration];
+        id shadow = [object queryHyperInterface:@protocol(HSMutableShadowAttributes)];
+        if (shadow != nil) {
+            [shadow setHyperShadowEnabled:NO];
+        }
+        [[object undoManager] enableUndoRegistration];
+        [self lockAssistantIfNeeded];
+        [self addTemporaryObjectToCard:object];
+        [[object undoManager] disableUndoRegistration];
+        id applier = [[object queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier];
+        if (applier != nil) {
+            NSValue *transformValue = [aOptions objectForKey:HSPickImageAffineTransformOptionKey];
+            if (transformValue != nil) {
+                CGAffineTransform transform = CGAffineTransformIdentity;
+                [transformValue getValue:&transform];
+                CGFloat scaleX = hypot(transform.a, transform.b);
+                CGFloat scaleY = hypot(transform.c, transform.d);
+                CGFloat inverseX = scaleX != 0 ? 1 / scaleX : 1;
+                CGFloat inverseY = scaleY != 0 ? 1 / scaleY : 1;
+                transform.a *= inverseX;
+                transform.b *= inverseX;
+                transform.c *= inverseY;
+                transform.d *= inverseY;
+                [applier resizeFrameBy:NSMakeSize(scaleX, scaleY) aboutRelativePoint:NSZeroPoint withLayoutGuidingContext:nil];
+                [applier setAffineTransform:transform withLayoutGuidingContext:nil];
+            }
+            NSSize size = [[[self document] stack] hyperCardSize];
+            [applier moveCenterTo:NSMakePoint(size.width * 0.5, size.height * 0.5) withLayoutGuidingContext:nil];
+        }
+        [[object undoManager] enableUndoRegistration];
+    }
+    return object;
+}
+
+- (void)prepareToolAndCardViewAfterSwitchForAnimationSetupCoachingAssistantPane:(id)aPane
+{
+    [self unlockAssistantIfNeeded];
+    [self resetToolToDefault];
+    [self restoreSelectonAfterExit];
+}
+
+- (void)prepareToolAndCardViewAfterSwitchForDrawPathAssistantPane:(id)aPane
+{
+    [self unlockAssistantIfNeeded];
+    [self resetToolToDefault];
+    [self restoreSelectonAfterExit];
+    [self setNeedsActiveToolLater:YES];
+}
+
+- (void)prepareToolAndCardViewForAnimationSetupCoachingAssistantPane:(id)aPane
+{
+    [self lockAssistantIfNeeded];
+    [_cardView setOccupiedByTool:YES];
+    id tool = [self selectToolWithTag:0x31];
+    [tool setDelegate:self];
+}
+
+- (void)prepareToolAndCardViewForAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    [self lockAssistantIfNeeded];
+    if (_tryItAnimation == nil) {
+        [self setUpTryItAnimation];
+    }
+    [self runEditPath];
+    [_cardView setOccupiedByTool:YES];
+}
+
+- (void)prepareToolAndCardViewForDrawPathAssistantPane:(id)aPane
+{
+    if ([[HSToolManager sharedToolManager] selectedToolTag] != 0x35) {
+        [self lockAssistantIfNeeded];
+        id tool = [self selectToolWithTag:0x35];
+        [tool setDelegate:self];
+        [tool run];
+    }
+}
+
+- (void)prepareTryItAnimationForTransparentColorAssistantPane:(id)aPane
+{
+    if (_tryItAnimation == nil) {
+        [self setUpTryItAnimation];
+    }
+}
+
+- (void)pushAnimationViewController:(id)aController
+{
+    [self pushAnimationViewController:aController withIdentifier:HSAnimationModeTempPane];
+}
+
+- (void)pushAnimationViewController:(id)aController withIdentifier:(id)aIdentifier
+{
+    [_navigationController pushViewController:aController withIdentifier:aIdentifier animate:YES replacePrevious:NO];
+}
+
+- (void)recreateDrawPathAssistantPaneWithKey:(id)aKey
+{
+    [_drawPathAssistantPane setDelegate:nil];
+    [_drawPathAssistantPane release];
+    _drawPathAssistantPane = [[HSAnimationSetupDrawPathAssistantPane alloc] initWithCoachingKey:aKey];
+    if ([aKey isEqualToString:@"AnimationDrawSegmentedPath"]) {
+        [_drawPathAssistantPane setupUIForSegmentedPathCreationMode];
+    } else {
+        [_drawPathAssistantPane setupUIForNonSegmentedPathCreationMode];
+    }
+    [_drawPathAssistantPane setDelegate:self];
+    [_drawPathAssistantPane setWindowTitle:[self windowTitle]];
+}
+
+- (void)recreateTryItAnimationOnAnimationOptionsChange
+{
+    [self updateAnimatedObjectFromTryItAnimation];
+    [self setUpTryItAnimation];
+}
+
+- (void)refreshWindowTitle
+{
+    id attributes = [[self object] queryHyperInterface:@protocol(HSObjectAttributes)];
+    if (attributes != nil) {
+        [self setWindowTitle:[NSString stringWithFormat:@"%@ : %@", [attributes hyperName], [HSPlayAnimationAction localizedNameInInspector]]];
+    } else {
+        [self setWindowTitle:[HSPlayAnimationAction localizedNameInInspector]];
+    }
+}
+
+- (void)registerUndoGeometryChangesOfAnimatedObject:(id)aObject withActionName:(id)aName
+{
+    if (aName != nil) {
+        [[self undoManager] setActionName:aName];
+    }
+    id geometry = [aObject queryHyperInterface:@protocol(HSGeometryAttributes)];
+    [[[self undoManager] prepareWithInvocationTarget:self] useAnimatedObjectSize:[geometry size] affineTransform:[geometry affineTransform] actionName:aName];
+    [_undoHelper duplicateAction];
+}
+
+- (void)releaseTryItAnimationForTransparentColorAssistantPane:(id)aPane
+{
+    [self cleanUpTryItAnimation];
+}
+
+- (void)removeAnimatedObjectFromCard
+{
+    id object = [_animation animatedObject];
+    [[[self card] undoManager] disableUndoRegistration];
+    [[self card] removeHyperChild:object];
+    [[[self card] undoManager] enableUndoRegistration];
+    [_cardView setNeedsDisplay:YES];
+}
+
+- (void)removeAnimatedObjectFromCardForDrawPathTool:(id)aTool
+{
+    [[[_animation animatedObject] queryHyperInterface:@protocol(HSGeometryAttributes)] attributeObservingController];
+    [[[[_animation animatedObject] queryHyperInterface:@protocol(HSGeometryAttributes)] attributeObservingController] endContinuousChangeOfAttributeSet:[NSEProtocolSet protocolSetWithProtocols:@protocol(HSHorizontalOffsetAttribute), @protocol(HSVerticalOffsetAttribute), nil]];
+    [self removeAnimatedObjectFromCard];
+    [[HSObjectAssistantController sharedAssistantController] setSupportsSettingsOnTheSpotMode:_initialInspectorSupportsSOTSMode];
+}
+
+- (void)replaceAnimatedObject:(id)aObject with:(id)aWith undoRegistrationOnly:(BOOL)aOnly
+{
+    [[self undoManager] setActionName:[[NSBundle mainBundle] localizedStringForKey:@"Change Animated Object" value:@"" table:@"UndoManager"]];
+    [[[self undoManager] prepareWithInvocationTarget:self] replaceAnimatedObject:aWith with:aObject undoRegistrationOnly:NO];
+    [_undoHelper duplicateAction];
+    if (!aOnly) {
+        [_tryItAnimation stop];
+        [_animation setAnimatedObject:aWith];
+        double pathTime = [_tryItAnimation pathTime];
+        [self setUpTryItAnimation];
+        [_tryItAnimation setPathTime:pathTime];
+        [self updateAnimationPlayMovie];
+        [self updateUI:YES];
+    }
+}
+
+- (void)replacePath:(id)aPath keyFrames:(id)aKeyFrames withPath:(id)aWithPath keyFrames:(id)aWithKeyFrames undoRegistrationOnly:(BOOL)aOnly
+{
+    [[[self undoManager] prepareWithInvocationTarget:self] replacePath:aWithPath keyFrames:aWithKeyFrames withPath:aPath keyFrames:aKeyFrames undoRegistrationOnly:NO];
+    [_undoHelper duplicateAction];
+    if (!aOnly) {
+        [_tryItAnimation stop];
+        [_animation setPath:aWithPath keyFrames:aWithKeyFrames];
+        [_tryItAnimation setPath:aWithPath keyFrames:aWithKeyFrames];
+        HSAnimationFixation *fixation = [HSAnimationFixation new];
+        [fixation setObjectPositionAtZeroTime:[_tryItAnimation pathPointAtTime:0]];
+        [[_tryItAnimation positioning] replaceFixationWith:fixation];
+        [fixation release];
+        double pathTime = [_tryItAnimation pathTime];
+        double time = 0;
+        if (pathTime >= 0) {
+            time = pathTime;
+            if ([_tryItAnimation duration] < pathTime) {
+                time = [_tryItAnimation duration];
+            }
+        }
+        if ([[HSToolManager sharedToolManager] selectedToolTag] == 0x37) {
+            [[[HSToolManager sharedToolManager] currentTool] updatePath];
+        }
+        [_tryItAnimation setPathTime:time];
+    }
+    [self updateUI:YES];
+}
+
+- (void)resetToolToDefault
+{
+    [self selectToolWithTag:0];
+}
+
+- (void)restoreSelectonAfterExit
+{
+    id object = [self object];
+    [_cardView ignoreNextMouseDown];
+    id target = _cardView;
+    if ([[object queryHyperInterface:@protocol(HSUserObjectSupport)] card] == object) {
+        [_cardView selectObjects:nil];
+        target = [[[self document] selectionController] stackController];
+    }
+    [target selectObject:object];
+}
+
+- (void)runCropForTemporaryObject:(id)aObject options:(id)aOptions withMode:(NSInteger)aMode temporaryObjectOwner:(id)aOwner
+{
+    if (aMode == 3) {
+        [aObject retain];
+        id card = [self card];
+        [[card undoManager] disableUndoRegistration];
+        [card removeHyperChild:aObject];
+        [[card undoManager] enableUndoRegistration];
+        NSUInteger type = [[aOptions objectForKey:HSPickImageGraphicTypeOptionKey] unsignedLongValue];
+        if (type == HSGraphicTypeCELMovie) {
+            [self createCelAnimationWithOptions:aOptions croppingPath:NULL];
+        } else {
+            [self createObjectAnimationWithOptions:nil object:aObject];
+        }
+        if ([aOwner respondsToSelector:@selector(releaseTemporaryObject)]) {
+            [aOwner releaseTemporaryObject];
+        }
+        [aObject release];
+        return;
+    }
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    NSInteger tag = 0;
+    if (aMode == 2) {
+        tag = 0x34;
+    } else if (aMode == 1) {
+        tag = 0x33;
+    } else if (aMode == 0) {
+        tag = 0x32;
+    }
+    id tool = [self selectToolWithTag:tag];
+    [tool setWorkObject:[aObject queryHyperInterface:@protocol(HSImageObjectAttributes)]];
+    [tool setUserInfo:[[NSDictionary alloc] initWithObjectsAndKeys:aOptions, HSUserInfoOptions, aOwner, HSUserInfoTemporaryObjectOwner, nil]];
+    id pane = [HSSelectImagePartPane paneWithCoachingKey:[tool toolIdentifier]];
+    [pane setWindowTitle:[self windowTitle]];
+    [pane setDelegate:self];
+    [pane setShouldLeavePaneOnToolChange:NO];
+    [pane setShouldDismissWhenDisappeared:NO];
+    [tool setDelegate:pane];
+    [self pushAnimationViewController:pane];
+    [_cardView setOccupiedByTool:YES];
+    [pool release];
+}
+
+- (void)runDrawPath
+{
+    if (_state == 4) {
+        [self storeCurrentPathAndKeyFrames];
+    }
+    [_cardView setOccupiedByTool:YES];
+    id tool = [self selectToolWithTag:0x35];
+    [tool setDelegate:self];
+    [tool run];
+    [self recreateDrawPathAssistantPaneWithKey:[tool pathCreationMode] == 1 ? @"AnimationDrawSegmentedPath" : @"AnimationDrawPath"];
+    [self pushAnimationViewController:_drawPathAssistantPane];
+}
+
+- (void)runEditPath
+{
+    id tool = [self selectToolWithTag:0x37];
+    [tool setDelegate:self];
+    [tool run];
+}
+
+- (void)runEditPathIfNeededForPickImageAssistantPane:(id)aPane
+{
+    if (_state == 3) {
+        [self lockAssistantIfNeeded];
+        [self runEditPath];
+        [self unlockAssistantIfNeeded];
+    }
+}
+
+- (void)runEditPathIfNeededForPickPartOfCardAssistantPane:(id)aPane
+{
+    if (_state == 3) {
+        [self lockAssistantIfNeeded];
+        [self runEditPath];
+        [self unlockAssistantIfNeeded];
+    }
+}
+
+- (void)runPickCardObjectWithAssistant:(id)aAssistant
+{
+    [self lockAssistantIfNeeded];
+    [_cardView setOccupiedByTool:YES];
+    id tool = [self selectToolWithTag:0x31];
+    [tool setDelegate:self];
+    id pane = [HSAnimationSetupCoachingAssistantPane paneWithCoachingKey:[tool toolIdentifier]];
+    [pane setWindowTitle:[self windowTitle]];
+    [pane setDelegate:self];
+    [self pushAnimationViewController:pane];
+}
+
+- (void)runPickImage
+{
+    [self setPickImageAssistantPane:[[HSAnimationSetupPickImageAssistantPane new] autorelease]];
+    [self pushAnimationViewController:_pickImageAssistantPane];
+    [self lockAssistantIfNeeded];
+}
+
+- (void)runWithImage:(id)aImage options:(id)aOptions fromPane:(id)aPane
+{
+    id media = nil;
+    id path = [aOptions objectForKey:HSPickImageSourcePathKey];
+    if (path != nil) {
+        media = [HSNewMedia mediaWithPath:path];
+    }
+    if (media == nil) {
+        media = [HSNewMedia mediaWithImage:aImage];
+    }
+    id object = [HSDocument userObjectWithMedia:media];
+    id clipPaths = [aOptions objectForKey:HSPickImageClipPathsOptionKey];
+    if (clipPaths != nil) {
+        [[HSImageCropApplier cropApplierForImageObject:object] cropImageObjectWithPaths:clipPaths modifyObjectGeometry:YES];
+    }
+    [self lockAssistantIfNeeded];
+    if (_state == 0) {
+        [self setUpAnimation];
+    }
+    [object retain];
+    if ([[aOptions objectForKey:HSPickImageGraphicTypeOptionKey] unsignedLongValue] == HSGraphicTypeCELMovie) {
+        [self createCelAnimationWithOptions:aOptions croppingPath:NULL];
+    } else {
+        id transform = [aOptions objectForKey:HSPickImageAffineTransformOptionKey];
+        NSDictionary *options = nil;
+        if (transform != nil) {
+            options = [NSDictionary dictionaryWithObject:transform forKey:HSPickImageAffineTransformOptionKey];
+        }
+        [self createObjectAnimationWithOptions:options object:object];
+    }
+    [object release];
+}
+
+- (void)selectImagePartPaneCancel:(id)aPane
+{
+    [_cardView setOccupiedByTool:NO];
+    id tool = [[HSToolManager sharedToolManager] currentTool];
+    [tool setDelegate:nil];
+    id userInfo = [tool userInfo];
+    [tool setUserInfo:nil];
+    id owner = [userInfo objectForKey:HSUserInfoTemporaryObjectOwner];
+    id temporary = [owner respondsToSelector:@selector(temporaryObject)] ? [owner temporaryObject] : [[tool workObject] hyperObject];
+    if (temporary != nil) {
+        [tool setWorkObject:nil];
+        id card = [self card];
+        [[card undoManager] disableUndoRegistration];
+        [card removeHyperChild:temporary];
+        [[card undoManager] enableUndoRegistration];
+        if ([owner respondsToSelector:@selector(releaseTemporaryObject)]) {
+            [owner releaseTemporaryObject];
+        }
+    }
+    [userInfo release];
+    if (_state == 0) {
+        [self unlockAssistantIfNeeded];
+        [self resetToolToDefault];
+    }
+    [_navigationController popViewControllerAnimated:YES];
+}
+
+- (void)selectImagePartPaneCrop:(id)aPane
+{
+    [_cardView setOccupiedByTool:NO];
+    id tool = [[HSToolManager sharedToolManager] currentTool];
+    [tool setDelegate:nil];
+    CGRect objectBounds = CGRectZero;
+    CGRect pathBounds = CGRectZero;
+    CGPathRef path = [tool copiedCGPath];
+    id workObject = [[tool workObject] queryHyperInterface:@protocol(HSGeometryAttributes)];
+    if (workObject != nil && path != NULL) {
+        objectBounds = NSRectToCGRect([workObject boundingRect]);
+        if (!CGPathIsEmpty(path)) {
+            pathBounds = CGPathGetPathBoundingBox(path);
+        }
+        if (CGRectIsEmpty(CGRectIntersection(pathBounds, objectBounds))) {
+            pathBounds = CGRectZero;
+        }
+    }
+    if (CGRectIsEmpty(pathBounds)) {
+        if (path != NULL) {
+            CGPathRelease(path);
+        }
+        [self selectImagePartPaneCancel:aPane];
+        return;
+    }
+    NSAutoreleasePool *pool = [NSAutoreleasePool new];
+    id userInfo = [tool userInfo];
+    [tool setUserInfo:nil];
+    [workObject retain];
+    [self resetToolToDefault];
+    id object = [workObject hyperObject];
+    if (object != nil) {
+        [tool setWorkObject:nil];
+        [object retain];
+        id card = [self card];
+        [[card undoManager] disableUndoRegistration];
+        [card removeHyperChild:object];
+        [[card undoManager] enableUndoRegistration];
+        id owner = [userInfo objectForKey:HSUserInfoTemporaryObjectOwner];
+        if ([owner respondsToSelector:@selector(releaseTemporaryObject)]) {
+            [owner releaseTemporaryObject];
+        }
+        [object autorelease];
+    }
+    id imageAttributes = [object queryHyperInterface:@protocol(HSImageAttributes)];
+    if (imageAttributes != nil) {
+        NSSize imageSize = [[imageAttributes image] size];
+        CGRect imageRect = CGRectMake(0, 0, imageSize.width, imageSize.height);
+        if (!CGRectIsEmpty(imageRect)) {
+            CGFloat scaleX = 1;
+            CGFloat scaleY = 1;
+            if (objectBounds.size.width != 0) {
+                scaleX = imageSize.width / objectBounds.size.width;
+            }
+            if (objectBounds.size.height != 0) {
+                scaleY = imageSize.height / objectBounds.size.height;
+            }
+            CGAffineTransform scale = CGAffineTransformMake(scaleX, 0, 0, scaleY, -objectBounds.origin.x * scaleX, -objectBounds.origin.y * scaleY);
+            CGAffineTransform flip = CGAffineTransformMake(1, 0, 0, -1, 0, imageSize.height);
+            CGAffineTransform transform = CGAffineTransformConcat(scale, flip);
+            CGMutablePathRef flipped = CGPathCreateMutable();
+            if (flipped != NULL) {
+                CGPathAddPath(flipped, &transform, path);
+                CGPathRelease(path);
+                pathBounds = CGPathGetPathBoundingBox(flipped);
+                path = flipped;
+            }
+        }
+        id options = [userInfo objectForKey:HSUserInfoOptions];
+        HSObjectAssistantNavigationController *navigation = nil;
+        if (_state == 0) {
+            navigation = _navigationController;
+            [navigation changeIdentifierForViewController:aPane toIdentifier:@"identifierForViewControllerToRemove"];
+        }
+        if ([[options objectForKey:HSPickImageGraphicTypeOptionKey] unsignedLongValue] == HSGraphicTypeImage) {
+            CGRect crop = CGRectIntersection(CGRectIntegral(pathBounds), imageRect);
+            NSImage *cropped = nil;
+            NSImage *image = nil;
+            if (!CGRectIsEmpty(crop)) {
+                cropped = [[NSImage alloc] initWithSize:NSMakeSize(crop.size.width, crop.size.height)];
+            }
+            if (cropped != nil) {
+                NSImage *source = [[[imageAttributes image] copy] autorelease];
+                [source setFlipped:NO];
+                [cropped lockFocus];
+                CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+                CGContextConcatCTM(context, CGAffineTransformMakeTranslation(-crop.origin.x, -crop.origin.y));
+                CGContextBeginPath(context);
+                CGContextAddPath(context, path);
+                CGContextClip(context);
+                [source drawInRect:NSRectFromCGRect(crop) fromRect:NSRectFromCGRect(crop) operation:NSCompositeSourceOver fraction:1];
+                [cropped unlockFocus];
+                image = cropped;
+            } else {
+                image = [imageAttributes image];
+            }
+            [self createImageAnimationWithOptions:options image:image];
+            [cropped release];
+        } else {
+            [self createCelAnimationWithOptions:options croppingPath:path];
+        }
+        [navigation removeAllViewControllersWithIdentifier:@"identifierForViewControllerToRemove"];
+    }
+    CGPathRelease(path);
+    [workObject release];
+    [userInfo release];
+    [pool release];
+}
+
+- (id)selectToolWithTag:(NSInteger)aTag
+{
+    [[HSToolManager sharedToolManager] selectToolWithTag:aTag setAsPermanent:YES forceSelection:YES];
+    return [[HSToolManager sharedToolManager] currentTool];
+}
+
+- (CGFloat)selectionToolTolerance
+{
+    id setting = [[[HSToolManager sharedToolManager] toolSettings] settingForIdentifier:HSLassoSelectionToolIdentifier andKey:HSLassoToolToleranceKey];
+    if (setting == nil) {
+        return 0;
+    }
+    return [setting floatValue];
+}
+
+- (void)setActionEvents:(id)aEvents
+{
+    if (![_actionEvents isEqualToArray:aEvents]) {
+        [_actionEvents release];
+        _actionEvents = [aEvents copy];
+    }
+}
+
+- (void)setAnimatedObjectPosition:(NSPoint)aPosition
+{
+    id object = [_animation animatedObject];
+    [[object undoManager] disableUndoRegistration];
+    [HSAnimationPositioning setPosition:aPosition ofObject:object];
+    [[object undoManager] enableUndoRegistration];
+}
+
+- (void)setCardView:(id)aCardView
+{
+    if (_cardView != aCardView) {
+        NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+        [center removeObserver:self name:NSWindowWillCloseNotification object:[_cardView window]];
+        [aCardView retain];
+        [_cardView release];
+        _cardView = aCardView;
+        if (_cardView != nil) {
+            [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_windowWillClose:) name:NSWindowWillCloseNotification object:[_cardView window]];
+            [_undoHelper finishDuplicating:NO];
+            [_undoHelper release];
+            _undoHelper = [[HSEditModeUndoHelper alloc] initWithDocument:[self document] documentUndoManager:[[self document] undoManager] editModeUndoManager:[self undoManager] delegate:self];
+        }
+    }
+}
+
+- (void)setNavigationController:(id)aController
+{
+    [_navigationController release];
+    _navigationController = [aController retain];
+}
+
+- (void)setNeedsActiveToolLater:(BOOL)aLater
+{
+    [[HSObjectAssistantController sharedAssistantController] setSelectedInModelObject:nil];
+    id object = [self object];
+    id windowController = [[self document] currentWindowController];
+    if ([windowController respondsToSelector:@selector(setSelectedObjectForAssistantRefresh:)]) {
+        [windowController setSelectedObjectForAssistantRefresh:object];
+    }
+}
+
+- (void)setObject:(id)aObject
+{
+    if ([self object] == aObject) {
+        return;
+    }
+    id observing = [[[self object] queryHyperInterface:@protocol(HSAttributes)] attributeObservingController];
+    if (observing != nil) {
+        [observing removeObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_nameAttributesDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSObjectNameAttribute)];
+    }
+    [super setObject:aObject];
+    observing = [[aObject queryHyperInterface:@protocol(HSAttributes)] attributeObservingController];
+    if (observing != nil) {
+        [observing addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_nameAttributesDidChange:) ofChanges:HSActualDidAttributeChanges ofAttribute:@protocol(HSObjectNameAttribute) withPriority:-0.25];
+    }
+    [self refreshWindowTitle];
+}
+
+- (void)setPickImageAssistantPane:(id)aPane
+{
+    [_pickImageAssistantPane setDelegate:nil];
+    [_pickImageAssistantPane release];
+    _pickImageAssistantPane = [aPane retain];
+    [_pickImageAssistantPane setDelegate:self];
+    [_pickImageAssistantPane setTolerance:[self selectionToolTolerance]];
+}
+
+- (void)setPlayForItemWithTag:(NSInteger)aTag
+{
+    [_playForPopUpButton selectItemWithTag:aTag];
+    [_playForPopUpButton setToolTip:[[_playForPopUpButton selectedItem] toolTip]];
+    [_playForValueTextField setToolTip:[[_playForPopUpButton selectedItem] toolTip]];
+}
+
+- (void)setState:(NSInteger)aState
+{
+    _state = (int)aState;
+}
+
+- (void)setUpAnimation
+{
+    [self checkActionsForAllEventsAreEqual];
+    id actions = [[self actor] hyperActionsOfType:[HSPlayAnimationAction actionType] forEvent:[_actionEvents lastObject]];
+    [_initialAnimation release];
+    [_animation release];
+    _initialAnimation = nil;
+    _animation = nil;
+    if ([actions count] == 0) {
+        _animation = [HSAnimation new];
+    } else if ([actions count] == 1) {
+        _initialAnimation = [[[actions objectAtIndex:0] animation] copy];
+        _animation = [_initialAnimation copy];
+    }
+}
+
+- (void)setUpTryItAnimation
+{
+    if ([_animation animatedObject] == nil) {
+        return;
+    }
+    [self cleanUpTryItAnimation];
+    [[[self card] animationController] prepareForTryItAnimation:_animation];
+    _tryItAnimation = [[[[self card] animationController] prepareToStartAnimation:_animation forActingObject:[self object]] retain];
+    [_tryItAnimation setSuppressDontErase:YES];
+    [_tryItAnimation prepareAnimation];
+    NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
+    [center addObserver:self selector:@selector(animationPlaybackDidEnd:) name:HSAnimationPlaybackDidEndNotification object:_tryItAnimation];
+    [center addObserver:self selector:@selector(HSAnimationSetupMainAssistantPane_animationAbsoluteLayerDidChange:) name:HSAnimationAbsoluteLayerDidChangeNotification object:_tryItAnimation];
+    [center addObserver:self selector:@selector(animationPlaybackDirectionDidChange:) name:HSAnimationPlaybackDirectionDidChangeNotification object:_tryItAnimation];
+    id object = [_tryItAnimation animatedObject];
+    [_cardView selectHyperObject:object];
+    [object addObserver:self selector:@selector(tryItAnimatedObjectGeometryChanged:) ofChanges:HSAllAttributeChanges ofAttribute:@protocol(HSGeometryAttribute) withPriority:-0.25];
+}
+
+- (void)storeCurrentPathAndKeyFrames
+{
+    [_storedPath release];
+    [_storedKeyFrames release];
+    _storedPath = [[[self animation] path] copy];
+    _storedKeyFrames = [[[self animation] pathKeyFrames] copy];
+}
+
+- (void)tryItAnimatedObjectGeometryChanged:(id)aChange
+{
+    NSUInteger change = [aChange attributeChange];
+    if (change == 0x40) {
+        NSString *name = [[NSBundle mainBundle] localizedStringForKey:[[aChange attributeProtocolSet] containsProtocol:@protocol(HSRotationAngleAttribute)] ? @"Rotation" : @"Resize" value:@"" table:@"UndoManager"];
+        [self registerUndoGeometryChangesOfAnimatedObject:[_tryItAnimation animatedObject] withActionName:name];
+    } else if (change == 0x80) {
+        [_tryItAnimation updateObject];
+    } else if ((HSActualWillAttributeChanges & change) != 0) {
+        if (!_isBlockingUndoRegistration) {
+            [[[_tryItAnimation animatedObject] undoManager] disableUndoRegistration];
+            _isBlockingUndoRegistration = YES;
+        }
+    } else if ((HSActualDidAttributeChanges & change) != 0 && _isBlockingUndoRegistration) {
+        [[[_tryItAnimation animatedObject] undoManager] enableUndoRegistration];
+        _isBlockingUndoRegistration = NO;
+    }
+}
+
+- (id)tryItAnimationForEditPathTool:(id)aTool
+{
+    return [self tryItAnimation];
+}
+
+- (id)tryItAnimationForTransparentColorAssistantPane:(id)aPane
+{
+    return _tryItAnimation;
+}
+
+- (id)undoManagerForAnimationSetupCoachingAssistantPane:(id)aPane
+{
+    return [self dummyUndoManager];
+}
+
+- (id)undoManagerForAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    return [self undoManager];
+}
+
+- (id)undoManagerForDrawPathAssistantPane:(id)aPane
+{
+    return [self undoManager];
+}
+
+- (id)undoManagerForImagePartPane:(id)aPane
+{
+    return [self dummyUndoManager];
+}
+
+- (id)undoManagerForPickImageAssistantPane:(id)aPane
+{
+    return [self assistantPaneUndoManager];
+}
+
+- (id)undoManagerForPickPartOfCardAssistantPane:(id)aPane
+{
+    return [self dummyUndoManager];
+}
+
+- (id)undoManagerForTransparentColorAssistantPane:(id)aPane
+{
+    return [self dummyUndoManager];
+}
+
+- (void)unlockAssistantAndResetTool
+{
+    [self unlockAssistantIfNeeded];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+    [self resetToolToDefault];
+}
+
+- (void)unlockAssistantIfNeeded
+{
+    HSObjectAssistantController *controller = [HSObjectAssistantController sharedAssistantController];
+    if ([controller isLocked]) {
+        [controller setLocked:NO delegate:nil];
+    }
+}
+
+- (void)unlockAssistantIfNeededAndClose:(BOOL)aClose removeTryItAnimation:(BOOL)aRemove forTransparentColorAssistantPane:(id)aPane
+{
+    if (_tryItAnimation != nil) {
+        [[self undoManager] setMultipleActionsName:[[NSBundle mainBundle] localizedStringForKey:@"Change Options" value:@"" table:@"UndoManager"]];
+        id copy = [[_tryItAnimation animatedObject] localCopyIncludingNodeUnits:YES];
+        [_animation setAnimatedObject:copy];
+        [copy release];
+        if (aRemove) {
+            [self cleanUpTryItAnimation];
+        }
+    }
+    [self unlockAssistantIfNeeded];
+    if (aClose) {
+        [self restoreSelectonAfterExit];
+    }
+}
+
+- (void)unprepareCroppingForAssistantPane:(id)aPane temporaryObject:(id)aObject
+{
+    [self unprepareCroppingForTemporaryObject:aObject];
+    if ([aPane respondsToSelector:@selector(releaseTemporaryObject)]) {
+        [aPane releaseTemporaryObject];
+    }
+}
+
+- (void)unprepareCroppingForTemporaryObject:(id)aObject
+{
+    if (aObject != nil) {
+        id card = [self card];
+        [[card undoManager] disableUndoRegistration];
+        [card removeHyperChild:aObject];
+        [[card undoManager] enableUndoRegistration];
+    }
+    if (_state == 0) {
+        [self resetToolToDefault];
+    }
+}
+
+- (void)unprepareToolAndCardViewForAnimationSetupEditPathAssistantPane:(id)aPane
+{
+    [self cleanUpTryItAnimation];
+    [self resetToolToDefault];
+    [_cardView setOccupiedByTool:NO];
+    [self unlockAssistantIfNeeded];
+    [self restoreSelectonAfterExit];
+    [self setNeedsActiveToolLater:YES];
+}
+
+- (void)updateAnimatedObjectFromTryItAnimation
+{
+    id copy = [[[_tryItAnimation animatedObject] localCopyIncludingNodeUnits:YES] autorelease];
+    [copy setDraggable:NO];
+    [copy setResizable:NO];
+    [copy setRotatable:NO];
+    [_animation setAnimatedObject:copy];
+}
+
+- (void)updateAnimationForCurrentPath
+{
+    if ([_animation hasPath] && [_animation isOnePointPathAnimation]) {
+        [_animation setLoopMode:1];
+    }
+}
+
+- (void)updateAnimationPathBounds:(NSRect)aBounds forEditPathTool:(id)aTool
+{
+    [_cardView setAdditionalContentBoundingRect:aBounds];
+}
+
+- (void)updateAnimationPlayMovie
+{
+    id support = [[_animation animatedObject] support];
+    [[_animation animatedObject] setSupport:[self document]];
+    id framesPerSecond = [[_animation animatedObject] queryHyperInterface:@protocol(HSFramesPerSecondAttributes)];
+    if (framesPerSecond == nil) {
+        [_animation setPlayMovie:NO];
+        [_animation setMovieSpeed:[HSAnimationOptions undefinedMovieSpeed]];
+        if ([_animation loopMode] == 4) {
+            [_animation setLoopMode:2];
+        }
+        [self updateAnimationForCurrentPath];
+    } else {
+        [_animation setPlayMovie:YES];
+        if (![_animation wasMovieSpeedSet]) {
+            [_animation setMovieSpeed:[framesPerSecond hyperFramesPerSecond]];
+        }
+    }
+    [[_animation animatedObject] setSupport:support];
+}
+
+- (void)updatePathInEditPathTool
+{
+    if ([[HSToolManager sharedToolManager] selectedToolTag] == 0x37) {
+        [[[HSToolManager sharedToolManager] currentTool] updatePath];
+    }
+}
+
+- (void)updateUI:(BOOL)aUpdate
+{
+    BOOL play = NO;
+    if (_state != 3 && _state != 4) {
+        play = YES;
+        if (_state == 2) {
+            play = ![_tryItAnimation isPlaying];
+        }
+    }
+    [self setPlayTryItAnimation:play];
+    if (aUpdate) {
+        [self updateMainOptionsUI];
+        [self updatePathOptionsUI];
+    }
+}
+
+- (void)useAnimatedObjectSize:(NSSize)aSize affineTransform:(CGAffineTransform)aTransform actionName:(id)aName
+{
+    id object = [_tryItAnimation animatedObject];
+    [self registerUndoGeometryChangesOfAnimatedObject:object withActionName:aName];
+    [[object undoManager] disableUndoRegistration];
+    [[object queryHyperInterface:@protocol(HSMutableGeometryAttributes)] setSize:aSize affineTransform:aTransform];
+    [_tryItAnimation updateObject];
+    [[object undoManager] enableUndoRegistration];
+}
+
+- (void)userSelectAnotherObject:(id)aObject withEditPathTool:(id)aTool
+{
+    if ([_cardView isOccupiedByTool]) {
+        return;
+    }
+    [self cleanUpTryItAnimation];
+    [self unlockAssistantIfNeeded];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"HSActiveToolDidSelectionNotification" object:[HSToolManager sharedToolManager]];
+    [self resetToolToDefault];
+    if (aObject != nil) {
+        [[_cardView selection] selectNode:aObject];
+    } else {
+        [[_cardView selection] removeAllNodes];
+    }
 }
 
 @end
@@ -2407,21 +2763,6 @@ void FUN_00129609(HSAnimationSetupMainAssistantPane *self,SEL _cmd,id controlTex
 
 /* i386 ivar offsets: _objects=0x4 */
 
-/* --- i386 decompilation (Ghidra) ---
-/* FUN_0012941f @ 0012941f, 83 bytes * /
-
-id FUN_0012941f(id self,SEL _cmd,id proxyWithObjects)
-
-{
-  id pvVar1;
-  
-  pvVar1 = _objc_msgSend(self,sel_alloc);
-  pvVar1 = _objc_msgSend(pvVar1,sel_initWithObjects_,proxyWithObjects);
-  pvVar1 = _objc_msgSend(pvVar1,sel_autorelease);
-  return pvVar1;
-}
-
-*/
 + (id)proxyWithObjects:(id)aObjects
 {
     return [[(_HSAnimationsProxy *)[self alloc] initWithObjects:aObjects] autorelease];

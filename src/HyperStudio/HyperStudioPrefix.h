@@ -395,7 +395,7 @@
 @class HSEditObjectDialogContext;
 @class HSEditObjectDialogNodeSupport;
 @class HSEditableImageAttributesEffectApplier;
-@class HSEditorApplication;
+@class HSAEditorApplication;
 @class HSEditorCanvasHitTester;
 @class HSEditorCardView;
 @class HSEditorCardViewDragHelper;

@@ -13751,7 +13751,7 @@ void FUN_00012fe6(HSEditorWindowController *self,SEL _cmd,id mouseMoved)
   
   pvVar1 = _objc_msgSend(self,sel_cardView);
   _objc_msgSend(pvVar1,sel_handleMouseMoved_,mouseMoved);
-  pvVar1 = _objc_msgSend(cls_HSEditorApplication,sel_sharedHyperApplication);
+  pvVar1 = _objc_msgSend(cls_HSAEditorApplication,sel_sharedHyperApplication);
   _objc_msgSend(pvVar1,sel_noteMainWindowDidHandleMouseMovedEvent);
   return;
 }
@@ -13760,7 +13760,7 @@ void FUN_00012fe6(HSEditorWindowController *self,SEL _cmd,id mouseMoved)
 - (void)mouseMoved:(id)aMoved
 {
     [[self cardView] handleMouseMoved:aMoved];
-    [[HSEditorApplication sharedHyperApplication] noteMainWindowDidHandleMouseMovedEvent];
+    [[HSAEditorApplication sharedHyperApplication] noteMainWindowDidHandleMouseMovedEvent];
 }
 
 - (BOOL)cancelOperation
