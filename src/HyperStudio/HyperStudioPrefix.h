@@ -123,7 +123,6 @@
 @protocol HSTextObjectSelectionInterface;
 @protocol HSTextToolObjectEditingCanvasLayerClient;
 @protocol HSTextToolShadowAttribute;
-@protocol HSThreadContextDelegate;
 @protocol HSToolAlternateProportionAttribute;
 @protocol HSToolAttributes;
 @protocol HSToolCanvasLayerClient;
@@ -737,7 +736,6 @@
 @class HSReadWriteTextActionAssistantPane;
 @class HSReadWriteTextActionAssistantPaneApplier;
 @class HSReadyMadeCardsProvider;
-@class HSRecorder;
 @class HSRectSelectionTool;
 @class HSRegion;
 @class HSRegistrationFormController;
@@ -904,7 +902,6 @@
 @class HSTexturedView;
 @class HSTexturizerEffectController;
 @class HSThisCardSelectionHolder;
-@class HSThreadContext;
 @class HSTintedView;
 @class HSTokenButton;
 @class HSTokenCell;
@@ -1156,19 +1153,6 @@ struct HSFormControls {
     NSTextField *f7;
     NSButton *f8;
     NSButton *f9;
-};
-
-struct HyperStudio_anon7 {
-    long long f0;
-    int f1;
-    int f2;
-};
-
-struct HSFramesQueue {
-    struct HSFramesQueueItem *f0;
-    struct HSFramesQueueItem *f1;
-    struct HSFramesQueueItem *f2;
-    unsigned int f3;
 };
 
 #import "HyperStudioProtocols.h"

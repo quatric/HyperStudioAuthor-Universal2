@@ -779,3 +779,4 @@
 #import "HSAExternalFilesData.h"
 #import "HSAHTML5ExportCompatibilityChecker.h"
 #import "HSEditorZoomController.h"
+#import "HSRecorder.h"

@@ -468,7 +468,6 @@
 #import "HSRatingControl.h"
 #import "HSReadWriteTextActionAssistantPane.h"
 #import "HSReadyMadeCardsProvider.h"
-#import "HSRecorder.h"
 #import "HSRectSelectionTool.h"
 #import "HSRegistrationKeyEquivalentButton.h"
 #import "HSReplaceColorsEffectController.h"

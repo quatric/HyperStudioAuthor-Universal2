@@ -858,6 +858,9 @@
 @protocol HyperObject;
 
 @class AUDevice;
+@class HSRecorder;
+@class HSThreadContext;
+@protocol HSThreadContextDelegate;
 @class HSEditorZoomController;
 @class HSAHTML5ExportCompatibilityChecker;
 @class HSAExternalFilesData;
@@ -2077,6 +2080,19 @@ struct HyperPlayerBase_anon24 {
     unsigned int beingSpoken:1;
     unsigned int chooseVoiceBeforeProcessing:1;
     unsigned int reserved:26;
+};
+
+struct HyperStudio_anon7 {
+    long long f0;
+    int f1;
+    int f2;
+};
+
+struct HSFramesQueue {
+    struct HSFramesQueueItem *f0;
+    struct HSFramesQueueItem *f1;
+    struct HSFramesQueueItem *f2;
+    unsigned int f3;
 };
 
 #import "HyperPlayerBaseProtocols.h"

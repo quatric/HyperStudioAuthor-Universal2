@@ -1,4 +1,4 @@
-#import "HyperStudioPrefix.h"
+#import "HyperPlayerBasePrefix.h"
 
 
 @interface HSRecorder : NSObject <HSCapturingConsumer, NSObject>
@@ -18,7 +18,6 @@
     QTCaptureDevice *_voiceCaptureDevice;
     QTCaptureDeviceInput *_audioOutToInCaptureDeviceInput;
     QTCaptureDevice *_audioOutToInCaptureDevice;
-    HSAudioDeviceSwapper *_audioDeviceSwapper;
     struct __CVBuffer *_currentFrameBuffer;
     double _framesPerSecondLimit;
     unsigned int _framesCounter;
@@ -30,20 +29,15 @@
     HSMoviePlaybackLogger *_movieLogger;
     BOOL _useAudioRecordWorkAround;
     NSError *_error;
-    BOOL _lazyMovieCreation;
-    NSMutableArray *_processedInAnotherThreadMovies;
 }
 - (id)playbackThread;
 - (void)HSThreadContextDelegate_threadContext:(id)aContext didFinishFlatteningToFile:(id)aFile dueToError:(id)aError;
 - (void)audioRecorder:(id)aRecorder didFinishRecordingToFileAtURL:(id)aURL dueToError:(id)aError;
 - (void)captureOutput:(id)aOutput didFinishRecordingToOutputFileAtURL:(id)aURL forConnections:(id)aConnections dueToError:(id)aError;
 - (void)HSRecorder_loadSoundMovieWithAttributes:(id)aAttributes;
-- (id)processedInAnotherThreadMovies;
 - (void)audioRecorder:(id)aRecorder willStartRecordingToFileAtURL:(id)aURL;
 - (void)captureOutput:(id)aOutput willStartRecordingToOutputFileAtURL:(id)aURL forConnections:(id)aConnections;
 - (void)capturingDataSource:(id)aSource didOutputFrame:(struct __CVBuffer *)aFrame atTime:(double)aTime;
-- (void)setLazyMovieCreation:(BOOL)aCreation;
-- (BOOL)isLazyMovieCreation;
 - (void)setAudioOutToInCaptureDevice:(id)aDevice;
 - (id)audioOutToInCaptureDevice:(id)aDevice;
 - (void)setAudioVoiceCaptureDevice:(id)aDevice;
@@ -71,8 +65,6 @@
 - (void)dealloc;
 - (id)init;
 - (void)HSRecorder_cancelRecording;
-- (NSInteger)informUserAboutError:(id)aError showCancelButton:(BOOL)aButton;
-- (id)audioDeviceSwapper;
 @end
 
 @interface HSThreadContext : NSObject
@@ -91,11 +83,8 @@
     pthread_mutex_t _processingThreadMutex;
     pthread_cond_t _processingThreadCondition;
     NSBezierPath *_cornersClipPath;
-    NSOpenGLContext *_openGLContext;
-    NSWindow *_offscreenWindow;
     unsigned int _packedPixelsBufferSize;
     void *_packedPixelsBuffer;
-    unsigned int _lazyMovieCreation:1;
     unsigned int _roundedCornersForMovie:1;
     unsigned int _isWaitingForActivation:1;
     unsigned int _isThreadRoutineStarted:1;
@@ -112,12 +101,6 @@
 - (void)processNotThreadSafeComponent;
 - (void)scheduleAddingNotThreadSafeComponentForTrackWithID:(NSInteger)aID attributes:(id)aAttributes;
 - (BOOL)isProcessingThreadRoutineStarted;
-- (BOOL)prepareOpenGLContextWithTextureSize:(NSSize)aSize;
-- (BOOL)canUseOpenGLContextWithTextureSize:(NSSize)aSize;
-- (void)destroyOpenGLContext;
-- (BOOL)createOpenGLContext;
-- (void)setLazyMovieCreation:(BOOL)aCreation;
-- (BOOL)isLazyMovieCreation;
 - (BOOL)removeFrameItemWithSmallestDuration:(double)aDuration removedLastFrameDuration:(double *)aDuration2;
 - (void)addNewItemWithFrameBuffer:(struct __CVBuffer *)aBuffer duration:(struct HyperStudio_anon7)aDuration isLastFrame:(BOOL)aFrame;
 - (void)cancelProcessing;
