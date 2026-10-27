@@ -7548,6 +7548,20 @@ uint FUN_001e2a61(HSEditorCardViewDragHelper *self,SEL _cmd,id draggingEntered)
     return self;
 }
 
+- (BOOL)addObjectsInArray:(id)aArray intoObject:(id)aObject center:(BOOL)aCenter fitCanvas:(BOOL)aCanvas isPasting:(BOOL)aPasting useDragPreferences:(BOOL)aPreferences
+{
+    return [self addObjectsInArray:aArray intoObject:aObject center:aCenter fitCanvas:aCanvas needOpenHelpPane:YES isPasting:aPasting useDragPreferences:aPreferences pastingNotHSObject:NO];
+}
+
+- (BOOL)canReciveMovieMediaFromPath:(id)aPath
+{
+    NSError *error = nil;
+    id movie = [HSMovie movieWithURL:[NSURL fileURLWithPath:aPath] error:&error];
+    if (error != nil)
+        return NO;
+    return ![movie isPanoramaObject] && ![movie isQTVRMovie];
+}
+
 @end
 
 @implementation NSArray (HSNodeSelectionSupport)

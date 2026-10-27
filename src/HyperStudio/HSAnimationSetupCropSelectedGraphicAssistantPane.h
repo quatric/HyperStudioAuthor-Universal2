@@ -30,5 +30,6 @@
 - (void)viewDidAppear:(BOOL)aAppear;
 - (void)viewDidLoad;
 - (id)temporaryObject;
+- (void)prepareTemporaryObjectIfNeeded;
 @end
 

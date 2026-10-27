@@ -38,6 +38,7 @@
 - (id)actionAttributes;
 - (id)moveTextActionAssistantPaneApplier;
 - (Class)applierClass;
+- (BOOL)isTextObjectRotationAngleZero:(id)aObject;
 @end
 
 @interface HSMoveTextActionAssistantPaneApplier : HSActionAssistantSettingsApplier

@@ -727,6 +727,15 @@ id FUN_000f58de(HSMoveTextActionAssistantPane *self,SEL _cmd)
     return [HSMoveTextActionAssistantPaneApplier class];
 }
 
+- (BOOL)isTextObjectRotationAngleZero:(id)aObject
+{
+    id geometry = [[[aObject queryHyperInterface:@protocol(HSGeometryBehaviorAdapting)] queryGeometryBehaviorApplier] mutableGeometryAttributes];
+    float angle = (float)[geometry rotationAngle];
+    if (angle >= -0.01 && angle <= 0.01)
+        return YES;
+    return angle >= 6.2731853 && angle <= 6.2931857;
+}
+
 @end
 
 @implementation HSMoveTextActionAssistantPaneApplier

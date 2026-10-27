@@ -59,4 +59,9 @@
     return [[[NSDocumentController sharedDocumentController] currentDocument] stack];
 }
 
++ (CGFloat)webAppContentLayerCornerRadiusForLayerSize:(CGSize)aSize
+{
+    return (float)(fminf(aSize.width, aSize.height) * 0.17543859649122806);
+}
+
 @end

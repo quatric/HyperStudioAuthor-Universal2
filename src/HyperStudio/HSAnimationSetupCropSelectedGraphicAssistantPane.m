@@ -110,4 +110,13 @@
     return _temporaryObject;
 }
 
+- (void)prepareTemporaryObjectIfNeeded
+{
+    if (_temporaryObject == nil) {
+        [_image release];
+        _image = [[[self card] imageWithVisualizationProtocol:@protocol(HSPlayerVisualization)] retain];
+        _temporaryObject = [[_delegate prepareToCroppingForAssistantPane:self image:_image options:_imageOptions] retain];
+    }
+}
+
 @end

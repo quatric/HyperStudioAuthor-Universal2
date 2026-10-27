@@ -18,5 +18,6 @@
 - (void)dealloc;
 - (id)init;
 - (id)stack;
++ (CGFloat)webAppContentLayerCornerRadiusForLayerSize:(CGSize)aSize;
 @end
 

@@ -87,6 +87,7 @@
 - (void)dealloc;
 - (void)invalidateDragHost;
 - (id)initWithDragHost:(id)aHost;
+- (BOOL)canReciveMovieMediaFromPath:(id)aPath;
 @end
 
 @interface NSArray (HSNodeSelectionSupport)

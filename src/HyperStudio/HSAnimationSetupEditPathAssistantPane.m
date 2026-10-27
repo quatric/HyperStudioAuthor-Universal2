@@ -63,4 +63,11 @@
     [super viewWillDisappear:aDisappear];
 }
 
+- (void)viewWillAppear:(BOOL)aAppear
+{
+    [super viewWillAppear:aAppear];
+    [_delegate prepareToolAndCardViewForAnimationSetupEditPathAssistantPane:self];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(HSAnimationSetupEditPathAssistantPane_windowDidResignMain:) name:NSWindowDidResignMainNotification object:[self mainWindow]];
+}
+
 @end
