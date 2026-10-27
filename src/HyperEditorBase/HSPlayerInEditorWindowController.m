@@ -28,7 +28,7 @@
     if (action == @selector(toolPaletteSwitchTool:)) {
         if ([aItem respondsToSelector:@selector(setState:)])
             [(NSMenuItem *)aItem setState:[(NSMenuItem *)aItem tag] == 2 ? NSControlStateValueOn : NSControlStateValueOff];
-        return YES;
+        return ![(id)[self document] isTutorialStack];
     }
     if (action == @selector(togglePlayerMode:))
         return [(id)[self document] validateUserInterfaceItem:aItem];

@@ -107,11 +107,12 @@
 - (BOOL)validateUserInterfaceItem:(id)aItem
 {
     SEL action = [(id<NSValidatedUserInterfaceItem>)aItem action];
-    if (action == @selector(showStackOptionsDialog:))
-        return [(id)[self document] isStackProtected];
-    if (action == @selector(hideShowToolbar:) || action == @selector(customizeToolbar:))
-        return NO;
-    return [super validateUserInterfaceItem:aItem];
+    BOOL valid = NO;
+    if (action != @selector(hideShowToolbar:) && action != @selector(customizeToolbar:) && action != @selector(enterFullScreen:))
+        valid = [super validateUserInterfaceItem:aItem];
+    if (action == @selector(toolPaletteSwitchTool:) || action == @selector(switchToolTypes:) || action == @selector(switchTool:) || action == @selector(showStackOptionsDialog:))
+        valid = ![(id)[self document] isTutorialStack];
+    return valid;
 }
 
 - (void)didBecomeWorkingInModeSwitcher:(id)aSwitcher
