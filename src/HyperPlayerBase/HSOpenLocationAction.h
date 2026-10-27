@@ -40,5 +40,6 @@
 - (id)keysForExtraStoringWithCodingContext:(id)aContext;
 - (void)dealloc;
 - (id)init;
+- (void)HSOpenLocationAction_startOpenLocationWithContext:(id)aContext;
 @end
 

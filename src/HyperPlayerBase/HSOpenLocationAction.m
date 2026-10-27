@@ -289,6 +289,18 @@ static BOOL HSIsHyperStudioApplicationName(NSString *name)
 
 - (void)startInContext:(id)aContext
 {
+    if ([[self applicationName] isEqualToString:@"Google Earth"]) {
+        [self HSOpenLocationAction_startOpenLocationWithContext:aContext];
+        return;
+    }
+    if ([[NSBundle mainBundle] resourceURL] != nil) {
+        if ([self findFileAtPath:[[self URL] path] isApplication:NO context:aContext])
+            [[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:[self URL] display:YES error:NULL];
+    }
+}
+
+- (void)HSOpenLocationAction_startOpenLocationWithContext:(id)aContext
+{
     NSWorkspace *workspace = [NSWorkspace sharedWorkspace];
     BOOL launched = NO;
     if ([self opensApplication]) {

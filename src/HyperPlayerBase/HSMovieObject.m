@@ -1616,4 +1616,23 @@ done:
     return [movie flattenMovieData];
 }
 
++ (id)streamDrawableWithMovieObject:(id)aObject
+{
+    id renderer = [[aObject queryHyperInterface:@protocol(HSVisualization)] queryRenderer];
+    NSRect movieRect = aObject != nil ? [aObject movieRect] : NSZeroRect;
+    HSRendererStreamDrawable *drawable = [[[HSRendererStreamDrawable alloc] initWithWidth:(int)movieRect.size.width height:(int)movieRect.size.height] autorelease];
+    [drawable setAutoInvalidates:YES];
+    [drawable setRenderer:renderer];
+    id geometry = [aObject queryHyperInterface:@protocol(HSGeometryAttributes)];
+    if (![geometry isFlippedVertically]) {
+        CGAffineTransform transform = CGAffineTransformScale(drawable != nil ? [drawable rendererTransform] : CGAffineTransformIdentity, 1.0, -1.0);
+        [drawable setRendererTransform:CGAffineTransformTranslate(transform, 0, -movieRect.size.height)];
+    }
+    if ([geometry isFlippedHorizontally]) {
+        CGAffineTransform transform = CGAffineTransformScale(drawable != nil ? [drawable rendererTransform] : CGAffineTransformIdentity, -1.0, 1.0);
+        [drawable setRendererTransform:CGAffineTransformTranslate(transform, -movieRect.size.width, 0)];
+    }
+    return drawable;
+}
+
 @end
