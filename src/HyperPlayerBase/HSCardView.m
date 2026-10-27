@@ -640,4 +640,286 @@ static BOOL HSCardViewNearlyEqual(CGFloat a, CGFloat b)
     return self;
 }
 
+- (void)autolayoutCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent
+{
+    CGFloat zoomBefore = [self zoomFactor];
+    NSSize offsetBefore = _cardOffset;
+    if (_zoomMode == 1) {
+        [self autozoomToFitCardToVisibleArea];
+    }
+    [self autosizeCenteringAtUserPoint:aPoint respectingLastVisibleContent:aContent];
+    CGFloat zoomAfter = [self zoomFactor];
+    if ((zoomAfter < zoomBefore - 0.0001 || zoomBefore + 0.0001 < zoomAfter) && offsetBefore.width - 0.001953125 <= _cardOffset.width && _cardOffset.width <= offsetBefore.width + 0.001953125 && offsetBefore.height - 0.001953125 <= _cardOffset.height && _cardOffset.height <= offsetBefore.height + 0.001953125) {
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
+    }
+}
+
+- (void)autolayoutPreservingVisibleArea
+{
+    CGFloat zoomBefore = [self zoomFactor];
+    NSSize offsetBefore = _cardOffset;
+    if (_zoomMode == 1 && ![[[self card] document] isInPresentationMode]) {
+        [self autozoomToFitCardToVisibleArea];
+    }
+    [self autosizePreservingVisibleArea];
+    CGFloat zoomAfter = [self zoomFactor];
+    if ((zoomAfter < zoomBefore - 0.0001 || zoomBefore + 0.0001 < zoomAfter) && offsetBefore.width - 0.001953125 <= _cardOffset.width && _cardOffset.width <= offsetBefore.width + 0.001953125 && offsetBefore.height - 0.001953125 <= _cardOffset.height && _cardOffset.height <= offsetBefore.height + 0.001953125) {
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
+    }
+}
+
+- (void)autolayoutPreservingVisibleCenter
+{
+    CGFloat zoomBefore = [self zoomFactor];
+    NSSize offsetBefore = _cardOffset;
+    if (_zoomMode == 1 && ![[[self card] document] isInPresentationMode]) {
+        [self autozoomToFitCardToVisibleArea];
+    }
+    [self autosizePreservingVisibleCenter];
+    CGFloat zoomAfter = [self zoomFactor];
+    if ((zoomAfter < zoomBefore - 0.0001 || zoomBefore + 0.0001 < zoomAfter) && offsetBefore.width - 0.001953125 <= _cardOffset.width && _cardOffset.width <= offsetBefore.width + 0.001953125 && offsetBefore.height - 0.001953125 <= _cardOffset.height && _cardOffset.height <= offsetBefore.height + 0.001953125) {
+        [self notifyDidChangeUserSpaceToViewSpaceTransform];
+    }
+}
+
+- (void)autozoomToFitCardToVisibleArea
+{
+    NSSize cardSize = [self cardSize];
+    if (cardSize.width > 0 && cardSize.height > 0) {
+        NSScrollView *scrollView = [self enclosingScrollView];
+        NSRect frame = scrollView != nil ? [scrollView frame] : NSZeroRect;
+        NSSize content = [[scrollView class] contentSizeForFrameSize:frame.size hasHorizontalScroller:NO hasVerticalScroller:NO borderType:[scrollView borderType]];
+        CGFloat zoom = content.height / cardSize.height;
+        if (content.width / cardSize.width <= zoom) {
+            zoom = content.width / cardSize.width;
+        }
+        [self setZoomFactor:MAX(0.01f, zoom)];
+    }
+}
+
+- (void)beginLightweightChangeProcessingMode
+{
+    if (_lightweightChangeProcessingModeCounter == 0) {
+        [self beginContentChangeAccumulation];
+        [self acceptDrawingQualityLoss:0.9999];
+    }
+    _lightweightChangeProcessingModeCounter++;
+}
+
+- (void)endLightweightChangeProcessingMode
+{
+    _lightweightChangeProcessingModeCounter--;
+    if (_lightweightChangeProcessingModeCounter == 0) {
+        [self endContentChangeAccumulation];
+        [self declineDrawingQualityLoss:0.9999];
+        [self setNeedsDisplayOpenGLSurface:YES];
+        if ([self inLiveResize]) {
+            [self enterLiveResizeCacheOnlyRenderingModeIfNeeded];
+        }
+    }
+}
+
+- (BOOL)inLightweightChangeProcessingMode
+{
+    return _lightweightChangeProcessingModeCounter != 0;
+}
+
+- (NSSize)cardOffset
+{
+    return _cardOffset;
+}
+
+- (void)setCardOffset:(NSSize)aOffset
+{
+    _cardOffset = aOffset;
+}
+
+- (void)enterLiveResizeCacheOnlyRenderingModeIfNeeded
+{
+    if (_zoomMode == 1) {
+        [self acceptDrawingQualityLoss:0.9999];
+        _cacheOnlyRendering = YES;
+        [self setupLiveResizeRecacheTimer];
+    }
+}
+
+- (void)fillBackground
+{
+    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+    NSRect userBounds = self != nil ? [self userObjectBounds] : NSZeroRect;
+    NSRect viewRect = self != nil ? [self viewBoundingRectForUserRect:userBounds] : NSZeroRect;
+    CGAffineTransform transform = CGContextGetCTM(context);
+    CGContextSetPatternPhase(context, CGSizeMake(transform.a * viewRect.origin.x + transform.c * viewRect.origin.y + transform.tx, transform.b * viewRect.origin.x + transform.d * viewRect.origin.y + transform.ty));
+    [NSBezierPath fillRect:self != nil ? [self bounds] : NSZeroRect];
+}
+
+- (void)fitInWindow
+{
+    [self setZoomMode:1];
+}
+
+- (void)handleFluidSwipe:(id)aSwipe
+{
+    if ([aSwipe phase] == NSEventPhaseEnded) {
+        if ([aSwipe gestureAmount] < 0) {
+            [[[self userObject] document] goToNextCardWithoutLeaveActions:self];
+        } else if ([aSwipe gestureAmount] > 0) {
+            [[[self userObject] document] goToPreviousCardWithoutLeaveActions:self];
+        }
+    }
+}
+
+- (void)handleLiveResizeRecacheTimerFire:(id)aTimer
+{
+    [self acceptDrawingQualityLoss:0];
+    [self display];
+    [self declineDrawingQualityLoss:0];
+    [_liveResizeRecacheTimer release];
+    _liveResizeRecacheTimer = nil;
+}
+
+- (BOOL)handleMagnificationGesture:(id)aGesture
+{
+    BOOL handled = [super handleMagnificationGesture:aGesture];
+    if (!handled) {
+        CGFloat current = [self zoomFactor];
+        CGFloat target = [aGesture magnification] + current;
+        CGFloat minimum = [HSEditorZoomController minZoomFactor];
+        CGFloat maximum = [HSEditorZoomController maxZoomFactor];
+        target = MIN(MAX(minimum, target), maximum);
+        handled = YES;
+        if (MAX(fabsf(target) != 0 ? fabsf(target) : 1.0f, fabsf(current) != 0 ? fabsf(current) : 1.0f) * 0.0005 < fabsf(target - current)) {
+            [self zoomToFactor:target aboutPoint:[self convertPoint:[aGesture locationInWindow] fromView:nil]];
+        }
+    }
+    return handled;
+}
+
+- (BOOL)handleSwipeGesture:(id)aGesture
+{
+    BOOL handled = [super handleSwipeGesture:aGesture];
+    if (!handled) {
+        if ([aGesture deltaX] > 0) {
+            [[[self userObject] document] goToNextCardWithoutLeaveActions:self];
+            handled = YES;
+        } else if ([aGesture deltaX] < 0) {
+            [[[self userObject] document] goToPreviousCardWithoutLeaveActions:self];
+            handled = YES;
+        }
+    }
+    return handled;
+}
+
+- (void)setFrameSize:(NSSize)aSize
+{
+    if (_liveResizeRecacheTimer == nil) {
+        if (_cacheOnlyRendering) {
+            [self setupLiveResizeRecacheTimer];
+        }
+    } else {
+        [_liveResizeRecacheTimer setFireDate:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+    }
+    [super setFrameSize:aSize];
+}
+
+- (void)setZoomMode:(int)aMode
+{
+    if (_zoomMode != aMode) {
+        _zoomMode = aMode;
+        if (aMode == 1) {
+            if ([self enclosingScrollView] != nil) {
+                NSSize cardSize = [self cardSize];
+                [self autolayoutCenteringAtUserPoint:NSMakePoint(cardSize.width * 0.5, cardSize.height * 0.5) respectingLastVisibleContent:NO];
+            }
+            [self setNeedsDisplayOpenGLSurface:YES];
+        }
+    }
+}
+
+- (int)zoomMode
+{
+    return _zoomMode;
+}
+
+- (void)setupLiveResizeRecacheTimer
+{
+    _liveResizeRecacheTimer = [[NSTimer alloc] initWithFireDate:[NSDate dateWithTimeIntervalSinceNow:1.0] interval:0 target:self selector:@selector(handleLiveResizeRecacheTimerFire:) userInfo:nil repeats:NO];
+    if (_liveResizeRecacheTimer != nil) {
+        [[NSRunLoop currentRunLoop] addTimer:_liveResizeRecacheTimer forMode:NSEventTrackingRunLoopMode];
+    }
+}
+
+- (void)viewDidEndLiveResize
+{
+    if (_cacheOnlyRendering) {
+        [self declineDrawingQualityLoss:0.9999];
+        [self setNeedsDisplayOpenGLSurface:YES];
+        _cacheOnlyRendering = NO;
+        [_liveResizeRecacheTimer invalidate];
+        [_liveResizeRecacheTimer release];
+        _liveResizeRecacheTimer = nil;
+    }
+    [super viewDidEndLiveResize];
+}
+
+- (void)viewWillStartLiveResize
+{
+    [super viewWillStartLiveResize];
+    if (![self inLightweightChangeProcessingMode]) {
+        [self enterLiveResizeCacheOnlyRenderingModeIfNeeded];
+    }
+}
+
+- (void)zoomInAboutPoint:(NSPoint)aPoint
+{
+    float zoomIn = 0;
+    [HSEditorZoomController nextZoomOutFactor:NULL zoomInFactor:&zoomIn forZoomFactor:[self zoomFactor]];
+    if (!isnan(zoomIn)) {
+        [self setZoomMode:0];
+        [self zoomToFactor:zoomIn aboutPoint:aPoint];
+    }
+}
+
+- (void)zoomOutAboutPoint:(NSPoint)aPoint
+{
+    float zoomOut = 0;
+    [HSEditorZoomController nextZoomOutFactor:&zoomOut zoomInFactor:NULL forZoomFactor:[self zoomFactor]];
+    if (!isnan(zoomOut)) {
+        [self setZoomMode:0];
+        [self zoomToFactor:zoomOut aboutPoint:aPoint];
+    }
+}
+
+- (void)zoomToFactor:(float)aFactor
+{
+    NSPoint point;
+    if ([self enclosingScrollView] == nil) {
+        point = NSZeroPoint;
+    } else if (aFactor != 1.0) {
+        NSRect visible = [[self enclosingScrollView] documentVisibleRect];
+        point = NSMakePoint(visible.origin.x + visible.size.width * 0.5, visible.origin.y + visible.size.height * 0.5);
+    } else {
+        NSSize cardSize = [self cardSize];
+        point = [self convertPointFromUserSpaceToViewSpace:NSMakePoint(cardSize.width * 0.5, cardSize.height * 0.5)];
+    }
+    [self zoomToFactor:aFactor aboutPoint:point];
+}
+
+- (void)zoomToFactor:(float)aFactor aboutPoint:(NSPoint)aPoint
+{
+    CGFloat current = [self zoomFactor];
+    if (MAX(fabsf(aFactor) != 0 ? fabsf(aFactor) : 1.0f, fabsf(current) != 0 ? fabsf(current) : 1.0f) * 0.0005 < fabsf(current - aFactor)) {
+        [self setZoomMode:0];
+        if ([self enclosingScrollView] != nil) {
+            NSPoint userPoint = [self convertPointFromViewSpaceToUserSpace:aPoint];
+            [self setZoomFactor:aFactor];
+            [self autosizeCenteringAtUserPoint:userPoint respectingLastVisibleContent:YES];
+        } else {
+            [self setZoomFactor:aFactor];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:HSViewDidChangeUserSpaceToViewSpaceTransformNotification object:self];
+        [self setNeedsDisplayOpenGLSurface:YES];
+    }
+}
+
 @end

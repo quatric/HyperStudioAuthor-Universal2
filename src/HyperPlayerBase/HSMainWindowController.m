@@ -671,6 +671,170 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
     return _toolbarController;
 }
 
+- (void)commitToDocumentWindowStatesDictionary:(id)aDictionary
+{
+    NSMutableDictionary *states = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"HSDocumentWindowStates"]];
+    if (states == nil) {
+        states = [NSMutableDictionary dictionary];
+    }
+    NSString *key = [[[[self document] fileURL] path] retain];
+    if (key == nil) {
+        key = [[[[[self document] stack] UID] stringValue] retain];
+        if (key == nil) {
+            return;
+        }
+    }
+    [states setObject:aDictionary forKey:key];
+    [key release];
+    [[NSUserDefaults standardUserDefaults] setObject:states forKey:@"HSDocumentWindowStates"];
+}
+
+- (id)documentWindowStateDictionary
+{
+    NSMutableDictionary *states = [NSMutableDictionary dictionaryWithDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:@"HSDocumentWindowStates"]];
+    NSString *key = [[[self document] fileURL] path];
+    if (key == nil) {
+        key = [[[[self document] stack] UID] stringValue];
+    }
+    NSMutableDictionary *state = [NSMutableDictionary dictionaryWithDictionary:[states objectForKey:key]];
+    if (state == nil) {
+        state = [NSMutableDictionary dictionary];
+    }
+    return state;
+}
+
+- (void)fitWindowToCardSizeAnimated:(BOOL)aAnimated
+{
+    CGFloat zoomFactor = [[self cardView] zoomFactor];
+    NSSize cardSize = [[[self document] cardView] cardSize];
+    id documentCardView = [[self document] cardView];
+    NSSize targetSize = NSMakeSize(ceilf(cardSize.width * zoomFactor), ceilf(cardSize.height * zoomFactor));
+    NSScrollView *scrollView = [documentCardView enclosingScrollView];
+    NSRect visibleRect = scrollView != nil ? [scrollView visibleRect] : NSZeroRect;
+    if (!NSEqualSizes(targetSize, visibleRect.size)) {
+        NSWindow *window = [self window];
+        NSSize minSize = [window contentMinSize];
+        CGFloat width = MAX(minSize.width, targetSize.width);
+        CGFloat height = MAX(minSize.height, targetSize.height);
+        NSRect frame = window != nil ? [window frame] : NSZeroRect;
+        NSRect newFrame = NSMakeRect(frame.origin.x - floorf((width - visibleRect.size.width) * 0.5), frame.origin.y - floorf((height - visibleRect.size.height) * 0.5), frame.size.width + (width - visibleRect.size.width), frame.size.height + (height - visibleRect.size.height));
+        [window setFrame:newFrame display:YES animate:aAnimated];
+    }
+}
+
+- (void)hideAllPalettesAndToolbars
+{
+    [self hideFloatingPalettes];
+    [self hideFixedToolbars];
+}
+
+- (void)hideFixedToolbars
+{
+}
+
+- (void)hideFloatingPalettes
+{
+}
+
+- (void)restoreAllPalettesAndToolbars
+{
+    [self restoreFloatingPalettes];
+    [self restoreFixedToolbars];
+}
+
+- (void)restoreFixedToolbars
+{
+}
+
+- (void)restoreFloatingPalettes
+{
+}
+
+- (void)notifyDidEnterVersionBrowser:(id)aBrowser
+{
+}
+
+- (void)notifyDidExitVersionBrowser:(id)aBrowser
+{
+}
+
+- (void)notifyWillEnterVersionBrowser:(id)aBrowser
+{
+}
+
+- (void)notifyWillExitVersionBrowser:(id)aBrowser
+{
+}
+
+- (void)storeDocumentWindowState:(id)aState
+{
+    [aState setValue:[NSNumber numberWithBool:[[self document] isInPresentationMode]] forKey:@"HSDocumentInPresenationModeKey"];
+    [aState setValue:[[self window] stringWithSavedFrame] forKey:@"HSMainWindowFrameAsStringKey"];
+    [aState setValue:[NSNumber numberWithBool:[[[self toolbarController] toolbar] isVisible]] forKey:@"HSToolbarVisibleKey"];
+    [aState setValue:[NSNumber numberWithBool:[self isBottomToolbarVisible]] forKey:@"HSBottomToolbarVisibleKey"];
+    [aState setValue:[NSNumber numberWithBool:![[self document] isInPlayerMode]] forKey:@"HSDocumentInEditModeKey"];
+    [aState setValue:[NSNumber numberWithFloat:[[self cardView] zoomFactor]] forKey:@"HSCardViewZoomFactorKey"];
+    [aState setValue:[NSNumber numberWithInt:[[self cardView] zoomMode]] forKey:@"HSCardViewZoomModeKey"];
+}
+
+- (void)window:(id)aWindow willEncodeRestorableState:(id)aState
+{
+    NSString *homePath = [[[HSHomeStackController sharedHomeStackController] defaultHomeStackURL] path];
+    if ([[HSPreferencesController sharedPreferencesController] getStartupPreferencesOption] == 2 || [[self document] fileURL] == nil) {
+        if (![homePath isEqualToString:[[[self document] fileURL] path]]) {
+            return;
+        }
+    }
+    [[self window] setRestorable:NO];
+}
+
+- (NSSize)window:(id)aWindow willResizeForVersionBrowserWithMaxPreferredSize:(NSSize)aPreferred maxAllowedSize:(NSSize)aAllowed
+{
+    NSSize frameSize = aWindow != nil ? [aWindow frame].size : NSZeroSize;
+    return NSMakeSize(MIN(aPreferred.width, frameSize.width), MIN(aPreferred.height, frameSize.height));
+}
+
+- (NSSize)window:(id)aWindow willUseFullScreenContentSize:(NSSize)aSize
+{
+    return aSize;
+}
+
+- (void)windowDidEnterFullScreen:(id)aScreen
+{
+    [[HSBackgroundWindowController backgroundWindowController] validateAndDisplay:YES];
+}
+
+- (void)windowDidExitFullScreen:(id)aScreen
+{
+    [[HSBackgroundWindowController backgroundWindowController] validateAndDisplay:YES];
+}
+
+- (void)windowDidEnterVersionBrowser:(id)aBrowser
+{
+    [[[self document] editorWindowController] notifyDidEnterVersionBrowser:aBrowser];
+}
+
+- (void)windowDidExitVersionBrowser:(id)aBrowser
+{
+    [[[self document] editorWindowController] notifyDidExitVersionBrowser:aBrowser];
+}
+
+- (void)windowWillEnterVersionBrowser:(id)aBrowser
+{
+    id document = [self document];
+    if ([document isInStoryboardMode]) {
+        [document switchToStandardMode:nil];
+    } else if ([document isInPlayerMode]) {
+        [document switchToEditor];
+    }
+    [[document editorWindowController] notifyWillEnterVersionBrowser:aBrowser];
+}
+
+- (void)windowWillExitVersionBrowser:(id)aBrowser
+{
+    [[[self document] editorWindowController] notifyWillExitVersionBrowser:aBrowser];
+}
+
 @end
 
 @implementation HSMainWindowController (HSSelectionHolderDelegate)

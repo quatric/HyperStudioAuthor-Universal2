@@ -12,6 +12,11 @@
     CGRect _lastVisibleContentUserRect;
     unsigned int _isAutosizing:1;
     unsigned int _isAutosizingScheduled:1;
+    unsigned int _cacheOnlyRendering:1;
+    unsigned int _lightweightChangeProcessingModeCounter;
+    NSTimer *_liveResizeRecacheTimer;
+    int _zoomMode;
+    NSSize _cardOffset;
 }
 + (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen;
 + (CGFloat)zoomFactorForFullScreen:(NSSize)aScreen forScreen:(id)aScreen2;
@@ -76,5 +81,31 @@
 - (void)dealloc;
 - (id)initWithCoder:(id)aCoder;
 - (id)initWithFrame:(NSRect)aFrame;
+- (void)autolayoutCenteringAtUserPoint:(NSPoint)aPoint respectingLastVisibleContent:(BOOL)aContent;
+- (void)autolayoutPreservingVisibleArea;
+- (void)autolayoutPreservingVisibleCenter;
+- (void)autozoomToFitCardToVisibleArea;
+- (void)beginLightweightChangeProcessingMode;
+- (void)endLightweightChangeProcessingMode;
+- (BOOL)inLightweightChangeProcessingMode;
+- (NSSize)cardOffset;
+- (void)setCardOffset:(NSSize)aOffset;
+- (void)enterLiveResizeCacheOnlyRenderingModeIfNeeded;
+- (void)fillBackground;
+- (void)fitInWindow;
+- (void)handleFluidSwipe:(id)aSwipe;
+- (void)handleLiveResizeRecacheTimerFire:(id)aTimer;
+- (BOOL)handleMagnificationGesture:(id)aGesture;
+- (BOOL)handleSwipeGesture:(id)aGesture;
+- (void)setFrameSize:(NSSize)aSize;
+- (void)setZoomMode:(int)aMode;
+- (int)zoomMode;
+- (void)setupLiveResizeRecacheTimer;
+- (void)viewDidEndLiveResize;
+- (void)viewWillStartLiveResize;
+- (void)zoomInAboutPoint:(NSPoint)aPoint;
+- (void)zoomOutAboutPoint:(NSPoint)aPoint;
+- (void)zoomToFactor:(float)aFactor;
+- (void)zoomToFactor:(float)aFactor aboutPoint:(NSPoint)aPoint;
 @end
 

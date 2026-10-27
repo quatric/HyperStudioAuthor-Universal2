@@ -86,6 +86,29 @@
 - (void)setupBottomToolbar;
 - (void)setToolbarController:(id)aController;
 - (id)toolbarController;
+- (void)commitToDocumentWindowStatesDictionary:(id)aDictionary;
+- (id)documentWindowStateDictionary;
+- (void)fitWindowToCardSizeAnimated:(BOOL)aAnimated;
+- (void)hideAllPalettesAndToolbars;
+- (void)hideFixedToolbars;
+- (void)hideFloatingPalettes;
+- (void)restoreAllPalettesAndToolbars;
+- (void)restoreFixedToolbars;
+- (void)restoreFloatingPalettes;
+- (void)notifyDidEnterVersionBrowser:(id)aBrowser;
+- (void)notifyDidExitVersionBrowser:(id)aBrowser;
+- (void)notifyWillEnterVersionBrowser:(id)aBrowser;
+- (void)notifyWillExitVersionBrowser:(id)aBrowser;
+- (void)storeDocumentWindowState:(id)aState;
+- (void)window:(id)aWindow willEncodeRestorableState:(id)aState;
+- (NSSize)window:(id)aWindow willResizeForVersionBrowserWithMaxPreferredSize:(NSSize)aPreferred maxAllowedSize:(NSSize)aAllowed;
+- (NSSize)window:(id)aWindow willUseFullScreenContentSize:(NSSize)aSize;
+- (void)windowDidEnterFullScreen:(id)aScreen;
+- (void)windowDidExitFullScreen:(id)aScreen;
+- (void)windowDidEnterVersionBrowser:(id)aBrowser;
+- (void)windowDidExitVersionBrowser:(id)aBrowser;
+- (void)windowWillEnterVersionBrowser:(id)aBrowser;
+- (void)windowWillExitVersionBrowser:(id)aBrowser;
 @end
 
 @interface HSMainWindowController (HSSelectionHolderDelegate)

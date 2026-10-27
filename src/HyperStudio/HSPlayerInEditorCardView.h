@@ -5,7 +5,6 @@
 {
     NSColor *_backgroundColor;
     HSEditorCardViewDragHelper *_dragHelper;
-    NSSize _cardOffset;
     HSGridSettings *_gridSettings;
 }
 - (id)layoutGuidingContext;

@@ -14,8 +14,14 @@
     unsigned int _needCancelImportFiles:1;
     unsigned int _replacingDocument:1;
     BOOL _documentInEditor;
+    BOOL _isInViewingMode:1;
+    BOOL _isDuplicationInProgress;
     unsigned int _documentsInPurePlayerAndPresentationModesCount;
     int _onionSkinMode;
+    NSMutableDictionary *_windowToTopLeftPointMap;
+    BOOL _needsDelayDocumentsReopen;
+    NSMutableArray *_delayedDocumentsReopenInvokes;
+    NSMutableArray *_copysOfDocumentsReopenInvokesArguments;
 }
 - (void)cancelExport:(id)aExport;
 - (void)insertInOrderedDocuments:(id)aDocuments;
@@ -130,6 +136,32 @@
 - (Class)defaultNavigationControllerClass;
 - (id)init;
 - (void)dealloc;
+- (BOOL)addReadyMadeCardsFromPath:(id)aPath alwaysCreateNewDocument:(BOOL)aNew;
+- (void)application:(id)aApplication shouldOpenFiles:(id)aFiles;
+- (void)applicationDidFinishRestoring:(id)aRestoring;
+- (void)application:(id)aApplication willEncodeRestorableState:(id)aState;
+- (id)applicationDockMenu:(id)aMenu;
+- (void)applicationWillResignActive:(id)aActive;
+- (void)cascadeDocument:(id)aDocument prevDocument:(id)aPrev;
+- (id)documentForWindow:(id)aWindow;
+- (id)filesToOpen;
+- (void)setFilesToOpen:(id)aFiles;
+- (void)invokeDelayedDocumentsReopen;
+- (BOOL)isApplicationLaunchFinished;
+- (BOOL)isDuplicationInProgress;
+- (void)setDuplicationInProgress:(BOOL)aProgress;
+- (BOOL)isInViewingMode;
+- (void)setViewingMode:(BOOL)aMode;
+- (BOOL)isPauseResumeEnabled;
+- (void)newDocument:(id)aDocument;
+- (void)newDocumentFromTemplateChooser:(id)aChooser;
+- (id)openDocumentWithContentsOfURL:(id)aURL display:(BOOL)aDisplay error:(id *)aError;
+- (void)openTutorials:(id)aTutorials;
+- (void)reopenDocumentForURL:(id)aURL withContentsOfURL:(id)aContents display:(BOOL)aDisplay completionHandler:(id)aHandler;
+- (void)saveTopLeftPointForWindow:(id)aWindow;
+- (id)windowToTopLeftPointMap;
+- (void)templateChooser:(id)aChooser didChooseTemplateAtPath:(id)aPath;
+- (void)undoImportingFilesCount:(NSUInteger)aCount lastAddedCardIndex:(NSUInteger)aIndex inDocument:(id)aDocument;
 @end
 
 @interface NSWorkspace (HSFileTypesUtilities)

@@ -9,6 +9,7 @@
     id _lastSelectedPaneIdentifier;
     unsigned int _indexOfPaneToSwitch;
     BOOL _waitingForClose;
+    BOOL _firstTimeApplicationStartup;
 }
 + (id)sharedPreferencesController;
 - (BOOL)windowShouldClose:(id)aClose;
@@ -44,5 +45,6 @@
 - (id)nameForPreferencePanesOrderResource;
 - (void)dealloc;
 - (id)init;
+- (NSInteger)getStartupPreferencesOption;
 @end
 

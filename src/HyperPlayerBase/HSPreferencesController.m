@@ -344,4 +344,30 @@ static NSInteger HSComparePaneIdentifiers(id aIdentifier, id aIdentifier2, void 
     return self;
 }
 
+- (NSInteger)getStartupPreferencesOption
+{
+    if (_firstTimeApplicationStartup) {
+        return 0;
+    }
+    NSNumber *firstTime = [[NSUserDefaults standardUserDefaults] objectForKey:HSFirstTimeApplicationStartupKey];
+    if (firstTime == nil) {
+        _firstTimeApplicationStartup = YES;
+    } else {
+        _firstTimeApplicationStartup = [firstTime boolValue];
+        if (!_firstTimeApplicationStartup) {
+            goto option;
+        }
+    }
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:HSFirstTimeApplicationStartupKey];
+option:
+    if (!_firstTimeApplicationStartup) {
+        NSInteger option = [[NSUserDefaults standardUserDefaults] integerForKey:HSStartupActionKey];
+        if (option == 3) {
+            option = [[[[NSUserDefaults standardUserDefaults] dictionaryRepresentation] objectForKey:@"NSQuitAlwaysKeepsWindows"] boolValue] ? 2 : 0;
+        }
+        return option;
+    }
+    return 0;
+}
+
 @end

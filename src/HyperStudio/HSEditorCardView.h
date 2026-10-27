@@ -4,10 +4,7 @@
 
 @interface HSEditorCardView : HSToolView <HSEditorCanvasLayerContext, HSCanvasLayerContext, HyperInterface, NSObject, HSLayoutGuidingContextProvider, HSColorPickingController, HSEditorCardViewBackgroundHost, HSEditorCardViewDragHost, HSPointConvertion, NSUserInterfaceValidations, HSStoredMenuItemTitleValidationSupport, HSDropHelpPaneDelegate>
 {
-    int _zoomMode;
-    NSSize _cardOffset;
     NSMutableArray *_poofPointsQueue;
-    NSTimer *_liveResizeRecacheTimer;
     NSRect _rectVisuallyObscuredBySuperview;
     NSRect _additionalContentRect;
     HSEditObjectDialogContext *_editObjectDialogContext;
@@ -19,11 +16,9 @@
     int _numberOfRunningPoofEffects;
     NSColor *_backgroundColor;
     HSEditorCardViewDragHelper *_dragHelper;
-    unsigned int _cacheOnlyRendering:1;
     unsigned int _isColorPickingModeActive:1;
     unsigned int _isObjectsLayoutReflected:1;
     unsigned int _didDrawBitmapToolsLayer:1;
-    unsigned int _lightweightChangeProcessingModeCounter;
     void *_lastActiveWindow;
     HSUserObject *_previousOnionSkinUserObject;
     HSUserObject *_nextOnionSkinUserObject;
