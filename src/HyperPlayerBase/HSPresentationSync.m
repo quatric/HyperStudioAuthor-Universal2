@@ -113,7 +113,9 @@
 
 - (void)prepareForUserInitiatedNavigationOperation
 {
-    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[[[self dataSource] currentStackForPresentationSync:self] hyperUID] andSoundAttributes:nil];
+    id stack = [[self dataSource] currentStackForPresentationSync:self];
+    [[stack document] resume];
+    [[HSActionMediaPlayer sharedActionMediaPlayer] stopAllSoundsForStackUID:[stack hyperUID] andSoundAttributes:nil];
 }
 
 - (void)forceCloseDocument

@@ -735,12 +735,7 @@ static NSString *HSNavigationLocalizedAlertString(NSString *key)
         [operation setStage:HSNavigationStageCheckDestinationOpened];
         [self continueNavigationOperation:operation];
     } else if (aCode == 1) {
-        if ([[self document] fileURL] != nil && [[[self document] fileType] isEqualToString:@"HSDocumentType"]) {
-            [[self document] saveDocumentWithDelegate:self didSaveSelector:@selector(document:didSave:contextInfo:) contextInfo:operation];
-        } else {
-            [operation setStage:HSNavigationStageRunSavePanel];
-            [self continueNavigationOperation:operation];
-        }
+        [self saveChangesForNavigationOperation:operation];
     }
     [aEnd release];
 }

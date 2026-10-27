@@ -131,13 +131,7 @@
     id location = [aDictionary objectForKey:@"location"];
     id length = [aDictionary objectForKey:@"length"];
     struct HSTimeRange range = HSMakeTimeRange([location doubleValue], [length doubleValue]);
-    if (HSEqualTimeRanges(range, _soundPlayRange))
-        return;
     _soundPlayRange = range;
-    if (range.length == 0.0 && range.location == 0.0)
-        [_sound setPlayRange:[_sound playRange]];
-    else
-        [_sound setPlayRange:range];
 }
 
 - (id)soundPlayRangeAsDictionary

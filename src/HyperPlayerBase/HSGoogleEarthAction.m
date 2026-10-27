@@ -288,6 +288,7 @@ static NSSet *sPlacemarkKeys = nil;
         [_openLocationAction setOpensDocument:YES];
         [_openLocationAction setOpensApplication:YES];
         [_openLocationAction setApplicationName:@"Google Earth"];
+        [_openLocationAction setLaunchInForeground:NO];
     }
     return _openLocationAction;
 }

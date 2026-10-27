@@ -279,28 +279,8 @@
 - (id)slideshowAttributesFromDialog
 {
     HSSlideshowDialogController *dialog = [HSSlideshowDialogController new];
-    HSSlideshowAttributes *defaults = [HSSlideshowAttributes defaultSlideshowAttributes];
+    [self setDefaultSlideshowAttributesToBeCustomizedIntoDialog:dialog];
     id result = nil;
-    if (_lastSlideShowOptions == nil) {
-        HSSlideshowAttributes *session = [self sessionSlideshowAttributes];
-        [defaults setStartsNextSlideAutomatically:[session startsNextSlideAutomatically]];
-        [defaults setUseKeystrokeOnExitCard:[session useKeystrokeOnExitCard:nil]];
-        [defaults setDurationBetweenSlides:[session durationBetweenSlides]];
-        [defaults setStopsAfterEnd:[session stopsAfterEnd]];
-        [dialog setDefaultSlideshowAttributesToBeCustomized:defaults];
-    } else {
-        if (defaults != nil && _modifiedAttributesSet != nil) {
-            NSArray *keys = [_modifiedAttributesSet allObjects];
-            [_modifiedAttributesSet release];
-            _modifiedAttributesSet = nil;
-            for (NSUInteger i = 0; i < [keys count]; i++) {
-                id key = [keys objectAtIndex:i];
-                [_lastSlideShowOptions setValue:[defaults valueForKey:key] forKey:key];
-            }
-            [_lastSlideShowOptions setTransition:[defaults transition]];
-        }
-        [dialog setDefaultSlideshowAttributesToBeCustomized:_lastSlideShowOptions];
-    }
     if ([dialog runModal] == 1)
         result = [[[dialog slideshowAttributes] retain] autorelease];
     [dialog release];

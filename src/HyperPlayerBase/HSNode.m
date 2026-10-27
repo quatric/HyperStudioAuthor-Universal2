@@ -2495,6 +2495,9 @@ static void HSNodeRemoveChangingAttributes(id aAttributes, NSEMutableProtocolSet
         _children = [NSMutableArray new];
         if (_fileWrapper != nil)
             [self loadChildrenFromFileWrapper:_fileWrapper];
+        id delegate = [self delegate];
+        if ([delegate respondsToSelector:@selector(nodeContainer:didLoadChildren:)])
+            [delegate nodeContainer:self didLoadChildren:_children];
     }
     return _children;
 }
