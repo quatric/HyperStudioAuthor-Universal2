@@ -110,6 +110,19 @@ static NSDictionary *sSizeModes = nil;
     return self;
 }
 
+- (void)observeValueForKeyPath:(NSString *)aPath ofObject:(id)aObject change:(NSDictionary *)aChange context:(void *)aContext
+{
+    if (![@"EXToolbarControllerDisplayModeContext" isEqualToString:(id)aContext]) {
+        [super observeValueForKeyPath:aPath ofObject:aObject change:aChange context:aContext];
+        return;
+    }
+    NSToolbarDisplayMode displayMode = [[self toolbar] displayMode];
+    for (id item in [[self toolbar] items]) {
+        if ([item respondsToSelector:@selector(setDisplayMode:)])
+            [item setDisplayMode:displayMode];
+    }
+}
+
 @end
 
 @implementation HSCustomValidationToolbarItem

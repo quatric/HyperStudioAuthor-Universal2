@@ -26,5 +26,6 @@
 - (void)dealloc;
 - (id)initWithNodeUnit:(id)aUnit node:(id)aNode;
 - (id)init;
+- (CGImageRef)copyPreviewImageWithScale:(CGSize)aScale;
 @end
 

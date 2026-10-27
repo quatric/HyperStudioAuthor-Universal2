@@ -46,6 +46,7 @@
 - (BOOL)HSWebRenderer_createWebView;
 - (void)HSWebRenderer_claimWebView;
 - (void)dealloc;
+- (CGImageRef)copyPreviewImageWithScale:(CGSize)aScale;
 @end
 
 @interface HSWebView : WebView

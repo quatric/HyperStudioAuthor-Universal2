@@ -108,4 +108,9 @@
     [self release];
     return nil;
 }
+- (CGImageRef)copyPreviewImageWithScale:(CGSize)aScale
+{
+    return [[self HSWebElementAttributesImplementation_webRenderer] copyPreviewImageWithScale:aScale];
+}
+
 @end

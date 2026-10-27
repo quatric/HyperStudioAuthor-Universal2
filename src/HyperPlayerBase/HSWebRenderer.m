@@ -465,6 +465,23 @@ static NSString * const HSWebRendererDidUpdatePreviewImageNotificationName = @"H
     [super dealloc];
 }
 
+- (CGImageRef)copyPreviewImageWithScale:(CGSize)aScale
+{
+    if (aScale.width == 1.0 && aScale.height == 1.0)
+        return CGImageRetain(_previewImage);
+    NSSize windowSize = [_webWindow frame].size;
+    NSSize viewSize = [_webView frame].size;
+    [_webView scaleUnitSquareToSize:aScale];
+    NSSize scaledSize = NSMakeSize(aScale.width * viewSize.width, aScale.height * viewSize.height);
+    [_webView setFrameSize:scaledSize];
+    [_webWindow setContentSize:scaledSize];
+    CGImageRef image = [self HSWebRenderer_copyWebImage];
+    [_webView setFrameSize:viewSize];
+    [_webView setBoundsSize:viewSize];
+    [_webWindow setContentSize:windowSize];
+    return image;
+}
+
 @end
 
 // Display only: never takes mouse events.
