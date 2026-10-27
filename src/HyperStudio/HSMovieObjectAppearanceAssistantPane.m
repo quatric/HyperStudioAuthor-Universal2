@@ -1892,5 +1892,26 @@ LAB_00181d14:
     return self_00;
 }
 
+- (void)importMovieDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode == 1) {
+        NSString *fileName = [aDialog fileName];
+        if (fileName != nil) {
+            HSMovieVerifier *verifier = [HSMovieVerifier new];
+            NSURL *URL = [NSURL fileURLWithPath:fileName];
+            id verified = [verifier verifyMovieAtURL:URL withOptions:0 error:NULL];
+            if (verified != nil) {
+                [self setMovieWithPathOrAlert:[verified path]];
+                id comments = [HSEditorCardViewDragHelper commentsForDroppedObjectWithURL:verified];
+                id commentsAttributes = [[[self assistant] object] queryHyperInterface:@protocol(HSCommentsAttributes)];
+                if (comments != nil && [comments length] != 0 && ![[commentsAttributes hyperComments] hasHyperSubstring:comments])
+                    [commentsAttributes appendHyperComments:comments];
+            }
+            [verifier release];
+        }
+    }
+    [aDialog setHyperDocument:nil];
+}
+
 @end
 

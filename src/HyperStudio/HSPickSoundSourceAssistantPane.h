@@ -35,5 +35,6 @@
 - (id)pickSoundSourcePaneDelegate;
 - (void)dealloc;
 - (id)init;
+- (void)importSoundObjectDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 @end
 

@@ -214,4 +214,63 @@
     [aDialog orderOut:nil];
 }
 
+- (void)anotherImageObjectWithMedia:(id)aMedia
+{
+    if (aMedia == nil)
+        return;
+    id options = [_importGraphicDialogController dialogUserOptions];
+    id object = [[self assistant] object];
+    id imageObject = [object queryHyperInterface:@protocol(HSImageObjectAttributes)];
+    id applier = [[HSImageCropApplier alloc] initWithImageObject:imageObject];
+    if ([[object queryHyperInterface:@protocol(HSEffectMutableAttributes)] hyperEffectName] != nil)
+        [applier updateEffectedImageObject];
+    NSSize targetSize = NSZeroSize;
+    if ([object queryHyperInterface:@protocol(HSSizeAttributes)] != nil)
+        targetSize = [[object queryHyperInterface:@protocol(HSSizeAttributes)] size];
+    BOOL cacheEnabled = [imageObject isEnabledCacheImage];
+    if (cacheEnabled)
+        [imageObject setEnabledCacheImageForAllGroupObjects:NO setUpUndoManager:YES];
+    [imageObject setHyperEffectedMedia:aMedia refreshName:YES];
+    [imageObject setRelativeImageRect:NSMakeRect(0, 0, 1, 1) updateClipPaths:NO];
+    id image = [[object queryHyperInterface:@protocol(HSImageAttributes)] image];
+    NSSize pixels = image != nil ? [image hyperPixelsSize] : NSZeroSize;
+    if (!NSEqualSizes(NSZeroSize, targetSize) && !NSEqualSizes(NSZeroSize, pixels) && !NSEqualSizes(targetSize, pixels)) {
+        int layout = [[options valueForKey:HSImportDialogGraphicsOptionKeyLayout] intValue];
+        float targetAspect = targetSize.width / targetSize.height;
+        float imageAspect = pixels.width / pixels.height;
+        BOOL fitHeight = layout == 3 ? imageAspect < targetAspect : targetAspect < imageAspect;
+        float width, height;
+        if (fitHeight || imageAspect == targetAspect) {
+            width = imageAspect * targetSize.height;
+            height = targetSize.height;
+        } else {
+            width = targetSize.width;
+            height = targetSize.width / imageAspect;
+        }
+        float x = (targetSize.width * 0.5 - width * 0.5);
+        float y = (targetSize.height * 0.5 - height * 0.5);
+        [imageObject setImageRect:NSMakeRect(x, y, width, height) updateClipPaths:NO];
+    }
+    [[imageObject queryHyperInterface:@protocol(HSMutableClipPathsAttributes)] removeAllClipPaths];
+    [imageObject dropInitialClipPaths];
+    [applier updateCurrentBorderPath];
+    [applier release];
+    if (cacheEnabled)
+        [imageObject setEnabledCacheImageForAllGroupObjects:YES setUpUndoManager:YES];
+    id commentsAttributes = [object queryHyperInterface:@protocol(HSCommentsAttributes)];
+    if (commentsAttributes == nil)
+        return;
+    id mediaUID = [[object queryHyperInterface:@protocol(HSMediaUIDAttribute)] mediaUID];
+    if (mediaUID == nil)
+        return;
+    id comments = [HSMediaCommentsAndAttributionsProvider commentsAndAttributionsForMediaUID:mediaUID];
+    if (comments == nil) {
+        comments = [HSEditorCardViewDragHelper commentsForDroppedObjectWithURL:[NSURL fileURLWithPath:[_importGraphicDialogController fileName]]];
+        if (comments == nil)
+            return;
+    }
+    if ([comments length] != 0 && ![[commentsAttributes hyperComments] hasHyperSubstring:comments])
+        [commentsAttributes appendHyperComments:comments];
+}
+
 @end

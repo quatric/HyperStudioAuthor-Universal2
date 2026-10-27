@@ -20,5 +20,6 @@
 - (id)init;
 - (void)imageCaptureDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 - (void)cropImageDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
+- (void)anotherImageObjectWithMedia:(id)aMedia;
 @end
 

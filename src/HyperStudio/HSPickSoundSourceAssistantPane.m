@@ -269,5 +269,28 @@ void FUN_0022131a(HSPickSoundSourceAssistantPane *self,SEL _cmd,id diskFileChose
     return self;
 }
 
+- (void)importSoundObjectDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    if (aCode != 1)
+        return;
+    NSString *fileName = [aDialog fileName];
+    NSString *displayName = [aDialog fileDisplayName];
+    if (fileName == nil)
+        return;
+    id movie = [[[HSMovie alloc] initWithURL:[NSURL fileURLWithPath:fileName] error:NULL] autorelease];
+    if (movie != nil) {
+        [[self retain] autorelease];
+        id media = [[[self stack] queryHyperInterface:@protocol(HSStackSoundStorage)] soundMediaForPath:fileName];
+        if (media == nil)
+            media = [HSNewMedia mediaWithPath:fileName name:displayName];
+        if (media != nil) {
+            id soundItem = [[HSSoundItem alloc] initWithMediaUID:[media mediaUID] andApplyOptionsFromSound:movie];
+            [self processSoundItem:soundItem];
+            [soundItem release];
+        }
+    }
+    [self dismissPaneIfNeeded];
+}
+
 @end
 

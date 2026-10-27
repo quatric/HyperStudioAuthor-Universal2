@@ -108,5 +108,6 @@
 - (void)dealloc;
 - (void)viewDidLoad;
 - (id)init;
+- (void)importMovieDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo;
 @end
 

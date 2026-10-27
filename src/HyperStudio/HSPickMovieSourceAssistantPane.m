@@ -318,5 +318,42 @@ LAB_001a4daf:
     return self;
 }
 
+- (void)importMovieDialogDidEnd:(id)aDialog returnedCode:(NSInteger)aCode contextInfo:(void *)aInfo
+{
+    id playable = [[aDialog dialogUserOptions] valueForKey:HSImportDialogMoviesInUseOptionKeyPlayableObject];
+    if (aCode != 1)
+        return;
+    NSString *fileName = [aDialog fileName];
+    if (fileName != nil && playable == nil) {
+        id media = [HSNewMedia mediaWithPath:[aDialog fileName]];
+        id movieObject = nil;
+        if (media != nil) {
+            movieObject = [[HSMovieObject alloc] initWithMedia:media];
+            if (movieObject != nil) {
+                [[self retain] autorelease];
+                [self processMovieObject:movieObject isInUse:NO];
+            }
+        }
+        [movieObject release];
+    } else {
+        if (playable == nil)
+            return;
+        [[self retain] autorelease];
+        if ([playable implementsHyperInterface:@protocol(HSNodeAttributes)]) {
+            id node = [playable queryHyperInterface:@protocol(HSNodeAttributes)];
+            if (node != nil && [node hyperParent] == nil)
+                playable = [node localCopyIncludingNodeUnits:YES];
+        }
+        if ([playable implementsHyperInterface:@protocol(HSMovieObjectAttributes)]) {
+            [self processMovieObject:playable isInUse:YES];
+        } else if ([playable implementsHyperInterface:@protocol(HSLiveObjectAttributes)]) {
+            [self processLiveObject:playable];
+        } else {
+            return;
+        }
+    }
+    [self dismissPaneIfNeeded];
+}
+
 @end
 
