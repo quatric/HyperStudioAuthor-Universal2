@@ -525,14 +525,6 @@ static NSString *HSMainWindowControllerAlertString(NSString *aKey)
 {
     NSWindow *window = [self window];
     if (window) {
-        if ([[HSSystem sharedSystem] isOpenGLEnabled]) {
-            [window setOpaque:NO];
-            if ([window isKindOfClass:[NSEWindow class]]) {
-                [window disableScreenUpdatesUntilFlush];
-                [window setHasShadow:NO];
-                [(NSEWindow *)window setHasOpaqueShapeShadow:YES];
-            }
-        }
         [window setPreferredBackingLocation:NSWindowBackingLocationMainMemory];
         [self setShouldCascadeWindows:YES];
         [_toolbarController setupToolbar];
