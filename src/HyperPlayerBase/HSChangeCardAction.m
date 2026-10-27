@@ -146,6 +146,9 @@ static int sRunningNavigationCount = 0;
     }
 
     _navigationOperation = [self createNavigationOperation];
+    NSURL *destinationURL = [_navigationOperation destinationStackURL];
+    if (destinationURL != nil && ![destinationURL isEqual:[[aContext document] fileURL]])
+        [[[aContext navigationController] presentationSync] prepareForUserInitiatedNavigationOperation];
     [_navigationOperation setSourceCard:[self card]];
     [_navigationOperation setSourceCardUserSpaceToViewSpaceTransform:[cardView userSpaceToViewSpaceCGAffineTransform]];
     [_navigationOperation setSourceCardViewTransform:[cardView NSE_affineTransformToView:nil]];

@@ -140,6 +140,8 @@
     id queue = nil;
     if (!_isLeaveActionsDisabled || ![[aEvent eventType] isEqualToString:kHSLeaveActionEventType])
         queue = [[aObject queryHyperInterface:@protocol(HSActor)] actionQueueForEvent:aEvent callingObject:aObject];
+    if ([aRequestor respondsToSelector:@selector(ignoreHyperActionDelay)])
+        [queue setUseDelay:![aRequestor ignoreHyperActionDelay]];
     if (queue == nil) {
         [self notifyRequestor:aRequestor actionsForObject:aObject didFinishForEvent:aEvent];
         [pool release];
