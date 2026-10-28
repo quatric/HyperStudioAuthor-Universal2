@@ -555,7 +555,8 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
             goto done;
         }
         BOOL takesMouse = (![attributes isNoClick] && ![attributes isDropOffOnly])
-            || [attributes isDraggable] || [attributes isResizable] || [attributes isRotatable];
+            || [attributes isDraggable] || [attributes isResizable] || [attributes isRotatable]
+            || [[item queryHyperInterface:@protocol(HSStartingPlayableObjectAttributes)] isHyperStartingOnClick];
         // Later items are never asked whether they track the mouse themselves,
         // and when no item takes the event the last one is tracked anyway
         // (original).
@@ -573,7 +574,8 @@ static BOOL HSInteractiveObjectsLayerFloatsAreEqual(float aValue, float aValue2)
             wantsToTrack = NO;
             attributes = [[next hyperObject] queryHyperInterface:@protocol(HSCardObjectAttributes)];
             takesMouse = (![attributes isNoClick] && ![attributes isDropOffOnly])
-                || [attributes isDraggable] || [attributes isResizable] || [attributes isRotatable];
+                || [attributes isDraggable] || [attributes isResizable] || [attributes isRotatable]
+                || [[next queryHyperInterface:@protocol(HSStartingPlayableObjectAttributes)] isHyperStartingOnClick];
         }
     }
 
